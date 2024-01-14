@@ -63,6 +63,8 @@ export default function Home() {
   // その日の合計金額を算出
   const total = todaysFoodsTotal + todaysItemsTotal;
 
+
+  // 在庫登録
   const handleForm = async (e: any) => {
     e.preventDefault();
     if (type === "食品" && taxNotation.tax === "税抜") {
