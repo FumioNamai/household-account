@@ -228,7 +228,7 @@ export default function Home() {
               placeholder="個数"
               className="border text-xs p-1 w-10 mr-2 focus:outline-none focus:border-sky-500"
             /> */}
-                  <div className="flex justify-evenly">
+                  <div>
                     <button
                       type="submit"
                       className="border text-xs p-1 mr-2"
@@ -322,7 +322,7 @@ export default function Home() {
               </div>
 
               <div>
-                <h2 className="mb-2">雑貨</h2>
+                <h2 className="mb-2 ">雑貨</h2>
                 <ul>
                   {todayItems.map((todayItem) => (
                     <div key={todayItem.id}>
