@@ -17,6 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
+      <meta name="viewport" content="initial-scale=1, width=device-width" />
       <body className={inter.className}>
         <Header />
         <div className="max-w-sm mx-auto">

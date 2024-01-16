@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Stock } from "../../../utils/interface";
 import { supabase } from "../../../utils/supabase";
+import { log } from "console";
+import { Button } from "@mui/material";
 
 const Item = ({ props, onUpdate, onDelete, date }) => {
   const [price, setPrice] = useState<string>("")
@@ -14,9 +16,9 @@ const Item = ({ props, onUpdate, onDelete, date }) => {
         .eq("id", propsID);
       const newStock = {
         id: undefined,
-        type: restocks[0].type,
-        category: restocks[0].category,
-        name: restocks[0].name,
+        type: restocks![0].type,
+        category: restocks![0].category,
+        name: restocks![0].name,
         price: 0,
         registration_date: null,
         use_date: null,
@@ -40,8 +42,10 @@ const Item = ({ props, onUpdate, onDelete, date }) => {
   };
 
   const handleDelete = async (propsID: number) => {
+    console.log(propsID);
+
     try {
-      const res = await supabase.from("stocks").delete().eq("id", propsID);
+      const {error} = await supabase.from("stocks").delete().eq("id", propsID);
       const { data: stocks } = await supabase.from("stocks").select("*");
       // 親コンポーネントにstocksを渡して在庫情報を更新
       onDelete(stocks);
@@ -72,31 +76,25 @@ const Item = ({ props, onUpdate, onDelete, date }) => {
         <div className="flex  items-center ">
           {props.price !== 0 ? (
             <>
-              {/* <form
-           onSubmit={handleForm}
-           > */}
+              {/* <form onSubmit={handleForm} > */}
               <p className="text-xs">
                 {props.price}円
               </p>
               {/* </form> */}
-              <button
-                className="border mr-1 p-1 text-xs border-blue-500 rounded"
+              <Button variant="outlined"
                 onClick={() => handleUse(props.id)}
               >
                 使
-              </button>
-              <button
-                className="border mr-1 p-1 text-xs  border-red-500 rounded"
+              </Button>
+              <Button variant="outlined"
                 onClick={() => handleDelete(props.id)}
               >
                 消
-              </button>
+              </Button>
             </>
           ) : (
             <>
-            {/* <form
-           onSubmit={handleForm}
-           > */}
+            {/* <form onSubmit={handleForm}> */}
               <label className="text-xs">
                 <input
                   type="number"
@@ -104,24 +102,22 @@ const Item = ({ props, onUpdate, onDelete, date }) => {
                   name="price"
                   value={price}
                   // onChange={}
-                  className=" text-xs mr-1 w-10 text-end"
+                  className=" text-xs mr-1 w-10 text-end rounded focus:outline-sky-500 cursor-pointer"
                   onChange={(e) => setPrice(e.target.value)}
                 />
                 円
               </label>
               {/* </form> */}
-              <button
-                className="border mr-1 p-1 text-xs border-green-500 rounded"
+              <Button variant="outlined"
                 onClick={() => handleUpdate(props.id)}
               >
                 更
-              </button>
-              <button
-                className="border mr-1 p-1 text-xs border-red-500 rounded"
-                onClick={() => handleUse(props.id)}
+              </Button>
+              <Button variant="outlined"
+                onClick={() => handleDelete(props.id)}
               >
                 消
-              </button>
+              </Button>
             </>
           )}
         </div>

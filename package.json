@@ -10,8 +10,16 @@
     "json-server": "json-server --watch data.json"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.8",
+    "@mui/icons-material": "^5.15.4",
+    "@mui/material": "^5.15.4",
+    "@mui/x-date-pickers": "^6.19.0",
     "@supabase/supabase-js": "^2.39.2",
+    "dayjs": "^1.11.10",
     "json-server": "^1.0.0-alpha.11",
+    "lodash": "^4.17.21",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18"
