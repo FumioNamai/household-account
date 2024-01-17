@@ -1,5 +1,6 @@
 import { log } from "console";
 import { supabase } from "../../../utils/supabase";
+import { Button } from "@mui/material";
 
 const UsedItem = ({ props, onUpdate }) => {
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
@@ -24,13 +25,13 @@ const UsedItem = ({ props, onUpdate }) => {
     >
       <p className="text-xs min-w-28 text-start">{props.name}</p>
 
-      <p className=" text-xs min-w-16 text-end">@ {props.price}円</p>
-      <button
-        className="border p-1 text-xs"
-        onClick={(e) => handleReturn(props.id)}
+      <p className=" text-xs min-w-16 text-end">{props.price}円</p>
+      <Button
+      variant="outlined"
+        onClick={() => handleReturn(props.id)}
       >
         戻
-      </button>
+      </Button>
     </li>
   );
 };

@@ -81,12 +81,12 @@ const Item = ({ props, onUpdate, onDelete, date }) => {
                 {props.price}円
               </p>
               {/* </form> */}
-              <Button variant="outlined"
+              <Button variant="outlined" size="small"
                 onClick={() => handleUse(props.id)}
               >
                 使
               </Button>
-              <Button variant="outlined"
+              <Button variant="outlined" size="small"
                 onClick={() => handleDelete(props.id)}
               >
                 消
@@ -109,11 +109,12 @@ const Item = ({ props, onUpdate, onDelete, date }) => {
               </label>
               {/* </form> */}
               <Button variant="outlined"
+                size="small"
                 onClick={() => handleUpdate(props.id)}
               >
                 更
               </Button>
-              <Button variant="outlined"
+              <Button variant="outlined" size="small"
                 onClick={() => handleDelete(props.id)}
               >
                 消

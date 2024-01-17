@@ -9,11 +9,12 @@ import UsedItem from "./components/usedItem";
 import { supabase } from "../../utils/supabase";
 import Item from "./components/item";
 import { log } from "console";
-import { TextField, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Button, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 import dayjs from 'dayjs';
+import ja from 'dayjs/locale/ja';
 
 // const today: string = new Date().toLocaleDateString("sv-SE");
 // const today = dayjs().format('YYYY-MM-DD')
@@ -35,9 +36,10 @@ export default function Home() {
   const [type, setType] = useState<string>("");
   const [name, setName] = useState<string>("");
   let [price, setPrice] = useState<string>("");
-  const [taxNotation, setTaxNotation] = useState({
-    tax: "税抜",
-  });
+  // const [taxNotation, setTaxNotation] = useState({
+  //   tax: "税抜",
+  // });
+  const [taxNotation, setTaxNotation] = useState(true);
   const [categoryItem, setCategoryItem] = useState("");
 
   useEffect(() => {
@@ -62,7 +64,7 @@ export default function Home() {
   // Itemコンポーネントの削除ボタン押下で在庫情報を更新
   const del = (props) => setStocks(props);
 
-  const selectedDate = date?.format('YYYY-MM-DD')
+  const selectedDate = date?.locale(ja).format('YYYY-MM-DD')
 
   const todayUsed = stocks.filter((stock) => stock.use_date === `${selectedDate}`);
 
@@ -84,10 +86,16 @@ export default function Home() {
   // 在庫登録
   const handleForm = async (e: any) => {
     e.preventDefault();
-    if (type === "食品" && taxNotation.tax === "税抜") {
+    // if (type === "食品" && taxNotation.tax === "税抜") {
+    //   price = Math.floor(price * 1.08);
+    // }
+    // if (type !== "食品" && taxNotation.tax === "税抜") {
+    //   price = Math.floor(price * 1.1);
+    // }
+    if (type === "食品" && taxNotation === false) {
       price = Math.floor(price * 1.08);
     }
-    if (type !== "食品" && taxNotation.tax === "税抜") {
+    if (type !== "食品" && taxNotation === true) {
       price = Math.floor(price * 1.1);
     }
 
@@ -111,11 +119,13 @@ export default function Home() {
     }
   };
 
-  const handleTax = (e) => {
-    setTaxNotation({
-      ...taxNotation,
-      [e.target.name]: e.target.value,
-    });
+  const handleTax = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // setTaxNotation({
+    //   ...taxNotation,
+    //   [e.target.name]: e.target.value,
+    // });
+
+    setTaxNotation(event.target.checked)
   };
 
   const handleSelectItem = (e) => {
@@ -132,6 +142,7 @@ export default function Home() {
               <form>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
+
                   defaultValue={dayjs()}
                   views={['year', 'month', 'day']}
                   onChange={(date) => setDate(date)}
@@ -158,7 +169,7 @@ export default function Home() {
                   {todayFoods.map((todayFood) => (
                     <div key={todayFood.id}>
                       {todayFood.type === "食品" &&
-                      todayFood.use_date === `${date}` ? (
+                      todayFood.use_date === `${selectedDate}` ? (
                         <UsedItem props={todayFood} onUpdate={update} />
                       ) : null}
                     </div>
@@ -172,7 +183,7 @@ export default function Home() {
                   {todayItems.map((todayItem) => (
                     <div key={todayItem.id}>
                       {todayItem.type === "雑貨" &&
-                      todayItem.use_date === `${date}` ? (
+                      todayItem.use_date === `${selectedDate}` ? (
                         <UsedItem props={todayItem} onUpdate={update} />
                       ) : null}
                     </div>
@@ -204,6 +215,7 @@ export default function Home() {
                 <p>種別</p>
                 <div className="flex flex-row items-center gap-1">
                   <ToggleButtonGroup
+                  size="small"
                     color="primary"
                     value={type}
                     exclusive
@@ -249,25 +261,25 @@ export default function Home() {
                     その他
                   </label> */}
                 </div>
-                <p>分類</p>
-                <label htmlFor="">
-                  <select
-                    name="category"
-                    id="category"
-                    value={categoryItem}
-                    onChange={handleSelectItem}
-                  >
-                    <option value="">---</option>
-                    <option value="肉">肉</option>
-                    <option value="魚介">魚介</option>
-                    <option value="野菜">野菜</option>
-                    <option value="乾物">乾物</option>
-                    <option value="フルーツ">フルーツ</option>
-                    <option value="調味料">調味料</option>
-                    <option value="お菓子">お菓子</option>
-                    <option value="その他">その他</option>
-                  </select>
-                </label>
+                <InputLabel>分類</InputLabel>
+                {/* <p>分類</p> */}
+                <Select
+                  id="category"
+                  value = {categoryItem}
+                  label = "分類"
+                  onChange={handleSelectItem}
+                >
+                  <MenuItem value={""}>---</MenuItem>
+                  <MenuItem value={"肉"}>肉</MenuItem>
+                  <MenuItem value={"魚介"}>魚介</MenuItem>
+                  <MenuItem value={"野菜"}>野菜</MenuItem>
+                  <MenuItem value={"乾物"}>乾物</MenuItem>
+                  <MenuItem value={"フルーツ"}>フルーツ</MenuItem>
+                  <MenuItem value={"調味料"}>調味料</MenuItem>
+                  <MenuItem value={"お菓子"}>お菓子</MenuItem>
+                  <MenuItem value={"その他"}>その他</MenuItem>
+                </Select>
+
                 {/* 在庫登録 兼 在庫検索機能 */}
                 <TextField
                   label="商品名"
@@ -281,7 +293,13 @@ export default function Home() {
                   onChange={(e) => setName(e.target.value)}
                 />
                 <div className="flex flex-row items-center gap-1">
-                  <input
+                  <FormControlLabel
+                    control={<Switch checked={taxNotation} onChange={handleTax}/>}
+                    label="税込み"
+                    // checked={taxNotation.tax === "税込"}
+                    // onChange={handleTax}
+                    />
+                  {/* <input
                     type="radio"
                     id="taxExclude"
                     name="tax"
@@ -299,10 +317,10 @@ export default function Home() {
                     value="税込"
                     checked={taxNotation.tax === "税込"}
                     onChange={handleTax}
-                  />
-                  <label htmlFor="taxInclude" className="text-xs">
+                  /> */}
+                  {/* <label htmlFor="taxInclude" className="text-xs">
                     税込
-                  </label>
+                  </label> */}
                   <input
                     type="number"
                     // pattern="^[1-9][0-9]*$"
@@ -322,13 +340,14 @@ export default function Home() {
               className="border text-xs p-1 w-10 mr-2 focus:outline-none focus:border-sky-500"
             /> */}
                   <div>
-                    <button
+                    <Button
+                    variant="outlined"
                       type="submit"
-                      className="border text-xs p-1 mr-2"
+                      size="small"
                       //  onClick={handleSubmit}
                     >
                       登録
-                    </button>
+                    </Button>
                     {/* <button type="" className="border text-xs p-1 mr-2">
                 リセット
               </button> */}
