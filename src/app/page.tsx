@@ -9,12 +9,26 @@ import UsedItem from "./components/usedItem";
 import { supabase } from "../../utils/supabase";
 import Item from "./components/item";
 import { log } from "console";
-import { Button, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  Switch,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
-import dayjs from 'dayjs';
-import ja from 'dayjs/locale/ja';
+import dayjs from "dayjs";
+import ja from "dayjs/locale/ja";
 
 // const today: string = new Date().toLocaleDateString("sv-SE");
 // const today = dayjs().format('YYYY-MM-DD')
@@ -64,9 +78,11 @@ export default function Home() {
   // Itemコンポーネントの削除ボタン押下で在庫情報を更新
   const del = (props) => setStocks(props);
 
-  const selectedDate = date?.locale(ja).format('YYYY-MM-DD')
+  const selectedDate = date?.locale(ja).format("YYYY-MM-DD");
 
-  const todayUsed = stocks.filter((stock) => stock.use_date === `${selectedDate}`);
+  const todayUsed = stocks.filter(
+    (stock) => stock.use_date === `${selectedDate}`
+  );
 
   // その日に使用した食品の合計金額を算出
   const todayFoods = todayUsed.filter((todayUsed) => todayUsed.type === "食品");
@@ -125,7 +141,7 @@ export default function Home() {
     //   [e.target.name]: e.target.value,
     // });
 
-    setTaxNotation(event.target.checked)
+    setTaxNotation(event.target.checked);
   };
 
   const handleSelectItem = (e) => {
@@ -136,16 +152,16 @@ export default function Home() {
     <>
       <main>
         <div className="">
+        <Typography variant="h4" className="mb-4">日別集計</Typography>
           {/* <Daily stocks={stocks}/> */}
           <div className="flex flex-col mb-20">
             <div className="mb-10">
               <form>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
-
-                  defaultValue={dayjs()}
-                  views={['year', 'month', 'day']}
-                  onChange={(date) => setDate(date)}
+                    defaultValue={dayjs()}
+                    views={["year", "month", "day"]}
+                    onChange={(date) => setDate(date)}
                   />
                 </LocalizationProvider>
                 {/* <input
@@ -155,14 +171,14 @@ export default function Home() {
                 /> */}
               </form>
               <div>
-                <p>合計:{total}円</p>
-                <p>食品 小計:{todaysFoodsTotal}円</p>
-                <p>雑貨 小計:{todaysItemsTotal}円</p>
+                <Typography variant="h6">食品 小計:{todaysFoodsTotal}円</Typography>
+                <Typography variant="h6">雑貨 小計:{todaysItemsTotal}円</Typography>
+                <Typography variant="h6">合計: {total}円</Typography>
               </div>
             </div>
 
             <div className="">
-              <h2 className="mb-4">消費品目</h2>
+              <Typography variant="h6">消費品目</Typography>
               <div className="mb-8">
                 <h2 className="mb-2">食品</h2>
                 <ul>
@@ -195,15 +211,19 @@ export default function Home() {
 
           {/* <Stock stocks={stocks}/> */}
           <div>
-            <h2 className="mb-4">在庫登録</h2>
+            <Typography variant="h4" className="mb-4">
+              在庫登録
+            </Typography>
             <div className="mb-10">
               <form className="" onSubmit={handleForm}>
-                <p>購入日</p>
+                {/* <Typography variant="h5">購入日</Typography> */}
+                <InputLabel >購入日</InputLabel>
+
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
-                  defaultValue={dayjs()}
-                  views={['year', 'month', 'day']}
-                  onChange={(date) => setDate(date)}
+                    defaultValue={dayjs()}
+                    views={["year", "month", "day"]}
+                    onChange={(date) => setDate(date)}
                   />
                 </LocalizationProvider>
                 {/* <input
@@ -212,10 +232,11 @@ export default function Home() {
                   onChange={(e) => setDate(e.target.value)}
                 /> */}
                 {/* <button className="border text-xs p-1 mr-2 ">種別</button> */}
-                <p>種別</p>
+                {/* <Typography variant="h5">種別</Typography> */}
+                <InputLabel >種別</InputLabel>
                 <div className="flex flex-row items-center gap-1">
                   <ToggleButtonGroup
-                  size="small"
+                    // size="small"
                     color="primary"
                     value={type}
                     exclusive
@@ -261,26 +282,35 @@ export default function Home() {
                     その他
                   </label> */}
                 </div>
-                <InputLabel>分類</InputLabel>
+                {/* <Typography variant="h5">分類</Typography> */}
                 {/* <p>分類</p> */}
-                <Select
-                  id="category"
-                  value = {categoryItem}
-                  label = "分類"
-                  onChange={handleSelectItem}
+                <FormControl
+                sx={{my:2 , mr:2,minWidth:120 }}
                 >
-                  <MenuItem value={""}>---</MenuItem>
+                  <InputLabel>分類</InputLabel>
+                  <Select
+                  // labelId="demo-simple-select-helper-label"
+                    id="category"
+                    value={categoryItem}
+                    label="分類"
+                    onChange={handleSelectItem}
+                    sx={{}}
+                  >
+                    {/* <MenuItem value={""}>---</MenuItem> */}
                   <MenuItem value={"肉"}>肉</MenuItem>
-                  <MenuItem value={"魚介"}>魚介</MenuItem>
-                  <MenuItem value={"野菜"}>野菜</MenuItem>
-                  <MenuItem value={"乾物"}>乾物</MenuItem>
-                  <MenuItem value={"フルーツ"}>フルーツ</MenuItem>
-                  <MenuItem value={"調味料"}>調味料</MenuItem>
-                  <MenuItem value={"お菓子"}>お菓子</MenuItem>
-                  <MenuItem value={"その他"}>その他</MenuItem>
-                </Select>
+                    <MenuItem value={"魚介"}>魚介</MenuItem>
+                    <MenuItem value={"野菜"}>野菜</MenuItem>
+                    <MenuItem value={"乾物"}>乾物</MenuItem>
+                    <MenuItem value={"フルーツ"}>フルーツ</MenuItem>
+                    <MenuItem value={"調味料"}>調味料</MenuItem>
+                    <MenuItem value={"お菓子"}>お菓子</MenuItem>
+                    <MenuItem value={"その他"}>その他</MenuItem>
+                  </Select>
+                </FormControl>
 
                 {/* 在庫登録 兼 在庫検索機能 */}
+
+                <FormControl sx={{my:2}}>
                 <TextField
                   label="商品名"
                   variant="outlined"
@@ -288,17 +318,21 @@ export default function Home() {
                   id="name"
                   name="name"
                   // placeholder="商品名"
-                  className="border text-xs p-1 mr-4 mb-2 focus:outline-none focus:border-sky-500"
+                  // className="border text-xs p-1 mr-4 mb-2 focus:outline-none focus:border-sky-500"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                />
+                  />
+                  </FormControl>
                 <div className="flex flex-row items-center gap-1">
+                  <Typography>税抜き</Typography>
                   <FormControlLabel
-                    control={<Switch checked={taxNotation} onChange={handleTax}/>}
+                    control={
+                      <Switch checked={taxNotation} onChange={handleTax} />
+                    }
                     label="税込み"
                     // checked={taxNotation.tax === "税込"}
                     // onChange={handleTax}
-                    />
+                  />
                   {/* <input
                     type="radio"
                     id="taxExclude"
@@ -321,16 +355,30 @@ export default function Home() {
                   {/* <label htmlFor="taxInclude" className="text-xs">
                     税込
                   </label> */}
-                  <input
+
+                  <TextField
+                    label="価格"
+                    id="outlined-start-adornment"
+                    sx={{ m: 1, width: "15ch" }}
+                    value={price}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">円</InputAdornment>
+                      ),
+                    }}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setPrice(event.target.value);
+                    }}
+                  />
+                  {/* <input
                     type="number"
-                    // pattern="^[1-9][0-9]*$"
                     id="price"
                     name="price"
                     className="border text-xs text-right p-1 w-20 focus:outline-none focus:border-sky-500"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                  />
-                  <p className="text-xs">円</p>
+                  /> */}
+                  {/* <p className="text-xs">円</p> */}
                 </div>
 
                 <div className="flex flex-col">
@@ -341,9 +389,9 @@ export default function Home() {
             /> */}
                   <div>
                     <Button
-                    variant="outlined"
+                      variant="outlined"
                       type="submit"
-                      size="small"
+                      // size="small"
                       //  onClick={handleSubmit}
                     >
                       登録
@@ -355,7 +403,7 @@ export default function Home() {
                 </div>
               </form>
             </div>
-            <h2 className="mb-4">在庫一覧</h2>
+            <Typography variant="h4" className="mb-4">在庫一覧</Typography>
             <div className="mb-10 border p-1">
               <h2 className="mb-2">食品</h2>
 
