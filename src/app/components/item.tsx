@@ -7,8 +7,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-const Item = ({ props, onUpdate, onDelete, date }) => {
-  const [price, setPrice] = useState<string>("");
+const Item = ({ props, onUpdate, onDelete, date,taxNotation }) => {
+  let [price, setPrice] = useState<string>("");
   // UPDATE 使った日をuse_dateに記録する
   const handleUse = async (propsID: number) => {
     try {
@@ -59,14 +59,34 @@ const Item = ({ props, onUpdate, onDelete, date }) => {
   };
 
   const handleUpdate = async (propsID: number) => {
+      if (props.type === "食品" && taxNotation === false) {
+        price = Math.floor(parseFloat(price) * 1.08).toString();
+      }
+      if (props.type !== "食品" && taxNotation === true) {
+        price = Math.floor(parseFloat(price) * 1.1).toString();
+      }
     try {
-      await supabase.from("stocks").update({ price: price }).eq("id", propsID);
+      await supabase.from("stocks").update( {price} ).eq("id", propsID);
       const { data: updateStocks } = await supabase.from("stocks").select("*");
       onUpdate(updateStocks);
     } catch (error) {
       alert("価格を更新できませんでした" + error.message);
     }
   };
+
+  // 税抜き⇔税込みで表示金額を切り替える処理
+  const calcPrice = () => {
+    if (props.type === "食品" && taxNotation === false ) {
+      let taxExcluded = Math.floor(parseFloat(props.price) / 1.08 ).toString()
+      return taxExcluded
+    } else if (props.type !== "食品" && taxNotation === false ) {
+      let taxExcluded = Math.floor(parseFloat(props.price) / 1.1).toString()
+        return taxExcluded
+    } else {
+      return props.price
+    }
+    }
+
   return (
     <>
       <li
@@ -78,7 +98,7 @@ const Item = ({ props, onUpdate, onDelete, date }) => {
           {props.price !== 0 ? (
             <>
               {/* <form onSubmit={handleForm} > */}
-              <p className="text-xs">{props.price}円</p>
+              <p className="text-xs">{calcPrice()}円</p>
               {/* </form> */}
               {/* <Button
                 variant="outlined"
