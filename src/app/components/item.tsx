@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-const Item = ({ props, onUpdate, onDelete, date, taxNotation }) => {
+const Item = ({ props, onUpdate, onDelete, date, tax }) => {
   let [price, setPrice] = useState<string>("");
 
   // UPDATE 使った日をuse_dateに記録する
@@ -65,11 +65,11 @@ const Item = ({ props, onUpdate, onDelete, date, taxNotation }) => {
   };
 
   const handleUpdate = async (propsID: number) => {
-      if (props.type === "食品" && taxNotation === false) {
-        price = Math.floor(parseFloat(price) * 1.08).toString();
+      if (props.type === "食品" && tax === false) {
+        price = Math.round(parseInt(price) * 1.08).toString();
       }
-      if (props.type !== "食品" && taxNotation === true) {
-        price = Math.floor(parseFloat(price) * 1.1).toString();
+      if (props.type !== "食品" && tax === true) {
+        price = Math.round(parseInt(price) * 1.1).toString();
       }
     try {
       await supabase.from("stocks").update( {price} ).eq("id", propsID);
@@ -82,11 +82,15 @@ const Item = ({ props, onUpdate, onDelete, date, taxNotation }) => {
 
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
-    if (props.type === "食品" && taxNotation === false ) {
-      let taxExcluded = Math.floor(parseFloat(props.price) / 1.08 ).toString()
+    if (props.type === "食品" && tax === false ) {
+      let taxExcluded = Math.round(parseInt(props.price) / 1.08 ).toString()
+      // let taxExcluded = (parseInt(props.price) / 1.08 ).toString()
+
       return taxExcluded
-    } else if (props.type !== "食品" && taxNotation === false ) {
-      let taxExcluded = Math.floor(parseFloat(props.price) / 1.1).toString()
+    } else if (props.type !== "食品" && tax === false ) {
+      let taxExcluded = Math.round(parseInt(props.price) / 1.1).toString()
+      // let taxExcluded = (parseInt(props.price) / 1.1).toString()
+
         return taxExcluded
     } else {
       return props.price
