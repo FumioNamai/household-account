@@ -16,21 +16,23 @@ props: {
   use_date:  string | null;
 }
 }
+// type OnUpdateProps = {
+//   onUpdate: (updateStocks:Stock[] | null ) => void,
+// }
 
-
-const UsedItem = ({ props }:Props , onUpdate ) => {
-  // console.log("usedItem", onUpdate);
+// const UsedItem = ({ props }:Props , {onUpdate}:OnUpdateProps) => {
+  const UsedItem = ({ props , onUpdate}) => {
 
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number) => {
-    const date = null;
+    // const date = null;
     try {
-      const res = await supabase
+      await supabase
         .from("stocks")
-        .update({ use_date: date })
+        .update({ use_date: null })
         .eq("id", propsID);
       const { data: stocks } = await supabase.from("stocks").select("*");
-      onUpdate(stocks);
+      onUpdate( stocks );
     } catch (error) {
       alert("在庫に戻せません" + error.message);
     }

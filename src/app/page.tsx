@@ -46,7 +46,7 @@ const categories: string[] = [
 ];
 
 export default function Home() {
-  const [stock, setStock] = useState<Stock[]>([]);
+  const [stocks, setStocks] = useState<Stock[]>([])
 
   let [date, setDate] = React.useState<Dayjs | null>();
 
@@ -68,10 +68,10 @@ export default function Home() {
     try {
       const { data, error } = await supabase.from("stocks").select("*");
       if (error) throw error;
-      setStock(data);
+      setStocks(data);
     } catch (error) {
       alert(error.message);
-      setStock([]);
+      setStocks([]);
     }
   };
 
@@ -84,15 +84,15 @@ export default function Home() {
   //     return newStocks
   //   });
   // }
-  const update = (props: Stock) => setStock(props);
+  const update = (stocks: Stock[]) => setStocks(stocks);
   // console.log(props);
 
   // Itemコンポーネントの削除ボタン押下で在庫情報を更新
-  const del = (props: Stock) => setStock(props);
+  const del = (stocks: Stock[]) => setStocks(stocks);
 
   const selectedDate = date?.locale(ja).format("YYYY-MM-DD");
 
-  const todayUsed: Stock[] = stock.filter(
+  const todayUsed: Stock[] = stocks.filter(
     (stock: Stock) => stock.use_date === `${selectedDate}`
   );
 
@@ -204,6 +204,8 @@ export default function Home() {
                       {todayFood.type === "食品" &&
                       todayFood.use_date === `${selectedDate}` ? (
                         <UsedItem props={todayFood} onUpdate={update} />
+                        // <UsedItem props={todayFood} />
+
                       ) : null}
                     </div>
                   ))}
@@ -218,6 +220,7 @@ export default function Home() {
                       {todayItem.type === "雑貨" &&
                       todayItem.use_date === `${selectedDate}` ? (
                         <UsedItem props={todayItem} onUpdate={update} />
+                        // <UsedItem props={todayItem} />
                       ) : null}
                     </div>
                   ))}
@@ -402,7 +405,7 @@ export default function Home() {
                   <h3 className="">{category}</h3>
                   <div>
                     <ul>
-                      {stock
+                      {stocks
                         .sort((a, b) => b.id - a.id)
                         .map((stock: Stock) => (
                           <div key={stock.id}>
@@ -429,7 +432,7 @@ export default function Home() {
               <h2 className="mb-2">雑貨</h2>
               <div>
                 <ul>
-                  {stock
+                  {stocks
                     .sort((a, b) => b.id - a.id)
                     .map((stock: Stock) => (
                       <div key={stock.id}>
@@ -439,6 +442,7 @@ export default function Home() {
                             onDelete={del}
                             onUpdate={update}
                             date={selectedDate}
+                            taxNotation={taxNotation}
                           />
                         ) : null}
                       </div>

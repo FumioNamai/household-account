@@ -7,40 +7,46 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-const Item = ({ props, onUpdate, onDelete, date,taxNotation }) => {
+const Item = ({ props, onUpdate, onDelete, date, taxNotation }) => {
   let [price, setPrice] = useState<string>("");
+
   // UPDATE 使った日をuse_dateに記録する
   const handleUse = async (propsID: number) => {
-    try {
-      // 使うボタンで選択した項目をnewStockへコピー
-      const { data: restocks, error } = await supabase
-        .from("stocks")
-        .select()
-        .eq("id", propsID);
-      const newStock = {
-        id: undefined,
-        type: restocks![0].type,
-        category: restocks![0].category,
-        name: restocks![0].name,
-        price: 0,
-        registration_date: null,
-        use_date: null,
-      };
 
-      // 使うボタン押下でuse_dateに記録してdailyに移動
-      const { data: stocks } = await supabase
-        .from("stocks")
-        .update({ use_date: date })
-        .eq("id", propsID);
+    if (date !== undefined) {
+      try {
+        // 使うボタンで選択した項目をnewStockへコピー
+        const { data: restocks, error } = await supabase
+          .from("stocks")
+          .select()
+          .eq("id", propsID);
+        const newStock = {
+          id: undefined,
+          type: restocks![0].type,
+          category: restocks![0].category,
+          name: restocks![0].name,
+          price: 0,
+          registration_date: null,
+          use_date: null,
+        };
 
-      // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
-      await supabase.from("stocks").insert({ ...newStock });
+        // 使うボタン押下でuse_dateに記録してdailyに移動
+        const { data: stocks } = await supabase
+          .from("stocks")
+          .update({ use_date: date })
+          .eq("id", propsID);
 
-      // 在庫データを更新して、画面を更新
-      const { data: updatedStocks } = await supabase.from("stocks").select("*");
-      onUpdate(updatedStocks);
-    } catch (error) {
-      alert("使用日登録ができませんでした" + error.message);
+        // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
+        await supabase.from("stocks").insert({ ...newStock });
+
+        // 在庫データを更新して、画面を更新
+        const { data: updatedStocks } = await supabase.from("stocks").select("*");
+        onUpdate(updatedStocks);
+      } catch (error) {
+        alert("使用日登録ができませんでした。" + error.message);
+      }
+    } else {
+      alert("日付を選択してください。")
     }
   };
 
