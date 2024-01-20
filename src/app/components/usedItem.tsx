@@ -32,6 +32,7 @@ const UsedItem:React.FC<Props & OnUpdateProps> = ({props,onUpdate}) => {
         .eq("id", propsID);
       const { data: stocks } = await supabase.from("stocks").select("*");
       onUpdate( stocks );
+      alert(`${props.name}の使用を取り消し、在庫一覧に戻しました。`)
     } catch (error) {
       alert("在庫に戻せません" + error.message);
     }

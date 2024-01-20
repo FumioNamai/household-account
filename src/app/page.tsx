@@ -139,6 +139,9 @@ export default function Home() {
       setPrice("");
       setCategoryItem("");
       await getStocks();
+
+      alert(`${name}を在庫一覧に登録しました。`)
+
     } catch (error) {
       alert("データの新規登録ができません");
     }
@@ -369,7 +372,7 @@ export default function Home() {
               <h2 className="mb-2">雑貨</h2>
               <div>
                 <ul>
-                  {stocks
+                  {stocks!
                     .sort((a, b) => b.id - a.id)
                     .map((stock: Stock) => (
                       <div key={stock.id}>

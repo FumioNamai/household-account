@@ -6,6 +6,7 @@ import { Button, IconButton, InputAdornment, TextField, Typography } from "@mui/
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import { AlarmTwoTone } from "@mui/icons-material";
 
 const Item = ({ props, onUpdate, onDelete, date, tax }) => {
   let [price, setPrice] = useState<string>("");
@@ -42,6 +43,7 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
         // 在庫データを更新して、画面を更新
         const { data: updatedStocks } = await supabase.from("stocks").select("*");
         onUpdate(updatedStocks);
+        alert(`${props.name}を${date}付けで計上しました。`)
       } catch (error) {
         alert("使用日登録ができませんでした。" + error.message);
       }
@@ -59,6 +61,7 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
       const { data: stocks } = await supabase.from("stocks").select("*");
       // 親コンポーネントにstocksを渡して在庫情報を更新
       onDelete(stocks);
+      alert(`${props.name}を在庫一覧から削除しました。`)
     } catch (error) {
       alert("削除できませんでした" + error.message);
     }
@@ -75,6 +78,7 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
       await supabase.from("stocks").update( {price} ).eq("id", propsID);
       const { data: updateStocks } = await supabase.from("stocks").select("*");
       onUpdate(updateStocks);
+      alert(`${props.name}の価格を更新しました。`)
     } catch (error) {
       alert("価格を更新できませんでした" + error.message);
     }
