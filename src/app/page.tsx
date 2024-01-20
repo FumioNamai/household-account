@@ -48,7 +48,7 @@ const categories: string[] = [
 export default function Home() {
   const [stocks, setStocks] = useState<Stock[]>([])
 
-  let [date, setDate] = React.useState<Dayjs | null>();
+  let [date, setDate] = React.useState<Dayjs | null>(dayjs());
 
   const [type, setType] = useState<string>("");
   const [name, setName] = useState<string>("");

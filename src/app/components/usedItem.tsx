@@ -3,6 +3,7 @@ import { supabase } from "../../../utils/supabase";
 import { Button, IconButton } from "@mui/material";
 import UndoRoundedIcon from "@mui/icons-material/UndoRounded";
 import { Stock } from "../../../utils/interface";
+import React from "react";
 
 
 type Props = {
@@ -16,12 +17,10 @@ props: {
   use_date:  string | null;
 }
 }
-// type OnUpdateProps = {
-//   onUpdate: (updateStocks:Stock[] | null ) => void,
-// }
+type OnUpdateProps = { onUpdate: (stocks:Stock[] | null) => void }
 
-// const UsedItem = ({ props }:Props , {onUpdate}:OnUpdateProps) => {
-  const UsedItem = ({ props , onUpdate}) => {
+const UsedItem:React.FC<Props & OnUpdateProps> = ({props,onUpdate}) => {
+  // const UsedItem = ({ props , onUpdate}) => {
 
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number) => {
