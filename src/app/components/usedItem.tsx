@@ -2,8 +2,25 @@ import { log } from "console";
 import { supabase } from "../../../utils/supabase";
 import { Button, IconButton } from "@mui/material";
 import UndoRoundedIcon from "@mui/icons-material/UndoRounded";
+import { Stock } from "../../../utils/interface";
 
-const UsedItem = ({ props, onUpdate }) => {
+
+type Props = {
+props: {
+  id: number;
+  type: string;
+  name: string;
+  price: number;
+  category: string;
+  registration_date: string | null;
+  use_date:  string | null;
+}
+}
+
+
+const UsedItem = ({ props }:Props , onUpdate ) => {
+  // console.log("usedItem", onUpdate);
+
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number) => {
     const date = null;

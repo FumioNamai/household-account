@@ -45,8 +45,6 @@ const Item = ({ props, onUpdate, onDelete, date }) => {
   };
 
   const handleDelete = async (propsID: number) => {
-    console.log(propsID);
-
     try {
       const { error } = await supabase
         .from("stocks")
