@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getAllStocks } from "../../../utils/supabaseFunctions";
+import { FormControl, Typography } from "@mui/material";
+import { DateCalendar, DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { Stock } from "../../../utils/interface";
 
 const Monthly = () => {
-  const [month, setMonth] = useState("");
-
-  const [stocks, setStocks] = useState<any>([]);
+  const [month, setMonth] = React.useState<Dayjs | null>(dayjs());
+  const selectedMonth = month?.format("YYYY-MM");
+  const [stocks, setStocks] = useState<Stock[] | null>([]);
   useEffect(() => {
     const getStocks = async () => {
       const stocks = await getAllStocks();
@@ -15,12 +20,12 @@ const Monthly = () => {
     getStocks();
   }, []);
 
-  let date = 0;
+  let date = "0";
   let dailyTotals = [];
   for (let i = 1; i < 32; i++) {
     date = ("00" + `${i}`).slice(-2);
-    const todayUsed = stocks.filter(
-      (stock) => stock.use_date === `${month}-${date}`
+    const todayUsed = stocks!.filter(
+      (stock) => stock.use_date === `${selectedMonth}-${date}`
     );
 
     const todaysFoodsTotal = todayUsed
@@ -50,18 +55,22 @@ const Monthly = () => {
 
   return (
     <>
-      <h2>月間合計</h2>
+      <Typography variant="h4">月間合計</Typography>
       <div className="mb-10">
-        <form>
-          <input
-            type="month"
-            value={month}
-            onChange={(e) => setMonth(e.target.value)}
+        <FormControl>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            defaultValue={dayjs()}
+            label={'対象年月'}
+            views={['year', 'month']}
+            format="YYYY年MM月"
+            onChange={(month) => setMonth(month)}
           />
-        </form>
+          </LocalizationProvider>
+        </FormControl>
         <div className="flex">
-          <p>合計:</p>
-          <p className=" w-20 text-right">{monthlyTotal}円</p>
+          <Typography variant="subtitle1">合計:</Typography>
+          <Typography variant="body1" className=" w-20 text-right">{monthlyTotal}円</Typography>
         </div>
         <div className="flex">
           <p className="w-12 mr-4 text-end">内訳</p>
@@ -74,22 +83,6 @@ const Monthly = () => {
             <p className=" w-16 text-right">{monthlyItemsTotal}円</p>
           </div>
         </div>
-      </div>
-      <div>
-        <h2>日別</h2>
-        <ul>
-          {dailyTotals.map((dailyTotal) =>
-            dailyTotal.todaysFoodsTotal ? (
-              <li key={dailyTotal.date} className="flex">
-                <p className="w-12 text-end mr-4">{dailyTotal.date}日</p>
-                <p>食品:</p>
-                <p className="w-16 text-end mr-4">{dailyTotal.todaysFoodsTotal}円</p>
-                <p>雑貨:</p>
-                <p className="w-16 text-end">{dailyTotal.todaysItemsTotal}円</p>
-              </li>
-            ) : null
-          )}
-        </ul>
       </div>
     </>
   );

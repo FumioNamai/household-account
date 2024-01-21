@@ -10,6 +10,9 @@ import { supabase } from "../../utils/supabase";
 import Item from "./components/item";
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   Container,
@@ -20,6 +23,7 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  SelectChangeEvent,
   Switch,
   TextField,
   ToggleButton,
@@ -33,6 +37,7 @@ import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 import { Stock } from "../../utils/interface";
 import { Result } from "postcss";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // const today: string = new Date().toLocaleDateString("sv-SE");
 // const today = dayjs().format('YYYY-MM-DD')
@@ -68,9 +73,16 @@ export default function Home() {
       setStocks(data);
 
       // 同じnameで、同じpriceのものはcount数で表示
-      const group = (arr, func = (v) => v, detail = false) => {
-        const index = [];
-        const result = [];
+      const group = (arr:Stock[], func = (v:Stock) => v, detail = false) => {
+
+        const index: string[] = [];
+        const result: [{
+          id : Number,
+          type : String,
+          name : String,
+          length : Number,
+        }] = []
+
         arr.forEach((v) => {
           const funcResult = func(v);
           const i = index.indexOf(funcResult);
@@ -90,8 +102,9 @@ export default function Home() {
       console.log(
         group(data, (d) => d.name + d.price, { detail: true }).result.map(
           (e) => ({ id:e[0].id, name: e[0].name, price: e[0].price, count: e.length })
-        )
-      );
+          )
+          );
+
     } catch (error) {
       alert(error.message);
       setStocks([]);
@@ -162,8 +175,8 @@ export default function Home() {
     setTax(event.target.checked);
   };
 
-  const handleSelectItem = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryItem(event.target.value);
+  const handleSelectItem = (event: SelectChangeEvent) => {
+    setCategoryItem(event.target.value as string);
   };
 
   return (
@@ -339,18 +352,30 @@ export default function Home() {
                 label="税込み"
               />
             </Box>
-            <div className="mb-10 border p-1">
-              <h2 className="mb-2">食品</h2>
 
+            <Accordion>
+              <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="category-content"
+              id="category-header"
+              >食品</AccordionSummary>
+              <AccordionDetails>
               {categories.map((category) => (
-                <div key={category} className="border rounded-md mb-2 p-1">
-                  <h3 className="">{category}</h3>
+                <Accordion key={category}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="type-content"
+                    id="type-header"
+                  >{category}</AccordionSummary>
                   <div>
                     <ul>
                       {stocks!
                         .sort((a, b) => a.name.localeCompare(b.name, "ja"))
                         .map((stock: Stock) => (
-                          <div key={stock.id}>
+                          <AccordionDetails
+                            key={stock.id}
+                            sx={{ paddingBlock: "0"}}
+                            >
                             {stock.type === "食品" &&
                             stock.category === category &&
                             stock.use_date === null ? (
@@ -362,22 +387,33 @@ export default function Home() {
                                 tax={tax}
                               />
                             ) : null}
-                          </div>
+                          </AccordionDetails>
                         ))}
                     </ul>
                   </div>
-                </div>
+                </Accordion>
               ))}
-            </div>
+              </AccordionDetails>
+            </Accordion>
 
-            <div className="mb-10 border p-1">
-              <h2 className="mb-2">雑貨</h2>
+            <Accordion>
+              <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="type-content"
+              id="type-header"
+              >
+              雑貨
+              </AccordionSummary>
               <div>
                 <ul>
                   {stocks!
                     .sort((a, b) => b.id - a.id)
                     .map((stock: Stock) => (
-                      <div key={stock.id}>
+                      <AccordionDetails
+                        key={stock.id}
+                        sx={{ paddingBlock: "0"}}
+                        >
+
                         {stock.type === "雑貨" && stock.use_date === null ? (
                           <Item
                             props={stock}
@@ -387,11 +423,42 @@ export default function Home() {
                             tax={tax}
                           />
                         ) : null}
-                      </div>
+                      </AccordionDetails>
                     ))}
                 </ul>
               </div>
-            </div>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="type-content"
+              id="type-header"
+              >その他
+              </AccordionSummary>
+              <div>
+                <ul>
+                  {stocks!
+                    .sort((a, b) => b.id - a.id)
+                    .map((stock: Stock) => (
+                      <AccordionDetails
+                        key={stock.id}
+                        sx={{ paddingBlock: "0"}}
+                        >
+
+                        {stock.type === "その他" && stock.use_date === null ? (
+                          <Item
+                            props={stock}
+                            onDelete={del}
+                            onUpdate={update}
+                            date={selectedDate}
+                            tax={tax}
+                          />
+                        ) : null}
+                      </AccordionDetails>
+                    ))}
+                </ul>
+              </div>
+            </Accordion>
           </div>
         </Container>
       </main>
