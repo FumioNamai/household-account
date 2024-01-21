@@ -194,13 +194,13 @@ export default function Home() {
         </Grid>
 
         <Grid item xs={12} sx={{ marginBottom: "80px" }}>
-          <Typography variant="h4" className="mb-4">
+          <Typography variant="h4" sx={{ marginBottom: "24px" }}>
             日別集計
           </Typography>
           {/* <Daily stocks={stocks}/> */}
-          <div>
-            <div>
-              <FormControl>
+          <Box sx={{ paddingInline: "1rem" }}>
+            <Box>
+              <FormControl sx={{ maxWidth: "150px", marginBottom: "24px" }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     sx={{ maxWidth: "150px" }}
@@ -211,63 +211,84 @@ export default function Home() {
                   />
                 </LocalizationProvider>
               </FormControl>
-              <div>
-                <Typography variant="h6">合計: {total}円</Typography>
-                <Typography variant="h6">
-                  食品 小計:{todaysFoodsTotal}円
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography variant="h6">合計:</Typography>
+                <Typography variant="h6" className=" w-24 text-right">
+                  {total}円
                 </Typography>
-                <Typography variant="h6">
-                  雑貨 小計:{todaysItemsTotal}円
-                </Typography>
-              </div>
-            </div>
-
-            <div className="">
-              <Typography variant="h6">消費品目</Typography>
-              <Box>
-                <Typography variant="subtitle1">食品</Typography>
-                <ul>
-                  {todayFoods.map((todayFood: Stock) => (
-                    <div key={todayFood.id}>
-                      {todayFood.type === "食品" &&
-                      todayFood.use_date === `${selectedDate}` ? (
-                        <UsedItem props={todayFood} onUpdate={update} />
-                      ) : // <UsedItem props={todayFood} />
-
-                      null}
-                    </div>
-                  ))}
-                </ul>
               </Box>
 
-              <div>
-                <Typography variant="subtitle1">雑貨</Typography>
-                <ul>
-                  {todayItems.map((todayItem: Stock) => (
-                    <div key={todayItem.id}>
-                      {todayItem.type === "雑貨" &&
-                      todayItem.use_date === `${selectedDate}` ? (
-                        <UsedItem props={todayItem} onUpdate={update} />
-                      ) : null}
-                    </div>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+              <Typography variant="subtitle1" className="w-12 mr-4">
+                内訳
+              </Typography>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography variant="h6">食品:</Typography>
+                <Typography variant="h6" className=" w-24 text-right">
+                  {todaysFoodsTotal}円
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "24px",
+                }}
+              >
+                <Typography variant="h6">雑貨:</Typography>
+                <Typography variant="h6" className=" w-24 text-right">
+                  {todaysItemsTotal}円
+                </Typography>
+              </Box>
+
+              <Box sx={{}}>
+                <Typography variant="h6">消費品目</Typography>
+                <Box>
+                  <Typography variant="subtitle1">食品</Typography>
+                  <ul>
+                    {todayFoods.map((todayFood: Stock) => (
+                      <div key={todayFood.id}>
+                        {todayFood.type === "食品" &&
+                        todayFood.use_date === `${selectedDate}` ? (
+                          <UsedItem props={todayFood} onUpdate={update} />
+                        ) : // <UsedItem props={todayFood} />
+
+                        null}
+                      </div>
+                    ))}
+                  </ul>
+                </Box>
+
+                <div>
+                  <Typography variant="subtitle1">雑貨</Typography>
+                  <ul>
+                    {todayItems.map((todayItem: Stock) => (
+                      <div key={todayItem.id}>
+                        {todayItem.type === "雑貨" &&
+                        todayItem.use_date === `${selectedDate}` ? (
+                          <UsedItem props={todayItem} onUpdate={update} />
+                        ) : null}
+                      </div>
+                    ))}
+                  </ul>
+                </div>
+              </Box>
+            </Box>
+          </Box>
         </Grid>
 
+       {/* 在庫登録 兼 在庫検索機能 */}
         <Grid item xs={12} sx={{ marginBottom: "80px" }}>
           <Typography variant="h4" className="mb-4">
             在庫登録
           </Typography>
-          <div>
+          <Box sx={{ paddingInline: "16px" }}>
             <form className="" onSubmit={handleForm}>
               <InputLabel>購入日</InputLabel>
-
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  sx={{ maxWidth: "150px" }}
+                  sx={{ maxWidth: "150px", marginBottom: "24px" }}
                   value={date}
                   format="YYYY/MM/DD"
                   onChange={(date) => setDate(date)}
@@ -288,6 +309,7 @@ export default function Home() {
                   <ToggleButton value="その他">その他</ToggleButton>
                 </ToggleButtonGroup>
               </div>
+
               {/* <p>分類</p> */}
               <FormControl sx={{ my: 2, mr: 2, minWidth: 120 }}>
                 <InputLabel>分類</InputLabel>
@@ -309,8 +331,6 @@ export default function Home() {
                 </Select>
               </FormControl>
 
-              {/* 在庫登録 兼 在庫検索機能 */}
-
               <FormControl sx={{ my: 2 }}>
                 <TextField
                   label="商品名"
@@ -322,13 +342,13 @@ export default function Home() {
                   onChange={(e) => setName(e.target.value)}
                 />
               </FormControl>
-              <div className="flex flex-row items-center gap-1">
-                <Typography>税抜き</Typography>
-                <FormControlLabel
-                  control={<Switch checked={tax} onChange={handleTax} />}
-                  label="税込み"
-                />
 
+              <div className="flex flex-row items-center gap-1">
+                <FormControl sx={{ display:"flex", flexDirection:"row", alignItems:"center"}}>
+                <Typography >税抜</Typography>
+                <Switch checked={tax} onChange={handleTax} />
+                <Typography >税込</Typography>
+                </FormControl>
                 <TextField
                   label="価格"
                   id="outlined-start-adornment"
@@ -353,20 +373,19 @@ export default function Home() {
                 </div>
               </div>
             </form>
-          </div>
+          </Box>
         </Grid>
 
         <Grid item xs={12} sx={{ marginBottom: "80px" }}>
           {/* 在庫一覧 */}
           <Typography variant="h4">在庫一覧</Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography>税抜き</Typography>
-            <FormControlLabel
-              control={<Switch checked={tax} onChange={handleTax} />}
-              label="税込み"
-            />
+            <FormControl sx={{display:"flex", flexDirection:"row", alignItems:"center"}}>
+            <Typography >税抜</Typography>
+            <Switch checked={tax} onChange={handleTax} />
+            <Typography >税込</Typography>
+            </FormControl>
           </Box>
-
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -413,7 +432,6 @@ export default function Home() {
               ))}
             </AccordionDetails>
           </Accordion>
-
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}

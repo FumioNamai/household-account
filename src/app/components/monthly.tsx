@@ -3,7 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { getAllStocks } from "../../../utils/supabaseFunctions";
 import { Box, FormControl, Typography } from "@mui/material";
-import { DateCalendar, DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  DateCalendar,
+  DatePicker,
+  LocalizationProvider,
+} from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { Stock } from "../../../utils/interface";
@@ -55,34 +59,46 @@ const Monthly = () => {
 
   return (
     <>
-      <Typography variant="h4" sx={{ marginBottom:"40px"}}>月別集計</Typography>
-      <Box>
-        <FormControl sx={{ maxWidth: "150px", marginBottom:"24px"}}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            defaultValue={dayjs()}
-            label={'対象年月'}
-            views={['year', 'month']}
-            format="YYYY年MM月"
-            onChange={(month) => setMonth(month)}
-          />
-          </LocalizationProvider>
-        </FormControl>
-        <Box sx={{display:"flex"}}>
-          <Typography variant="h6">合計:</Typography>
-          <Typography variant="h6" className=" w-24 text-right">{monthlyTotal}円</Typography>
-        </Box>
-          <Typography variant="subtitle1" className="w-12 mr-4">内訳</Typography>
+      <Typography variant="h4" sx={{ marginBottom: "24px" }}>
+        月別集計
+      </Typography>
+      <Box sx={{ paddingInline: "16px" }}>
+        <Box>
+          <FormControl sx={{ maxWidth: "150px", marginBottom: "24px" }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                defaultValue={dayjs()}
+                label={"対象年月"}
+                views={["year", "month"]}
+                format="YYYY年MM月"
+                onChange={(month) => setMonth(month)}
+              />
+            </LocalizationProvider>
+          </FormControl>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="h6">合計:</Typography>
+            <Typography variant="h6" className=" text-right">
+              {monthlyTotal}円
+            </Typography>
+          </Box>
+          <Typography variant="subtitle1" className="w-12 mr-4">
+            内訳
+          </Typography>
 
-          <Box sx={{display:"flex"}}>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="h6">食品:</Typography>
-            <Typography variant="h6" className=" w-24 text-right">{monthlyFoodsTotal}円</Typography>
+            <Typography variant="h6" className=" w-24 text-right">
+              {monthlyFoodsTotal}円
+            </Typography>
           </Box>
 
-          <Box sx={{display:"flex"}}>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="h6">雑貨:</Typography>
-            <Typography variant="h6" className=" w-24 text-right">{monthlyItemsTotal}円</Typography>
-            </Box>
+            <Typography variant="h6" className=" w-24 text-right">
+              {monthlyItemsTotal}円
+            </Typography>
+          </Box>
+        </Box>
       </Box>
     </>
   );
