@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { getAllStocks } from "../../../utils/supabaseFunctions";
-import { FormControl, Typography } from "@mui/material";
+import { Box, FormControl, Typography } from "@mui/material";
 import { DateCalendar, DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
@@ -55,9 +55,9 @@ const Monthly = () => {
 
   return (
     <>
-      <Typography variant="h4">月間合計</Typography>
-      <div className="mb-10">
-        <FormControl>
+      <Typography variant="h4" sx={{ marginBottom:"40px"}}>月別集計</Typography>
+      <Box>
+        <FormControl sx={{ maxWidth: "150px", marginBottom:"24px"}}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             defaultValue={dayjs()}
@@ -68,22 +68,22 @@ const Monthly = () => {
           />
           </LocalizationProvider>
         </FormControl>
-        <div className="flex">
-          <Typography variant="subtitle1">合計:</Typography>
-          <Typography variant="body1" className=" w-20 text-right">{monthlyTotal}円</Typography>
-        </div>
-        <div className="flex">
-          <p className="w-12 mr-4 text-end">内訳</p>
-          <div className="flex mr-4">
-            <p>食品:</p>
-            <p className=" w-16 text-right">{monthlyFoodsTotal}円</p>
-          </div>
-          <div className="flex">
-            <p>雑貨:</p>
-            <p className=" w-16 text-right">{monthlyItemsTotal}円</p>
-          </div>
-        </div>
-      </div>
+        <Box sx={{display:"flex"}}>
+          <Typography variant="h6">合計:</Typography>
+          <Typography variant="h6" className=" w-24 text-right">{monthlyTotal}円</Typography>
+        </Box>
+          <Typography variant="subtitle1" className="w-12 mr-4">内訳</Typography>
+
+          <Box sx={{display:"flex"}}>
+            <Typography variant="h6">食品:</Typography>
+            <Typography variant="h6" className=" w-24 text-right">{monthlyFoodsTotal}円</Typography>
+          </Box>
+
+          <Box sx={{display:"flex"}}>
+            <Typography variant="h6">雑貨:</Typography>
+            <Typography variant="h6" className=" w-24 text-right">{monthlyItemsTotal}円</Typography>
+            </Box>
+      </Box>
     </>
   );
 };

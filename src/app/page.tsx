@@ -18,6 +18,7 @@ import {
   Container,
   FormControl,
   FormControlLabel,
+  Grid,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -37,7 +38,8 @@ import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 import { Stock } from "../../utils/interface";
 import { Result } from "postcss";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Monthly from "./components/monthly";
 
 // const today: string = new Date().toLocaleDateString("sv-SE");
 // const today = dayjs().format('YYYY-MM-DD')
@@ -73,15 +75,16 @@ export default function Home() {
       setStocks(data);
 
       // 同じnameで、同じpriceのものはcount数で表示
-      const group = (arr:Stock[], func = (v:Stock) => v, detail = false) => {
-
+      const group = (arr: Stock[], func = (v: Stock) => v, detail = false) => {
         const index: string[] = [];
-        const result: [{
-          id : Number,
-          type : String,
-          name : String,
-          length : Number,
-        }] = []
+        const result: [
+          {
+            id: Number;
+            type: String;
+            name: String;
+            length: Number;
+          }
+        ] = [];
 
         arr.forEach((v) => {
           const funcResult = func(v);
@@ -101,10 +104,14 @@ export default function Home() {
 
       console.log(
         group(data, (d) => d.name + d.price, { detail: true }).result.map(
-          (e) => ({ id:e[0].id, name: e[0].name, price: e[0].price, count: e.length })
-          )
-          );
-
+          (e) => ({
+            id: e[0].id,
+            name: e[0].name,
+            price: e[0].price,
+            count: e.length,
+          })
+        )
+      );
     } catch (error) {
       alert(error.message);
       setStocks([]);
@@ -182,7 +189,11 @@ export default function Home() {
   return (
     <>
       <main>
-        <Container maxWidth="sm">
+        <Grid item xs={12} sx={{ marginBottom: "80px" }}>
+          <Monthly />
+        </Grid>
+
+        <Grid item xs={12} sx={{ marginBottom: "80px" }}>
           <Typography variant="h4" className="mb-4">
             日別集計
           </Typography>
@@ -201,13 +212,13 @@ export default function Home() {
                 </LocalizationProvider>
               </FormControl>
               <div>
+                <Typography variant="h6">合計: {total}円</Typography>
                 <Typography variant="h6">
                   食品 小計:{todaysFoodsTotal}円
                 </Typography>
                 <Typography variant="h6">
                   雑貨 小計:{todaysItemsTotal}円
                 </Typography>
-                <Typography variant="h6">合計: {total}円</Typography>
               </div>
             </div>
 
@@ -244,129 +255,136 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </Grid>
 
+        <Grid item xs={12} sx={{ marginBottom: "80px" }}>
+          <Typography variant="h4" className="mb-4">
+            在庫登録
+          </Typography>
           <div>
-            <Typography variant="h4" className="mb-4">
-              在庫登録
-            </Typography>
-            <div>
-              <form className="" onSubmit={handleForm}>
-                <InputLabel>購入日</InputLabel>
+            <form className="" onSubmit={handleForm}>
+              <InputLabel>購入日</InputLabel>
 
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    sx={{ maxWidth: "150px" }}
-                    value={date}
-                    format="YYYY/MM/DD"
-                    onChange={(date) => setDate(date)}
-                  />
-                </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  sx={{ maxWidth: "150px" }}
+                  value={date}
+                  format="YYYY/MM/DD"
+                  onChange={(date) => setDate(date)}
+                />
+              </LocalizationProvider>
 
-                <InputLabel>種別</InputLabel>
-                <div className="flex flex-row items-center gap-1">
-                  <ToggleButtonGroup
-                    // size="small"
-                    color="primary"
-                    value={type}
-                    exclusive
-                    onChange={(event, newType) => setType(newType)}
-                  >
-                    <ToggleButton value="食品">食品</ToggleButton>
-                    <ToggleButton value="雑貨">雑貨</ToggleButton>
-                    <ToggleButton value="その他">その他</ToggleButton>
-                  </ToggleButtonGroup>
+              <InputLabel>種別</InputLabel>
+              <div className="flex flex-row items-center gap-1">
+                <ToggleButtonGroup
+                  // size="small"
+                  color="primary"
+                  value={type}
+                  exclusive
+                  onChange={(event, newType) => setType(newType)}
+                >
+                  <ToggleButton value="食品">食品</ToggleButton>
+                  <ToggleButton value="雑貨">雑貨</ToggleButton>
+                  <ToggleButton value="その他">その他</ToggleButton>
+                </ToggleButtonGroup>
+              </div>
+              {/* <p>分類</p> */}
+              <FormControl sx={{ my: 2, mr: 2, minWidth: 120 }}>
+                <InputLabel>分類</InputLabel>
+                <Select
+                  id="category"
+                  value={categoryItem}
+                  label="分類"
+                  onChange={handleSelectItem}
+                  sx={{}}
+                >
+                  <MenuItem value={"肉"}>肉</MenuItem>
+                  <MenuItem value={"魚介"}>魚介</MenuItem>
+                  <MenuItem value={"野菜"}>野菜</MenuItem>
+                  <MenuItem value={"乾物"}>乾物</MenuItem>
+                  <MenuItem value={"フルーツ"}>フルーツ</MenuItem>
+                  <MenuItem value={"調味料"}>調味料</MenuItem>
+                  <MenuItem value={"お菓子"}>お菓子</MenuItem>
+                  <MenuItem value={"その他"}>その他</MenuItem>
+                </Select>
+              </FormControl>
+
+              {/* 在庫登録 兼 在庫検索機能 */}
+
+              <FormControl sx={{ my: 2 }}>
+                <TextField
+                  label="商品名"
+                  variant="outlined"
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </FormControl>
+              <div className="flex flex-row items-center gap-1">
+                <Typography>税抜き</Typography>
+                <FormControlLabel
+                  control={<Switch checked={tax} onChange={handleTax} />}
+                  label="税込み"
+                />
+
+                <TextField
+                  label="価格"
+                  id="outlined-start-adornment"
+                  sx={{ m: 1, width: "15ch" }}
+                  value={price}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">円</InputAdornment>
+                    ),
+                  }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setPrice(event.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <div>
+                  <Button variant="outlined" type="submit">
+                    登録
+                  </Button>
                 </div>
-                {/* <p>分類</p> */}
-                <FormControl sx={{ my: 2, mr: 2, minWidth: 120 }}>
-                  <InputLabel>分類</InputLabel>
-                  <Select
-                    id="category"
-                    value={categoryItem}
-                    label="分類"
-                    onChange={handleSelectItem}
-                    sx={{}}
-                  >
-                    <MenuItem value={"肉"}>肉</MenuItem>
-                    <MenuItem value={"魚介"}>魚介</MenuItem>
-                    <MenuItem value={"野菜"}>野菜</MenuItem>
-                    <MenuItem value={"乾物"}>乾物</MenuItem>
-                    <MenuItem value={"フルーツ"}>フルーツ</MenuItem>
-                    <MenuItem value={"調味料"}>調味料</MenuItem>
-                    <MenuItem value={"お菓子"}>お菓子</MenuItem>
-                    <MenuItem value={"その他"}>その他</MenuItem>
-                  </Select>
-                </FormControl>
+              </div>
+            </form>
+          </div>
+        </Grid>
 
-                {/* 在庫登録 兼 在庫検索機能 */}
+        <Grid item xs={12} sx={{ marginBottom: "80px" }}>
+          {/* 在庫一覧 */}
+          <Typography variant="h4">在庫一覧</Typography>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography>税抜き</Typography>
+            <FormControlLabel
+              control={<Switch checked={tax} onChange={handleTax} />}
+              label="税込み"
+            />
+          </Box>
 
-                <FormControl sx={{ my: 2 }}>
-                  <TextField
-                    label="商品名"
-                    variant="outlined"
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </FormControl>
-                <div className="flex flex-row items-center gap-1">
-                  <Typography>税抜き</Typography>
-                  <FormControlLabel
-                    control={<Switch checked={tax} onChange={handleTax} />}
-                    label="税込み"
-                  />
-
-                  <TextField
-                    label="価格"
-                    id="outlined-start-adornment"
-                    sx={{ m: 1, width: "15ch" }}
-                    value={price}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">円</InputAdornment>
-                      ),
-                    }}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      setPrice(event.target.value);
-                    }}
-                  />
-                </div>
-
-                <div className="flex flex-col">
-                  <div>
-                    <Button variant="outlined" type="submit">
-                      登録
-                    </Button>
-                  </div>
-                </div>
-              </form>
-            </div>
-
-            {/* 在庫一覧 */}
-            <Typography variant="h4">在庫一覧</Typography>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography>税抜き</Typography>
-              <FormControlLabel
-                control={<Switch checked={tax} onChange={handleTax} />}
-                label="税込み"
-              />
-            </Box>
-
-            <Accordion>
-              <AccordionSummary
+          <Accordion>
+            <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="category-content"
               id="category-header"
-              >食品</AccordionSummary>
-              <AccordionDetails>
+            >
+              食品
+            </AccordionSummary>
+            <AccordionDetails>
               {categories.map((category) => (
                 <Accordion key={category}>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="type-content"
                     id="type-header"
-                  >{category}</AccordionSummary>
+                  >
+                    {category}
+                  </AccordionSummary>
                   <div>
                     <ul>
                       {stocks!
@@ -374,8 +392,8 @@ export default function Home() {
                         .map((stock: Stock) => (
                           <AccordionDetails
                             key={stock.id}
-                            sx={{ paddingBlock: "0"}}
-                            >
+                            sx={{ paddingBlock: "0" }}
+                          >
                             {stock.type === "食品" &&
                             stock.category === category &&
                             stock.use_date === null ? (
@@ -393,74 +411,66 @@ export default function Home() {
                   </div>
                 </Accordion>
               ))}
-              </AccordionDetails>
-            </Accordion>
+            </AccordionDetails>
+          </Accordion>
 
-            <Accordion>
-              <AccordionSummary
+          <Accordion>
+            <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="type-content"
               id="type-header"
-              >
+            >
               雑貨
-              </AccordionSummary>
-              <div>
-                <ul>
-                  {stocks!
-                    .sort((a, b) => b.id - a.id)
-                    .map((stock: Stock) => (
-                      <AccordionDetails
-                        key={stock.id}
-                        sx={{ paddingBlock: "0"}}
-                        >
-
-                        {stock.type === "雑貨" && stock.use_date === null ? (
-                          <Item
-                            props={stock}
-                            onDelete={del}
-                            onUpdate={update}
-                            date={selectedDate}
-                            tax={tax}
-                          />
-                        ) : null}
-                      </AccordionDetails>
-                    ))}
-                </ul>
-              </div>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary
+            </AccordionSummary>
+            <div>
+              <ul>
+                {stocks!
+                  .sort((a, b) => b.id - a.id)
+                  .map((stock: Stock) => (
+                    <AccordionDetails key={stock.id} sx={{ paddingBlock: "0" }}>
+                      {stock.type === "雑貨" && stock.use_date === null ? (
+                        <Item
+                          props={stock}
+                          onDelete={del}
+                          onUpdate={update}
+                          date={selectedDate}
+                          tax={tax}
+                        />
+                      ) : null}
+                    </AccordionDetails>
+                  ))}
+              </ul>
+            </div>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="type-content"
               id="type-header"
-              >その他
-              </AccordionSummary>
-              <div>
-                <ul>
-                  {stocks!
-                    .sort((a, b) => b.id - a.id)
-                    .map((stock: Stock) => (
-                      <AccordionDetails
-                        key={stock.id}
-                        sx={{ paddingBlock: "0"}}
-                        >
-
-                        {stock.type === "その他" && stock.use_date === null ? (
-                          <Item
-                            props={stock}
-                            onDelete={del}
-                            onUpdate={update}
-                            date={selectedDate}
-                            tax={tax}
-                          />
-                        ) : null}
-                      </AccordionDetails>
-                    ))}
-                </ul>
-              </div>
-            </Accordion>
-          </div>
-        </Container>
+            >
+              その他
+            </AccordionSummary>
+            <div>
+              <ul>
+                {stocks!
+                  .sort((a, b) => b.id - a.id)
+                  .map((stock: Stock) => (
+                    <AccordionDetails key={stock.id} sx={{ paddingBlock: "0" }}>
+                      {stock.type === "その他" && stock.use_date === null ? (
+                        <Item
+                          props={stock}
+                          onDelete={del}
+                          onUpdate={update}
+                          date={selectedDate}
+                          tax={tax}
+                        />
+                      ) : null}
+                    </AccordionDetails>
+                  ))}
+              </ul>
+            </div>
+          </Accordion>
+        </Grid>
       </main>
     </>
   );

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from './components/header'
-
+import { Container } from "@mui/material"
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -20,9 +20,9 @@ export default function RootLayout({
       <meta name="viewport" content="initial-scale=1, width=device-width" />
       <body className={inter.className}>
         <Header />
-        <div className="mx-auto">
+        <Container maxWidth="sm" className="mx-auto">
         {children}
-        </div>
+        </Container>
       </body>
     </html>
   )
