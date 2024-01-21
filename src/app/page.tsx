@@ -57,7 +57,7 @@ const categories: string[] = [
 export default function Home() {
   const [stocks, setStocks] = useState<Stock[] | null>([]);
   let [date, setDate] = React.useState<Dayjs | null>(dayjs());
-  const [type, setType] = useState<string>("");
+  const [type, setType] = useState<string>("---");
   const [name, setName] = useState<string>("");
   let [price, setPrice] = useState<string>("");
   const [tax, setTax] = useState(true);
@@ -144,10 +144,19 @@ export default function Home() {
   const todaysItemsTotal = todayItems.reduce((sum: number, el) => {
     return sum + el.price;
   }, 0);
+
+    // その日に使用した雑貨の合計金額を算出
+    const todayOthers = todayUsed.filter(
+      (todayUsed: Stock) => todayUsed.type === "その他"
+    );
+    const todaysOthersTotal = todayOthers.reduce((sum: number, el) => {
+      return sum + el.price;
+    }, 0);
+
   // その月に使用したその他の合計金額を算出
 
   // その日の合計金額を算出
-  const total = todaysFoodsTotal + todaysItemsTotal;
+  const total = todaysFoodsTotal + todaysItemsTotal + todaysOthersTotal;
 
   // 在庫登録
   const handleForm = async (e: any) => {
@@ -155,7 +164,7 @@ export default function Home() {
     if (type === "食品" && tax === false) {
       price = Math.floor(parseInt(price) * 1.08).toString();
     }
-    if (type !== "食品" && tax === true) {
+    if (type !== "食品" && tax === false) {
       price = Math.floor(parseInt(price) * 1.1).toString();
     }
     try {
@@ -211,14 +220,14 @@ export default function Home() {
                   />
                 </LocalizationProvider>
               </FormControl>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Box sx={{ display: "flex", justifyContent: "space-between", marginBottom:"16px" }}>
                 <Typography variant="h6">合計:</Typography>
                 <Typography variant="h6" className=" w-24 text-right">
                   {total}円
                 </Typography>
               </Box>
 
-              <Typography variant="subtitle1" className="w-12 mr-4">
+              <Typography variant="subtitle1">
                 内訳
               </Typography>
 
@@ -252,15 +261,13 @@ export default function Home() {
                         {todayFood.type === "食品" &&
                         todayFood.use_date === `${selectedDate}` ? (
                           <UsedItem props={todayFood} onUpdate={update} />
-                        ) : // <UsedItem props={todayFood} />
-
-                        null}
+                        ) : null}
                       </div>
                     ))}
                   </ul>
                 </Box>
 
-                <div>
+                <Box>
                   <Typography variant="subtitle1">雑貨</Typography>
                   <ul>
                     {todayItems.map((todayItem: Stock) => (
@@ -272,7 +279,21 @@ export default function Home() {
                       </div>
                     ))}
                   </ul>
-                </div>
+                </Box>
+
+                <Box>
+                  <Typography variant="subtitle1">その他</Typography>
+                  <ul>
+                    {todayOthers.map((todayOther: Stock) => (
+                      <div key={todayOther.id}>
+                        {todayOther.type === "その他" &&
+                        todayOther.use_date === `${selectedDate}` ? (
+                          <UsedItem props={todayOther} onUpdate={update} />
+                        ) : null}
+                      </div>
+                    ))}
+                  </ul>
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -320,6 +341,7 @@ export default function Home() {
                   onChange={handleSelectItem}
                   sx={{}}
                 >
+                  <MenuItem value={""}>---</MenuItem>
                   <MenuItem value={"肉"}>肉</MenuItem>
                   <MenuItem value={"魚介"}>魚介</MenuItem>
                   <MenuItem value={"野菜"}>野菜</MenuItem>

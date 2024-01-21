@@ -71,7 +71,7 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
       if (props.type === "食品" && tax === false) {
         price = Math.floor(parseInt(price) * 1.08).toString();
       }
-      if (props.type !== "食品" && tax === true) {
+      if (props.type !== "食品" && tax === false) {
         price = Math.floor(parseInt(price) * 1.1).toString();
       }
     try {

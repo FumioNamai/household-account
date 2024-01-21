@@ -32,30 +32,40 @@ const Monthly = () => {
       (stock) => stock.use_date === `${selectedMonth}-${date}`
     );
 
-    const todaysFoodsTotal = todayUsed
+    const todayFoodsTotal = todayUsed
       .filter((todayUsed) => todayUsed.type === "食品")
       .reduce((sum, el) => {
         return sum + el.price;
       }, 0);
 
-    const todaysItemsTotal = todayUsed
+    const todayItemsTotal = todayUsed
       .filter((todayUsed) => todayUsed.type === "雑貨")
       .reduce((sum, el) => {
         return sum + el.price;
       }, 0);
 
-    dailyTotals.push({ date, todaysFoodsTotal, todaysItemsTotal });
+      const todayOthersTotal = todayUsed
+      .filter((todayUsed) => todayUsed.type === "その他")
+      .reduce((sum, el) => {
+        return sum + el.price;
+      }, 0);
+
+    dailyTotals.push({ date, todayFoodsTotal, todayItemsTotal, todayOthersTotal });
   }
 
   const monthlyFoodsTotal = dailyTotals.reduce((sum, el) => {
-    return sum + el.todaysFoodsTotal;
+    return sum + el.todayFoodsTotal;
   }, 0);
 
   const monthlyItemsTotal = dailyTotals.reduce((sum, el) => {
-    return sum + el.todaysItemsTotal;
+    return sum + el.todayItemsTotal;
   }, 0);
 
-  const monthlyTotal = monthlyFoodsTotal + monthlyItemsTotal;
+  const monthlyOthersTotal = dailyTotals.reduce((sum, el) => {
+    return sum + el.todayOthersTotal;
+  }, 0);
+
+  const monthlyTotal = monthlyFoodsTotal + monthlyItemsTotal + monthlyOthersTotal;
 
   return (
     <>
@@ -75,13 +85,13 @@ const Monthly = () => {
               />
             </LocalizationProvider>
           </FormControl>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", marginBottom:"16px" }}>
             <Typography variant="h6">合計:</Typography>
             <Typography variant="h6" className=" text-right">
               {monthlyTotal}円
             </Typography>
           </Box>
-          <Typography variant="subtitle1" className="w-12 mr-4">
+          <Typography variant="subtitle1">
             内訳
           </Typography>
 
@@ -96,6 +106,13 @@ const Monthly = () => {
             <Typography variant="h6">雑貨:</Typography>
             <Typography variant="h6" className=" w-24 text-right">
               {monthlyItemsTotal}円
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="h6">その他:</Typography>
+            <Typography variant="h6" className=" w-24 text-right">
+              {monthlyOthersTotal}円
             </Typography>
           </Box>
         </Box>
