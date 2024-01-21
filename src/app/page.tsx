@@ -12,6 +12,7 @@ import Item from "./components/item";
 import {
   Box,
   Button,
+  Container,
   FormControl,
   FormControlLabel,
   InputAdornment,
@@ -31,6 +32,7 @@ import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 import { Stock } from "../../utils/interface";
+import { Result } from "postcss";
 
 // const today: string = new Date().toLocaleDateString("sv-SE");
 // const today = dayjs().format('YYYY-MM-DD')
@@ -46,10 +48,8 @@ const categories: string[] = [
 ];
 
 export default function Home() {
-  const [stocks, setStocks] = useState<Stock[] | null>([])
-
+  const [stocks, setStocks] = useState<Stock[] | null>([]);
   let [date, setDate] = React.useState<Dayjs | null>(dayjs());
-
   const [type, setType] = useState<string>("");
   const [name, setName] = useState<string>("");
   let [price, setPrice] = useState<string>("");
@@ -66,23 +66,39 @@ export default function Home() {
       const { data, error } = await supabase.from("stocks").select("*");
       if (error) throw error;
       setStocks(data);
+
+      // 同じnameで、同じpriceのものはcount数で表示
+      const group = (arr, func = (v) => v, detail = false) => {
+        const index = [];
+        const result = [];
+        arr.forEach((v) => {
+          const funcResult = func(v);
+          const i = index.indexOf(funcResult);
+          if (i === -1) {
+            index.push(funcResult);
+            result.push([v]);
+          } else {
+            result[i].push(v);
+          }
+        });
+        if (detail) {
+          return { index, result };
+        }
+        return result;
+      };
+
+      console.log(
+        group(data, (d) => d.name + d.price, { detail: true }).result.map(
+          (e) => ({ id:e[0].id, name: e[0].name, price: e[0].price, count: e.length })
+        )
+      );
     } catch (error) {
       alert(error.message);
       setStocks([]);
     }
   };
 
-  // Itemコンポーネントの使用ボタン押下でuse_dateを更新
-  // const update = (updatedStock: Stock) =>  {
-  //   setStock(prevStocks => {
-  //     const newStocks = prevStocks.map(stock => {
-  //       return stock.id === updatedStock.id ? updatedStock :stock;
-  //     })
-  //     return newStocks
-  //   });
-  // }
   const update = (stocks: Stock[]) => setStocks(stocks);
-  // console.log(props);
 
   // Itemコンポーネントの削除ボタン押下で在庫情報を更新
   const del = (stocks: Stock[]) => setStocks(stocks);
@@ -117,13 +133,11 @@ export default function Home() {
   const handleForm = async (e: any) => {
     e.preventDefault();
     if (type === "食品" && tax === false) {
-      price = Math.round(parseInt(price) * 1.08).toString();
+      price = Math.floor(parseInt(price) * 1.08).toString();
     }
     if (type !== "食品" && tax === true) {
-      price = Math.round(parseInt(price) * 1.1).toString();
-      price = (parseInt(price) * 1.1).toString();
+      price = Math.floor(parseInt(price) * 1.1).toString();
     }
-
     try {
       const { error } = await supabase.from("stocks").insert({
         type: type,
@@ -133,15 +147,12 @@ export default function Home() {
         category: categoryItem,
       });
       if (error) throw error;
-
       setType("");
       setName("");
       setPrice("");
       setCategoryItem("");
       await getStocks();
-
-      alert(`${name}を在庫一覧に登録しました。`)
-
+      alert(`${name}を在庫一覧に登録しました。`);
     } catch (error) {
       alert("データの新規登録ができません");
     }
@@ -158,27 +169,23 @@ export default function Home() {
   return (
     <>
       <main>
-        <div className="">
+        <Container maxWidth="sm">
           <Typography variant="h4" className="mb-4">
             日別集計
           </Typography>
           {/* <Daily stocks={stocks}/> */}
-          <div className="flex flex-col mb-20">
-            <div className="mb-10">
+          <div>
+            <div>
               <FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
+                    sx={{ maxWidth: "150px" }}
                     value={date}
                     // defaultValue={dayjs()}
                     format="YYYY/MM/DD"
                     onChange={(date) => setDate(date)}
                   />
                 </LocalizationProvider>
-                {/* <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                /> */}
               </FormControl>
               <div>
                 <Typography variant="h6">
@@ -193,24 +200,24 @@ export default function Home() {
 
             <div className="">
               <Typography variant="h6">消費品目</Typography>
-              <div className="mb-8">
-                <h2 className="mb-2">食品</h2>
+              <Box>
+                <Typography variant="subtitle1">食品</Typography>
                 <ul>
                   {todayFoods.map((todayFood: Stock) => (
                     <div key={todayFood.id}>
                       {todayFood.type === "食品" &&
                       todayFood.use_date === `${selectedDate}` ? (
                         <UsedItem props={todayFood} onUpdate={update} />
-                        // <UsedItem props={todayFood} />
+                      ) : // <UsedItem props={todayFood} />
 
-                      ) : null}
+                      null}
                     </div>
                   ))}
                 </ul>
-              </div>
+              </Box>
 
               <div>
-                <h2 className="mb-2 ">雑貨</h2>
+                <Typography variant="subtitle1">雑貨</Typography>
                 <ul>
                   {todayItems.map((todayItem: Stock) => (
                     <div key={todayItem.id}>
@@ -229,12 +236,13 @@ export default function Home() {
             <Typography variant="h4" className="mb-4">
               在庫登録
             </Typography>
-            <div className="mb-10">
+            <div>
               <form className="" onSubmit={handleForm}>
                 <InputLabel>購入日</InputLabel>
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
+                    sx={{ maxWidth: "150px" }}
                     value={date}
                     format="YYYY/MM/DD"
                     onChange={(date) => setDate(date)}
@@ -292,12 +300,9 @@ export default function Home() {
                 <div className="flex flex-row items-center gap-1">
                   <Typography>税抜き</Typography>
                   <FormControlLabel
-                    control={
-                      <Switch checked={tax} onChange={handleTax} />
-                    }
+                    control={<Switch checked={tax} onChange={handleTax} />}
                     label="税込み"
                   />
-
 
                   <TextField
                     label="価格"
@@ -317,25 +322,22 @@ export default function Home() {
 
                 <div className="flex flex-col">
                   <div>
-                    <Button
-                      variant="outlined"
-                      type="submit"
-                    >
+                    <Button variant="outlined" type="submit">
                       登録
                     </Button>
                   </div>
                 </div>
               </form>
             </div>
-            <Typography variant="h4" className="mb-4">
-              在庫一覧
-            </Typography>
-            <Box sx={{display:"flex", alignItems:"center"}}>
-            <Typography>税抜き</Typography>
-            <FormControlLabel
-              control={<Switch checked={tax} onChange={handleTax} />}
-              label="税込み"
-            />
+
+            {/* 在庫一覧 */}
+            <Typography variant="h4">在庫一覧</Typography>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography>税抜き</Typography>
+              <FormControlLabel
+                control={<Switch checked={tax} onChange={handleTax} />}
+                label="税込み"
+              />
             </Box>
             <div className="mb-10 border p-1">
               <h2 className="mb-2">食品</h2>
@@ -346,7 +348,7 @@ export default function Home() {
                   <div>
                     <ul>
                       {stocks!
-                        .sort((a, b) => b.id - a.id)
+                        .sort((a, b) => a.name.localeCompare(b.name, "ja"))
                         .map((stock: Stock) => (
                           <div key={stock.id}>
                             {stock.type === "食品" &&
@@ -391,7 +393,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </main>
     </>
   );

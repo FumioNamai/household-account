@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Stock } from "../../../utils/interface";
 import { supabase } from "../../../utils/supabase";
 import { log } from "console";
-import { Button, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, Button, IconButton, InputAdornment, List, TextField, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
@@ -69,10 +69,10 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
 
   const handleUpdate = async (propsID: number) => {
       if (props.type === "食品" && tax === false) {
-        price = Math.round(parseInt(price) * 1.08).toString();
+        price = Math.floor(parseInt(price) * 1.08).toString();
       }
       if (props.type !== "食品" && tax === true) {
-        price = Math.round(parseInt(price) * 1.1).toString();
+        price = Math.floor(parseInt(price) * 1.1).toString();
       }
     try {
       await supabase.from("stocks").update( {price} ).eq("id", propsID);
@@ -87,14 +87,10 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
     if (props.type === "食品" && tax === false ) {
-      let taxExcluded = Math.round(parseInt(props.price) / 1.08 ).toString()
-      // let taxExcluded = (parseInt(props.price) / 1.08 ).toString()
-
+      let taxExcluded = Math.ceil(parseInt(props.price) / 1.08 ).toString()
       return taxExcluded
     } else if (props.type !== "食品" && tax === false ) {
-      let taxExcluded = Math.round(parseInt(props.price) / 1.1).toString()
-      // let taxExcluded = (parseInt(props.price) / 1.1).toString()
-
+      let taxExcluded = Math.ceil(parseInt(props.price) / 1.1).toString()
         return taxExcluded
     } else {
       return props.price
@@ -103,84 +99,60 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
 
   return (
     <>
-      <li
+      <List
         key={props.id}
-        className="flex flex-row items-center justify-between p-1 min-w-60"
+        sx={{ display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}
+        // className="flex flex-row items-center justify-between p-1"
       >
-        <p className="text-xs max-w-24">{props.name}</p>
-        <div className="flex items-center ">
+        <Typography variant="body2">{props.name}</Typography>
+        <Box sx={{display:"flex", alignItems:"center"}}>
           {props.price !== 0 ? (
             <>
-              {/* <form onSubmit={handleForm} > */}
-              <p className="text-xs">{calcPrice()}円</p>
-              {/* </form> */}
-              {/* <Button
-                variant="outlined"
-                size="small"
-                onClick={() => handleUse(props.id)}
-              >
-                使
-              </Button> */}
-              <IconButton aria-label="use-item" onClick={() => handleUse(props.id)} >
+              <Typography variant="body1">{calcPrice()}円</Typography>
+
+              <IconButton
+                aria-label="use-item"
+                color="primary"
+                onClick={() => handleUse(props.id)} >
                 <CheckCircleOutlinedIcon  />
               </IconButton>
-              {/* <Button
-                variant="outlined"
-                size="small"
-                onClick={() => handleDelete(props.id)}
-              >
-                消
-              </Button> */}
 
-              <IconButton aria-label="delete" onClick={() => handleDelete(props.id)} >
+              <IconButton
+                aria-label="delete"
+                color="error"
+                onClick={() => handleDelete(props.id)} >
                 <DeleteIcon />
               </IconButton>
             </>
           ) : (
             <>
-              {/* <form onSubmit={handleForm}> */}
-              {/* <label className="text-xs">
-                <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  value={price}
-                  // onChange={}
-                  className=" text-xs mr-1 w-10 text-end rounded focus:outline-sky-500 cursor-pointer"
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-                円
-              </label> */}
-
               <TextField
               variant="standard"
               type="number"
               size="small"
-              sx={{ m: 0, paddingBlock: 0, width: "8ch" }}
+              sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
                 value={price}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setPrice(event.target.value);}}
               />
-              <Typography variant="body1" sx={{fontSize:12}}>円
+              <Typography variant="body1">円
               </Typography>
-              {/* </form> */}
-              {/* <Button
-                variant="outlined"
-                size="small"
-                onClick={() => handleUpdate(props.id)}
-              >
-                更
-              </Button> */}
-              <IconButton aria-label="update" onClick={() => handleUpdate(props.id)} >
+              <IconButton
+                aria-label="update"
+                color="success"
+                onClick={() => handleUpdate(props.id)} >
                 <EditOutlined />
               </IconButton>
-              <IconButton aria-label="delete" onClick={() => handleDelete(props.id)} >
+              <IconButton
+                aria-label="delete"
+                color="error"
+                onClick={() => handleDelete(props.id)} >
                 <DeleteIcon />
               </IconButton>
             </>
           )}
-        </div>
-      </li>
+        </Box>
+      </List>
     </>
   );
 };
