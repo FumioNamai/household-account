@@ -17,14 +17,13 @@ props: {
   use_date:  string | null;
 }
 }
-type OnUpdateProps = { onUpdate: (stocks:Stock[] | null) => void }
+export type OnUpdateProps = { onUpdate: (stocks:Stock[] | null) => void }
 
-const UsedItem:React.FC<Props & OnUpdateProps> = ({props,onUpdate}) => {
+const UsedItem:React.FC<Props & OnUpdateProps> = ({id, name, price, stocks,  setStocks}) => {
   // const UsedItem = ({ props , onUpdate}) => {
-
+    const onUpdate = (stocks: Stock[]) => setStocks(stocks);
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number) => {
-    // const date = null;
     try {
       await supabase
         .from("stocks")
@@ -32,7 +31,7 @@ const UsedItem:React.FC<Props & OnUpdateProps> = ({props,onUpdate}) => {
         .eq("id", propsID);
       const { data: stocks } = await supabase.from("stocks").select("*");
       onUpdate( stocks );
-      alert(`${props.name}の使用を取り消し、在庫一覧に戻しました。`)
+      alert(`${name}の使用を取り消し、在庫一覧に戻しました。`)
     } catch (error) {
       alert("在庫に戻せません" + error.message);
     }
@@ -40,19 +39,16 @@ const UsedItem:React.FC<Props & OnUpdateProps> = ({props,onUpdate}) => {
 
   return (
     <li
-      key={props.id}
+      key={id}
       className="flex flex-row gap-1 items-center justify-between p-1"
     >
-      <Typography variant="body2">{props.name}</Typography>
+      <Typography variant="body2">{name}</Typography>
       <Box sx={{ display:"flex",alignItems:"center"}}>
-      <Typography variant="body1">{props.price}円</Typography>
-      {/* <Button variant="outlined" onClick={() => handleReturn(props.id)}>
-        戻
-      </Button> */}
+      <Typography variant="body1">{price}円</Typography>
       <IconButton
         aria-label="return-item"
         color="warning"
-        onClick={() => handleReturn(props.id)}>
+        onClick={() => handleReturn(id)}>
         <UndoRoundedIcon />
       </IconButton>
       </Box>

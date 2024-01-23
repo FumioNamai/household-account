@@ -4,30 +4,34 @@ import React, { useEffect, useState } from "react";
 import { getAllStocks } from "../../../utils/supabaseFunctions";
 import { Box, FormControl, Typography } from "@mui/material";
 import {
-  DateCalendar,
   DatePicker,
   LocalizationProvider,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { Stock } from "../../../utils/interface";
+import ja from "dayjs/locale/ja";
+import UsedItem from "./usedItem";
 
-const Monthly = () => {
+const Monthly = ({stocks, setStocks}) => {
+
   const [month, setMonth] = React.useState<Dayjs | null>(dayjs());
   const selectedMonth = month?.format("YYYY-MM");
-  const [stocks, setStocks] = useState<Stock[] | null>([]);
-  useEffect(() => {
-    const getStocks = async () => {
-      const stocks = await getAllStocks();
-      setStocks(stocks);
-    };
-    getStocks();
-  }, []);
+
+  // const [stocks, setStocks] = useState<Stock[] | null>([]);
+  // useEffect(() => {
+  //   const getStocks = async () => {
+  //     const stocks = await getAllStocks();
+  //     setStocks(stocks);
+  //   };
+  //   getStocks();
+  // }, []);
 
   let date = "0";
   let dailyTotals = [];
   for (let i = 1; i < 32; i++) {
-    date = ("00" + `${i}`).slice(-2);
+    date = ("0" + `${i}`).slice(-2);
+
     const todayUsed = stocks!.filter(
       (stock) => stock.use_date === `${selectedMonth}-${date}`
     );
@@ -44,14 +48,22 @@ const Monthly = () => {
         return sum + el.price;
       }, 0);
 
-      const todayOthersTotal = todayUsed
+    const todayOthersTotal = todayUsed
       .filter((todayUsed) => todayUsed.type === "その他")
       .reduce((sum, el) => {
         return sum + el.price;
       }, 0);
 
-    dailyTotals.push({ date, todayFoodsTotal, todayItemsTotal, todayOthersTotal });
+    dailyTotals.push({
+      date,
+      todayFoodsTotal,
+      todayItemsTotal,
+      todayOthersTotal,
+    });
   }
+
+  //その他の今月使用済みリストを表示させる
+  const monthOthers =  stocks?.filter(stock => stock.type === "その他" && stock.use_date?.startsWith(selectedMonth))
 
   const monthlyFoodsTotal = dailyTotals.reduce((sum, el) => {
     return sum + el.todayFoodsTotal;
@@ -65,7 +77,8 @@ const Monthly = () => {
     return sum + el.todayOthersTotal;
   }, 0);
 
-  const monthlyTotal = monthlyFoodsTotal + monthlyItemsTotal + monthlyOthersTotal;
+  const monthlyTotal =
+    monthlyFoodsTotal + monthlyItemsTotal + monthlyOthersTotal;
 
   return (
     <>
@@ -85,15 +98,19 @@ const Monthly = () => {
               />
             </LocalizationProvider>
           </FormControl>
-          <Box sx={{ display: "flex", justifyContent: "space-between", marginBottom:"16px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "16px",
+            }}
+          >
             <Typography variant="h6">合計:</Typography>
             <Typography variant="h6" className=" text-right">
               {monthlyTotal}円
             </Typography>
           </Box>
-          <Typography variant="subtitle1">
-            内訳
-          </Typography>
+          <Typography variant="subtitle1">内訳</Typography>
 
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="h6">食品:</Typography>
@@ -115,6 +132,23 @@ const Monthly = () => {
               {monthlyOthersTotal}円
             </Typography>
           </Box>
+
+          <ul>
+
+            {
+              monthOthers?.map((stock) => (
+                <Box key={stock.id}>
+                  <UsedItem
+                  id={stock.id}
+                  name={stock.name}
+                  price={stock.price}
+                  stocks={stocks}
+                  setStocks={setStocks}
+                  />
+                </Box>
+              ))
+            }
+          </ul>
         </Box>
       </Box>
     </>

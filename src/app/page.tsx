@@ -57,11 +57,11 @@ const categories: string[] = [
 export default function Home() {
   const [stocks, setStocks] = useState<Stock[] | null>([]);
   let [date, setDate] = React.useState<Dayjs | null>(dayjs());
-  const [type, setType] = useState<string>("---");
+  const [type, setType] = useState<string>("");
   const [name, setName] = useState<string>("");
   let [price, setPrice] = useState<string>("");
   const [tax, setTax] = useState(true);
-  const [categoryItem, setCategoryItem] = useState("");
+  const [categoryItem, setCategoryItem] = useState("---");
 
   useEffect(() => {
     (async () => await getStocks())();
@@ -102,23 +102,23 @@ export default function Home() {
         return result;
       };
 
-      console.log(
-        group(data, (d) => d.name + d.price, { detail: true }).result.map(
-          (e) => ({
-            id: e[0].id,
-            name: e[0].name,
-            price: e[0].price,
-            count: e.length,
-          })
-        )
-      );
+      // console.log(
+      //   group(data, (d) => d.name + d.price, { detail: true }).result.map(
+      //     (e) => ({
+      //       id: e[0].id,
+      //       name: e[0].name,
+      //       price: e[0].price,
+      //       count: e.length,
+      //     })
+      //   )
+      // );
     } catch (error) {
       alert(error.message);
       setStocks([]);
     }
   };
 
-  const update = (stocks: Stock[]) => setStocks(stocks);
+  // const update = (stocks: Stock[]) => setStocks(stocks);
 
   // Itemコンポーネントの削除ボタン押下で在庫情報を更新
   const del = (stocks: Stock[]) => setStocks(stocks);
@@ -145,13 +145,13 @@ export default function Home() {
     return sum + el.price;
   }, 0);
 
-    // その日に使用した雑貨の合計金額を算出
-    const todayOthers = todayUsed.filter(
-      (todayUsed: Stock) => todayUsed.type === "その他"
-    );
-    const todaysOthersTotal = todayOthers.reduce((sum: number, el) => {
-      return sum + el.price;
-    }, 0);
+  // その日に使用した雑貨の合計金額を算出
+  const todayOthers = todayUsed.filter(
+    (todayUsed: Stock) => todayUsed.type === "その他"
+  );
+  const todaysOthersTotal = todayOthers.reduce((sum: number, el) => {
+    return sum + el.price;
+  }, 0);
 
   // その月に使用したその他の合計金額を算出
 
@@ -199,7 +199,7 @@ export default function Home() {
     <>
       <main>
         <Grid item xs={12} sx={{ marginBottom: "80px" }}>
-          <Monthly />
+          <Monthly stocks={stocks} setStocks={setStocks} />
         </Grid>
 
         <Grid item xs={12} sx={{ marginBottom: "80px" }}>
@@ -220,16 +220,20 @@ export default function Home() {
                   />
                 </LocalizationProvider>
               </FormControl>
-              <Box sx={{ display: "flex", justifyContent: "space-between", marginBottom:"16px" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "16px",
+                }}
+              >
                 <Typography variant="h6">合計:</Typography>
                 <Typography variant="h6" className=" w-24 text-right">
                   {total}円
                 </Typography>
               </Box>
 
-              <Typography variant="subtitle1">
-                内訳
-              </Typography>
+              <Typography variant="subtitle1">内訳</Typography>
 
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography variant="h6">食品:</Typography>
@@ -260,7 +264,13 @@ export default function Home() {
                       <div key={todayFood.id}>
                         {todayFood.type === "食品" &&
                         todayFood.use_date === `${selectedDate}` ? (
-                          <UsedItem props={todayFood} onUpdate={update} />
+                          <UsedItem
+                            id={todayFood.id}
+                            name={todayFood.name}
+                            price={todayFood.price}
+                            stocks={stocks}
+                            setStocks={setStocks}
+                          />
                         ) : null}
                       </div>
                     ))}
@@ -274,7 +284,13 @@ export default function Home() {
                       <div key={todayItem.id}>
                         {todayItem.type === "雑貨" &&
                         todayItem.use_date === `${selectedDate}` ? (
-                          <UsedItem props={todayItem} onUpdate={update} />
+                          <UsedItem
+                            id={todayItem.id}
+                            name={todayItem.name}
+                            price={todayItem.price}
+                            stocks={stocks}
+                            setStocks={setStocks}
+                          />
                         ) : null}
                       </div>
                     ))}
@@ -288,7 +304,13 @@ export default function Home() {
                       <div key={todayOther.id}>
                         {todayOther.type === "その他" &&
                         todayOther.use_date === `${selectedDate}` ? (
-                          <UsedItem props={todayOther} onUpdate={update} />
+                          <UsedItem
+                            id={todayOther.id}
+                            name={todayOther.name}
+                            price={todayOther.price}
+                            stocks={stocks}
+                            setStocks={setStocks}
+                          />
                         ) : null}
                       </div>
                     ))}
@@ -299,7 +321,7 @@ export default function Home() {
           </Box>
         </Grid>
 
-       {/* 在庫登録 兼 在庫検索機能 */}
+        {/* 在庫登録 兼 在庫検索機能 */}
         <Grid item xs={12} sx={{ marginBottom: "80px" }}>
           <Typography variant="h4" className="mb-4">
             在庫登録
@@ -341,7 +363,7 @@ export default function Home() {
                   onChange={handleSelectItem}
                   sx={{}}
                 >
-                  <MenuItem value={""}>---</MenuItem>
+                  <MenuItem value={"---"}>---</MenuItem>
                   <MenuItem value={"肉"}>肉</MenuItem>
                   <MenuItem value={"魚介"}>魚介</MenuItem>
                   <MenuItem value={"野菜"}>野菜</MenuItem>
@@ -366,10 +388,16 @@ export default function Home() {
               </FormControl>
 
               <div className="flex flex-row items-center gap-1">
-                <FormControl sx={{ display:"flex", flexDirection:"row", alignItems:"center"}}>
-                <Typography >税抜</Typography>
-                <Switch checked={tax} onChange={handleTax} />
-                <Typography >税込</Typography>
+                <FormControl
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography>税抜</Typography>
+                  <Switch checked={tax} onChange={handleTax} />
+                  <Typography>税込</Typography>
                 </FormControl>
                 <TextField
                   label="価格"
@@ -402,10 +430,16 @@ export default function Home() {
           {/* 在庫一覧 */}
           <Typography variant="h4">在庫一覧</Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <FormControl sx={{display:"flex", flexDirection:"row", alignItems:"center"}}>
-            <Typography >税抜</Typography>
-            <Switch checked={tax} onChange={handleTax} />
-            <Typography >税込</Typography>
+            <FormControl
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Typography>税抜</Typography>
+              <Switch checked={tax} onChange={handleTax} />
+              <Typography>税込</Typography>
             </FormControl>
           </Box>
           <Accordion>
@@ -439,9 +473,13 @@ export default function Home() {
                             stock.category === category &&
                             stock.use_date === null ? (
                               <Item
-                                props={stock}
+                                id={stock.id}
+                                name={stock.name}
+                                price={stock.price}
+                                type={stock.type}
+                                stocks={stocks}
+                                setStocks={setStocks}
                                 onDelete={del}
-                                onUpdate={update}
                                 date={selectedDate}
                                 tax={tax}
                               />
@@ -470,9 +508,13 @@ export default function Home() {
                     <AccordionDetails key={stock.id} sx={{ paddingBlock: "0" }}>
                       {stock.type === "雑貨" && stock.use_date === null ? (
                         <Item
-                          props={stock}
+                          id={stock.id}
+                          name={stock.name}
+                          price={stock.price}
+                          type={stock.type}
+                          stocks={stocks}
+                          setStocks={setStocks}
                           onDelete={del}
-                          onUpdate={update}
                           date={selectedDate}
                           tax={tax}
                         />
@@ -498,9 +540,13 @@ export default function Home() {
                     <AccordionDetails key={stock.id} sx={{ paddingBlock: "0" }}>
                       {stock.type === "その他" && stock.use_date === null ? (
                         <Item
-                          props={stock}
+                          id={stock.id}
+                          name={stock.name}
+                          price={stock.price}
+                          type={stock.type}
+                          stocks={stocks}
+                          setStocks={setStocks}
                           onDelete={del}
-                          onUpdate={update}
                           date={selectedDate}
                           tax={tax}
                         />

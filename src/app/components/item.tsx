@@ -8,8 +8,10 @@ import EditOutlined from '@mui/icons-material/EditOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import { AlarmTwoTone } from "@mui/icons-material";
 
-const Item = ({ props, onUpdate, onDelete, date, tax }) => {
-  let [price, setPrice] = useState<string>("");
+const Item = ({ id, name, price, type, stocks, setStocks, onDelete, date, tax }) => {
+  // let [price, setPrice] = useState<string>("");
+
+  const onUpdate = (stocks: Stock[]) => setStocks(stocks);
 
   // UPDATE 使った日をuse_dateに記録する
   const handleUse = async (propsID: number) => {
@@ -43,7 +45,7 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
         // 在庫データを更新して、画面を更新
         const { data: updatedStocks } = await supabase.from("stocks").select("*");
         onUpdate(updatedStocks);
-        alert(`${props.name}を${date}付けで計上しました。`)
+        alert(`${name}を${date}付けで計上しました。`)
       } catch (error) {
         alert("使用日登録ができませんでした。" + error.message);
       }
@@ -61,24 +63,24 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
       const { data: stocks } = await supabase.from("stocks").select("*");
       // 親コンポーネントにstocksを渡して在庫情報を更新
       onDelete(stocks);
-      alert(`${props.name}を在庫一覧から削除しました。`)
+      alert(`${name}を在庫一覧から削除しました。`)
     } catch (error) {
       alert("削除できませんでした" + error.message);
     }
   };
 
   const handleUpdate = async (propsID: number) => {
-      if (props.type === "食品" && tax === false) {
+      if (type === "食品" && tax === false) {
         price = Math.floor(parseInt(price) * 1.08).toString();
       }
-      if (props.type !== "食品" && tax === false) {
+      if (type !== "食品" && tax === false) {
         price = Math.floor(parseInt(price) * 1.1).toString();
       }
     try {
       await supabase.from("stocks").update( {price} ).eq("id", propsID);
       const { data: updateStocks } = await supabase.from("stocks").select("*");
       onUpdate(updateStocks);
-      alert(`${props.name}の価格を更新しました。`)
+      alert(`${name}の価格を更新しました。`)
     } catch (error) {
       alert("価格を更新できませんでした" + error.message);
     }
@@ -86,41 +88,41 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
 
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
-    if (props.type === "食品" && tax === false ) {
-      let taxExcluded = Math.ceil(parseInt(props.price) / 1.08 ).toString()
+    if (type === "食品" && tax === false ) {
+      let taxExcluded = Math.ceil(parseInt(price) / 1.08 ).toString()
       return taxExcluded
-    } else if (props.type !== "食品" && tax === false ) {
-      let taxExcluded = Math.ceil(parseInt(props.price) / 1.1).toString()
+    } else if (type !== "食品" && tax === false ) {
+      let taxExcluded = Math.ceil(parseInt(price) / 1.1).toString()
         return taxExcluded
     } else {
-      return props.price
+      return price
     }
     }
 
   return (
     <>
       <List
-        key={props.id}
+        key={id}
         sx={{ display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}
         // className="flex flex-row items-center justify-between p-1"
       >
-        <Typography variant="body2">{props.name}</Typography>
+        <Typography variant="body2">{name}</Typography>
         <Box sx={{display:"flex", alignItems:"center"}}>
-          {props.price !== 0 ? (
+          {price !== 0 ? (
             <>
               <Typography variant="body1">{calcPrice()}円</Typography>
 
               <IconButton
                 aria-label="use-item"
                 color="primary"
-                onClick={() => handleUse(props.id)} >
+                onClick={() => handleUse(id)} >
                 <CheckCircleOutlinedIcon  />
               </IconButton>
 
               <IconButton
                 aria-label="delete"
                 color="error"
-                onClick={() => handleDelete(props.id)} >
+                onClick={() => handleDelete(id)} >
                 <DeleteIcon />
               </IconButton>
             </>
@@ -140,13 +142,13 @@ const Item = ({ props, onUpdate, onDelete, date, tax }) => {
               <IconButton
                 aria-label="update"
                 color="success"
-                onClick={() => handleUpdate(props.id)} >
+                onClick={() => handleUpdate(id)} >
                 <EditOutlined />
               </IconButton>
               <IconButton
                 aria-label="delete"
                 color="error"
-                onClick={() => handleDelete(props.id)} >
+                onClick={() => handleDelete(id)} >
                 <DeleteIcon />
               </IconButton>
             </>
