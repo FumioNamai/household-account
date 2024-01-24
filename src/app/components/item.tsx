@@ -1,21 +1,41 @@
-import { useState } from "react";
+
+import React, { useState } from "react";
 import { Stock } from "../../../utils/interface";
 import { supabase } from "../../../utils/supabase";
 import { log } from "console";
-import { Box, Button, IconButton, InputAdornment, List, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  List,
+  TextField,
+  Typography,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditOutlined from '@mui/icons-material/EditOutlined';
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
-import { AlarmTwoTone } from "@mui/icons-material";
+import EditOutlined from "@mui/icons-material/EditOutlined";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import Alert from '@mui/material/Alert';
+import CheckIcon from '@mui/icons-material/Check';
 
-const Item = ({ id, name, price, type, stocks, setStocks, onDelete, date, tax }) => {
-  // let [price, setPrice] = useState<string>("");
+const Item = ({
+  id,
+  name,
+  price,
+  setPrice,
+  type,
+  stocks,
+  setStocks,
+  onDelete,
+  date,
+  tax,
+}) => {
+  let [newPrice, setNewPrice] = useState<string>("");
 
   const onUpdate = (stocks: Stock[]) => setStocks(stocks);
 
   // UPDATE 使った日をuse_dateに記録する
   const handleUse = async (propsID: number) => {
-
     if (date !== undefined) {
       try {
         // 使うボタンで選択した項目をnewStockへコピー
@@ -43,14 +63,19 @@ const Item = ({ id, name, price, type, stocks, setStocks, onDelete, date, tax })
         await supabase.from("stocks").insert({ ...newStock });
 
         // 在庫データを更新して、画面を更新
-        const { data: updatedStocks } = await supabase.from("stocks").select("*");
+        const { data: updatedStocks } = await supabase
+          .from("stocks")
+          .select("*");
         onUpdate(updatedStocks);
-        alert(`${name}を${date}付けで計上しました。`)
+        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">{`${name}を${date}付けで計上しました。`}</Alert>
+        // alert(`${name}を${date}付けで計上しました。`);
       } catch (error) {
-        alert("使用日登録ができませんでした。" + error.message);
+        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">{"使用日登録ができませんでした。" + error.message}</Alert>
+        // alert("使用日登録ができませんでした。" + error.message);
       }
     } else {
-      alert("日付を選択してください。")
+      <Alert icon={<CheckIcon/>} severity="success">日付を選択してください。</Alert>
+      // alert("日付を選択してください。");
     }
   };
 
@@ -63,24 +88,25 @@ const Item = ({ id, name, price, type, stocks, setStocks, onDelete, date, tax })
       const { data: stocks } = await supabase.from("stocks").select("*");
       // 親コンポーネントにstocksを渡して在庫情報を更新
       onDelete(stocks);
-      alert(`${name}を在庫一覧から削除しました。`)
+
+      alert(`${name}を在庫一覧から削除しました。`);
     } catch (error) {
       alert("削除できませんでした" + error.message);
     }
   };
 
   const handleUpdate = async (propsID: number) => {
-      if (type === "食品" && tax === false) {
-        price = Math.floor(parseInt(price) * 1.08).toString();
-      }
-      if (type !== "食品" && tax === false) {
-        price = Math.floor(parseInt(price) * 1.1).toString();
-      }
+    if (type === "食品" && tax === false) {
+      price = Math.floor(parseInt(newPrice) * 1.08).toString();
+    }
+    if (type !== "食品" && tax === false) {
+      price = Math.floor(parseInt(newPrice) * 1.1).toString();
+    }
     try {
-      await supabase.from("stocks").update( {price} ).eq("id", propsID);
+      await supabase.from("stocks").update({ price }).eq("id", propsID);
       const { data: updateStocks } = await supabase.from("stocks").select("*");
       onUpdate(updateStocks);
-      alert(`${name}の価格を更新しました。`)
+      alert(`${name}の価格を更新しました。`);
     } catch (error) {
       alert("価格を更新できませんでした" + error.message);
     }
@@ -88,26 +114,31 @@ const Item = ({ id, name, price, type, stocks, setStocks, onDelete, date, tax })
 
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
-    if (type === "食品" && tax === false ) {
-      let taxExcluded = Math.ceil(parseInt(price) / 1.08 ).toString()
-      return taxExcluded
-    } else if (type !== "食品" && tax === false ) {
-      let taxExcluded = Math.ceil(parseInt(price) / 1.1).toString()
-        return taxExcluded
+    if (type === "食品" && tax === false) {
+      let taxExcluded = Math.ceil(parseInt(price) / 1.08).toString();
+      return taxExcluded;
+    } else if (type !== "食品" && tax === false) {
+      let taxExcluded = Math.ceil(parseInt(price) / 1.1).toString();
+      return taxExcluded;
     } else {
-      return price
+      return price;
     }
-    }
+  };
 
   return (
     <>
       <List
         key={id}
-        sx={{ display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
         // className="flex flex-row items-center justify-between p-1"
       >
         <Typography variant="body2">{name}</Typography>
-        <Box sx={{display:"flex", alignItems:"center"}}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           {price !== 0 ? (
             <>
               <Typography variant="body1">{calcPrice()}円</Typography>
@@ -115,40 +146,44 @@ const Item = ({ id, name, price, type, stocks, setStocks, onDelete, date, tax })
               <IconButton
                 aria-label="use-item"
                 color="primary"
-                onClick={() => handleUse(id)} >
-                <CheckCircleOutlinedIcon  />
+                onClick={() => handleUse(id)}
+              >
+                <CheckCircleOutlinedIcon />
               </IconButton>
 
               <IconButton
                 aria-label="delete"
                 color="error"
-                onClick={() => handleDelete(id)} >
+                onClick={() => handleDelete(id)}
+              >
                 <DeleteIcon />
               </IconButton>
             </>
           ) : (
             <>
               <TextField
-              variant="standard"
-              type="number"
-              size="small"
-              sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
-                value={price}
+                variant="standard"
+                type="string"
+                size="small"
+                sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
+                value = {newPrice}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setPrice(event.target.value);}}
+                  setNewPrice(event.target.value);
+                }}
               />
-              <Typography variant="body1">円
-              </Typography>
+              <Typography variant="body1">円</Typography>
               <IconButton
                 aria-label="update"
                 color="success"
-                onClick={() => handleUpdate(id)} >
+                onClick={() => handleUpdate(id)}
+              >
                 <EditOutlined />
               </IconButton>
               <IconButton
                 aria-label="delete"
                 color="error"
-                onClick={() => handleDelete(id)} >
+                onClick={() => handleDelete(id)}
+              >
                 <DeleteIcon />
               </IconButton>
             </>

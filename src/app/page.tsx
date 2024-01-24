@@ -476,6 +476,7 @@ export default function Home() {
                                 id={stock.id}
                                 name={stock.name}
                                 price={stock.price}
+                                setPrice={setPrice}
                                 type={stock.type}
                                 stocks={stocks}
                                 setStocks={setStocks}
@@ -511,6 +512,7 @@ export default function Home() {
                           id={stock.id}
                           name={stock.name}
                           price={stock.price}
+                          setPrice={setPrice}
                           type={stock.type}
                           stocks={stocks}
                           setStocks={setStocks}
@@ -543,6 +545,7 @@ export default function Home() {
                           id={stock.id}
                           name={stock.name}
                           price={stock.price}
+                          setPrice={setPrice}
                           type={stock.type}
                           stocks={stocks}
                           setStocks={setStocks}

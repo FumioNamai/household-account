@@ -3,18 +3,14 @@
 import React, { useEffect, useState } from "react";
 import { getAllStocks } from "../../../utils/supabaseFunctions";
 import { Box, FormControl, Typography } from "@mui/material";
-import {
-  DatePicker,
-  LocalizationProvider,
-} from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { Stock } from "../../../utils/interface";
 import ja from "dayjs/locale/ja";
 import UsedItem from "./usedItem";
 
-const Monthly = ({stocks, setStocks}) => {
-
+const Monthly = ({ stocks, setStocks }) => {
   const [month, setMonth] = React.useState<Dayjs | null>(dayjs());
   const selectedMonth = month?.format("YYYY-MM");
 
@@ -63,7 +59,10 @@ const Monthly = ({stocks, setStocks}) => {
   }
 
   //その他の今月使用済みリストを表示させる
-  const monthOthers =  stocks?.filter(stock => stock.type === "その他" && stock.use_date?.startsWith(selectedMonth))
+  const monthOthers = stocks?.filter(
+    (stock) =>
+      stock.type === "その他" && stock.use_date?.startsWith(selectedMonth)
+  );
 
   const monthlyFoodsTotal = dailyTotals.reduce((sum, el) => {
     return sum + el.todayFoodsTotal;
@@ -134,20 +133,17 @@ const Monthly = ({stocks, setStocks}) => {
           </Box>
 
           <ul>
-
-            {
-              monthOthers?.map((stock) => (
-                <Box key={stock.id}>
-                  <UsedItem
+            {monthOthers?.map((stock) => (
+              <Box key={stock.id}>
+                <UsedItem
                   id={stock.id}
                   name={stock.name}
                   price={stock.price}
                   stocks={stocks}
                   setStocks={setStocks}
-                  />
-                </Box>
-              ))
-            }
+                />
+              </Box>
+            ))}
           </ul>
         </Box>
       </Box>
