@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Stock } from "../../../utils/interface";
 import { supabase } from "../../../utils/supabase";
@@ -9,14 +8,16 @@ import {
   IconButton,
   InputAdornment,
   List,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlined from "@mui/icons-material/EditOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import Alert from '@mui/material/Alert';
-import CheckIcon from '@mui/icons-material/Check';
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
+import { useSnackbarContext } from "@/providers/context-provider";
 
 const Item = ({
   id,
@@ -30,6 +31,7 @@ const Item = ({
   date,
   tax,
 }) => {
+  const { showSnackbar } = useSnackbarContext()
   let [newPrice, setNewPrice] = useState<string>("");
 
   const onUpdate = (stocks: Stock[]) => setStocks(stocks);
@@ -64,18 +66,21 @@ const Item = ({
 
         // 在庫データを更新して、画面を更新
         const { data: updatedStocks } = await supabase
-          .from("stocks")
-          .select("*");
+        .from("stocks")
+        .select("*");
         onUpdate(updatedStocks);
-        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">{`${name}を${date}付けで計上しました。`}</Alert>
-        // alert(`${name}を${date}付けで計上しました。`);
+        if(showSnackbar){
+          showSnackbar("success", `${name}を${date}付けで計上しました。`)
+        }
       } catch (error) {
-        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">{"使用日登録ができませんでした。" + error.message}</Alert>
-        // alert("使用日登録ができませんでした。" + error.message);
+        if(showSnackbar){
+          showSnackbar("error", "使用日登録ができませんでした。" + error.message)
+        }
       }
     } else {
-      <Alert icon={<CheckIcon/>} severity="success">日付を選択してください。</Alert>
-      // alert("日付を選択してください。");
+      if(showSnackbar){
+        showSnackbar("error", "日付を選択してください。" + error.message)
+      }
     }
   };
 
@@ -87,28 +92,41 @@ const Item = ({
         .eq("id", propsID);
       const { data: stocks } = await supabase.from("stocks").select("*");
       // 親コンポーネントにstocksを渡して在庫情報を更新
+      // <Alert severity="success">{`${name}を在庫一覧から削除しました。`}</Alert>;
       onDelete(stocks);
+      if(showSnackbar){
+        showSnackbar("success", `${name}を在庫一覧から削除しました。`)
+      }
 
-      alert(`${name}を在庫一覧から削除しました。`);
+      // alert(`${name}を在庫一覧から削除しました。`);
     } catch (error) {
-      alert("削除できませんでした" + error.message);
+      if(showSnackbar){
+        showSnackbar("error", "削除できませんでした。" + error.message)
+      }
+      // alert("削除できませんでした" + error.message);
     }
   };
 
   const handleUpdate = async (propsID: number) => {
     if (type === "食品" && tax === false) {
-      price = Math.floor(parseInt(newPrice) * 1.08).toString();
+      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
     }
     if (type !== "食品" && tax === false) {
-      price = Math.floor(parseInt(newPrice) * 1.1).toString();
+      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
     }
     try {
-      await supabase.from("stocks").update({ price }).eq("id", propsID);
+      await supabase.from("stocks").update({ newPrice }).eq("id", propsID);
       const { data: updateStocks } = await supabase.from("stocks").select("*");
       onUpdate(updateStocks);
-      alert(`${name}の価格を更新しました。`);
+      if(showSnackbar){
+        showSnackbar("success", `${name}の価格を更新しました。`)
+      }
+      // alert(`${name}の価格を更新しました。`);
     } catch (error) {
-      alert("価格を更新できませんでした" + error.message);
+      if(showSnackbar){
+        showSnackbar("error", "価格を更新できませんでした。" + error.message)
+      }
+      // alert("価格を更新できませんでした" + error.message);
     }
   };
 
@@ -166,7 +184,7 @@ const Item = ({
                 type="string"
                 size="small"
                 sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
-                value = {newPrice}
+                value={newPrice}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   setNewPrice(event.target.value);
                 }}

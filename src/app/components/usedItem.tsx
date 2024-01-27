@@ -4,6 +4,7 @@ import { Box, Button, IconButton, Typography } from "@mui/material";
 import UndoRoundedIcon from "@mui/icons-material/UndoRounded";
 import { Stock } from "../../../utils/interface";
 import React from "react";
+import { useSnackbarContext } from "@/providers/context-provider";
 
 type Props = {
   props: {
@@ -25,6 +26,7 @@ const UsedItem: React.FC<Props & OnUpdateProps> = ({
   stocks,
   setStocks,
 }) => {
+  const { showSnackbar } = useSnackbarContext()
   const onUpdate = (stocks: Stock[]) => setStocks(stocks);
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number) => {
@@ -35,9 +37,15 @@ const UsedItem: React.FC<Props & OnUpdateProps> = ({
         .eq("id", propsID);
       const { data: stocks } = await supabase.from("stocks").select("*");
       onUpdate(stocks);
-      alert(`${name}の使用を取り消し、在庫一覧に戻しました。`);
+      if(showSnackbar) {
+        showSnackbar("success",`${name}の使用を取り消し、在庫一覧に戻しました。`)
+      }
+      // alert(`${name}の使用を取り消し、在庫一覧に戻しました。`);
     } catch (error) {
-      alert("在庫に戻せません" + error.message);
+      if(showSnackbar) {
+        showSnackbar("error","在庫に戻せません。" + error.message)
+      }
+      // alert("在庫に戻せません" + error.message);
     }
   };
 
