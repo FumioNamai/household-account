@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import { Stock } from "../../../utils/interface";
 import { supabase } from "../../../utils/supabase";
-import { log } from "console";
 import {
   Box,
-  Button,
   IconButton,
-  InputAdornment,
   List,
-  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlined from "@mui/icons-material/EditOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import Alert from "@mui/material/Alert";
-import CheckIcon from "@mui/icons-material/Check";
 import { useSnackbarContext } from "@/providers/context-provider";
 
 const Item = ({
@@ -91,19 +85,17 @@ const Item = ({
         .delete()
         .eq("id", propsID);
       const { data: stocks } = await supabase.from("stocks").select("*");
+
       // 親コンポーネントにstocksを渡して在庫情報を更新
-      // <Alert severity="success">{`${name}を在庫一覧から削除しました。`}</Alert>;
       onDelete(stocks);
       if(showSnackbar){
         showSnackbar("success", `${name}を在庫一覧から削除しました。`)
       }
 
-      // alert(`${name}を在庫一覧から削除しました。`);
     } catch (error) {
       if(showSnackbar){
         showSnackbar("error", "削除できませんでした。" + error.message)
       }
-      // alert("削除できませんでした" + error.message);
     }
   };
 
@@ -114,19 +106,21 @@ const Item = ({
     if (type !== "食品" && tax === false) {
       newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
     }
+
     try {
-      await supabase.from("stocks").update({ newPrice }).eq("id", propsID);
-      const { data: updateStocks } = await supabase.from("stocks").select("*");
-      onUpdate(updateStocks);
+      await supabase.from("stocks").update({ price: newPrice }).eq("id", propsID);
+      const { data: updatedStocks } = await supabase.from("stocks").select("*");
+      onUpdate(updatedStocks);
+
       if(showSnackbar){
         showSnackbar("success", `${name}の価格を更新しました。`)
       }
-      // alert(`${name}の価格を更新しました。`);
+
     } catch (error) {
       if(showSnackbar){
         showSnackbar("error", "価格を更新できませんでした。" + error.message)
       }
-      // alert("価格を更新できませんでした" + error.message);
+
     }
   };
 

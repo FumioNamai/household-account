@@ -1,4 +1,4 @@
-import { log } from "console";
+
 import { supabase } from "../../../utils/supabase";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import UndoRoundedIcon from "@mui/icons-material/UndoRounded";
@@ -40,12 +40,10 @@ const UsedItem: React.FC<Props & OnUpdateProps> = ({
       if(showSnackbar) {
         showSnackbar("success",`${name}の使用を取り消し、在庫一覧に戻しました。`)
       }
-      // alert(`${name}の使用を取り消し、在庫一覧に戻しました。`);
     } catch (error) {
       if(showSnackbar) {
         showSnackbar("error","在庫に戻せません。" + error.message)
       }
-      // alert("在庫に戻せません" + error.message);
     }
   };
 
