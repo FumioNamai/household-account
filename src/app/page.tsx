@@ -1,10 +1,5 @@
 "use client";
-
-import Link from "next/link";
-// import Stock from "./components/stock";
-import Daily from "./components/daily";
-import React, { useEffect, useState } from "react";
-import { getAllStocks } from "../../utils/supabaseFunctions";
+import React, { useContext, useEffect, useState } from "react";
 import UsedItem from "./components/usedItem";
 import { supabase } from "../../utils/supabase";
 import Item from "./components/item";
@@ -37,9 +32,9 @@ import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 import { Stock } from "../../utils/interface";
-import { Result } from "postcss";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Monthly from "./components/monthly";
+import { useSnackbarContext } from "@/providers/context-provider";
 
 // const today: string = new Date().toLocaleDateString("sv-SE");
 // const today = dayjs().format('YYYY-MM-DD')
@@ -55,6 +50,7 @@ const categories: string[] = [
 ];
 
 export default function Home() {
+  const { showSnackbar } = useSnackbarContext()
   const [stocks, setStocks] = useState<Stock[] | null>([]);
   let [date, setDate] = React.useState<Dayjs | null>(dayjs());
   const [type, setType] = useState<string>("");
@@ -73,6 +69,7 @@ export default function Home() {
       const { data, error } = await supabase.from("stocks").select("*");
       if (error) throw error;
       setStocks(data);
+
 
       // 同じnameで、同じpriceのものはcount数で表示
       const group = (arr: Stock[], func = (v: Stock) => v, detail = false) => {
@@ -181,9 +178,16 @@ export default function Home() {
       setPrice("");
       setCategoryItem("");
       await getStocks();
-      alert(`${name}を在庫一覧に登録しました。`);
+      if(showSnackbar) {
+        showSnackbar("success",`${name}を在庫一覧に登録しました。`)
+      }
+      // alert(`${name}を在庫一覧に登録しました。`);
     } catch (error) {
-      alert("データの新規登録ができません");
+      await getStocks();
+      if(showSnackbar) {
+        showSnackbar("error","データの新規登録ができません。")
+      }
+      // alert("データの新規登録ができません");
     }
   };
 
