@@ -1,6 +1,6 @@
 
 import { supabase } from "../../../utils/supabase";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import UndoRoundedIcon from "@mui/icons-material/UndoRounded";
 import { Stock } from "../../../utils/interface";
 import React from "react";

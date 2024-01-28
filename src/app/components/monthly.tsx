@@ -1,27 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { getAllStocks } from "../../../utils/supabaseFunctions";
-import { Box, FormControl, Typography } from "@mui/material";
+import React from "react";
+import { Box, FormControl, Grid, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
-import { Stock } from "../../../utils/interface";
-import ja from "dayjs/locale/ja";
-import UsedItem from "./usedItem";
+import UsedItem from "./UsedItem";
 
 const Monthly = ({ stocks, setStocks }) => {
-  const [month, setMonth] = React.useState<Dayjs | null>(dayjs());
-  const selectedMonth = month?.format("YYYY-MM");
 
-  // const [stocks, setStocks] = useState<Stock[] | null>([]);
-  // useEffect(() => {
-  //   const getStocks = async () => {
-  //     const stocks = await getAllStocks();
-  //     setStocks(stocks);
-  //   };
-  //   getStocks();
-  // }, []);
+  const [month, setMonth] = React.useState<Dayjs | null>(dayjs());
+
+  const selectedMonth = month?.format("YYYY-MM");
 
   let date = "0";
   let dailyTotals = [];
@@ -80,7 +70,7 @@ const Monthly = ({ stocks, setStocks }) => {
     monthlyFoodsTotal + monthlyItemsTotal + monthlyOthersTotal;
 
   return (
-    <>
+    <Grid item xs={12} sx={{ marginBottom: "80px" }}>
       <Typography variant="h4" sx={{ marginBottom: "24px" }}>
         月別集計
       </Typography>
@@ -147,7 +137,7 @@ const Monthly = ({ stocks, setStocks }) => {
           </ul>
         </Box>
       </Box>
-    </>
+      </Grid>
   );
 };
 

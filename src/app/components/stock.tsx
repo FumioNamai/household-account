@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { STOCK } from "../../../utils/interface";
 import { addStock, getAllStocks } from "../../../utils/supabaseFunctions";
-import Item from "./item";
+import Item from "./Item";
 import { supabase } from "../../../utils/supabase";
 import { useRouter } from "next/navigation";
 
@@ -11,49 +11,9 @@ type Props = {
   stocks: STOCK[];
 };
 
-// const stocks = [
-//   {
-//     id: 1,
-//     type: "食品",
-//     name: "豚肉",
-//     price: 600,
-//     registration_date: "2024/01/06",
-//     use_date:"",
-//   },
-//   {
-//     id: 2,
-//     type: "食品",
-//     name: "ヨーグルト",
-//     price: 130,
-//     registration_date: "2024/01/06",
-//     use_date:"2024/01/06",
-//   },
-//   {
-//     id: 3,
-//     type: "雑貨",
-//     name: "コーヒーフィルター",
-//     price: 110,
-//     registration_date: "2024/01/06",
-//     use_date:"2024/01/06",
-//   },
-//   {
-//     id: 4,
-//     type: "雑貨",
-//     name: "アルコール消毒液詰め替え",
-//     price: 500,
-//     registration_date: "2024/01/06",
-//     use_date:"",
-//   },
-// ];
-
 const Stock = (props: Props) => {
   const { stocks } = props;
   const router = useRouter()
-  // const [form, setForm] = useState<any>({
-  //   type:"",
-  //   name:"",
-  //   price:"",
-  // })
   const [type, setType] = useState<String>("")
   const [name, setName] = useState<String>("")
   const [price, setPrice] = useState<String>("")
@@ -77,9 +37,6 @@ const Stock = (props: Props) => {
       setName("")
       setPrice("")
       await getAllStocks()
-      //　画面を更新する関数を置きたい
-
-      // router.replace("/")
     } catch (error) {
       alert("データの新規登録ができません")
     }
@@ -94,10 +51,6 @@ const Stock = (props: Props) => {
           price:price
         }
       )
-
-      // const {error} = await supabase.from("stocks").insert({type:"食品",name:"パン",price:200})
-      // await addStock({form})
-      // console.log(`${form.type}:${form.name}:${form.price} `);
   }
 
   return (
