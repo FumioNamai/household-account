@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Header />
         <SnackbarProvider>
-        <Container maxWidth="sm" className="mx-auto">
+        <Container maxWidth="sm" sx={{padding:"0"}} className="mx-auto">
         {children}
         </Container>
         </SnackbarProvider>

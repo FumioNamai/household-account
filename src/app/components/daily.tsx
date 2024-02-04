@@ -45,19 +45,20 @@ const Daily = ({date, setDate, stocks, setStocks}) => {
 
   return(
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
-          <Typography variant="h4" sx={{ marginBottom: "24px" }}>
+          <Typography variant="h2" sx={{ fontSize:"24px", marginBottom: "24px" }}>
             日別集計
           </Typography>
           {/* <Daily stocks={stocks}/> */}
           <Box sx={{ paddingInline: "1rem" }}>
             <Box>
-              <FormControl sx={{ maxWidth: "150px", marginBottom: "24px" }}>
+              <FormControl sx={{ maxWidth: "200px", marginBottom: "24px" }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
-                    sx={{ maxWidth: "150px" }}
+                    sx={{ maxWidth: "200px" }}
                     value={date}
                     // defaultValue={dayjs()}
-                    format="YYYY/MM/DD"
+                    label={"対象年月日"}
+                    format="YYYY年MM月DD日"
                     onChange={(date) => setDate(date)}
                   />
                 </LocalizationProvider>
@@ -69,17 +70,17 @@ const Daily = ({date, setDate, stocks, setStocks}) => {
                   marginBottom: "16px",
                 }}
               >
-                <Typography variant="h6">合計:</Typography>
-                <Typography variant="h6" className=" w-24 text-right">
+                <Typography variant="h6">合計</Typography>
+                <Typography variant="h6" sx={{width:"6rem", textAlign:"right"}}>
                   {total}円
                 </Typography>
               </Box>
 
               <Typography variant="subtitle1">内訳</Typography>
-
+              <Box sx={{ paddingInline: "16px" }}>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant="h6">食品:</Typography>
-                <Typography variant="h6" className=" w-24 text-right">
+                <Typography variant="body1">食品</Typography>
+                <Typography variant="body1"  sx={{width:"6rem", textAlign:"right"}}>
                   {todaysFoodsTotal}円
                 </Typography>
               </Box>
@@ -91,12 +92,12 @@ const Daily = ({date, setDate, stocks, setStocks}) => {
                   marginBottom: "24px",
                 }}
               >
-                <Typography variant="h6">雑貨:</Typography>
-                <Typography variant="h6" className=" w-24 text-right">
+                <Typography variant="body1">雑貨</Typography>
+                <Typography variant="body1"  sx={{width:"6rem", textAlign:"right"}}>
                   {todaysItemsTotal}円
                 </Typography>
               </Box>
-
+              </Box>
               <Box sx={{}}>
                 <Typography variant="h6">消費品目</Typography>
                 <Box>
@@ -161,6 +162,7 @@ const Daily = ({date, setDate, stocks, setStocks}) => {
               </Box>
             </Box>
           </Box>
+
         </Grid>
   )
 }

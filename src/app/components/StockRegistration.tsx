@@ -31,7 +31,7 @@ import Asynchronous from "./Asynchronous";
 const StockRegistration = ({ stocks, setStocks }) => {
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
-  const [pname, setPName] = useState<string>("");
+  const [itemName, setItemName] = useState<string>("");
   let [date, setDate] = React.useState<Dayjs | null>(dayjs());
   let [price, setPrice] = useState<string>("");
   const [tax, setTax] = useState(true);
@@ -53,7 +53,7 @@ const StockRegistration = ({ stocks, setStocks }) => {
     try {
       const { error } = await supabase.from("stocks").insert({
         type: type,
-        name: pname,
+        name: itemName,
         price: price,
         registration_date: selectedDate,
         category: categoryItem,
@@ -62,11 +62,11 @@ const StockRegistration = ({ stocks, setStocks }) => {
       const { data: updatedStocks } = await supabase.from("stocks").select("*");
       onUpdate(updatedStocks);
       // setType("");
-      setPName("");
+      setItemName("");
       setPrice("");
       setCategoryItem("");
       if (showSnackbar) {
-        showSnackbar("success", `${name}を在庫一覧に登録しました。`);
+        showSnackbar("success", `${itemName}を在庫一覧に登録しました。`);
       }
     } catch (error) {
       if (showSnackbar) {
@@ -157,11 +157,18 @@ const StockRegistration = ({ stocks, setStocks }) => {
               type="text"
               id="name"
               name="name"
-              value={pname}
-              onChange={(e) => setPName(e.target.value)}
+              value={itemName}
+              onChange={(e) => setItemName(e.target.value)}
             />
           </FormControl>
 
+          {/* 在庫検索 */}
+          <Asynchronous
+            itemName={itemName}
+            setItemName={setItemName}
+            stocks={stocks}
+            setStocks={setStocks}
+          />
 
           {/* {isFocus && (
             <List

@@ -8,7 +8,6 @@ import dayjs, { Dayjs } from "dayjs";
 import UsedItem from "./UsedItem";
 
 const Monthly = ({ stocks, setStocks }) => {
-
   const [month, setMonth] = React.useState<Dayjs | null>(dayjs());
 
   const selectedMonth = month?.format("YYYY-MM");
@@ -71,12 +70,12 @@ const Monthly = ({ stocks, setStocks }) => {
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
-      <Typography variant="h4" sx={{ marginBottom: "24px" }}>
+      <Typography variant="h2" sx={{ fontSize: "24px", marginBottom: "24px" }}>
         月別集計
       </Typography>
       <Box sx={{ paddingInline: "16px" }}>
         <Box>
-          <FormControl sx={{ maxWidth: "150px", marginBottom: "24px" }}>
+          <FormControl sx={{ maxWidth: "200px", marginBottom: "24px" }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 defaultValue={dayjs()}
@@ -94,32 +93,42 @@ const Monthly = ({ stocks, setStocks }) => {
               marginBottom: "16px",
             }}
           >
-            <Typography variant="h6">合計:</Typography>
-            <Typography variant="h6" className=" text-right">
+            <Typography variant="h6">合計</Typography>
+            <Typography variant="h6" sx={{ textAlign: "right" }}>
               {monthlyTotal}円
             </Typography>
           </Box>
           <Typography variant="subtitle1">内訳</Typography>
+          <Box sx={{marginInline:"1rem"}}>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Typography variant="body1">食品</Typography>
+              <Typography
+                variant="body1"
+                sx={{ width: "6rem", textAlign: "right" }}
+              >
+                {monthlyFoodsTotal}円
+              </Typography>
+            </Box>
 
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h6">食品:</Typography>
-            <Typography variant="h6" className=" w-24 text-right">
-              {monthlyFoodsTotal}円
-            </Typography>
-          </Box>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Typography variant="body1">雑貨</Typography>
+              <Typography
+                variant="body1"
+                sx={{ width: "6rem", textAlign: "right" }}
+              >
+                {monthlyItemsTotal}円
+              </Typography>
+            </Box>
 
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h6">雑貨:</Typography>
-            <Typography variant="h6" className=" w-24 text-right">
-              {monthlyItemsTotal}円
-            </Typography>
-          </Box>
-
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h6">その他:</Typography>
-            <Typography variant="h6" className=" w-24 text-right">
-              {monthlyOthersTotal}円
-            </Typography>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Typography variant="body1">その他</Typography>
+              <Typography
+                variant="body1"
+                sx={{ width: "6rem", textAlign: "right" }}
+              >
+                {monthlyOthersTotal}円
+              </Typography>
+            </Box>
           </Box>
 
           <ul>
@@ -137,7 +146,7 @@ const Monthly = ({ stocks, setStocks }) => {
           </ul>
         </Box>
       </Box>
-      </Grid>
+    </Grid>
   );
 };
 

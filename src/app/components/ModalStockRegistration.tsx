@@ -18,7 +18,9 @@ export default function ModalStockRegistration({
 
   return (
     <>
-      <Button onClick={handleOpen}>在庫登録</Button>
+    <Box sx={{marginBlock:"8px"}}>
+      <Button variant="outlined" size="large" onClick={handleOpen}>在庫登録</Button>
+      </Box>
       <Modal
         open={open}
         onClose={handleClose}

@@ -2,6 +2,7 @@ import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import React from "react";
 import { getAllStocks } from "../../../utils/supabaseFunctions";
 import { Stock } from "../../../utils/type";
+import { log } from "console";
 
 export default function Asynchronous(){
   const [open, setOpen] = React.useState(false)
