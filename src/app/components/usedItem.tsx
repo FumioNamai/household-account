@@ -2,24 +2,24 @@
 import { supabase } from "../../../utils/supabase";
 import { Box, IconButton, Typography } from "@mui/material";
 import UndoRoundedIcon from "@mui/icons-material/UndoRounded";
-import { Stock } from "../../../utils/interface";
+import { Stock } from "../../../utils/type";
 import React from "react";
 import { useSnackbarContext } from "@/providers/context-provider";
 
-type Props = {
-  props: {
-    id: number;
-    type: string;
-    name: string;
-    price: number;
-    category: string;
-    registration_date: string | null;
-    use_date: string | null;
-  };
-};
+// type Props = {
+//   props: {
+//     id: number;
+//     type: string;
+//     name: string;
+//     price: number;
+//     category: string;
+//     registration_date: string | null;
+//     use_date: string | null;
+//   };
+// };
 export type OnUpdateProps = { onUpdate: (stocks: Stock[] | null) => void };
 
-const UsedItem: React.FC<Props & OnUpdateProps> = ({
+const UsedItem: React.FC<Stock & OnUpdateProps> = ({
   id,
   name,
   price,

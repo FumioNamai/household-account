@@ -11,8 +11,9 @@ import Daily from "./components/Daily";
 import StockList from "./components/StockList";
 import StockRegistration from "./components/StockRegistration";
 
-import { Stock } from "../../utils/interface";
+import { Stock } from "../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
+import ModalStockRegistration from "./components/ModalStockRegistration";
 
 export default function Home() {
   const { showSnackbar } = useSnackbarContext();
@@ -81,8 +82,6 @@ export default function Home() {
   // Itemコンポーネントの削除ボタン押下で在庫情報を更新
   const del = (stocks: Stock[]) => setStocks(stocks);
 
-  // const selectedDate = date?.locale(ja).format("YYYY-MM-DD");
-
   const handleTax = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTax(event.target.checked);
   };
@@ -101,7 +100,7 @@ export default function Home() {
           setDate={setDate}
         />
 
-        <StockRegistration
+        {/* <StockRegistration
           stocks={stocks}
           setStocks={setStocks}
           tax={tax}
@@ -110,17 +109,29 @@ export default function Home() {
           setPrice={setPrice}
           date={date}
           setDate={setDate}
-        />
+        /> */}
 
+        {/* <ModalStockRegistration
+          stocks={stocks}
+          setStocks={setStocks}
+          tax={tax}
+          setTax={setTax}
+          price={price}
+          setPrice={setPrice}
+          date={date}
+          setDate={setDate}
+        /> */}
         <StockList
           stocks={stocks}
           setStocks={setStocks}
           tax={tax}
+          setTax={setTax}
           handleTax={handleTax}
+          price={price}
           setPrice={setPrice}
-          del={del}
           date={date}
-          // setDate={setDate}
+          setDate={setDate}
+          del={del}
           // selectedDate={selectedDate}
         />
       </main>

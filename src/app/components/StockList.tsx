@@ -9,23 +9,29 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Stock } from "../../../utils/interface";
+import { Stock } from "../../../utils/type";
 import Item from "./Item";
 import { Categories } from "./Categories";
 
 import ja from "dayjs/locale/ja";
+import Asynchronous from "./Asynchronous";
+import { useState } from "react";
+import ModalStockRegistration from "./ModalStockRegistration";
 
 const StockList = ({
   stocks,
   setStocks,
   tax,
+  setTax,
   handleTax,
+  price,
   setPrice,
   del,
   date,
-  // setDate
+  setDate
 }) => {
   const selectedDate = date?.locale(ja).format("YYYY-MM-DD");
+  const [itemName, setItemName] = useState<string>("");
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
@@ -43,6 +49,27 @@ const StockList = ({
           <Typography>税込</Typography>
         </FormControl>
       </Box>
+
+      {/* 在庫検索 */}
+      <Asynchronous
+        itemName={itemName}
+        setItemName={setItemName}
+        stocks={stocks}
+        setStocks={setStocks}
+      />
+
+      {/* 在庫登録 */}
+      <ModalStockRegistration
+          stocks={stocks}
+          setStocks={setStocks}
+          tax={tax}
+          setTax={setTax}
+          price={price}
+          setPrice={setPrice}
+          date={date}
+          setDate={setDate}
+        />
+
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

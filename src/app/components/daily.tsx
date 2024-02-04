@@ -2,35 +2,10 @@ import { Box, FormControl, Grid, Typography } from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import UsedItem from "./UsedItem"
-import { Stock } from "../../../utils/interface"
+import { Stock } from "../../../utils/type"
 import ja from "dayjs/locale/ja";
-// import { useEffect, useState } from "react"
-// import { supabase } from "../../../utils/supabase";
-// import { useSnackbarContext } from "@/providers/context-provider"
-
 
 const Daily = ({date, setDate, stocks, setStocks}) => {
-  // const { showSnackbar } = useSnackbarContext();
-
-  // const [stocks, setStocks] = useState<Stock[] | null>([]);
-
-  // useEffect(() => {
-  //   (async () => await getStocks())();
-  // }, []);
-
-  // const getStocks = async () => {
-  //   try {
-  //     const { data, error } = await supabase.from("stocks").select("*");
-  //     if (error) throw error;
-  //     setStocks(data);
-  //   } catch (error) {
-  //     if (showSnackbar) {
-  //       showSnackbar("error", "在庫データを取得できません。" + error.message);
-  //     }
-  //     setStocks([]);
-  //   }
-  // };
-
 
   const selectedDate = date?.locale(ja).format("YYYY-MM-DD");
 

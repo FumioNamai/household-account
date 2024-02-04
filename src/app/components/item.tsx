@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Stock } from "../../../utils/interface";
+import { Stock } from "../../../utils/type";
 import { supabase } from "../../../utils/supabase";
 import {
   Box,
