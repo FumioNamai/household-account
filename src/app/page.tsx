@@ -19,6 +19,7 @@ export default function Home() {
   const { showSnackbar } = useSnackbarContext();
 
   const [stocks, setStocks] = useState<Stock[] | null>([]);
+
   useEffect(() => {
     (async () => await getStocks())();
   }, []);
@@ -29,44 +30,6 @@ export default function Home() {
       if (error) throw error;
       setStocks(data);
 
-      // 同じnameで、同じpriceのものはcount数で表示
-      const group = (arr: Stock[], func = (v: Stock) => v, detail = false) => {
-        const index: string[] = [];
-        const result: [
-          {
-            id: Number;
-            type: String;
-            name: String;
-            length: Number;
-          }
-        ] = [];
-
-        arr.forEach((v) => {
-          const funcResult = func(v);
-          const i = index.indexOf(funcResult);
-          if (i === -1) {
-            index.push(funcResult);
-            result.push([v]);
-          } else {
-            result[i].push(v);
-          }
-        });
-        if (detail) {
-          return { index, result };
-        }
-        return result;
-      };
-
-      // console.log(
-      //   group(data, (d) => d.name + d.price, { detail: true }).result.map(
-      //     (e) => ({
-      //       id: e[0].id,
-      //       name: e[0].name,
-      //       price: e[0].price,
-      //       count: e.length,
-      //     })
-      //   )
-      // );
     } catch (error) {
       if (showSnackbar) {
         showSnackbar("error", "在庫データを取得できません。" + error.message);
