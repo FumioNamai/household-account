@@ -1,22 +1,24 @@
+// 未使用コンポーネント？
+
 "use client";
 
 import { useEffect, useState } from "react";
-import { STOCK } from "../../../utils/interface";
+import { Stock } from "../../../utils/type";
 import { addStock, getAllStocks } from "../../../utils/supabaseFunctions";
 import Item from "./Item";
 import { supabase } from "../../../utils/supabase";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  stocks: STOCK[];
+  stocks: Stock[];
 };
 
 const Stock = (props: Props) => {
   const { stocks } = props;
   const router = useRouter()
-  const [type, setType] = useState<String>("")
-  const [name, setName] = useState<String>("")
-  const [price, setPrice] = useState<String>("")
+  const [type, setType] = useState<string>("")
+  const [name, setName] = useState<string>("")
+  const [price, setPrice] = useState<string>("")
 
   useEffect(() => {
     (async () => await getAllStocks())()
@@ -163,4 +165,4 @@ const Stock = (props: Props) => {
   );
 };
 
-export default Stock;
+// export default Stock;

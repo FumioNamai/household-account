@@ -1,13 +1,10 @@
 import {
-  Autocomplete,
   Box,
   Button,
   FormControl,
   Grid,
   InputAdornment,
   InputLabel,
-  List,
-  ListItem,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -37,13 +34,13 @@ const StockRegistration = ({ stocks, setStocks }) => {
   const [tax, setTax] = useState(true);
   const [categoryItem, setCategoryItem] = useState("---");
   const [isFocus, setIsFocus] = useState(false);
-  const [suggestions, setSuggestions] = useState([]);
+  // const [suggestions, setSuggestions] = useState([]);
   const onUpdate = (stocks: Stock[]) => setStocks(stocks);
 
-  const selectedDate = date?.locale(ja).format("YYYY-MM-DD");
+  const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
 
-  const handleForm = async (e: any) => {
-    e.preventDefault();
+  const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (type === "食品" && tax === false) {
       price = Math.floor(parseInt(price) * 1.08).toString();
     }
@@ -110,7 +107,6 @@ const StockRegistration = ({ stocks, setStocks }) => {
               sx={{ maxWidth: "180px", marginBottom: "24px" }}
               value={date}
               format="YYYY/MM/DD"
-              // onChange={(date) => setDate(date)}
               onChange={setDate}
             />
           </LocalizationProvider>
@@ -138,7 +134,6 @@ const StockRegistration = ({ stocks, setStocks }) => {
               value={categoryItem}
               label="分類"
               onChange={handleSelectItem}
-              sx={{}}
             >
               <MenuItem value={"---"}>---</MenuItem>
               {Categories.map((category) => (

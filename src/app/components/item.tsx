@@ -12,6 +12,20 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditOutlined from "@mui/icons-material/EditOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import { useSnackbarContext } from "@/providers/context-provider";
+import { Dayjs } from "dayjs";
+
+type Props = {
+  id: number;
+  name: string;
+  price: number;
+  setPrice: React.Dispatch<React.SetStateAction<boolean>>;
+  type: string;
+  stocks: Stock[];
+  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
+  onDelete:(stocks: Stock[]) => void;
+  date: string | undefined;
+  tax: boolean;
+}
 
 const Item = ({
   id,
@@ -24,7 +38,7 @@ const Item = ({
   onDelete,
   date,
   tax,
-}) => {
+} : Props) => {
   const { showSnackbar } = useSnackbarContext()
   let [newPrice, setNewPrice] = useState<string>("");
 
@@ -127,10 +141,10 @@ const Item = ({
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
     if (type === "食品" && tax === false) {
-      let taxExcluded = Math.ceil(parseInt(price) / 1.08).toString();
+      let taxExcluded = Math.ceil(price / 1.08).toString();
       return taxExcluded;
     } else if (type !== "食品" && tax === false) {
-      let taxExcluded = Math.ceil(parseInt(price) / 1.1).toString();
+      let taxExcluded = Math.ceil(price / 1.1).toString();
       return taxExcluded;
     } else {
       return price;
@@ -147,7 +161,6 @@ const Item = ({
           alignItems: "center",
           justifyContent: "space-between",
         }}
-        // className="flex flex-row items-center justify-between p-1"
       >
         <Typography variant="body2">{name}</Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>

@@ -1,40 +1,42 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Box, FormControl, Grid, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import UsedItem from "./UsedItem";
+import { Stock } from "../../../utils/type"
 
-const Monthly = ({ stocks, setStocks }) => {
-  const [month, setMonth] = React.useState<Dayjs | null>(dayjs());
+const Monthly: React.FC<{stocks: Stock[]; setStocks: React.Dispatch<React.SetStateAction<Stock>>}> = ({ stocks, setStocks }) => {
+  const [month, setMonth] = useState<Dayjs | null>(dayjs());
 
-  const selectedMonth = month?.format("YYYY-MM");
+  const selectedMonth: string | null = month!.format("YYYY-MM");
 
   let date = "0";
-  let dailyTotals = [];
+  let dailyTotals = []
+
   for (let i = 1; i < 32; i++) {
     date = ("0" + `${i}`).slice(-2);
 
-    const todayUsed = stocks!.filter(
+    const todayUsed : Stock[]= stocks!.filter(
       (stock) => stock.use_date === `${selectedMonth}-${date}`
     );
 
-    const todayFoodsTotal = todayUsed
-      .filter((todayUsed) => todayUsed.type === "食品")
+    const todayFoodsTotal : number = todayUsed
+      .filter((todayUsed: Stock) => todayUsed.type === "食品")
+      .reduce((sum:number, el:Stock) => {
+        return sum + el.price;
+      }, 0);
+
+    const todayItemsTotal : number  = todayUsed
+      .filter((todayUsed: Stock) => todayUsed.type === "雑貨")
       .reduce((sum, el) => {
         return sum + el.price;
       }, 0);
 
-    const todayItemsTotal = todayUsed
-      .filter((todayUsed) => todayUsed.type === "雑貨")
-      .reduce((sum, el) => {
-        return sum + el.price;
-      }, 0);
-
-    const todayOthersTotal = todayUsed
-      .filter((todayUsed) => todayUsed.type === "その他")
+    const todayOthersTotal : number  = todayUsed
+      .filter((todayUsed: Stock) => todayUsed.type === "その他")
       .reduce((sum, el) => {
         return sum + el.price;
       }, 0);
@@ -48,24 +50,24 @@ const Monthly = ({ stocks, setStocks }) => {
   }
 
   //その他の今月使用済みリストを表示させる
-  const monthOthers = stocks?.filter(
+  const monthOthers: Stock[] = stocks?.filter(
     (stock) =>
       stock.type === "その他" && stock.use_date?.startsWith(selectedMonth)
   );
 
-  const monthlyFoodsTotal = dailyTotals.reduce((sum, el) => {
+  const monthlyFoodsTotal: number = dailyTotals.reduce((sum, el) => {
     return sum + el.todayFoodsTotal;
   }, 0);
 
-  const monthlyItemsTotal = dailyTotals.reduce((sum, el) => {
+  const monthlyItemsTotal: number = dailyTotals.reduce((sum, el) => {
     return sum + el.todayItemsTotal;
   }, 0);
 
-  const monthlyOthersTotal = dailyTotals.reduce((sum, el) => {
+  const monthlyOthersTotal: number = dailyTotals.reduce((sum, el) => {
     return sum + el.todayOthersTotal;
   }, 0);
 
-  const monthlyTotal =
+  const monthlyTotal: number =
     monthlyFoodsTotal + monthlyItemsTotal + monthlyOthersTotal;
 
   return (

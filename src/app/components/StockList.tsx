@@ -17,6 +17,20 @@ import ja from "dayjs/locale/ja";
 import Asynchronous from "./Asynchronous";
 import { useState } from "react";
 import ModalStockRegistration from "./ModalStockRegistration";
+import { Dayjs } from "dayjs";
+
+type Props = {
+  stocks: Stock[];
+  setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
+  tax: boolean;
+  setTax: React.Dispatch<React.SetStateAction<boolean>>;
+  handleTax:() => void;
+  price: string;
+  setPrice: React.Dispatch<React.SetStateAction<boolean>>;
+  del:(stocks: Stock[]) => void;
+  date: Dayjs | null;
+  setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
+}
 
 const StockList = ({
   stocks,
@@ -28,10 +42,10 @@ const StockList = ({
   setPrice,
   del,
   date,
-  setDate,
-}) => {
-  const selectedDate = date?.locale(ja).format("YYYY-MM-DD");
-  const [itemName, setItemName] = useState<string>("");
+  setDate
+}: Props) => {
+  const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
+  // const [itemName, setItemName] = useState<string>("");
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
@@ -41,10 +55,10 @@ const StockList = ({
 
       {/* 在庫検索 */}
       <Asynchronous
-        itemName={itemName}
-        setItemName={setItemName}
-        stocks={stocks}
-        setStocks={setStocks}
+        // itemName={itemName}
+        // setItemName={setItemName}
+        // stocks={stocks}
+        // setStocks={setStocks}
       />
 
       {/* 在庫登録 */}

@@ -4,43 +4,52 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import UsedItem from "./UsedItem"
 import { Stock } from "../../../utils/type"
 import ja from "dayjs/locale/ja";
+import { Dayjs } from "dayjs"
 
-const Daily = ({date, setDate, stocks, setStocks}) => {
 
-  const selectedDate = date?.locale(ja).format("YYYY-MM-DD");
+type Props = {
+  stocks: Stock[];
+  setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
+  date: Dayjs | null;
+  setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
+}
+
+const Daily = ({date, setDate, stocks, setStocks}: Props) => {
+
+  const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
 
   const todayUsed: Stock[] = stocks!.filter(
     (stock: Stock) => stock.use_date === `${selectedDate}`
   );
 
   // その日に使用した食品の合計金額を算出
-  const todayFoods = todayUsed.filter(
+  const todayFoods: Stock[] = todayUsed.filter(
     (todayUsed: Stock) => todayUsed.type === "食品"
   );
-  const todaysFoodsTotal = todayFoods.reduce((sum: number, el) => {
+  const todaysFoodsTotal: number = todayFoods.reduce((sum: number, el) => {
     return sum + el.price;
   }, 0);
 
   // その日に使用した雑貨の合計金額を算出
-  const todayItems = todayUsed.filter(
+  const todayItems: Stock[] = todayUsed.filter(
     (todayUsed: Stock) => todayUsed.type === "雑貨"
   );
-  const todaysItemsTotal = todayItems.reduce((sum: number, el) => {
+  const todaysItemsTotal: number = todayItems.reduce((sum: number, el) => {
     return sum + el.price;
   }, 0);
 
   // その日に使用した雑貨の合計金額を算出
-  const todayOthers = todayUsed.filter(
+  const todayOthers: Stock[] = todayUsed.filter(
     (todayUsed: Stock) => todayUsed.type === "その他"
   );
-  const todaysOthersTotal = todayOthers.reduce((sum: number, el) => {
+  const todaysOthersTotal: number = todayOthers.reduce((sum: number, el) => {
     return sum + el.price;
   }, 0);
 
   // その月に使用したその他の合計金額を算出
 
   // その日の合計金額を算出
-  const total = todaysFoodsTotal + todaysItemsTotal + todaysOthersTotal;
+  const total: number = todaysFoodsTotal + todaysItemsTotal + todaysOthersTotal;
 
 
   return(

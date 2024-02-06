@@ -18,7 +18,7 @@ import ModalStockRegistration from "./components/ModalStockRegistration";
 export default function Home() {
   const { showSnackbar } = useSnackbarContext();
 
-  const [stocks, setStocks] = useState<Stock[] | null>([]);
+  const [stocks, setStocks] = useState<Stock[]>([]);
 
   useEffect(() => {
     (async () => await getStocks())();
@@ -38,7 +38,7 @@ export default function Home() {
     }
   };
 
-  let [date, setDate] = React.useState<Dayjs | null>(dayjs());
+  let [date, setDate] = useState<Dayjs | null>(dayjs());
   let [price, setPrice] = useState<string>("");
   const [tax, setTax] = useState(true);
 
