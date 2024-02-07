@@ -10,7 +10,7 @@ type Props = {
   tax: boolean;
   setTax: React.Dispatch<React.SetStateAction<boolean>>;
   price:string;
-  setPrice: React.Dispatch<React.SetStateAction<boolean>>;
+  setPrice: React.Dispatch<React.SetStateAction<number>>;
   date: Dayjs | null;
   setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
 }

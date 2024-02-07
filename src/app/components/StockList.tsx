@@ -24,9 +24,9 @@ type Props = {
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
   tax: boolean;
   setTax: React.Dispatch<React.SetStateAction<boolean>>;
-  handleTax:() => void;
+  handleTax:(event: React.ChangeEvent<HTMLInputElement>) => void;
   price: string;
-  setPrice: React.Dispatch<React.SetStateAction<boolean>>;
+  setPrice: React.Dispatch<React.SetStateAction<number>>;
   del:(stocks: Stock[]) => void;
   date: Dayjs | null;
   setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;

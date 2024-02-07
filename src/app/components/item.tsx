@@ -19,7 +19,7 @@ type Props = {
   id: number;
   name: string;
   price: number;
-  setPrice: React.Dispatch<React.SetStateAction<boolean>>;
+  setPrice: React.Dispatch<React.SetStateAction<number>>;
   type: string;
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
@@ -99,7 +99,7 @@ const Item = ({
         .from("stocks")
         .delete()
         .eq("id", propsID);
-      const { data: stocks } = await supabase.from("stocks").select("*");
+      const { data: Stock } = await supabase.from("stocks").select("*");
 
       // 親コンポーネントにstocksを渡して在庫情報を更新
       onDelete(stocks);

@@ -16,9 +16,7 @@ export default function Asynchronous() {
     }
 
     (async () => {
-      const stocks = await getAllStocks();
-      console.log(stocks);
-
+      const stocks:Stock[] | null = await getAllStocks();
 
       // 同じnameで、同じpriceのものはcount数で表示
       const group = (arr: Stock[], func = (v: Stock) => v, detail = false) => {
@@ -32,8 +30,9 @@ export default function Asynchronous() {
           }
         ] = [];
 
-        arr.forEach((v:Stock) => {
-          const funcResult:Stock = func(v);
+        arr.forEach((v) => {
+          const funcResult = func(v);
+
           const i = index.indexOf(funcResult);
           if (i === -1) {
             index.push(funcResult);

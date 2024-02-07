@@ -6,7 +6,7 @@ export const getAllStocks = async () => {
   return stocks.data
 }
 
-export const addStock = async (form) => {
+// export const addStock = async (form) => {
 
-  await supabase.from("stocks").insert({type:form.type,name:form.name,price:form.price})
-}
+//   await supabase.from("stocks").insert({type:form.type,name:form.name,price:form.price})
+// }
