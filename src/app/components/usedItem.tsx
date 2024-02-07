@@ -9,7 +9,7 @@ type Props = {
   id: number;
   name: string;
   price: number;
-  stocks: Stock[];
+  stocks: Stock[] | null;
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
 
 };
@@ -18,7 +18,7 @@ type Props = {
 // const UsedItem: React.FC<Stock & OnUpdateProps> = ({
 const UsedItem = ({ id, name, price, stocks, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
-  const onUpdate = (stocks: Stock[]) => setStocks(stocks);
+  const onUpdate = (stocks: Stock[] ) => setStocks(stocks);
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number) => {
     try {

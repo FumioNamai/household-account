@@ -8,7 +8,7 @@ import dayjs, { Dayjs } from "dayjs";
 import UsedItem from "./UsedItem";
 import { Stock } from "../../../utils/type"
 
-const Monthly: React.FC<{stocks: Stock[]; setStocks: React.Dispatch<React.SetStateAction<Stock>>}> = ({ stocks, setStocks }) => {
+const Monthly: React.FC<{stocks: Stock[]; setStocks: React.Dispatch<React.SetStateAction<Stock[]>>}> = ({ stocks, setStocks }) => {
   const [month, setMonth] = useState<Dayjs | null>(dayjs());
 
   const selectedMonth: string | null = month!.format("YYYY-MM");

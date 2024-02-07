@@ -13,6 +13,7 @@ import EditOutlined from "@mui/icons-material/EditOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { Dayjs } from "dayjs";
+import { CheckCircleTwoTone, DeleteTwoTone, ModeTwoTone } from "@mui/icons-material";
 
 type Props = {
   id: number;
@@ -173,7 +174,8 @@ const Item = ({
                 color="primary"
                 onClick={() => handleUse(id)}
               >
-                <CheckCircleOutlinedIcon />
+                {/* <CheckCircleOutlinedIcon /> */}
+                <CheckCircleTwoTone />
               </IconButton>
 
               <IconButton
@@ -181,7 +183,8 @@ const Item = ({
                 color="error"
                 onClick={() => handleDelete(id)}
               >
-                <DeleteIcon />
+                {/* <DeleteIcon /> */}
+                <DeleteTwoTone />
               </IconButton>
             </>
           ) : (
@@ -202,14 +205,16 @@ const Item = ({
                 color="success"
                 onClick={() => handleUpdate(id)}
               >
-                <EditOutlined />
+                {/* <EditOutlined /> */}
+                <ModeTwoTone />
               </IconButton>
               <IconButton
                 aria-label="delete"
                 color="error"
                 onClick={() => handleDelete(id)}
               >
-                <DeleteIcon />
+                {/* <DeleteIcon /> */}
+                <DeleteTwoTone />
               </IconButton>
             </>
           )}

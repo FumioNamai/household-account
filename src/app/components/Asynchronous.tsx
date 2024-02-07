@@ -17,6 +17,8 @@ export default function Asynchronous() {
 
     (async () => {
       const stocks = await getAllStocks();
+      console.log(stocks);
+
 
       // 同じnameで、同じpriceのものはcount数で表示
       const group = (arr: Stock[], func = (v: Stock) => v, detail = false) => {
