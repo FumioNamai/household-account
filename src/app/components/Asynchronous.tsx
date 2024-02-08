@@ -19,21 +19,20 @@ export default function Asynchronous() {
       const stocks:Stock[] | null = await getAllStocks();
 
       // 同じnameで、同じpriceのものはcount数で表示
-      const group = (arr: Stock[], func = (v: Stock) => v, detail = false) => {
+      const group = (arr: Stock[] | null, func = (v:any) => v, detail = false ) => {
         const index: string[] = [];
         const result: [
           {
-            id: Number;
-            type: String;
-            name: String;
-            length: Number;
+            id: number;
+            type: string;
+            name: string;
+            length: number;
           }
         ] = [];
 
-        arr.forEach((v) => {
-          const funcResult = func(v);
-
-          const i = index.indexOf(funcResult);
+        arr!.forEach((v) => {
+          const funcResult: string = func(v);
+          const i:number = index.indexOf(funcResult);
           if (i === -1) {
             index.push(funcResult);
             result.push([v]);
