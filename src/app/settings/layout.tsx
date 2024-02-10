@@ -1,6 +1,6 @@
 'use client'
 
-import { KeyIcon, ArrowLeftOnRectangleIcon, EnvelopeIcon, UserCircleIcon} from "@heroicons/react/24/solid"
+import { UserCircleIcon,EnvelopeIcon,KeyIcon, ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -23,7 +23,7 @@ const subNavigation = [
   },
   {
     name: 'ログアウト',
-    icon: ArrowLeftOnRectangleIcon,
+    icon: ArrowLeftStartOnRectangleIcon,
     href:'/settings/logout',
   },
 ]
@@ -45,6 +45,7 @@ const SettingsLayout = ({ children } : { children: React.ReactNode }) => {
           ))
         }
       </div>
+      <div>{children}</div>
     </div>
   )
 }
