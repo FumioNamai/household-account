@@ -23,7 +23,6 @@ export default function RootLayout({
     <html lang="ja">
       <head>
       <meta name="viewport" content="initial-scale=1, width=device-width" />
-
       </head>
       <body className={inter.className}>
         <Header />

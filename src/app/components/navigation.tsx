@@ -31,25 +31,19 @@ const Navigation = ({
   }, [session, setUser, profile]);
 
   return (
-    <header>
-      <div>
-        <Link href="/">Auth Component</Link>
-        <div>
-          {session ? (
-            <div>
-              <Link href="/settings/profile">
-                <div>{profile && profile.name}</div>
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <Link href="/auth/login">ログイン</Link>
-              {/* <Link href="/auth/signup">サインアップ</Link> */}
-            </div>
-          )}
-        </div>
-      </div>
-    </header>
+    <>
+      {/* <Link href="/">Auth Component</Link> */}
+      { session ? (
+          <Link href="/settings/profile">
+            <p>{profile && profile.name}</p>
+          </Link>
+      ) : (
+        <>
+          {/* <Link href="/auth/login">ログイン</Link> */}
+          {/* <Link href="/auth/signup">サインアップ</Link> */}
+        </>
+      )}
+    </>
   );
 };
 
