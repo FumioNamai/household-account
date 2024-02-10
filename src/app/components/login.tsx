@@ -2,7 +2,7 @@
 
 import { Database } from "@/lib/database.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, dividerClasses } from "@mui/material";
+import { Box, Button, dividerClasses } from "@mui/material";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -94,12 +94,13 @@ const Login = () => {
           {loading ? (
             <Loading />
           ) : (
-            <button
+            <Button
+              variant="outlined"
               type="submit"
-              className="font-bold bg-sky-500 hover:brightness-95 w-full rounded-full p-2 text-white text-sm"
+              // className="font-bold bg-sky-500 hover:brightness-95 w-full rounded-full p-2 text-white text-sm"
             >
               ログイン
-            </button>
+            </Button>
           )}
         </div>
       </form>

@@ -39,7 +39,7 @@ const Navigation = ({
           </Link>
       ) : (
         <>
-          {/* <Link href="/auth/login">ログイン</Link> */}
+          <Link href="/auth/login">ログイン</Link>
           {/* <Link href="/auth/signup">サインアップ</Link> */}
         </>
       )}

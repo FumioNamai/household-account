@@ -5,6 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
 import Loading from "./loading"
+import { Button } from "@mui/material"
 
 const Logout = () => {
   const router = useRouter()
@@ -42,7 +43,7 @@ const Logout = () => {
       {/* ログアウトボタン */}
       <form onSubmit={onSubmit}>
         <div>
-          {loading ? (<Loading />) : ( <button type="submit">ログアウト</button> )}
+          {loading ? (<Loading />) : ( <Button variant="outlined" type="submit">ログアウト</Button> )}
         </div>
       </form>
       { message && <div>{message}</div> }
