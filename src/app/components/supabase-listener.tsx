@@ -3,6 +3,7 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "../../lib/database.types"
 import { cookies } from 'next/headers'
+import Navigation from "./navigation"
 
 // 認証状態の監視
 const SupabaseListener = async () => {
@@ -20,16 +21,17 @@ const SupabaseListener = async () => {
     profile = currentProfile
 
     // メールアドレスを変更した場合は、プロフィール情報を更新する
-    if ( currentProfile && currentProfile.email !== session?.user.email ) {
-      const { data:updatedProfiles } = await supabase.from('profiles').update({email:session.user.email}).match( {
-        id:session.user.id
-      }).select('*').single()
-      profile = updatedProfiles
-    }
+    // if ( currentProfile && currentProfile.email !== session?.user.email ) {
+    //   const { data:updatedProfiles } = await supabase.from('profiles').update({email:session.user.email}).match( {
+    //     id:session.user.id
+    //   }).select('*').single()
+
+    //   profile = updatedProfiles
+    // }
   }
-  // return(
-    // <Navigation />
-  // )
+  return(
+    <Navigation session={session} profile={profile}/>
+  )
 }
 
 export default SupabaseListener
