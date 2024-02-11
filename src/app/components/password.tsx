@@ -114,7 +114,7 @@ const Password = () => {
           {loading ? (
             <Loading />
           ) : (
-            <Button variant="outlined" type="submit">
+            <Button variant="outlined" type="submit" sx={{width:"100%"}}>
               変更
             </Button>
           )}
