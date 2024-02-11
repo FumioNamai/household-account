@@ -2,7 +2,7 @@
 
 import { Database } from "@/lib/database.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -56,10 +56,10 @@ const Email = ({ email }: { email: string }) => {
       const { error: signOutError } = await supabase.auth.signOut();
       // エラーチェック
       if (signOutError) {
-        setMessage("エラーが発生しました。" + signOutError.message)
-        return
+        setMessage("エラーが発生しました。" + signOutError.message);
+        return;
       }
-      router.push('/auth/login')
+      router.push("/auth/login");
     } catch (error) {
       setMessage("エラーが発生しました。" + error);
       return;
@@ -71,34 +71,57 @@ const Email = ({ email }: { email: string }) => {
 
   return (
     <div>
-      <Typography variant="h6" sx={{ textAlign:"center", marginBottom:"40px"}}>メールアドレス変更</Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Typography
+        variant="h5"
+        sx={{ fontWeight: "bold", textAlign: "center", marginBottom: "40px" }}
+      >
+        メールアドレス変更
+      </Typography>
+      <Stack
+        component="form"
+        noValidate
+        spacing={2}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         {/* 現在のメールアドレス */}
-        <div>
-          <Typography variant="body1">現在のメールアドレス</Typography>
-          <div>{email}</div>
-        </div>
+        <Box>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            現在のメールアドレス
+          </Typography>
+          <Typography variant="body1">{email}</Typography>
+        </Box>
 
         {/* 新しいメールアドレス */}
-        <div>
-          <div>
-            <TextField type="email" {...register("email", { required: true })} />
-          </div>
-          <div>{errors.email?.message}</div>
-        </div>
+        <TextField
+          type="email"
+          label="新しいメールアドレス"
+          sx={{ width: "100%" }}
+          {...register("email", { required: true })}
+        />
+        <Typography variant="body1" sx={{ color: "red", textAlign: "center" }}>
+          {errors.email?.message}
+        </Typography>
 
         {/* 変更ボタン */}
         <div>
-          {
-            loading ? ( <Loading />) : (
-              <Button variant="outlined" type="submit">
-                変更
-              </Button>
-            )
-          }
+          {loading ? (
+            <Loading />
+          ) : (
+            <Button variant="outlined" type="submit">
+              変更
+            </Button>
+          )}
         </div>
-      </form>
-      {message && <div>{message}</div> }
+        {/* メッセージ */}
+        {message && (
+          <Typography
+            variant="body1"
+            sx={{ color: "red", textAlign: "center" }}
+          >
+            {message}
+          </Typography>
+        )}
+      </Stack>
     </div>
   );
 };
