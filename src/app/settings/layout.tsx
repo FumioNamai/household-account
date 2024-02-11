@@ -6,7 +6,7 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { UserCircleIcon,EnvelopeIcon,KeyIcon, ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 
 // セッティングス用ののナビゲーション
 const subNavigation = [
@@ -53,7 +53,7 @@ const SettingsLayout = ({ children } : { children: React.ReactNode }) => {
         }
         </Stack>
       {/* </div> */}
-      <div>{children}</div>
+      <Box sx={{marginTop:5}}>{children}</Box>
     </div>
   )
 }

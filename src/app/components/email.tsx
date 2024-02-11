@@ -73,18 +73,18 @@ const Email = ({ email }: { email: string }) => {
     <div>
       <Typography
         variant="h5"
-        sx={{ fontWeight: "bold", textAlign: "center", marginBottom: "40px" }}
+        sx={{ fontWeight: "bold", textAlign: "center", mb:3 }}
       >
         メールアドレス変更
       </Typography>
       <Stack
         component="form"
         noValidate
-        spacing={2}
+        spacing={1}
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* 現在のメールアドレス */}
-        <Box>
+        <Box sx={{ mb:2 }}>
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
             現在のメールアドレス
           </Typography>
