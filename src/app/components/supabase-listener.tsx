@@ -21,13 +21,13 @@ const SupabaseListener = async () => {
     profile = currentProfile
 
     // メールアドレスを変更した場合は、プロフィール情報を更新する
-    // if ( currentProfile && currentProfile.email !== session?.user.email ) {
-    //   const { data:updatedProfiles } = await supabase.from('profiles').update({email:session.user.email}).match( {
-    //     id:session.user.id
-    //   }).select('*').single()
+    if ( currentProfile && currentProfile.email !== session?.user.email ) {
+      const { data:updatedProfiles } = await supabase.from('profiles').update({email:session.user.email}).match( {
+        id:session.user.id
+      }).select('*').single()
 
-    //   profile = updatedProfiles
-    // }
+      profile = updatedProfiles
+    }
   }
   return(
     <Navigation session={session} profile={profile}/>

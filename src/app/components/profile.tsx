@@ -61,6 +61,7 @@ const Profile = () => {
         setMessage("エラーが発生しました。" + updateError.message);
         return;
       }
+
       setMessage("プロフィールを更新しました。");
     } catch (error) {
       setMessage("エラーが発生しました。" + error);
@@ -72,7 +73,6 @@ const Profile = () => {
   };
   return (
     <Box>
-      {/* <div className="text-center font-bold text-xl mb-10">プロフィール</div> */}
       <Typography
         variant="h5"
         sx={{
@@ -86,7 +86,12 @@ const Profile = () => {
         プロフィール
       </Typography>
 
-      <Stack spacing={2}>
+      <Stack
+      component="form"
+      noValidate
+      onSubmit={handleSubmit(onSubmit)}
+      spacing={2}
+      sx={{mb:5}}>
         {/* アバター画像 */}
         {/* 名前 */}
         <TextField
@@ -119,12 +124,12 @@ const Profile = () => {
             </Button>
           )}
         </Box>
+      </Stack>
       {message && (
         <Typography variant="body1" sx={{ color: "red", textAlign: "center" }}>
           {message}
         </Typography>
       )}
-      </Stack>
     </Box>
   );
 };
