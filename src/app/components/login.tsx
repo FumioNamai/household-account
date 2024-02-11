@@ -2,7 +2,14 @@
 
 import { Database } from "@/lib/database.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, dividerClasses } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  dividerClasses,
+} from "@mui/material";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -63,15 +70,25 @@ const Login = () => {
   };
   return (
     <div>
-      <div className=" text-center font-bold text-xl mb-10">ログイン</div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Typography
+        variant="h5"
+        sx={{ fontWeight: "bold", textAlign: "center", mb: 3 }}
+      >
+        ログイン
+      </Typography>
+      <Stack
+        component="form"
+        noValidate
+        spacing={2}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         {/* メールアドレス */}
         <div>
-          <input
+          <TextField
             type="email"
-            className="border rounded-md w-full py-2 px-3 focus:outline-none focus:border-sky-500"
-            placeholder="メールアドレス"
+            label="メールアドレス"
             id="email"
+            sx={{ width: "100%" }}
             // register関数で入力を登録する
             {...register("email", { required: true })}
           />
@@ -79,14 +96,19 @@ const Login = () => {
 
         {/* パスワード */}
         <div>
-          <input
+          <TextField
             type="password"
-            className="border rounded-md w-full py-2 px-3 focus:outline-none focus:border-sky-500"
-            placeholder="パスワード"
+            label="パスワード"
             id="password"
+            sx={{ width: "100%" }}
             {...register("password", { required: true })}
           />
-          <div>{errors.password?.message}</div>
+          <Typography
+            variant="body1"
+            sx={{ color: "red", textAlign: "center" }}
+          >
+            {errors.password?.message}
+          </Typography>
         </div>
 
         {/* ログインボタン */}
@@ -94,27 +116,29 @@ const Login = () => {
           {loading ? (
             <Loading />
           ) : (
-            <Button
-              variant="outlined"
-              type="submit"
-              // className="font-bold bg-sky-500 hover:brightness-95 w-full rounded-full p-2 text-white text-sm"
-            >
+            <Button variant="outlined" type="submit" sx={{width:"100%"}}>
               ログイン
             </Button>
           )}
         </div>
-      </form>
+      </Stack>
 
       {/* ログインに失敗したときにメッセージを表示 */}
-      {message && <div>{message}</div>}
+      {message && (
+        <Typography variant="body1" sx={{ color: "red", textAlign: "center" }}>
+          {message}
+        </Typography>
+      )}
 
       {/* パスワードを忘れた場合のリンクを作成 */}
-      <div>
-        <Link href='/auth/reset-password'>パスワードを忘れた方はこちら</Link>
-      </div>
-      <div>
-        <Link href='/auth/signup'>アカウントを作成する</Link>
-      </div>
+      <Stack spacing={2} sx={{mt:5}}>
+      <Typography variant="body1" sx={{ color:"gray", fontWeight:"bold", textAlign:"center"}}>
+        <Link href="/auth/reset-password">パスワードを忘れた方はこちら</Link>
+      </Typography>
+      <Typography variant="body1" sx={{ color:"gray", fontWeight:"bold", textAlign:"center"}}>
+        <Link href="/auth/signup">アカウントを作成する</Link>
+      </Typography>
+      </Stack>
     </div>
   );
 };

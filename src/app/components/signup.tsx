@@ -2,7 +2,7 @@
 
 import { Database } from "@/lib/database.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -136,7 +136,7 @@ const Signup = () => {
           {loading ? (
             <Loading />
           ) : (
-            <Button variant="outlined" type="submit">
+            <Button variant="outlined" type="submit" sx={{width:"100%"}}>
               登録
             </Button>
           )}
@@ -150,8 +150,12 @@ const Signup = () => {
             {message}
           </Typography>
         )}
+        </Stack>
+        <Box sx={{mt:5}}>
+        <Typography variant="body1" sx={{ color:"gray", fontWeight:"bold", textAlign:"center"}}>
         <Link href="/auth/login">ログインはこちら</Link>
-      </Stack>
+        </Typography>
+        </Box>
     </div>
   );
 };
