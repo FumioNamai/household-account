@@ -136,7 +136,7 @@ const Login = () => {
         <Link href="/auth/reset-password">パスワードを忘れた方はこちら</Link>
       </Typography>
       <Typography variant="body1" sx={{ color:"gray", fontWeight:"bold", textAlign:"center"}}>
-        <Link href="/auth/signup">アカウントを作成する</Link>
+        <Link href="/auth/sign-up">アカウントを作成する</Link>
       </Typography>
       </Stack>
     </div>

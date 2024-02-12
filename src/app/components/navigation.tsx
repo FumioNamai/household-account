@@ -48,7 +48,7 @@ const Navigation = ({
         <>
         <Box sx={{ display:"flex", flexDirection:"row", gap:2,alignItems:"center"}}>
           <Link href="/auth/login" underline="hover">ログイン</Link>
-          <Link href="/auth/signup" underline="hover">ユーザー登録</Link>
+          <Link href="/auth/sign-up" underline="hover">ユーザー登録</Link>
         </Box>
         </>
       )}

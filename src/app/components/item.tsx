@@ -65,7 +65,7 @@ const Item = ({
         };
 
         // 使うボタン押下でuse_dateに記録してdailyに移動
-        const { data: stocks } = await supabase
+        const { data } = await supabase
           .from("stocks")
           .update({ use_date: date })
           .eq("id", propsID);

@@ -16,7 +16,15 @@ import ModalStockRegistration from "../components/ModalStockRegistration";
 import { cookies } from 'next/headers'
 import { supabase } from "../../../utils/supabase";
 
-export default function TopPage({session}) {
+type Props = {
+  session: {
+    user: {
+      id: string;
+    }
+  }
+}
+
+export default function TopPage({session}:Props) {
   const { showSnackbar } = useSnackbarContext();
 
   const [stocks, setStocks] = useState<Stock[]>([]);
@@ -54,7 +62,7 @@ export default function TopPage({session}) {
     <>
       <main>
         {/* 月別集計 */}
-        <Monthly stocks={stocks} setStocks={setStocks} />
+        <Monthly stocks={stocks} setStocks={setStocks} session={session}/>
 
         {/* 日別集計 */}
         <Daily
@@ -62,6 +70,7 @@ export default function TopPage({session}) {
           setStocks={setStocks}
           date={date}
           setDate={setDate}
+          session={session}
         />
 
         {/* <StockRegistration

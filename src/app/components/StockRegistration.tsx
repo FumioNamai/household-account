@@ -25,7 +25,19 @@ import dayjs, { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
 import Asynchronous from "./Asynchronous";
 
-const StockRegistration = ({ stocks, setStocks }) => {
+
+type Props = {
+  stocks: Stock[];
+  setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
+  session: {
+    user: {
+      id: string;
+    }
+  }
+}
+
+
+const StockRegistration = ({ stocks, setStocks, session }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
   const [itemName, setItemName] = useState<string>("");
@@ -33,6 +45,7 @@ const StockRegistration = ({ stocks, setStocks }) => {
   let [price, setPrice] = useState<string>("");
   const [tax, setTax] = useState(true);
   const [categoryItem, setCategoryItem] = useState("---");
+
   const [isFocus, setIsFocus] = useState(false);
   // const [suggestions, setSuggestions] = useState([]);
   const onUpdate = (stocks: Stock[]) => setStocks(stocks);
@@ -54,8 +67,10 @@ const StockRegistration = ({ stocks, setStocks }) => {
         price: price,
         registration_date: selectedDate,
         category: categoryItem,
+        user_id: session.user.id,
       });
       if (error) throw error;
+
       const { data: updatedStocks } = await supabase.from("stocks").select("*");
       onUpdate(updatedStocks);
       // setType("");

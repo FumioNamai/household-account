@@ -11,7 +11,12 @@ import { Stock } from "../../../utils/type";
 const Monthly: React.FC<{
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-}> = ({ stocks, setStocks }) => {
+  session: {
+    user: {
+      id: string;
+    }
+  }
+}> = ({ stocks, setStocks,session}) => {
   const [month, setMonth] = useState<Dayjs | null>(dayjs());
 
   const selectedMonth: string | null = month!.format("YYYY-MM");
@@ -23,7 +28,7 @@ const Monthly: React.FC<{
     date = ("0" + `${i}`).slice(-2);
 
     const todayUsed: Stock[] = stocks!.filter(
-      (stock) => stock.use_date === `${selectedMonth}-${date}`
+      (stock) => stock.user_id === session.user.id && stock.use_date === `${selectedMonth}-${date}`
     );
 
     const todayFoodsTotal: number = todayUsed
@@ -55,7 +60,7 @@ const Monthly: React.FC<{
   //その他の今月使用済みリストを表示させる
   const monthOthers: Stock[] = stocks?.filter(
     (stock) =>
-      stock.type === "その他" && stock.use_date?.startsWith(selectedMonth)
+    stock.user_id === session.user.id && stock.type === "その他" && stock.use_date?.startsWith(selectedMonth)
   );
 
   const monthlyFoodsTotal: number = dailyTotals.reduce((sum, el) => {

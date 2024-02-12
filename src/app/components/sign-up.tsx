@@ -19,7 +19,7 @@ const schema = z.object({
 });
 
 // ユーザー登録ページ
-const Signup = () => {
+const SignUp = () => {
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
   const [loading, setLoading] = useState(false);
@@ -43,14 +43,14 @@ const Signup = () => {
 
     try {
       // サインアップ
-      const { error: errorSignup } = await supabase.auth.signup({
+      const { error: errorSignUp } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
           emailRedirectTo: `${location.origin}/auth/callback`,
         },
       });
-      if (errorSignup) {
+      if (errorSignUp) {
         setMessage("エラーが発生しました。" + errorSignup.message);
         return;
       }
@@ -160,4 +160,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;

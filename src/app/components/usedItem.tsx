@@ -11,7 +11,6 @@ type Props = {
   price: number;
   stocks: Stock[] | null;
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
-
 };
 // export type OnUpdateProps = { onUpdate: (stocks: Stock[] | null) => void };
 
@@ -19,6 +18,7 @@ type Props = {
 const UsedItem = ({ id, name, price, stocks, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const onUpdate = (stocks: Stock[] ) => setStocks(stocks);
+
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number) => {
     try {

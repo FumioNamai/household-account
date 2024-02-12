@@ -1,4 +1,6 @@
-import Signup from "@/app/components/signup"
+
+
+import SignUp from "@/app/components/sign-up"
 import { Database } from "@/lib/database.types"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
@@ -6,7 +8,7 @@ import { redirect } from "next/navigation"
 
 
 // ユーザー登録ページ
-const SignupPage = async() => {
+const SignUpPage = async() => {
   const supabase = createServerComponentClient<Database>({
     cookies
   })
@@ -18,7 +20,7 @@ const SignupPage = async() => {
   if (session) {
     redirect('/')
   }
-  return <Signup />
+  return <SignUp />
 }
 
-export default SignupPage
+export default SignUpPage

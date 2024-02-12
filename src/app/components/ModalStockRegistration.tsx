@@ -13,6 +13,11 @@ type Props = {
   setPrice: React.Dispatch<React.SetStateAction<number>>;
   date: Dayjs | null;
   setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
+  session: {
+    user: {
+      id: string;
+    }
+  }
 }
 
 export default function ModalStockRegistration({
@@ -23,7 +28,8 @@ export default function ModalStockRegistration({
   price,
   setPrice,
   date,
-  setDate
+  setDate,
+  session
   }: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -62,6 +68,7 @@ export default function ModalStockRegistration({
             setPrice={setPrice}
             date={date}
             setDate={setDate}
+            session={session}
           />
           <Button onClick={handleClose}>閉じる</Button>
         </Box>

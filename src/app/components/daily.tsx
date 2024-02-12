@@ -11,15 +11,20 @@ type Props = {
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+  session: {
+    user: {
+      id: string;
+    }
+  };
 };
 
-const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
+const Daily = ({ date, setDate, stocks, setStocks, session }: Props) => {
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
 
   const todayUsed: Stock[] = stocks!.filter(
-    (stock: Stock) => stock.use_date === `${selectedDate}`
+    (stock: Stock) => stock.user_id === session.user.id && stock.use_date === `${selectedDate}`
   );
 
   // その日に使用した食品の合計金額を算出
