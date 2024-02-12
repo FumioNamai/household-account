@@ -2,10 +2,11 @@
 
 import { Session } from "@supabase/supabase-js";
 import { Database } from "@/lib/database.types";
-import Link from "next/link";
+// import Link from "next/link";
 import { useEffect } from "react";
 import useStore from "@/store/index";
-import { dividerClasses } from "@mui/material";
+import { Box, Stack,Link, Typography} from "@mui/material";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 type ProfileType = Database["public"]["Tables"]["profiles"]["Row"];
 const Navigation = ({
@@ -26,21 +27,29 @@ const Navigation = ({
       email: session ? session.user.email : "",
       name: session && profile ? profile.name : "",
       introduce: session && profile ? profile.introduce : "",
-      avatar_url: session && profile ? profile.avatar_url : "",
+      // avatar_url: session && profile ? profile.avatar_url : "",
     });
   }, [session, setUser, profile]);
 
   return (
     <>
-      {/* <Link href="/">Auth Component</Link> */}
       { session ? (
-          <Link href="/settings/profile">
-            <p>{profile && profile.name}</p>
-          </Link>
+        <Box sx={{ display:"flex", flexDirection:"row", gap:2,alignItems:"center"}}>
+            {profile &&
+            <>
+            <Typography variant="body1" sx={{ fontSize: 18}}>ユーザー：{profile.name}さん</Typography>
+            <Link underline="hover" href="/settings/profile">
+              <SettingsIcon sx={{width:"30px", height:"30px"}}/>
+            </Link>
+            </>
+            }
+        </Box>
       ) : (
         <>
-          <Link href="/auth/login">ログイン</Link>
-          {/* <Link href="/auth/signup">サインアップ</Link> */}
+        <Box sx={{ display:"flex", flexDirection:"row", gap:2,alignItems:"center"}}>
+          <Link href="/auth/login" underline="hover">ログイン</Link>
+          <Link href="/auth/signup" underline="hover">ユーザー登録</Link>
+        </Box>
         </>
       )}
     </>

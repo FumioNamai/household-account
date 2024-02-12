@@ -2,6 +2,7 @@ export type Stock = {
   id: number;
   type: string;
   name: string;
+  email: string;
   price: number;
   category: string;
   registration_date: string | null;

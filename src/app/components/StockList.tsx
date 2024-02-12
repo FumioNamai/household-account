@@ -1,3 +1,4 @@
+
 import {
   Accordion,
   AccordionDetails,
@@ -18,6 +19,7 @@ import Asynchronous from "./Asynchronous";
 import { useState } from "react";
 import ModalStockRegistration from "./ModalStockRegistration";
 import { Dayjs } from "dayjs";
+import { supabase } from "../../../utils/supabase";
 
 type Props = {
   stocks: Stock[];
@@ -30,6 +32,7 @@ type Props = {
   del:(stocks: Stock[]) => void;
   date: Dayjs | null;
   setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
+  session
 }
 
 const StockList = ({
@@ -42,10 +45,13 @@ const StockList = ({
   setPrice,
   del,
   date,
-  setDate
+  setDate,
+  session
 }: Props) => {
   const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
   // const [itemName, setItemName] = useState<string>("");
+
+  console.log(session);
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
@@ -131,7 +137,8 @@ const StockList = ({
                           boxShadow: 1,
                         }}
                       >
-                        {stock.type === "食品" &&
+                        {stock.email === session.user.email &&
+                        stock.type === "食品" &&
                         stock.category === category &&
                         stock.use_date === null ? (
                           <Item
@@ -174,7 +181,7 @@ const StockList = ({
                   key={stock.id}
                   sx={{ paddingBlock: "0", paddingInline: "8px", boxShadow: 1 }}
                 >
-                  {stock.type === "雑貨" && stock.use_date === null ? (
+                  {stock.email === session.user.email && stock.type === "雑貨" && stock.use_date === null ? (
                     <Item
                       id={stock.id}
                       name={stock.name}
@@ -211,7 +218,7 @@ const StockList = ({
                   key={stock.id}
                   sx={{ paddingBlock: "0", paddingInline: "4px", boxShadow: 1 }}
                 >
-                  {stock.type === "その他" && stock.use_date === null ? (
+                  {stock.email === session.user.email && stock.type === "その他" && stock.use_date === null ? (
                     <AccordionDetails
                       key={stock.id}
                       sx={{

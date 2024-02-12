@@ -16,7 +16,7 @@ import ModalStockRegistration from "../components/ModalStockRegistration";
 import { cookies } from 'next/headers'
 import { supabase } from "../../../utils/supabase";
 
-export default function TopPage() {
+export default function TopPage({session}) {
   const { showSnackbar } = useSnackbarContext();
 
   const [stocks, setStocks] = useState<Stock[]>([]);
@@ -96,6 +96,7 @@ export default function TopPage() {
           date={date}
           setDate={setDate}
           del={del}
+          session={session}
           // selectedDate={selectedDate}
         />
       </main>
