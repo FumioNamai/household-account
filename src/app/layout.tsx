@@ -27,7 +27,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         {/* <Header /> */}
-        <header className='flex flex-row justify-between py-5 px-10 mx-auto max-w-screen-sm '>
+        <header className='flex flex-row justify-between py-5 px-5 mx-auto max-w-screen-sm '>
         <Link href="/">
         <h1 className=' text-xl font-medium '>N式家計簿</h1>
         </Link>

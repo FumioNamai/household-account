@@ -36,7 +36,7 @@ const Item = ({
   type,
   stocks,
   setStocks,
-  onDelete,
+  // onDelete,
   date,
   tax,
 } : Props) => {
@@ -100,10 +100,13 @@ const Item = ({
         .from("stocks")
         .delete()
         .eq("id", propsID);
-      const { data: Stock } = await supabase.from("stocks").select("*");
+        if(error) throw error
+      const { data: updatedStocks } = await supabase.from("stocks").select("*");
+      onUpdate(updatedStocks);
 
       // 親コンポーネントにstocksを渡して在庫情報を更新
-      onDelete(stocks);
+      // onDelete(stocks);
+
       if(showSnackbar){
         showSnackbar("success", `${name}を在庫一覧から削除しました。`)
       }

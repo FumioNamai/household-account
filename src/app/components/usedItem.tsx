@@ -44,7 +44,7 @@ const UsedItem = ({ id, name, price, stocks, setStocks }: Props) => {
   return (
     <li
       key={id}
-      className="flex flex-row gap-1 items-center justify-between p-1"
+      className="flex flex-row items-center justify-between pl-4"
     >
       <Typography variant="body2">{name}</Typography>
       <Box sx={{ display: "flex", alignItems: "center" }}>

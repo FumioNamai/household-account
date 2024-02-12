@@ -94,7 +94,7 @@ const Daily = ({ date, setDate, stocks, setStocks, session }: Props) => {
         </Box>
 
         <Typography variant="subtitle1">内訳</Typography>
-        <Box sx={{ paddingInline: "16px" }}>
+        <Box sx={{ pl: 2}}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="body1">食品</Typography>
             <Typography

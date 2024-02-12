@@ -114,7 +114,7 @@ const Monthly: React.FC<{
           </Typography>
         </Box>
         <Typography variant="subtitle1">内訳</Typography>
-        <Box sx={{ marginInline: "1rem" }}>
+        <Box sx={{pl: 2}}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="body1">食品</Typography>
             <Typography
