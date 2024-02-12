@@ -51,7 +51,7 @@ const SignUp = () => {
         },
       });
       if (errorSignUp) {
-        setMessage("エラーが発生しました。" + errorSignup.message);
+        setMessage("エラーが発生しました。" + errorSignUp.message);
         return;
       }
 

@@ -59,6 +59,7 @@ const Item = ({
           type: restocks![0].type,
           category: restocks![0].category,
           name: restocks![0].name,
+          user_id: restocks![0].user_id,
           price: 0,
           registration_date: null,
           use_date: null,
