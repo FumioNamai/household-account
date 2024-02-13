@@ -27,6 +27,7 @@ const Profile = () => {
   const [fileMessage, setFileMessage] = useState("");
   const { user } = useStore();
 
+
   // フォームの状態管理
   const {
     register,

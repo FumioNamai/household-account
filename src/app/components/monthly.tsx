@@ -7,18 +7,15 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import UsedItem from "./UsedItem";
 import { Stock } from "../../../utils/type";
+import useStore from "@/store";
 
 const Monthly: React.FC<{
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  session: {
-    user: {
-      id: string;
-    }
-  }
-}> = ({ stocks, setStocks,session}) => {
-  const [month, setMonth] = useState<Dayjs | null>(dayjs());
+}> = ({ stocks, setStocks}) => {
 
+  const [month, setMonth] = useState<Dayjs | null>(dayjs());
+  const { user } = useStore();
   const selectedMonth: string | null = month!.format("YYYY-MM");
 
   let date = "0";
@@ -28,7 +25,7 @@ const Monthly: React.FC<{
     date = ("0" + `${i}`).slice(-2);
 
     const todayUsed: Stock[] = stocks!.filter(
-      (stock) => stock.user_id === session.user.id && stock.use_date === `${selectedMonth}-${date}`
+      (stock) => stock.user_id === user.id && stock.use_date === `${selectedMonth}-${date}`
     );
 
     const todayFoodsTotal: number = todayUsed
@@ -60,7 +57,7 @@ const Monthly: React.FC<{
   //その他の今月使用済みリストを表示させる
   const monthOthers: Stock[] = stocks?.filter(
     (stock) =>
-    stock.user_id === session.user.id && stock.type === "その他" && stock.use_date?.startsWith(selectedMonth)
+    stock.user_id === user.id && stock.type === "その他" && stock.use_date?.startsWith(selectedMonth)
   );
 
   const monthlyFoodsTotal: number = dailyTotals.reduce((sum, el) => {

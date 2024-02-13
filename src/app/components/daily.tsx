@@ -5,26 +5,25 @@ import UsedItem from "./UsedItem";
 import { Stock } from "../../../utils/type";
 import ja from "dayjs/locale/ja";
 import { Dayjs } from "dayjs";
+import useStore from "@/store";
+
 
 type Props = {
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
-  session: {
-    user: {
-      id: string;
-    }
-  };
 };
 
-const Daily = ({ date, setDate, stocks, setStocks, session }: Props) => {
+const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
+  const { user } = useStore();
+
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
 
   const todayUsed: Stock[] = stocks!.filter(
-    (stock: Stock) => stock.user_id === session.user.id && stock.use_date === `${selectedDate}`
+    (stock: Stock) => stock.user_id === user.id && stock.use_date === `${selectedDate}`
   );
 
   // その日に使用した食品の合計金額を算出

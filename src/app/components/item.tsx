@@ -8,11 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditOutlined from "@mui/icons-material/EditOutlined";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import { useSnackbarContext } from "@/providers/context-provider";
-import { Dayjs } from "dayjs";
 import { CheckCircleTwoTone, DeleteTwoTone, ModeTwoTone } from "@mui/icons-material";
 
 type Props = {
@@ -172,22 +168,18 @@ const Item = ({
           {price !== 0 ? (
             <>
               <Typography variant="body1">{calcPrice()}円</Typography>
-
               <IconButton
                 aria-label="use-item"
                 color="primary"
                 onClick={() => handleUse(id)}
               >
-                {/* <CheckCircleOutlinedIcon /> */}
                 <CheckCircleTwoTone />
               </IconButton>
-
               <IconButton
                 aria-label="delete"
                 color="error"
                 onClick={() => handleDelete(id)}
               >
-                {/* <DeleteIcon /> */}
                 <DeleteTwoTone />
               </IconButton>
             </>
@@ -209,7 +201,6 @@ const Item = ({
                 color="success"
                 onClick={() => handleUpdate(id)}
               >
-                {/* <EditOutlined /> */}
                 <ModeTwoTone />
               </IconButton>
               <IconButton
@@ -217,7 +208,6 @@ const Item = ({
                 color="error"
                 onClick={() => handleDelete(id)}
               >
-                {/* <DeleteIcon /> */}
                 <DeleteTwoTone />
               </IconButton>
             </>
