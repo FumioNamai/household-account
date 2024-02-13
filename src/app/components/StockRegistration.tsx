@@ -32,15 +32,15 @@ type Props = {
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
 }
 
-
 const StockRegistration = ({ stocks, setStocks }: Props) => {
-  const { user } = useStore()
+  const { user, tax, setTax } = useStore()
+
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
   const [itemName, setItemName] = useState<string>("");
   let [date, setDate] = React.useState<Dayjs | null>(dayjs());
   let [price, setPrice] = useState<string>("");
-  const [tax, setTax] = useState(true);
+  // const [tax, setTax] = useState(true);
   const [categoryItem, setCategoryItem] = useState("---");
 
   const [isFocus, setIsFocus] = useState(false);
@@ -88,8 +88,8 @@ const StockRegistration = ({ stocks, setStocks }: Props) => {
     setCategoryItem(event.target.value as string);
   };
 
-  const handleTax = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTax(event.target.checked);
+  const handleTax = () => {
+    setTax();
   };
 
   // 在庫検索機能

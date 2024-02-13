@@ -25,8 +25,8 @@ import useStore from "@/store";
 type Props = {
   stocks: Stock[];
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
-  tax: boolean;
-  setTax: React.Dispatch<React.SetStateAction<boolean>>;
+  // tax: boolean;
+  // setTax: React.Dispatch<React.SetStateAction<boolean>>;
   handleTax:(event: React.ChangeEvent<HTMLInputElement>) => void;
   price: string;
   setPrice: React.Dispatch<React.SetStateAction<number>>;
@@ -38,8 +38,8 @@ type Props = {
 const StockList = ({
   stocks,
   setStocks,
-  tax,
-  setTax,
+  // tax,
+  // setTax,
   handleTax,
   price,
   setPrice,
@@ -47,7 +47,7 @@ const StockList = ({
   date,
   setDate,
 }: Props) => {
-  const {user} = useStore()
+  const {user, tax } = useStore()
   const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
   // const [itemName, setItemName] = useState<string>("");
 
@@ -69,8 +69,8 @@ const StockList = ({
       <ModalStockRegistration
         stocks={stocks}
         setStocks={setStocks}
-        tax={tax}
-        setTax={setTax}
+        // tax={tax}
+        // setTax={setTax}
         price={price}
         setPrice={setPrice}
         date={date}
@@ -149,7 +149,7 @@ const StockList = ({
                             setStocks={setStocks}
                             onDelete={del}
                             date={selectedDate}
-                            tax={tax}
+                            // tax={tax}
                           />
                         ) : null}
                       </AccordionDetails>
@@ -190,7 +190,7 @@ const StockList = ({
                       setStocks={setStocks}
                       onDelete={del}
                       date={selectedDate}
-                      tax={tax}
+                      // tax={tax}
                     />
                   ) : null}
                 </AccordionDetails>
@@ -235,7 +235,7 @@ const StockList = ({
                         setStocks={setStocks}
                         onDelete={del}
                         date={selectedDate}
-                        tax={tax}
+                        // tax={tax}
                       />
                     </AccordionDetails>
                   ) : null}

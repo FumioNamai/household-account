@@ -7,8 +7,8 @@ import { Dayjs } from "dayjs";
 type Props = {
   stocks: Stock[];
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
-  tax: boolean;
-  setTax: React.Dispatch<React.SetStateAction<boolean>>;
+  // tax: boolean;
+  // setTax: React.Dispatch<React.SetStateAction<boolean>>;
   price:string;
   setPrice: React.Dispatch<React.SetStateAction<number>>;
   date: Dayjs | null;
@@ -18,8 +18,8 @@ type Props = {
 export default function ModalStockRegistration({
   stocks,
   setStocks,
-  tax,
-  setTax,
+  // tax,
+  // setTax,
   price,
   setPrice,
   date,
@@ -56,8 +56,8 @@ export default function ModalStockRegistration({
           <StockRegistration
             stocks={stocks}
             setStocks={setStocks}
-            tax={tax}
-            setTax={setTax}
+            // tax={tax}
+            // setTax={setTax}
             price={price}
             setPrice={setPrice}
             date={date}

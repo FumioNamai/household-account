@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { CheckCircleTwoTone, DeleteTwoTone, ModeTwoTone } from "@mui/icons-material";
+import useStore from "@/store";
 
 type Props = {
   id: number;
@@ -21,7 +22,7 @@ type Props = {
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   onDelete:(stocks: Stock[]) => void;
   date: string | undefined;
-  tax: boolean;
+  // tax: boolean;
 }
 
 const Item = ({
@@ -34,11 +35,11 @@ const Item = ({
   setStocks,
   // onDelete,
   date,
-  tax,
+  // tax,
 } : Props) => {
   const { showSnackbar } = useSnackbarContext()
   let [newPrice, setNewPrice] = useState<string>("");
-
+  const { tax } = useStore()
   const onUpdate = (stocks: Stock[]) => setStocks(stocks);
 
   // UPDATE 使った日をuse_dateに記録する

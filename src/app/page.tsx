@@ -15,7 +15,7 @@ export default async function Home() {
 
   return (
     <Container maxWidth="sm">
-        { session ? <TopPage session={session} /> : <Login />}
+        { session ? <TopPage /> : <Login />}
     </Container>
   );
 }

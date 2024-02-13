@@ -9,12 +9,16 @@ type ProfileType = Database['public']['Tables']['profiles']['Row']
 type StateType = {
   user : ProfileType
   setUser : (payload: ProfileType) => void
+  tax : boolean
+  setTax: () => void
 }
 
 const useStore = create<StateType>((set) => ({
   // 初期値
   user: { id:'', email:'', name:'', introduce:'', avatar_url:''},
   setUser:(payload) => set({user:payload}),
+  tax: true,
+  setTax: () => set(state => ({ tax : !state.tax }))
 }))
 
 export default useStore
