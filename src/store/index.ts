@@ -13,12 +13,28 @@ type StateType = {
   setTax: () => void
 }
 
-const useStore = create<StateType>((set) => ({
+export const useStore = create<StateType>((set) => ({
   // 初期値
   user: { id:'', email:'', name:'', introduce:'', avatar_url:''},
   setUser:(payload) => set({user:payload}),
   tax: true,
-  setTax: () => set(state => ({ tax : !state.tax }))
+  setTax: () => set(state => ({ tax : !state.tax })),
+}))
+
+type PriceState = {
+  price : string;
+  setPrice : (price:string) => void
+  handlePriceChange: (event: React.ChangeEvent<HTMLInputElement>) =>
+    void
+}
+
+export const usePriceStore = create<PriceState>((set) => ({
+  price:"",
+  setPrice:(newPrice) => set({ price: newPrice}),
+  handlePriceChange : (event) => {
+    const newPrice = event.target.value;
+    set({price:newPrice})
+  }
 }))
 
 export default useStore

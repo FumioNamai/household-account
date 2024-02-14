@@ -24,7 +24,7 @@ import { Stock } from "../../../utils/type";
 import dayjs, { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
 import Asynchronous from "./Asynchronous";
-import useStore from "@/store";
+import {useStore, usePriceStore} from "@/store";
 
 
 type Props = {
@@ -34,12 +34,12 @@ type Props = {
 
 const StockRegistration = ({ stocks, setStocks }: Props) => {
   const { user, tax, setTax } = useStore()
-
+  let { price, setPrice,handlePriceChange } = usePriceStore()
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
   const [itemName, setItemName] = useState<string>("");
   let [date, setDate] = React.useState<Dayjs | null>(dayjs());
-  let [price, setPrice] = useState<string>("");
+  // let [price, setPrice] = useState<string>("");
   // const [tax, setTax] = useState(true);
   const [categoryItem, setCategoryItem] = useState("---");
 
@@ -92,6 +92,10 @@ const StockRegistration = ({ stocks, setStocks }: Props) => {
     setTax();
   };
 
+  // const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newPrice = event.target.value;
+  //   setPrice(newPrice)
+  // }
   // 在庫検索機能
   // const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   (pname) => {
@@ -219,7 +223,7 @@ const StockRegistration = ({ stocks, setStocks }: Props) => {
               <Typography>税込</Typography>
             </FormControl>
             <TextField
-              type="number"
+              type="string"
               label="価格"
               id="outlined-start-adornment"
               sx={{ m: 1, width: "12ch" }}
@@ -229,10 +233,10 @@ const StockRegistration = ({ stocks, setStocks }: Props) => {
                   <InputAdornment position="end">円</InputAdornment>
                 ),
               }}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setPrice(event.target.value);
-              }}
-              // onChange={setPrice}
+              onChange={handlePriceChange}
+              // onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              //   setPrice(event.target.value);
+              // }}
             />
           </div>
 
