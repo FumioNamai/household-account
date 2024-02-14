@@ -9,8 +9,8 @@ type Props = {
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
   // tax: boolean;
   // setTax: React.Dispatch<React.SetStateAction<boolean>>;
-  price:string;
-  setPrice: React.Dispatch<React.SetStateAction<number>>;
+  // price:string;
+  // setPrice: React.Dispatch<React.SetStateAction<number>>;
   date: Dayjs | null;
   setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
 }
@@ -20,8 +20,8 @@ export default function ModalStockRegistration({
   setStocks,
   // tax,
   // setTax,
-  price,
-  setPrice,
+  // price,
+  // setPrice,
   date,
   setDate,
   }: Props) {
@@ -58,8 +58,8 @@ export default function ModalStockRegistration({
             setStocks={setStocks}
             // tax={tax}
             // setTax={setTax}
-            price={price}
-            setPrice={setPrice}
+            // price={price}
+            // setPrice={setPrice}
             date={date}
             setDate={setDate}
           />

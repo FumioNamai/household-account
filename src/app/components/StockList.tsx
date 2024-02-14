@@ -19,17 +19,12 @@ import Asynchronous from "./Asynchronous";
 import { useState } from "react";
 import ModalStockRegistration from "./ModalStockRegistration";
 import { Dayjs } from "dayjs";
-import { supabase } from "../../../utils/supabase";
 import useStore from "@/store";
 
 type Props = {
   stocks: Stock[];
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
-  // tax: boolean;
-  // setTax: React.Dispatch<React.SetStateAction<boolean>>;
   handleTax:(event: React.ChangeEvent<HTMLInputElement>) => void;
-  price: string;
-  setPrice: React.Dispatch<React.SetStateAction<number>>;
   del:(stocks: Stock[]) => void;
   date: Dayjs | null;
   setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
@@ -38,18 +33,16 @@ type Props = {
 const StockList = ({
   stocks,
   setStocks,
-  // tax,
-  // setTax,
   handleTax,
-  price,
-  setPrice,
   del,
   date,
   setDate,
 }: Props) => {
   const {user, tax } = useStore()
   const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
-  // const [itemName, setItemName] = useState<string>("");
+
+  // stocksから取得したpriceの状態を管理
+  let [price, setPrice] = useState<string>("");
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
@@ -58,21 +51,12 @@ const StockList = ({
       </Typography>
 
       {/* 在庫検索 */}
-      <Asynchronous
-        // itemName={itemName}
-        // setItemName={setItemName}
-        // stocks={stocks}
-        // setStocks={setStocks}
-      />
+      <Asynchronous />
 
       {/* 在庫登録 */}
       <ModalStockRegistration
         stocks={stocks}
         setStocks={setStocks}
-        // tax={tax}
-        // setTax={setTax}
-        price={price}
-        setPrice={setPrice}
         date={date}
         setDate={setDate}
       />
@@ -142,7 +126,7 @@ const StockList = ({
                           <Item
                             id={stock.id}
                             name={stock.name}
-                            price={stock.price}
+                            price={stock.price.toString()}
                             setPrice={setPrice}
                             type={stock.type}
                             stocks={stocks}
@@ -183,7 +167,7 @@ const StockList = ({
                     <Item
                       id={stock.id}
                       name={stock.name}
-                      price={stock.price}
+                      price={stock.price.toString()}
                       setPrice={setPrice}
                       type={stock.type}
                       stocks={stocks}
@@ -228,7 +212,7 @@ const StockList = ({
                       <Item
                         id={stock.id}
                         name={stock.name}
-                        price={stock.price}
+                        price={stock.price.toString()}
                         setPrice={setPrice}
                         type={stock.type}
                         stocks={stocks}

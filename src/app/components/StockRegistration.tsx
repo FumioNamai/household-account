@@ -24,8 +24,7 @@ import { Stock } from "../../../utils/type";
 import dayjs, { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
 import Asynchronous from "./Asynchronous";
-import {useStore, usePriceStore} from "@/store";
-
+import { useStore } from "@/store";
 
 type Props = {
   stocks: Stock[];
@@ -34,34 +33,29 @@ type Props = {
 
 const StockRegistration = ({ stocks, setStocks }: Props) => {
   const { user, tax, setTax } = useStore()
-  let { price, setPrice,handlePriceChange } = usePriceStore()
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
   const [itemName, setItemName] = useState<string>("");
   let [date, setDate] = React.useState<Dayjs | null>(dayjs());
-  // let [price, setPrice] = useState<string>("");
-  // const [tax, setTax] = useState(true);
+  let [newPrice, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("---");
-
   const [isFocus, setIsFocus] = useState(false);
-  // const [suggestions, setSuggestions] = useState([]);
   const onUpdate = (stocks: Stock[]) => setStocks(stocks);
-
   const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
 
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (type === "食品" && tax === false) {
-      price = Math.floor(parseInt(price) * 1.08).toString();
+      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
     }
     if (type !== "食品" && tax === false) {
-      price = Math.floor(parseInt(price) * 1.1).toString();
+      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
     }
     try {
       const { error } = await supabase.from("stocks").insert({
         type: type,
         name: itemName,
-        price: price,
+        price: newPrice,
         registration_date: selectedDate,
         category: categoryItem,
         user_id: user.id,
@@ -70,9 +64,8 @@ const StockRegistration = ({ stocks, setStocks }: Props) => {
 
       const { data: updatedStocks } = await supabase.from("stocks").select("*");
       onUpdate(updatedStocks);
-      // setType("");
       setItemName("");
-      setPrice("");
+      setNewPrice("");
       setCategoryItem("");
       if (showSnackbar) {
         showSnackbar("success", `${itemName}を在庫一覧に登録しました。`);
@@ -92,10 +85,10 @@ const StockRegistration = ({ stocks, setStocks }: Props) => {
     setTax();
   };
 
-  // const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newPrice = event.target.value;
-  //   setPrice(newPrice)
-  // }
+  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPrice(event.target.value)
+  }
+
   // 在庫検索機能
   // const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   (pname) => {
@@ -227,16 +220,13 @@ const StockRegistration = ({ stocks, setStocks }: Props) => {
               label="価格"
               id="outlined-start-adornment"
               sx={{ m: 1, width: "12ch" }}
-              value={price}
+              value={newPrice}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">円</InputAdornment>
                 ),
               }}
               onChange={handlePriceChange}
-              // onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              //   setPrice(event.target.value);
-              // }}
             />
           </div>
 

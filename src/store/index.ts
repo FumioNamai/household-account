@@ -21,20 +21,21 @@ export const useStore = create<StateType>((set) => ({
   setTax: () => set(state => ({ tax : !state.tax })),
 }))
 
-type PriceState = {
-  price : string;
-  setPrice : (price:string) => void
-  handlePriceChange: (event: React.ChangeEvent<HTMLInputElement>) =>
-    void
-}
+// type PriceState = {
+//   price : string;
+//   setPrice : (price:string) => void
+//   handlePriceChange: (event: React.ChangeEvent<HTMLInputElement>) =>
+//     void
+// }
 
-export const usePriceStore = create<PriceState>((set) => ({
-  price:"",
-  setPrice:(newPrice) => set({ price: newPrice}),
-  handlePriceChange : (event) => {
-    const newPrice = event.target.value;
-    set({price:newPrice})
-  }
-}))
+
+// export const usePriceStore = create<PriceState>((set) => ({
+//   price:"",
+//   setPrice:(newPrice) => set({ price: newPrice}),
+//   handlePriceChange : (event) => {
+//     const newPrice = event.target.value;
+//     set({price:newPrice})
+//   }
+// }))
 
 export default useStore

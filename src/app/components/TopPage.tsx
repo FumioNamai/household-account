@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-import ja from "dayjs/locale/ja";
 
 import Monthly from "../components/Monthly";
 import Daily from "../components/Daily";
@@ -27,7 +26,6 @@ export default function TopPage() {
       const { data, error } = await supabase.from("stocks").select("*");
       if (error) throw error;
       setStocks(data);
-
     } catch (error) {
       if (showSnackbar) {
         showSnackbar("error", "在庫データを取得できません。" + error.message);
@@ -37,8 +35,6 @@ export default function TopPage() {
   };
 
   let [date, setDate] = useState<Dayjs | null>(dayjs());
-  let [price, setPrice] = useState<string>("");
-  // const [tax, setTax] = useState(true);
 
   // Itemコンポーネントの削除ボタン押下で在庫情報を更新
   const del = (stocks: Stock[]) => setStocks(stocks);
@@ -65,11 +61,7 @@ export default function TopPage() {
         <StockList
           stocks={stocks}
           setStocks={setStocks}
-          // tax={tax}
-          // setTax={setTax}
           handleTax={handleTax}
-          price={price}
-          setPrice={setPrice}
           date={date}
           setDate={setDate}
           del={del}

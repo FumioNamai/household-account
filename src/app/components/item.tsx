@@ -15,8 +15,8 @@ import useStore from "@/store";
 type Props = {
   id: number;
   name: string;
-  price: number;
-  setPrice: React.Dispatch<React.SetStateAction<number>>;
+  price: string;
+  setPrice: React.Dispatch<React.SetStateAction<string>>;
   type: string;
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
@@ -143,10 +143,10 @@ const Item = ({
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
     if (type === "食品" && tax === false) {
-      let taxExcluded = Math.ceil(price / 1.08).toString();
+      let taxExcluded = Math.ceil(parseInt(price) / 1.08).toString();
       return taxExcluded;
     } else if (type !== "食品" && tax === false) {
-      let taxExcluded = Math.ceil(price / 1.1).toString();
+      let taxExcluded = Math.ceil(parseInt(price) / 1.1).toString();
       return taxExcluded;
     } else {
       return price;
@@ -166,7 +166,7 @@ const Item = ({
       >
         <Typography variant="body2">{name}</Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          {price !== 0 ? (
+          {parseInt(price) !== 0 ? (
             <>
               <Typography variant="body1">{calcPrice()}円</Typography>
               <IconButton
