@@ -15,7 +15,7 @@ import useStore from "@/store";
 export default function TopPage() {
   const { showSnackbar } = useSnackbarContext();
   const [stocks, setStocks] = useState<Stock[]>([]);
-  const { setTax } = useStore()
+  // const { setTax } = useStore()
 
   useEffect(() => {
     (async () => await getStocks())();
@@ -39,9 +39,9 @@ export default function TopPage() {
   // Itemコンポーネントの削除ボタン押下で在庫情報を更新
   const del = (stocks: Stock[]) => setStocks(stocks);
 
-  const handleTax = () => {
-    setTax();
-  };
+  // const handleTax = () => {
+  //   setTax();
+  // };
 
   return (
     <>
@@ -61,7 +61,7 @@ export default function TopPage() {
         <StockList
           stocks={stocks}
           setStocks={setStocks}
-          handleTax={handleTax}
+          // handleTax={handleTax}
           date={date}
           setDate={setDate}
           del={del}

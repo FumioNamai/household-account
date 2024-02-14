@@ -24,7 +24,7 @@ import useStore from "@/store";
 type Props = {
   stocks: Stock[];
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
-  handleTax:(event: React.ChangeEvent<HTMLInputElement>) => void;
+  // handleTax:(event: React.ChangeEvent<HTMLInputElement>) => void;
   del:(stocks: Stock[]) => void;
   date: Dayjs | null;
   setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
@@ -33,16 +33,20 @@ type Props = {
 const StockList = ({
   stocks,
   setStocks,
-  handleTax,
+  // handleTax,
   del,
   date,
   setDate,
 }: Props) => {
-  const {user, tax } = useStore()
+  const {user, tax, setTax } = useStore()
   const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
 
   // stocksから取得したpriceの状態を管理
   let [price, setPrice] = useState<string>("");
+
+  const handleTax = () => {
+    setTax();
+  };
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>

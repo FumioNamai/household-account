@@ -11,6 +11,7 @@ type StateType = {
   setUser : (payload: ProfileType) => void
   tax : boolean
   setTax: () => void
+  // handleTax: ((event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void) | undefined
 }
 
 export const useStore = create<StateType>((set) => ({
@@ -19,6 +20,9 @@ export const useStore = create<StateType>((set) => ({
   setUser:(payload) => set({user:payload}),
   tax: true,
   setTax: () => set(state => ({ tax : !state.tax })),
+  // handleTax: (event) => {
+  //   const isChecked = event.target.checked
+  //   set( isChecked )}
 }))
 
 // type PriceState = {
