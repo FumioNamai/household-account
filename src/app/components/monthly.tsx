@@ -149,9 +149,9 @@ const Monthly: React.FC<{
               <UsedItem
                 id={stock.id}
                 name={stock.name}
-                price={stock.price}
                 stocks={stocks}
                 setStocks={setStocks}
+                price={stock.price}
               />
             </Box>
           ))}

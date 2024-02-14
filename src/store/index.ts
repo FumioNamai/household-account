@@ -9,21 +9,29 @@ type ProfileType = Database['public']['Tables']['profiles']['Row']
 type StateType = {
   user : ProfileType
   setUser : (payload: ProfileType) => void
-  tax : boolean
-  setTax: () => void
-  // handleTax: ((event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void) | undefined
 }
 
 export const useStore = create<StateType>((set) => ({
   // 初期値
   user: { id:'', email:'', name:'', introduce:'', avatar_url:''},
   setUser:(payload) => set({user:payload}),
+}))
+
+type TaxStateType = {
+  tax : boolean
+  setTax: () => void
+  // handleTax: ((event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void) | undefined
+}
+
+export const useTaxStore = create<TaxStateType>((set) => ({
   tax: true,
   setTax: () => set(state => ({ tax : !state.tax })),
   // handleTax: (event) => {
   //   const isChecked = event.target.checked
   //   set( isChecked )}
 }))
+
+
 
 // type PriceState = {
 //   price : string;

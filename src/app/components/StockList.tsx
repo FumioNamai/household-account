@@ -19,7 +19,7 @@ import Asynchronous from "./Asynchronous";
 import { useState } from "react";
 import ModalStockRegistration from "./ModalStockRegistration";
 import { Dayjs } from "dayjs";
-import useStore from "@/store";
+import useStore, { useTaxStore } from "@/store";
 
 type Props = {
   stocks: Stock[];
@@ -38,7 +38,8 @@ const StockList = ({
   date,
   setDate,
 }: Props) => {
-  const {user, tax, setTax } = useStore()
+  const { user } = useStore()
+  const { tax, setTax }= useTaxStore()
   const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
 
   // stocksから取得したpriceの状態を管理

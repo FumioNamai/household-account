@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { CheckCircleTwoTone, DeleteTwoTone, ModeTwoTone } from "@mui/icons-material";
-import useStore from "@/store";
+import useStore, { useTaxStore } from "@/store";
 
 type Props = {
   id: number;
@@ -39,7 +39,7 @@ const Item = ({
 } : Props) => {
   const { showSnackbar } = useSnackbarContext()
   let [newPrice, setNewPrice] = useState<string>("");
-  const { tax } = useStore()
+  const { tax } = useTaxStore()
   const onUpdate = (stocks: Stock[]) => setStocks(stocks);
 
   // UPDATE 使った日をuse_dateに記録する

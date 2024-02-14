@@ -24,7 +24,7 @@ import { Stock } from "../../../utils/type";
 import dayjs, { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
 import Asynchronous from "./Asynchronous";
-import { useStore } from "@/store";
+import { useStore, useTaxStore } from "@/store";
 
 type Props = {
   stocks: Stock[];
@@ -32,7 +32,9 @@ type Props = {
 }
 
 const StockRegistration = ({ stocks, setStocks }: Props) => {
-  const { user, tax, setTax } = useStore()
+  const { user} = useStore()
+  const { tax, setTax } = useTaxStore()
+
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
   const [itemName, setItemName] = useState<string>("");
