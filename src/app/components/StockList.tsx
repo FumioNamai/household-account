@@ -1,4 +1,3 @@
-
 import {
   Accordion,
   AccordionDetails,
@@ -23,27 +22,30 @@ import useStore, { useTaxStore } from "@/store";
 
 type Props = {
   stocks: Stock[];
-  setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
+  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   // handleTax:(event: React.ChangeEvent<HTMLInputElement>) => void;
-  del:(stocks: Stock[]) => void;
+  // del: (stocks: Stock[]) => void;
   date: Dayjs | null;
-  setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
-}
+  setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+};
 
 const StockList = ({
   stocks,
   setStocks,
-  // handleTax,
-  del,
   date,
   setDate,
 }: Props) => {
-  const { user } = useStore()
-  const { tax, setTax }= useTaxStore()
-  const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
+  const { user } = useStore();
+  const { tax, setTax } = useTaxStore();
+  const selectedDate: string | undefined = date
+    ?.locale(ja)
+    .format("YYYY-MM-DD");
 
   // stocksから取得したpriceの状態を管理
   let [price, setPrice] = useState<string>("");
+
+  // Itemコンポーネントの削除ボタン押下で在庫情報を更新
+  const del = (stocks: Stock[]) => setStocks(stocks);
 
   const handleTax = () => {
     setTax();
@@ -51,7 +53,7 @@ const StockList = ({
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
-      <Typography variant="h2" sx={{fontSize:"24px", marginBottom: "24px" }}>
+      <Typography variant="h2" sx={{ fontSize: "24px", marginBottom: "24px" }}>
         在庫一覧
       </Typography>
 
@@ -138,7 +140,6 @@ const StockList = ({
                             setStocks={setStocks}
                             onDelete={del}
                             date={selectedDate}
-                            // tax={tax}
                           />
                         ) : null}
                       </AccordionDetails>
@@ -168,7 +169,9 @@ const StockList = ({
                   key={stock.id}
                   sx={{ paddingBlock: "0", paddingInline: "8px", boxShadow: 1 }}
                 >
-                  {stock.user_id === user.id && stock.type === "雑貨" && stock.use_date === null ? (
+                  {stock.user_id === user.id &&
+                  stock.type === "雑貨" &&
+                  stock.use_date === null ? (
                     <Item
                       id={stock.id}
                       name={stock.name}
@@ -179,7 +182,6 @@ const StockList = ({
                       setStocks={setStocks}
                       onDelete={del}
                       date={selectedDate}
-                      // tax={tax}
                     />
                   ) : null}
                 </AccordionDetails>
@@ -205,7 +207,9 @@ const StockList = ({
                   key={stock.id}
                   sx={{ paddingBlock: "0", paddingInline: "4px", boxShadow: 1 }}
                 >
-                  {stock.user_id === user.id && stock.type === "その他" && stock.use_date === null ? (
+                  {stock.user_id === user.id &&
+                  stock.type === "その他" &&
+                  stock.use_date === null ? (
                     <AccordionDetails
                       key={stock.id}
                       sx={{
@@ -224,7 +228,6 @@ const StockList = ({
                         setStocks={setStocks}
                         onDelete={del}
                         date={selectedDate}
-                        // tax={tax}
                       />
                     </AccordionDetails>
                   ) : null}

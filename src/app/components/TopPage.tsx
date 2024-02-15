@@ -37,7 +37,7 @@ export default function TopPage() {
   let [date, setDate] = useState<Dayjs | null>(dayjs());
 
   // Itemコンポーネントの削除ボタン押下で在庫情報を更新
-  const del = (stocks: Stock[]) => setStocks(stocks);
+  // const del = (stocks: Stock[]) => setStocks(stocks);
 
   // const handleTax = () => {
   //   setTax();
@@ -64,7 +64,7 @@ export default function TopPage() {
           // handleTax={handleTax}
           date={date}
           setDate={setDate}
-          del={del}
+          // del={del}
         />
       </main>
     </>
