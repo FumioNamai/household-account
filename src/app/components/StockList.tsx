@@ -138,7 +138,7 @@ const StockList = ({
                             type={stock.type}
                             stocks={stocks}
                             setStocks={setStocks}
-                            onDelete={del}
+                            // onDelete={del}
                             date={selectedDate}
                           />
                         ) : null}

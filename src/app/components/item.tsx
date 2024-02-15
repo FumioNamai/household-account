@@ -20,7 +20,7 @@ type Props = {
   type: string;
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  onDelete:(stocks: Stock[]) => void;
+  // onDelete:(stocks: Stock[]) => void;
   date: string | undefined;
   // tax: boolean;
 }
@@ -33,7 +33,6 @@ const Item = ({
   type,
   stocks,
   setStocks,
-  // onDelete,
   date,
   // tax,
 } : Props) => {
