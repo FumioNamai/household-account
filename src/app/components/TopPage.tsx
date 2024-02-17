@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 
-import Daily from "./Daily";
+import Monthly from "@/app/components/Monthly";
+import Daily from "@/app/components/Daily";
 import StockList from "./StockList";
 import { Stock } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
 import useStore from "@/store";
-import Monthly from "./Monthly";
 
 export default function TopPage() {
   const { showSnackbar } = useSnackbarContext();
