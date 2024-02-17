@@ -18,7 +18,7 @@ import { useState } from "react";
 import ModalStockRegistration from "./ModalStockRegistration";
 import { Dayjs } from "dayjs";
 import useStore, { useTaxStore } from "@/store";
-import Item from "@/app/components/Item";
+import Item from "@/app/components/item";
 
 type Props = {
   stocks: Stock[];
