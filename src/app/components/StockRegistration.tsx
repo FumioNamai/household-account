@@ -108,7 +108,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   //   };
   // }
   return (
-    <Grid item xs={12} sx={{ marginBottom: "80px" }}>
+    <Grid item xs={12} sx={{ marginBottom: "20px" }}>
       <Typography variant="h4" className="mb-4">
         在庫登録
       </Typography>
@@ -117,7 +117,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           <InputLabel>購入日</InputLabel>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              sx={{ maxWidth: "180px", marginBottom: "24px" }}
+              sx={{ maxWidth: "180px", marginBottom: "12px" }}
               value={date}
               format="YYYY/MM/DD"
               onChange={setDate}
@@ -125,22 +125,23 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           </LocalizationProvider>
 
           <InputLabel>種別</InputLabel>
-          <div className="flex flex-row items-center gap-1">
+          {/* <div className="flex flex-row items-center gap-2"> */}
             <ToggleButtonGroup
               // size="small"
               color="primary"
               value={type}
               exclusive
               onChange={(event, newType) => setType(newType)}
+              sx={{marginBottom:"12px"}}
             >
               <ToggleButton value="食品">食品</ToggleButton>
               <ToggleButton value="雑貨">雑貨</ToggleButton>
               <ToggleButton value="その他">その他</ToggleButton>
             </ToggleButtonGroup>
-          </div>
+          {/* </div> */}
 
           {/* <p>分類</p> */}
-          <FormControl sx={{ my: 2, mr: 2, minWidth: 120 }}>
+          <FormControl sx={{display:"flex", marginBottom: "12px", width: 120}}>
             <InputLabel>分類</InputLabel>
             <Select
               id="category"
@@ -157,7 +158,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
             </Select>
           </FormControl>
 
-          <FormControl sx={{ my: 2 }}>
+          <FormControl sx={{ marginBottom: "12px" }}>
             <TextField
               onFocus={() => setIsFocus(true)}
               label="商品名"
@@ -205,25 +206,13 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           )} */}
 
           {/* <Asynchronous pname={pname} setPName={setPName} stocks={stocks} setStocks={setStocks} /> */}
-          <div className="flex flex-row items-center gap-1">
-            <FormControl
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Typography>税抜</Typography>
-              <Switch checked={tax} onChange={handleTax} />
-              {/* <Switch checked={tax} onChange={setTax} /> */}
+          <div className="flex flex-row items-center gap-5 my-3">
 
-              <Typography>税込</Typography>
-            </FormControl>
-            <TextField
+          <TextField
               type="string"
               label="価格"
               id="outlined-start-adornment"
-              sx={{ m: 1, width: "12ch" }}
+              sx={{ width: "150px" }}
               value={newPrice}
               InputProps={{
                 endAdornment: (
@@ -232,6 +221,20 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               }}
               onChange={handlePriceChange}
             />
+
+            <FormControl
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="body2">税抜</Typography>
+              <Switch checked={tax} onChange={handleTax} />
+              {/* <Switch checked={tax} onChange={setTax} /> */}
+              <Typography variant="body2">税込</Typography>
+            </FormControl>
+
           </div>
 
           <div className="flex flex-col">

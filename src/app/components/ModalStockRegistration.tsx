@@ -40,6 +40,7 @@ export default function ModalStockRegistration({
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{ maxWidth: "sm", mx:"auto" }}
       >
         <Box
           sx={{
@@ -47,11 +48,13 @@ export default function ModalStockRegistration({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "95%",
+            width: "90%",
+            maxHeight:"90%",
+            overflow:"scroll",
             bgcolor: "background.paper",
             // border: '2px solid #000',
             boxShadow: 24,
-            p: 4,
+            p: 2,
           }}
         >
           <StockRegistration
