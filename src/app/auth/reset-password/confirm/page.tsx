@@ -1,11 +1,12 @@
-import Password from "@/app/components/password"
-
+import Password from "@/app/components/password";
 
 const ResetPasswordConfirmPage = () => {
-  return(
+  return (
     // パスワード変更
-    <Password />
-  )
-}
+    <div className="mx-3 mt-6">
+      <Password />
+    </div>
+  );
+};
 
-export default ResetPasswordConfirmPage
+export default ResetPasswordConfirmPage;

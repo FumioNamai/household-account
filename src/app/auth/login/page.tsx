@@ -19,7 +19,11 @@ const LoginPage = async () => {
     redirect('/')
   }
 
-  return <Login />
+  return (
+    <div className="mx-3 mt-6">
+      <Login />
+    </div>
+  )
 }
 
 export default LoginPage

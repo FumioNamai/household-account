@@ -35,7 +35,7 @@ const subNavigation = [
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname(); // 現在のページのパスを取得できる
   return (
-    <Box sx={{}}>
+    <Box>
       <Stack spacing={1}>
         {subNavigation.map((item, index) => (
           <Link href={item.href} key={index} underline="none" sx={{color:"black"}}>
