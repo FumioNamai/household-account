@@ -19,7 +19,7 @@ export default function Asynchronous() {
 
     (async () => {
       const stocks:Stock[] | null = await getAllStocks();
-        const filteredStocks = stocks!.filter((stock) => stock.user_id === user.id )
+        const filteredStocks = stocks!.filter((stock) => stock.user_id === user.id && stock.use_date === null)
         // 同じnameで、同じpriceのものはcount数で表示
         const group = (arr: any | null, func = (v:any) => v, detail = false ) => {
           const index: string[] = [];
