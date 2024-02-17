@@ -1,7 +1,7 @@
 import { Box, FormControl, Grid, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import UsedItem from "@/app/components/UsedItem";
+import UsedItem from "@/app/components/usedItem";
 import { Stock } from "../../../utils/type";
 import ja from "dayjs/locale/ja";
 import { Dayjs } from "dayjs";
