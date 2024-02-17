@@ -14,7 +14,7 @@ export function useSnackbarContext() {
   return useContext(SnackbarContext)
 }
 
-export const SnackbarProvider:FC = ({ children }) => {
+export const SnackbarProvider = ( {children}:any ) => {
   const [open, setOpen] = useState(false);
   const [severity, setSeverity] = useState<SnackbarSeverity>("info");
   const [message, setMessage] = useState("")

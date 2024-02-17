@@ -7,9 +7,11 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Schema, z } from "zod";
+import { z } from "zod";
 import Loading from "./loading";
 import Link from "next/link";
+
+type Schema = z.infer<typeof schema>;
 
 // 入力データの検証ルールを定義
 const schema = z.object({

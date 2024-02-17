@@ -19,18 +19,19 @@ export default function Asynchronous() {
       const stocks:Stock[] | null = await getAllStocks();
 
       // 同じnameで、同じpriceのものはcount数で表示
-      const group = (arr: Stock[] | null, func = (v:any) => v, detail = false ) => {
+      const group = (arr: any | null, func = (v:any) => v, detail = false ) => {
         const index: string[] = [];
-        const result: [
-          {
-            id: number;
-            type: string;
-            name: string;
-            length: number;
-          }
-        ] = [];
+        // const result: [
+        //   {
+        //     id: number;
+        //     type: string;
+        //     name: string;
+        //     length: number;
+        //   }
+        // ] = [{id: 0 , type:"", name:"", length }];
+        const result: any = []
 
-        arr!.forEach((v) => {
+        arr!.forEach((v:any) => {
           const funcResult: string = func(v);
           const i:number = index.indexOf(funcResult);
           if (i === -1) {
@@ -46,8 +47,8 @@ export default function Asynchronous() {
         return result;
       };
 
-      const groupedStocks = group(stocks, (d) => d.name + d.price, { detail: true }).result.map(
-          (e) => ({
+      const groupedStocks = group(stocks, (d) => d.name + d.price, true ).result.map(
+          (e: any) => ({
             id: e[0].id,
             name: e[0].name,
             price: e[0].price,
@@ -81,7 +82,7 @@ export default function Asynchronous() {
       onClose={() => {
         setOpen(false);
       }}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
+      isOptionEqualToValue={(option:any, value) => option.id === value.id}
       getOptionKey={(option) => option.id}
       getOptionLabel={(option) => `${option.name}　[ ${option.price}円(税込) ]　×${option.count}`}
       // getOptionLabel={(option) => option.name}

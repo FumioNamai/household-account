@@ -29,20 +29,22 @@ import { useStore, useTaxStore } from "@/store";
 type Props = {
   stocks: Stock[];
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
+  date: Dayjs | null;
+  setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
 }
 
-const StockRegistration = ({ stocks, setStocks }: Props) => {
+const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const { user} = useStore()
   const { tax, setTax } = useTaxStore()
 
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
   const [itemName, setItemName] = useState<string>("");
-  let [date, setDate] = React.useState<Dayjs | null>(dayjs());
+  // let [date, setDate] = React.useState<Dayjs | null>(dayjs());
   let [newPrice, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("---");
   const [isFocus, setIsFocus] = useState(false);
-  const onUpdate = (stocks: Stock[]) => setStocks(stocks);
+  const onUpdate = (data: any | undefined) => setStocks(stocks);
   const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
 
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
@@ -64,8 +66,8 @@ const StockRegistration = ({ stocks, setStocks }: Props) => {
       });
       if (error) throw error;
 
-      const { data: updatedStocks } = await supabase.from("stocks").select("*");
-      onUpdate(updatedStocks);
+      const { data } = await supabase.from("stocks").select("*");
+      onUpdate(data);
       setItemName("");
       setNewPrice("");
       setCategoryItem("");
@@ -170,10 +172,10 @@ const StockRegistration = ({ stocks, setStocks }: Props) => {
 
           {/* 在庫検索 */}
           <Asynchronous
-            itemName={itemName}
-            setItemName={setItemName}
-            stocks={stocks}
-            setStocks={setStocks}
+            // itemName={itemName}
+            // setItemName={setItemName}
+            // stocks={stocks}
+            // setStocks={setStocks}
           />
 
           {/* {isFocus && (

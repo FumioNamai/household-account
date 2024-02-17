@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import { Schema, z } from "zod";
+import { z } from "zod";
 import Loading from "./loading";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -10,9 +10,10 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+type Schema = z.infer<typeof schema>;
+
 // 入力データの検証ルールを定義
-const schema = z
-  .object({
+const schema = z.object({
     password: z
       .string()
       .min(6, { message: "6文字以上入力する必要があります。" }),

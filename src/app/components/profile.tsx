@@ -24,7 +24,7 @@ const Profile = () => {
   const supabase = createClientComponentClient<Database>();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [fileMessage, setFileMessage] = useState("");
+  // const [fileMessage, setFileMessage] = useState("");
   const { user } = useStore();
 
 

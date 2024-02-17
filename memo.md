@@ -20,7 +20,7 @@
 
 - [x] 使用済みにチェックを入れて生成したデータにidが入らない
 
-- [] zustand で状態管理
+- [x] zustand で状態管理
 
 - [] supabase からのデータ取得のコードを修正
       "const { error: updateError } "

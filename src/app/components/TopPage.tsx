@@ -17,22 +17,25 @@ export default function TopPage() {
   const [stocks, setStocks] = useState<Stock[]>([]);
   // const { setTax } = useStore()
 
-  useEffect(() => {
-    (async () => await getStocks())();
-  }, []);
+
 
   const getStocks = async () => {
     try {
       const { data, error } = await supabase.from("stocks").select("*");
       if (error) throw error;
       setStocks(data);
-    } catch (error) {
+    } catch (error:any) {
       if (showSnackbar) {
         showSnackbar("error", "在庫データを取得できません。" + error.message);
       }
       setStocks([]);
     }
   };
+
+  useEffect(() => {
+    (async () => await getStocks())();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   let [date, setDate] = useState<Dayjs | null>(dayjs());
 

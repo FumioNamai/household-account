@@ -21,7 +21,7 @@ type Props = {
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   // onDelete:(stocks: Stock[]) => void;
-  date: string | undefined;
+  date: string | undefined | null;
   // tax: boolean;
 }
 
@@ -39,14 +39,14 @@ const Item = ({
   const { showSnackbar } = useSnackbarContext()
   let [newPrice, setNewPrice] = useState<string>("");
   const { tax } = useTaxStore()
-  const onUpdate = (stocks: Stock[]) => setStocks(stocks);
+  const onUpdate = (data: any | undefined) => setStocks(data);
 
   // UPDATE 使った日をuse_dateに記録する
   const handleUse = async (propsID: number) => {
     if (date !== undefined) {
       try {
         // 使うボタンで選択した項目をnewStockへコピー
-        const { data: restocks, error } = await supabase
+        const { data: restocks} = await supabase
           .from("stocks")
           .select()
           .eq("id", propsID);
@@ -62,7 +62,7 @@ const Item = ({
         };
 
         // 使うボタン押下でuse_dateに記録してdailyに移動
-        const { data } = await supabase
+        await supabase
           .from("stocks")
           .update({ use_date: date })
           .eq("id", propsID);
@@ -71,21 +71,22 @@ const Item = ({
         await supabase.from("stocks").insert({ ...newStock });
 
         // 在庫データを更新して、画面を更新
-        const { data: updatedStocks } = await supabase
+        const { data } = await supabase
         .from("stocks")
         .select("*");
-        onUpdate(updatedStocks);
+
+        onUpdate( data );
         if(showSnackbar){
           showSnackbar("success", `${name}を${date}付けで計上しました。`)
         }
-      } catch (error) {
+      } catch (error : any ) {
         if(showSnackbar){
           showSnackbar("error", "使用日登録ができませんでした。" + error.message)
         }
       }
     } else {
       if(showSnackbar){
-        showSnackbar("error", "日付を選択してください。" + error.message)
+        showSnackbar("error", "日付を選択してください。")
       }
     }
   };
@@ -107,7 +108,7 @@ const Item = ({
         showSnackbar("success", `${name}を在庫一覧から削除しました。`)
       }
 
-    } catch (error) {
+    } catch (error:any) {
       if(showSnackbar){
         showSnackbar("error", "削除できませんでした。" + error.message)
       }
@@ -131,7 +132,7 @@ const Item = ({
         showSnackbar("success", `${name}の価格を更新しました。`)
       }
 
-    } catch (error) {
+    } catch (error:any) {
       if(showSnackbar){
         showSnackbar("error", "価格を更新できませんでした。" + error.message)
       }

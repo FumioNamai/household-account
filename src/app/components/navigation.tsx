@@ -23,10 +23,10 @@ const Navigation = ({
 
   useEffect(() => {
     setUser({
-      id: session ? session.user.id : "",
       email: session ? session.user.email : "",
-      name: session && profile ? profile.name : "",
+      id: session ? session.user.id : "",
       introduce: session && profile ? profile.introduce : "",
+      name: session && profile ? profile.name : "",
       // avatar_url: session && profile ? profile.avatar_url : "",
     });
   }, [session, setUser, profile]);

@@ -45,7 +45,7 @@ const StockList = ({
   let [price, setPrice] = useState<string>("");
 
   // Itemコンポーネントの削除ボタン押下で在庫情報を更新
-  const del = (stocks: Stock[]) => setStocks(stocks);
+  // const del = (stocks: Stock[]) => setStocks(stocks);
 
   const handleTax = () => {
     setTax();
@@ -180,7 +180,7 @@ const StockList = ({
                       type={stock.type}
                       stocks={stocks}
                       setStocks={setStocks}
-                      onDelete={del}
+                      // onDelete={del}
                       date={selectedDate}
                     />
                   ) : null}
@@ -226,7 +226,7 @@ const StockList = ({
                         type={stock.type}
                         stocks={stocks}
                         setStocks={setStocks}
-                        onDelete={del}
+                        // onDelete={del}
                         date={selectedDate}
                       />
                     </AccordionDetails>

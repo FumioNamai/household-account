@@ -2,7 +2,7 @@ import { Box, Button, Modal } from "@mui/material";
 import { useState } from "react";
 import StockRegistration from "./StockRegistration";
 import { Stock } from "../../../utils/type";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 type Props = {
   stocks: Stock[];
@@ -28,6 +28,7 @@ export default function ModalStockRegistration({
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  // let [date, setDate] = useState<Dayjs | null>(dayjs());
 
   return (
     <>

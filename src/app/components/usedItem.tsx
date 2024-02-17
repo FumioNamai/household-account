@@ -17,7 +17,7 @@ type Props = {
 // const UsedItem: React.FC<Stock & OnUpdateProps> = ({
 const UsedItem = ({ id, name, price, stocks, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
-  const onUpdate = (stocks: Stock[] ) => setStocks(stocks);
+  const onUpdate = ( data: any | undefined ) => setStocks(data);
 
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number) => {
@@ -26,15 +26,15 @@ const UsedItem = ({ id, name, price, stocks, setStocks }: Props) => {
         .from("stocks")
         .update({ use_date: null })
         .eq("id", propsID);
-      const { data: stocks } = await supabase.from("stocks").select("*");
-      onUpdate(stocks);
+      const { data } = await supabase.from("stocks").select("*");
+      onUpdate(data);
       if (showSnackbar) {
         showSnackbar(
           "success",
           `${name}の使用を取り消し、在庫一覧に戻しました。`
         );
       }
-    } catch (error) {
+    } catch (error:any) {
       if (showSnackbar) {
         showSnackbar("error", "在庫に戻せません。" + error.message);
       }
