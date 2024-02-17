@@ -2,11 +2,13 @@ import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getAllStocks } from "../../../utils/supabaseFunctions";
 import { Stock } from "../../../utils/type";
+import useStore from "@/store";
 
 export default function Asynchronous() {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
+  const { user } = useStore();
 
   useEffect(() => {
     let active = true;
@@ -17,7 +19,7 @@ export default function Asynchronous() {
 
     (async () => {
       const stocks:Stock[] | null = await getAllStocks();
-
+      const filteredStocks = stocks!.filter((stock) => stock.user_id === user.id )
       // 同じnameで、同じpriceのものはcount数で表示
       const group = (arr: any | null, func = (v:any) => v, detail = false ) => {
         const index: string[] = [];
@@ -47,7 +49,7 @@ export default function Asynchronous() {
         return result;
       };
 
-      const groupedStocks = group(stocks, (d) => d.name + d.price, true ).result.map(
+      const groupedStocks = group(filteredStocks, (d) => d.name + d.price, true ).result.map(
           (e: any) => ({
             id: e[0].id,
             name: e[0].name,
