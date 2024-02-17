@@ -72,7 +72,7 @@ const Password = () => {
 
 
   return (
-    <div>
+    <div className="mb-20">
       <Typography
         variant="h5"
         sx={{ fontWeight: "bold", textAlign: "center", mb: 3 }}

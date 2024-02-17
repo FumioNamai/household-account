@@ -26,6 +26,14 @@ import ja from "dayjs/locale/ja";
 import Asynchronous from "./Asynchronous";
 import { useStore, useTaxStore } from "@/store";
 
+// type Schema = z.infer<typeof schema>;
+
+// 入力データの検証ルールを定義する
+// const schema = z.object({
+//   name: z.string().min(2, { message: "2文字以上入力する必要があります。" }),
+//   introduce: z.string().min(0),
+// });
+
 type Props = {
   stocks: Stock[];
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;

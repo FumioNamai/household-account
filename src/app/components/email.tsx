@@ -70,7 +70,7 @@ const Email = ({ email }: { email: string }) => {
   };
 
   return (
-    <div>
+    <div className="mb-20">
       <Typography
         variant="h5"
         sx={{ fontWeight: "bold", textAlign: "center", mb:3 }}
@@ -80,16 +80,16 @@ const Email = ({ email }: { email: string }) => {
       <Stack
         component="form"
         noValidate
-        spacing={1}
+        spacing={2}
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* 現在のメールアドレス */}
-        <Box sx={{ mb:2 }}>
+        <div>
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
             現在のメールアドレス
           </Typography>
           <Typography variant="body1">{email}</Typography>
-        </Box>
+        </div>
 
         {/* 新しいメールアドレス */}
         <TextField

@@ -19,59 +19,61 @@ export default function Asynchronous() {
 
     (async () => {
       const stocks:Stock[] | null = await getAllStocks();
-      const filteredStocks = stocks!.filter((stock) => stock.user_id === user.id )
-      // 同じnameで、同じpriceのものはcount数で表示
-      const group = (arr: any | null, func = (v:any) => v, detail = false ) => {
-        const index: string[] = [];
-        // const result: [
-        //   {
-        //     id: number;
-        //     type: string;
-        //     name: string;
-        //     length: number;
-        //   }
-        // ] = [{id: 0 , type:"", name:"", length }];
-        const result: any = []
+        const filteredStocks = stocks!.filter((stock) => stock.user_id === user.id )
+        // 同じnameで、同じpriceのものはcount数で表示
+        const group = (arr: any | null, func = (v:any) => v, detail = false ) => {
+          const index: string[] = [];
+          // const result: [
+          //   {
+          //     id: number;
+          //     type: string;
+          //     name: string;
+          //     length: number;
+          //   }
+          // ] = [{id: 0 , type:"", name:"", length }];
+          const result: any = []
 
-        arr!.forEach((v:any) => {
-          const funcResult: string = func(v);
-          const i:number = index.indexOf(funcResult);
-          if (i === -1) {
-            index.push(funcResult);
-            result.push([v]);
-          } else {
-            result[i].push(v);
+          arr!.forEach((v:any) => {
+            const funcResult: string = func(v);
+            const i:number = index.indexOf(funcResult);
+            if (i === -1) {
+              index.push(funcResult);
+              result.push([v]);
+            } else {
+              result[i].push(v);
+            }
+          });
+          if (detail) {
+            return { index, result };
           }
-        });
-        if (detail) {
-          return { index, result };
-        }
-        return result;
-      };
+          return result;
+        };
 
-      const groupedStocks = group(filteredStocks, (d) => d.name + d.price, true ).result.map(
+        const groupedStocks = group(filteredStocks, (d) => d.name + d.price, true ).result.map(
           (e: any) => ({
             id: e[0].id,
             name: e[0].name,
             price: e[0].price,
+            type: e [0].type,
+            category: e[0].category,
             count: e.length,
           })
-        )
-        if (active) {
-          setOptions(groupedStocks);
+          )
+          if (active) {
+            setOptions(groupedStocks);
+          }
+        })();
+
+        return () => {
+          active = false;
+        };
+      }, [loading]);
+
+      React.useEffect(() => {
+        if (!open) {
+          setOptions([]);
         }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [loading]);
-
-  React.useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
+      }, [open]);
 
   return (
     <Autocomplete
@@ -86,7 +88,7 @@ export default function Asynchronous() {
       }}
       isOptionEqualToValue={(option:any, value) => option.id === value.id}
       getOptionKey={(option) => option.id}
-      getOptionLabel={(option) => `${option.name}　[ ${option.price}円(税込) ]　×${option.count}`}
+      getOptionLabel={(option) => `【${option.category ? option.category : option.type}】 ${option.name} [ ${option.price}円(税込) ] ×${option.count}`}
       // getOptionLabel={(option) => option.name}
       // value={selectedValue}
       // groupBy={(option) => option.type}
