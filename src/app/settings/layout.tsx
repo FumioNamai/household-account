@@ -52,7 +52,7 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
         ))}
         <Link href="/" underline="hover">
           <div
-            className="flex justify-end item-center text-xl py-3 px-4"
+            className="flex justify-end item-center text-md py-3 px-4"
           >
             トップページへ戻る
           </div>

@@ -99,12 +99,11 @@ const SignUp = () => {
       >
         {/* 名前 */}
         <TextField
-          label="名前"
+          label="ユーザー名"
           type="text"
           id="name"
           sx={{ width: "100%" }}
           {...register("name", { required: true })}
-          required
         />
         <Typography variant="body1" sx={{ color: "red", textAlign: "center" }}>
           {errors.name?.message}
@@ -113,7 +112,7 @@ const SignUp = () => {
         {/* メールアドレス */}
         <TextField
           type="email"
-          label="新しいメールアドレス"
+          label="メールアドレスを登録"
           sx={{ width: "100%" }}
           {...register("email", { required: true })}
         />
@@ -124,7 +123,7 @@ const SignUp = () => {
         {/* パスワード */}
         <TextField
           type="password"
-          label="パスワード"
+          label="パスワードを設定（半角英数字や記号を使い、6文字以上）"
           id="password"
           sx={{ width: "100%" }}
           {...register("password", { required: true })}
