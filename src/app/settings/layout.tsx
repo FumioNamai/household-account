@@ -35,14 +35,14 @@ const subNavigation = [
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname(); // 現在のページのパスを取得できる
   return (
-    <div>
+    <Box sx={{}}>
       <Stack spacing={1}>
         {subNavigation.map((item, index) => (
           <Link href={item.href} key={index} underline="none" sx={{color:"black"}}>
             <div
-              className={`flex flex-row items-center text-xl ml-4 py-3 ${
+              className={`flex flex-row items-center text-xl mx-8 py-3 ${
                 item.href == pathname &&
-                "bg-sky-100 text-sky-500 hover:bg-sky-100 px-4 ml-0 rounded-full "
+                "bg-sky-100 text-sky-500 hover:bg-sky-100 mx-3 px-5 rounded-full "
               }`}
             >
               <item.icon className=" inline-block mr-2 "></item.icon>
@@ -59,8 +59,8 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
         </Link>
       </Stack>
       {/* </div> */}
-      <Box sx={{ marginTop: 5 }}>{children}</Box>
-    </div>
+      <Box sx={{ marginTop: 5, marginInline: 2 }}>{children}</Box>
+    </Box>
   );
 };
 

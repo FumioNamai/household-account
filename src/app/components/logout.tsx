@@ -43,7 +43,7 @@ const Logout = () => {
       {/* ログアウトボタン */}
       <form onSubmit={onSubmit}>
         <div>
-          {loading ? (<Loading />) : ( <Button variant="outlined" type="submit" sx={{width:"100%"}}>ログアウト</Button> )}
+          {loading ? (<Loading />) : ( <Button variant="outlined" type="submit" sx={{width:"90%", display:"block", marginInline:"auto"}}>ログアウト</Button> )}
         </div>
       </form>
       { message && <div>{message}</div> }
