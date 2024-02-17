@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Stock } from "../../../utils/type";
-import Item from "./Item";
 import { Categories } from "./Categories";
 
 import ja from "dayjs/locale/ja";
@@ -19,6 +18,7 @@ import { useState } from "react";
 import ModalStockRegistration from "./ModalStockRegistration";
 import { Dayjs } from "dayjs";
 import useStore, { useTaxStore } from "@/store";
+import Item from "./Item";
 
 type Props = {
   stocks: Stock[];
