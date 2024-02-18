@@ -77,36 +77,40 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
 
       {/* 種別検索 */}
       <Box sx={{ paddingInline: "0px", marginBottom: "40px" }}>
-        <InputLabel>種別</InputLabel>
-        <ToggleButtonGroup
-          color="primary"
-          value={selectedType}
-          exclusive
-          onChange={(event, newType) => setSelectedType(newType)}
-          sx={{ marginBottom: "12px" }}
-        >
-          <ToggleButton value="食品">食品</ToggleButton>
-          <ToggleButton value="雑貨">雑貨</ToggleButton>
-          <ToggleButton value="その他">その他</ToggleButton>
-        </ToggleButtonGroup>
-
-        {/* 分類検索 */}
-        <FormControl sx={{ display: "flex", marginBottom: "12px", width: 120 }}>
-          <InputLabel>分類</InputLabel>
-          <Select
-            id="category"
-            value={categoryItem}
-            label="分類"
-            onChange={handleSelectItem}
+          <InputLabel>種別</InputLabel>
+        <Box sx={{ display: "flex", flexDirection: "row", gap:2}}>
+          <ToggleButtonGroup
+            color="primary"
+            value={selectedType}
+            exclusive
+            onChange={(event, newType) => setSelectedType(newType)}
+            sx={{ marginBottom: "12px" }}
           >
-            <MenuItem value={""}></MenuItem>
-            {Categories.map((category) => (
-              <MenuItem key={category} value={category}>
-                {category}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            <ToggleButton value="食品">食品</ToggleButton>
+            <ToggleButton value="雑貨">雑貨</ToggleButton>
+            <ToggleButton value="その他">その他</ToggleButton>
+          </ToggleButtonGroup>
+
+          {/* 分類検索 */}
+          <FormControl
+            sx={{ display: "flex", marginBottom: "12px", width: 140 }}
+          >
+            <InputLabel>分類（食品）</InputLabel>
+            <Select
+              id="category"
+              value={categoryItem}
+              label="分類（食品）"
+              onChange={handleSelectItem}
+            >
+              <MenuItem value={""}></MenuItem>
+              {Categories.map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
 
         {/* 商品名検索 */}
         {/* <FormControl sx={{ marginBottom: "12px" }}>
@@ -123,7 +127,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
         </FormControl> */}
 
         {/* 使用日指定 */}
-        <Box sx={{ paddingInline: "0px" }}>
+        <Box sx={{ width: "200px" }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label={"使用日"}
@@ -133,7 +137,9 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
               onChange={setDate}
             />
           </LocalizationProvider>
-          <Typography>指定された日付で登録します</Typography>
+          <Typography variant="body2" sx={{ textAlign: "center" }}>
+            指定された日付で登録します
+          </Typography>
         </Box>
 
         {/* 税表示切替 */}
@@ -161,8 +167,8 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
         {/* 在庫一覧 */}
         {Types.map((type) =>
           selectedType === type ? (
-            <Box key={type} sx={{ boxShadow: 2, padding: "4px" }}>
-              <Typography variant="h5">{type}</Typography>
+            <Box key={type} sx={{ boxShadow: 2, padding: "4px", borderRadius:2}}>
+              <Typography variant="h5" sx={{marginBlock:"8px"}}>{type}</Typography>
               {type === "食品" ? (
                 Categories.map((category) =>
                   category === categoryItem ? (
