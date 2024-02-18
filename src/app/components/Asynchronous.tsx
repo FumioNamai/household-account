@@ -12,13 +12,16 @@ export default function Asynchronous() {
 
   useEffect(() => {
     let active = true;
-
     if (!loading) {
       return undefined;
     }
 
     (async () => {
       const stocks:Stock[] | null = await getAllStocks();
+        if (stocks!.some((stock) => stock.user_id !== user.id )) {
+          alert("在庫データがありません。在庫登録を行ってください。");
+          setOpen(false)
+        }
         const filteredStocks = stocks!.filter((stock) => stock.user_id === user.id && stock.use_date === null)
         // 同じnameで、同じpriceのものはcount数で表示
         const group = (arr: any | null, func = (v:any) => v, detail = false ) => {
@@ -88,7 +91,9 @@ export default function Asynchronous() {
       }}
       isOptionEqualToValue={(option:any, value) => option.id === value.id}
       getOptionKey={(option) => option.id}
-      getOptionLabel={(option) => `【${option.category ? option.category : option.type}】 ${option.name} [ ${option.price}円(税込) ] ×${option.count}`}
+      getOptionLabel={(option) =>
+      `[${option.category ? option.category: option.type}] ${option.name} : ${option.price}円 ×${option.count}`
+    }
       // getOptionLabel={(option) => option.name}
       // value={selectedValue}
       // groupBy={(option) => option.type}
@@ -107,7 +112,7 @@ export default function Asynchronous() {
       renderInput={(params) => (
         <TextField
           {...params}
-          label="在庫検索"
+          label="在庫検索（税込）"
           InputProps={{
             ...params.InputProps,
             endAdornment: (
