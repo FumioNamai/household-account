@@ -39,10 +39,8 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
   let [price, setPrice] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
-  // const [isFocus, setIsFocus] = useState(false);
   const [searchName, setSearchName] = useState<string>("");
 
-  // const handleForm = () => {};
   const handleSelectItem = (event: SelectChangeEvent) => {
     setCategoryItem(event.target.value as string);
   };
@@ -77,8 +75,8 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
 
       {/* 種別検索 */}
       <Box sx={{ paddingInline: "0px", marginBottom: "40px" }}>
-          <InputLabel>種別</InputLabel>
-        <Box sx={{ display: "flex", flexDirection: "row", gap:2}}>
+        <InputLabel>種別</InputLabel>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
           <ToggleButtonGroup
             color="primary"
             value={selectedType}
@@ -111,20 +109,6 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
             </Select>
           </FormControl>
         </Box>
-
-        {/* 商品名検索 */}
-        <FormControl sx={{ marginBottom: "12px" }}>
-          <TextField
-            // onFocus={() => setIsFocus(true)}
-            label="商品名検索"
-            variant="outlined"
-            type="text"
-            id="name"
-            name="name"
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-          />
-        </FormControl>
 
         {/* 使用日指定 */}
         <Box sx={{ width: "200px" }}>
@@ -167,15 +151,25 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
         {/* 在庫一覧 */}
         {Types.map((type) =>
           selectedType === type ? (
-            <Box key={type} sx={{ boxShadow: 2, padding: "4px", borderRadius:2}}>
-              <Typography variant="h5" sx={{marginBlock:"8px"}}>{type}</Typography>
+            <Box
+              key={type}
+              sx={{
+                boxShadow: 2,
+                padding: "4px",
+                borderRadius: 2,
+                marginBottom: "40px",
+              }}
+            >
+              <Typography variant="h5" sx={{ marginBlock: "8px" }}>
+                {type}
+              </Typography>
               {type === "食品" ? (
                 Categories.map((category) =>
                   category === categoryItem ? (
                     <div key={category}>
                       <Typography variant="h6">{category}</Typography>
                       <ul>
-                        {stocks!
+                        {stocks
                           .sort((a, b) => a.name.localeCompare(b.name, "ja"))
                           .map((stock) => (
                             <li key={stock.id}>
@@ -203,7 +197,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
                 )
               ) : (
                 <ul>
-                  {stocks!
+                  {stocks
                     .sort((a, b) => a.name.localeCompare(b.name, "ja"))
                     .map((stock) => (
                       <li key={stock.id}>
@@ -230,26 +224,55 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
           ) : null
         )}
 
-        {/* {
-          stocks.filter((stock) => {
-            if (searchName === "") {
-              return stock
-            } else if (stock.name.toLocaleLowerCase().includes(searchName.toLowerCase())) {
-              return stock
-            }
-          }).map((stock) => {
-            <Item
-            id={stock.id}
-            name={stock.name}
-            price={stock.price.toString()}
-            setPrice={setPrice}
-            type={stock.type}
-            stocks={stocks}
-            setStocks={setStocks}
-            date={selectedDate}
+        {/* 商品名検索 */}
+        <FormControl sx={{ marginBottom: "12px" }}>
+          <TextField
+            // onFocus={() => setIsFocus(true)}
+            label="商品名検索"
+            variant="outlined"
+            type="text"
+            id="name"
+            name="name"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
           />
-        })
-        } */}
+        </FormControl>
+
+        <Box
+          sx={{
+            height: "300px",
+            overflow: "scroll",
+            boxShadow: 2,
+            padding: "4px",
+            borderRadius: 2,
+          }}
+        >
+          <Typography variant="h6">検索結果</Typography>
+          <ul>
+            {stocks
+              .filter(
+                (stock) => stock.name === stock.name.match(searchName)?.input
+              )
+              .sort((a, b) => a.name.localeCompare(b.name, "ja"))
+              .map((stock) => (
+                <li key={stock.id}>
+                  {stock.user_id === user.id && stock.use_date === null ? (
+                    <Item
+                      id={stock.id}
+                      name={stock.name}
+                      price={stock.price.toString()}
+                      setPrice={setPrice}
+                      type={stock.type}
+                      stocks={stocks}
+                      setStocks={setStocks}
+                      // onDelete={del}
+                      date={selectedDate}
+                    />
+                  ) : null}
+                </li>
+              ))}
+          </ul>
+        </Box>
       </Box>
     </>
   );
