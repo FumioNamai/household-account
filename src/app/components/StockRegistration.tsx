@@ -50,7 +50,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const [itemName, setItemName] = useState<string>("");
   // let [date, setDate] = React.useState<Dayjs | null>(dayjs());
   let [newPrice, setNewPrice] = useState<string>("");
-  const [categoryItem, setCategoryItem] = useState("---");
+  const [categoryItem, setCategoryItem] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const onUpdate = (data: any | undefined) => setStocks(stocks);
   const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
@@ -157,7 +157,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               label="分類"
               onChange={handleSelectItem}
             >
-              <MenuItem value={"---"}>---</MenuItem>
+              <MenuItem value={""}></MenuItem>
               {Categories.map((category) => (
                 <MenuItem key={category} value={category}>
                   {category}
@@ -180,12 +180,13 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           </FormControl>
 
           {/* 在庫検索 */}
-          <Asynchronous
-            // itemName={itemName}
-            // setItemName={setItemName}
-            // stocks={stocks}
-            // setStocks={setStocks}
-          />
+          {/* <Asynchronous
+              onChange={(e) => setItemName(e.target.value)}
+            itemName={itemName}
+            setItemName={setItemName}
+            stocks={stocks}
+            setStocks={setStocks}
+          /> */}
 
           {/* {isFocus && (
             <List

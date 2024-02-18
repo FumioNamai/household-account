@@ -7,4 +7,5 @@ export const Categories: string[] = [
   "調味料",
   "お菓子",
   "その他",
+  ""
 ];

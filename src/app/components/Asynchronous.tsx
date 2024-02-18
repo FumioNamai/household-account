@@ -83,6 +83,7 @@ export default function Asynchronous() {
       sx={{ width: "100%", maxHeight: 200 }}
       freeSolo
       open={open}
+
       onOpen={() => {
         setOpen(true);
       }}
@@ -94,6 +95,7 @@ export default function Asynchronous() {
       getOptionLabel={(option) =>
       `[${option.category ? option.category: option.type}] ${option.name} : ${option.price}円 ×${option.count}`
     }
+    selectOnFocus
       // getOptionLabel={(option) => option.name}
       // value={selectedValue}
       // groupBy={(option) => option.type}
@@ -107,7 +109,6 @@ export default function Asynchronous() {
       // valueの値をイベントハンドラを通して、setPnameに渡せていない？
       // inputValue={pname}
       // onInputChange={(event: React.SyntheticEvent) => setPName(event.target.value)}
-
       // onChange={setPName}
       renderInput={(params) => (
         <TextField
@@ -115,17 +116,19 @@ export default function Asynchronous() {
           label="在庫検索（税込）"
           InputProps={{
             ...params.InputProps,
-            endAdornment: (
-              <React.Fragment>
-                {loading ? (
-                  <CircularProgress color="inherit" size={20} />
-                ) : null}
-                {/* {params.InputProps.endAdornment} */}
-              </React.Fragment>
-            ),
+            // xではなくローダーを表示させる
+            // endAdornment: (
+            //   <React.Fragment>
+            //     {loading ? (
+            //       <CircularProgress color="inherit" size={20} />
+            //       ) : null}
+            //   </React.Fragment>
+            // ),
           }}
         />
       )}
     />
   );
 }
+
+// 検索する文字列をそのまま、在庫登録にも使用したい

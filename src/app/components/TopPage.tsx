@@ -11,20 +11,19 @@ import { Stock } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
 import useStore from "@/store";
+import StockFilter from "@/app/components/stockFilter";
 
 export default function TopPage() {
   const { showSnackbar } = useSnackbarContext();
   const [stocks, setStocks] = useState<Stock[]>([]);
   // const { setTax } = useStore()
 
-
-
   const getStocks = async () => {
     try {
       const { data, error } = await supabase.from("stocks").select("*");
       if (error) throw error;
       setStocks(data);
-    } catch (error:any) {
+    } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "在庫データを取得できません。" + error.message);
       }
@@ -61,13 +60,19 @@ export default function TopPage() {
         />
 
         {/* 在庫一覧 */}
-        <StockList
+        {/* <StockList
           stocks={stocks}
           setStocks={setStocks}
-          // handleTax={handleTax}
           date={date}
           setDate={setDate}
-          // del={del}
+        /> */}
+
+        {/* 在庫検索 */}
+        <StockFilter
+        stocks={stocks}
+        setStocks={setStocks}
+        date={date}
+        setDate={setDate}
         />
       </main>
     </>

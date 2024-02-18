@@ -32,7 +32,7 @@ export default function ModalStockRegistration({
 
   return (
     <>
-    <Box sx={{marginBlock:"8px"}}>
+    <Box>
       <Button variant="outlined" size="large" onClick={handleOpen}>在庫登録</Button>
       </Box>
       <Modal
