@@ -229,7 +229,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
           <TextField
             // onFocus={() => setIsFocus(true)}
             label="商品名検索"
-            variant="outlined"
+            variant="standard"
             type="text"
             id="name"
             name="name"
@@ -240,8 +240,8 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
 
         <Box
           sx={{
-            height: "300px",
-            overflow: "scroll",
+            height: "500px",
+            overflowY: "scroll",
             boxShadow: 2,
             padding: "4px",
             borderRadius: 2,

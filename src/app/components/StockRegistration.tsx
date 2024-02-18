@@ -36,14 +36,14 @@ import { useStore, useTaxStore } from "@/store";
 
 type Props = {
   stocks: Stock[];
-  setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
+  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
-  setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
-}
+  setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+};
 
 const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
-  const { user} = useStore()
-  const { tax, setTax } = useTaxStore()
+  const { user } = useStore();
+  const { tax, setTax } = useTaxStore();
 
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
@@ -53,7 +53,9 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const [categoryItem, setCategoryItem] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const onUpdate = (data: any | undefined) => setStocks(stocks);
-  const selectedDate: string | undefined = date?.locale(ja).format("YYYY-MM-DD");
+  const selectedDate: string | undefined = date
+    ?.locale(ja)
+    .format("YYYY-MM-DD");
 
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -98,23 +100,9 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   };
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewPrice(event.target.value)
-  }
+    setNewPrice(event.target.value);
+  };
 
-  // 在庫検索機能
-  // const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   (pname) => {
-  //     let matches = [];
-  //     if (pname.length > 0) {
-  //       matches = stocks.filter((stock) => {
-  //         const regex = new RegExp(`${pname}`, "gi");
-  //         return stock.name.match(regex);
-  //       });
-  //     }
-  //     setSuggestions(matches);
-  //     setPName(pname);
-  //   };
-  // }
   return (
     <Grid item xs={12} sx={{ marginBottom: "20px" }}>
       <Typography variant="h4" className="mb-4">
@@ -133,23 +121,22 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           </LocalizationProvider>
 
           <InputLabel>種別</InputLabel>
-          {/* <div className="flex flex-row items-center gap-2"> */}
-            <ToggleButtonGroup
-              // size="small"
-              color="primary"
-              value={type}
-              exclusive
-              onChange={(event, newType) => setType(newType)}
-              sx={{marginBottom:"12px"}}
-            >
-              <ToggleButton value="食品">食品</ToggleButton>
-              <ToggleButton value="雑貨">雑貨</ToggleButton>
-              <ToggleButton value="その他">その他</ToggleButton>
-            </ToggleButtonGroup>
-          {/* </div> */}
+          <ToggleButtonGroup
+            // size="small"
+            color="primary"
+            value={type}
+            exclusive
+            onChange={(event, newType) => setType(newType)}
+            sx={{ marginBottom: "12px" }}
+          >
+            <ToggleButton value="食品">食品</ToggleButton>
+            <ToggleButton value="雑貨">雑貨</ToggleButton>
+            <ToggleButton value="その他">その他</ToggleButton>
+          </ToggleButtonGroup>
 
-          {/* <p>分類</p> */}
-          <FormControl sx={{display:"flex", marginBottom: "12px", width: 120}}>
+          <FormControl
+            sx={{ display: "flex", marginBottom: "12px", width: 120 }}
+          >
             <InputLabel>分類</InputLabel>
             <Select
               id="category"
@@ -179,45 +166,20 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
             />
           </FormControl>
 
-          {/* 在庫検索 */}
-          {/* <Asynchronous
-              onChange={(e) => setItemName(e.target.value)}
-            itemName={itemName}
-            setItemName={setItemName}
-            stocks={stocks}
-            setStocks={setStocks}
-          /> */}
-
-          {/* {isFocus && (
-            <List
-              sx={{
-                cursor: "pointer",
-                width: "300px",
-                maxHeight: "200px",
-                overflow: "scroll",
-                bgcolor: "gray",
-                zIndex: "100",
-              }}
-            >
-              {suggestions?.map((suggestion) => (
-                <ListItem
-                  key={suggestion.id}
-                  value={suggestion.name}
-                  onClick={() => {
-                    setPName(suggestion.name);
-                    setIsFocus(false);
-                  }}
-                >
-                  {suggestion.name}
-                </ListItem>
-              ))}
-            </List>
-          )} */}
-
-          {/* <Asynchronous pname={pname} setPName={setPName} stocks={stocks} setStocks={setStocks} /> */}
-          <div className="flex flex-row items-center gap-5 my-3">
-
-          <TextField
+          <FormControl
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="body2">税抜</Typography>
+            <Switch checked={tax} onChange={handleTax} />
+            {/* <Switch checked={tax} onChange={setTax} /> */}
+            <Typography variant="body2">税込</Typography>
+          </FormControl>
+          <div className="flex flex-row items-center gap-5 mb-3">
+            <TextField
               type="string"
               label="価格"
               id="outlined-start-adornment"
@@ -230,20 +192,20 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               }}
               onChange={handlePriceChange}
             />
-
-            <FormControl
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
+            {/* <Select
+              id="amount"
+              value={amount}
+              label="数量"
+              onChange={handleAmountChange}
             >
-              <Typography variant="body2">税抜</Typography>
-              <Switch checked={tax} onChange={handleTax} />
-              {/* <Switch checked={tax} onChange={setTax} /> */}
-              <Typography variant="body2">税込</Typography>
-            </FormControl>
-
+              <MenuItem>1</MenuItem>
+              <MenuItem>2</MenuItem>
+              <MenuItem>3</MenuItem>
+              <MenuItem>4</MenuItem>
+              <MenuItem>5</MenuItem>
+              <MenuItem>6</MenuItem>
+              <MenuItem>7</MenuItem>
+            </Select> */}
           </div>
 
           <div className="flex flex-col">
