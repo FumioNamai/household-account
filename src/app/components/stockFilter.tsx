@@ -39,8 +39,8 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
   let [price, setPrice] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
-  const [isFocus, setIsFocus] = useState(false);
-  const [itemName, setItemName] = useState<string>("");
+  // const [isFocus, setIsFocus] = useState(false);
+  const [searchName, setSearchName] = useState<string>("");
 
   // const handleForm = () => {};
   const handleSelectItem = (event: SelectChangeEvent) => {
@@ -113,18 +113,18 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
         </Box>
 
         {/* 商品名検索 */}
-        {/* <FormControl sx={{ marginBottom: "12px" }}>
+        <FormControl sx={{ marginBottom: "12px" }}>
           <TextField
-            onFocus={() => setIsFocus(true)}
+            // onFocus={() => setIsFocus(true)}
             label="商品名検索"
             variant="outlined"
             type="text"
             id="name"
             name="name"
-            value={itemName}
-            onChange={(e) => setItemName(e.target.value)}
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
           />
-        </FormControl> */}
+        </FormControl>
 
         {/* 使用日指定 */}
         <Box sx={{ width: "200px" }}>
@@ -229,6 +229,27 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
             </Box>
           ) : null
         )}
+
+        {/* {
+          stocks.filter((stock) => {
+            if (searchName === "") {
+              return stock
+            } else if (stock.name.toLocaleLowerCase().includes(searchName.toLowerCase())) {
+              return stock
+            }
+          }).map((stock) => {
+            <Item
+            id={stock.id}
+            name={stock.name}
+            price={stock.price.toString()}
+            setPrice={setPrice}
+            type={stock.type}
+            stocks={stocks}
+            setStocks={setStocks}
+            date={selectedDate}
+          />
+        })
+        } */}
       </Box>
     </>
   );
