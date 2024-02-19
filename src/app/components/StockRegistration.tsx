@@ -35,7 +35,7 @@ import { useStore, useTaxStore } from "@/store";
 // });
 
 type Props = {
-  stocks: Stock[];
+  stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
@@ -48,17 +48,22 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
   const [itemName, setItemName] = useState<string>("");
+  const [amount, setAmount] = useState<number>(1);
+
+  // const amounts: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   // let [date, setDate] = React.useState<Dayjs | null>(dayjs());
   let [newPrice, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
   const [isFocus, setIsFocus] = useState(false);
-  const onUpdate = (data: any | undefined) => setStocks(stocks);
+
   const selectedDate: string | undefined = date
-    ?.locale(ja)
-    .format("YYYY-MM-DD");
+  ?.locale(ja)
+  .format("YYYY-MM-DD");
+  const onUpdate = (data:any| undefined) => setStocks(data);
 
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (type === "食品" && tax === false) {
       newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
     }
@@ -77,6 +82,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
       if (error) throw error;
 
       const { data } = await supabase.from("stocks").select("*");
+
       onUpdate(data);
       setItemName("");
       setNewPrice("");
@@ -84,6 +90,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
       if (showSnackbar) {
         showSnackbar("success", `${itemName}を在庫一覧に登録しました。`);
       }
+
     } catch (error) {
       if (showSnackbar) {
         showSnackbar("error", "データの新規登録ができません。");
@@ -102,6 +109,8 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewPrice(event.target.value);
   };
+
+  const handleAmountChange = () => {};
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "20px" }}>
@@ -194,17 +203,13 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
             />
             {/* <Select
               id="amount"
-              value={amount}
+              // value={amount}
               label="数量"
               onChange={handleAmountChange}
             >
-              <MenuItem>1</MenuItem>
-              <MenuItem>2</MenuItem>
-              <MenuItem>3</MenuItem>
-              <MenuItem>4</MenuItem>
-              <MenuItem>5</MenuItem>
-              <MenuItem>6</MenuItem>
-              <MenuItem>7</MenuItem>
+              {amounts.map((amount) => (
+                <MenuItem key={amount} value={amount}>{amount}</MenuItem>
+              ))}
             </Select> */}
           </div>
 

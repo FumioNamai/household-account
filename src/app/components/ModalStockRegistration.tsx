@@ -5,7 +5,7 @@ import { Stock } from "../../../utils/type";
 import dayjs, { Dayjs } from "dayjs";
 
 type Props = {
-  stocks: Stock[];
+  stocks: Stock[] | null;
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
   // tax: boolean;
   // setTax: React.Dispatch<React.SetStateAction<boolean>>;
