@@ -18,7 +18,7 @@ type Props = {
   price: string;
   setPrice: React.Dispatch<React.SetStateAction<string>>;
   type: string;
-  stocks: Stock[];
+  stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   // onDelete:(stocks: Stock[]) => void;
   date: string | undefined | null;
