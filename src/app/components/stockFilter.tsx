@@ -98,7 +98,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
       >
         {/* 種別検索 */}
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <InputLabel>種別</InputLabel>
+          <InputLabel>種別で検索</InputLabel>
           <ToggleButtonGroup
             color="primary"
             value={selectedType}
@@ -155,6 +155,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
             {type === "食品" ? (
               //  分類検索
               <FormControl
+              variant="standard"
                 sx={{
                   width: 140,
                 }}
@@ -251,7 +252,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
         <FormControl sx={{ marginBottom: "12px" }}>
           <TextField
             // onFocus={() => setIsFocus(true)}
-            label="商品名検索"
+            label="商品名で検索"
             variant="standard"
             type="text"
             id="name"
