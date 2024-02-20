@@ -51,7 +51,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const [itemName, setItemName] = useState<string>("");
   const [amount, setAmount] = useState<number>(1);
 
-  // const amounts: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const amounts: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   // let [date, setDate] = React.useState<Dayjs | null>(dayjs());
   let [newPrice, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
@@ -73,14 +73,16 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
     }
 
     try {
-      const { error } = await supabase.from("stocks").insert({
-        type: type,
-        name: itemName,
-        price: newPrice,
-        registration_date: selectedDate,
-        category: categoryItem,
-        user_id: user.id,
-      });
+      for (let i = 0; i < amount; i++) {
+
+        const { error } = await supabase.from("stocks").insert({
+          type: type,
+          name: itemName,
+          price: newPrice,
+          registration_date: selectedDate,
+          category: categoryItem,
+          user_id: user.id,
+        });
       if (error) throw error;
 
       const { data } = await supabase.from("stocks").select("*");
@@ -89,8 +91,9 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
       setItemName("");
       setNewPrice("");
       setCategoryItem("");
+    }
       if (showSnackbar) {
-        showSnackbar("success", `${itemName}を在庫一覧に登録しました。`);
+        showSnackbar("success", `${itemName}を${amount}個、在庫一覧に登録しました。`);
       }
 
     } catch (error) {
@@ -108,7 +111,9 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
     setNewPrice(event.target.value);
   };
 
-  const handleAmountChange = () => {};
+  const handleAmountChange = (event:any) => {
+    setAmount(event.target.value)
+  };
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "20px" }}>
@@ -189,16 +194,20 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               onChange={handlePriceChange}
             />
             <TaxSwitch />
-            {/* <Select
+            <FormControl>
+            <InputLabel>数量</InputLabel>
+            <Select
               id="amount"
-              // value={amount}
+              type="number"
+              value={amount}
               label="数量"
               onChange={handleAmountChange}
             >
               {amounts.map((amount) => (
                 <MenuItem key={amount} value={amount}>{amount}</MenuItem>
               ))}
-            </Select> */}
+            </Select>
+            </FormControl>
           </div>
 
           <div className="flex flex-col">
