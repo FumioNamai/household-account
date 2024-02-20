@@ -117,7 +117,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "20px" }}>
-      <Typography variant="h4" className="mb-4">
+      <Typography variant="h4" sx={{marginBottom:"40px"}}>
         在庫登録
       </Typography>
       <Box sx={{ paddingInline: "0px" }}>
@@ -184,7 +184,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               type="string"
               label="価格"
               id="outlined-start-adornment"
-              sx={{ width: "150px" }}
+              sx={{ width: "120px" }}
               value={newPrice}
               InputProps={{
                 endAdornment: (
@@ -194,7 +194,8 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               onChange={handlePriceChange}
             />
             <TaxSwitch />
-            <FormControl>
+          </div>
+          <FormControl sx={{marginBottom:"24px"}}>
             <InputLabel>数量</InputLabel>
             <Select
               id="amount"
@@ -208,8 +209,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               ))}
             </Select>
             </FormControl>
-          </div>
-
           <div className="flex flex-col">
             <div>
               <Button variant="outlined" type="submit">
