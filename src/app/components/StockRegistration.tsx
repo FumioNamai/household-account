@@ -25,6 +25,7 @@ import dayjs, { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
 import Asynchronous from "./Asynchronous";
 import { useStore, useTaxStore } from "@/store";
+import TaxSwitch from "@/app/components/taxSwitch";
 
 // type Schema = z.infer<typeof schema>;
 
@@ -43,7 +44,7 @@ type Props = {
 
 const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const { user } = useStore();
-  const { tax, setTax } = useTaxStore();
+  const { tax, } = useTaxStore();
 
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
@@ -70,6 +71,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
     if (type !== "食品" && tax === false) {
       newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
     }
+
     try {
       const { error } = await supabase.from("stocks").insert({
         type: type,
@@ -100,10 +102,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
 
   const handleSelectItem = (event: SelectChangeEvent) => {
     setCategoryItem(event.target.value as string);
-  };
-
-  const handleTax = () => {
-    setTax();
   };
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -175,18 +173,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
             />
           </FormControl>
 
-          <FormControl
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="body2">税抜</Typography>
-            <Switch checked={tax} onChange={handleTax} />
-            {/* <Switch checked={tax} onChange={setTax} /> */}
-            <Typography variant="body2">税込</Typography>
-          </FormControl>
+
           <div className="flex flex-row items-center gap-5 mb-3">
             <TextField
               type="string"
@@ -201,6 +188,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               }}
               onChange={handlePriceChange}
             />
+            <TaxSwitch />
             {/* <Select
               id="amount"
               // value={amount}

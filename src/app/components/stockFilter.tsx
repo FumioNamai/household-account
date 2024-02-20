@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Stack,
   Switch,
   TextField,
   ToggleButton,
@@ -22,6 +23,7 @@ import { Dayjs } from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ModalStockRegistration from "./ModalStockRegistration";
+import TaxSwitch from "@/app/components/taxSwitch";
 
 type Props = {
   stocks: Stock[] | null;
@@ -32,7 +34,6 @@ type Props = {
 
 const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
   const { user } = useStore();
-  const { tax, setTax } = useTaxStore();
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
@@ -43,10 +44,6 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
 
   const handleSelectItem = (event: SelectChangeEvent) => {
     setCategoryItem(event.target.value as string);
-  };
-
-  const handleTax = () => {
-    setTax();
   };
 
   return (
@@ -122,18 +119,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
             verticalAlign: "text-bottom",
           }}
         >
-          <FormControl
-            sx={{
-              paddingBottom: "0",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Typography>税抜</Typography>
-            <Switch checked={tax} onChange={handleTax} />
-            <Typography>税込</Typography>
-          </FormControl>
+          <TaxSwitch />
         </Box>
       </Box>
 
@@ -155,7 +141,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
             {type === "食品" ? (
               //  分類検索
               <FormControl
-              variant="standard"
+                variant="standard"
                 sx={{
                   width: 140,
                 }}
@@ -238,8 +224,20 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
         ) : null
       )}
 
+      <FormControl sx={{ marginBottom: "12px" }}>
+      {/* <InputLabel>商品名で検索</InputLabel> */}
+        <TextField
+          // onFocus={() => setIsFocus(true)}
+          label="商品名で検索"
+          // variant="standard"
+          type="text"
+          id="name"
+          name="name"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+        />
+      </FormControl>
       {/* 商品名検索 */}
-
       <Box
         sx={{
           height: "500px",
@@ -247,9 +245,10 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
           boxShadow: 2,
           padding: "12px",
           borderRadius: 2,
+          marginBottom:"40px"
         }}
       >
-        <FormControl sx={{ marginBottom: "12px" }}>
+        {/* <FormControl sx={{ marginBottom: "12px" }}>
           <TextField
             // onFocus={() => setIsFocus(true)}
             label="商品名で検索"
@@ -260,7 +259,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
           />
-        </FormControl>
+        </FormControl> */}
         {/* <Typography variant="subtitle1">検索結果</Typography> */}
         <ul>
           {stocks!
