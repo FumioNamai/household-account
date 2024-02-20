@@ -5,20 +5,20 @@ import { Stock } from "../../../utils/type";
 import React from "react";
 import { useSnackbarContext } from "@/providers/context-provider";
 
+
 type Props = {
   id: number;
   name: string;
   price: number;
   stocks: Stock[] | null;
-  setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
+  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 // export type OnUpdateProps = { onUpdate: (stocks: Stock[] | null) => void };
 
 // const UsedItem: React.FC<Stock & OnUpdateProps> = ({
 const UsedItem = ({ id, name, price, stocks, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
-  const onUpdate = ( data: any | undefined ) => setStocks(data);
-
+  const onUpdate = (data: any | undefined) => setStocks(data);
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number) => {
     try {
@@ -34,7 +34,7 @@ const UsedItem = ({ id, name, price, stocks, setStocks }: Props) => {
           `${name}の使用を取り消し、在庫一覧に戻しました。`
         );
       }
-    } catch (error:any) {
+    } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "在庫に戻せません。" + error.message);
       }
@@ -42,10 +42,7 @@ const UsedItem = ({ id, name, price, stocks, setStocks }: Props) => {
   };
 
   return (
-    <li
-      key={id}
-      className="flex flex-row items-center justify-between pl-4"
-    >
+    <li key={id} className="flex flex-row items-center justify-between pl-4">
       <Typography variant="body2">{name}</Typography>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography variant="body1">{price}円</Typography>

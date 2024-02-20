@@ -7,15 +7,17 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import UsedItem from "@/app/components/usedItem";
 import { Stock } from "../../../utils/type";
-import useStore from "@/store";
+import useStore, { useTaxStore } from "@/store";
+import TaxSwitch from "./taxSwitch";
 
 const Monthly: React.FC<{
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-}> = ({ stocks, setStocks}) => {
-
+}> = ({ stocks, setStocks }) => {
   const [month, setMonth] = useState<Dayjs | null>(dayjs());
   const { user } = useStore();
+  const { tax } = useTaxStore();
+
   const selectedMonth: string | null = month!.format("YYYY-MM");
 
   let date = "0";
@@ -25,7 +27,9 @@ const Monthly: React.FC<{
     date = ("0" + `${i}`).slice(-2);
 
     const todayUsed: Stock[] = stocks!.filter(
-      (stock) => stock.user_id === user.id && stock.use_date === `${selectedMonth}-${date}`
+      (stock) =>
+        stock.user_id === user.id &&
+        stock.use_date === `${selectedMonth}-${date}`
     );
 
     const todayFoodsTotal: number = todayUsed
@@ -57,34 +61,49 @@ const Monthly: React.FC<{
   //その他の今月使用済みリストを表示させる
   const monthOthers: Stock[] = stocks?.filter(
     (stock) =>
-    stock.user_id === user.id && stock.type === "その他" && stock.use_date?.startsWith(selectedMonth)
+      stock.user_id === user.id &&
+      stock.type === "その他" &&
+      stock.use_date?.startsWith(selectedMonth)
   );
 
-  const monthlyFoodsTotal: number = dailyTotals.reduce((sum, el) => {
+  let monthlyFoodsTotal: number = dailyTotals.reduce((sum, el) => {
     return sum + el.todayFoodsTotal;
   }, 0);
+  monthlyFoodsTotal = tax
+    ? monthlyFoodsTotal
+    : Math.ceil(monthlyFoodsTotal / 1.08);
 
-  const monthlyItemsTotal: number = dailyTotals.reduce((sum, el) => {
+  let monthlyItemsTotal: number = dailyTotals.reduce((sum, el) => {
     return sum + el.todayItemsTotal;
   }, 0);
+  monthlyItemsTotal = tax
+    ? monthlyItemsTotal
+    : Math.ceil(monthlyItemsTotal / 1.1);
 
-  const monthlyOthersTotal: number = dailyTotals.reduce((sum, el) => {
+  let monthlyOthersTotal: number = dailyTotals.reduce((sum, el) => {
     return sum + el.todayOthersTotal;
   }, 0);
+  monthlyOthersTotal = tax
+    ? monthlyOthersTotal
+    : Math.ceil(monthlyOthersTotal / 1.1);
 
   const monthlyTotal: number =
     monthlyFoodsTotal + monthlyItemsTotal + monthlyOthersTotal;
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
-      <Box sx={{ display: "flex", alignItems: "center", gap: "24px", marginBottom: "16px" }}>
-        <Typography
-          variant="h2"
-          sx={{ fontSize: "24px" }}
-        >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: "24px",
+          marginBottom: "16px",
+        }}
+      >
+        <Typography variant="h2" sx={{ fontSize: "24px" }}>
           月別集計
         </Typography>
-        <FormControl sx={{ maxWidth: "200px"}}>
+        <FormControl sx={{ maxWidth: "200px" }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               defaultValue={dayjs()}
@@ -95,6 +114,11 @@ const Monthly: React.FC<{
             />
           </LocalizationProvider>
         </FormControl>
+      </Box>
+
+      {/* 税表示切替 */}
+      <Box sx={{ display: "flex", justifyContent: "end", marginRight: "8px" }}>
+        <TaxSwitch />
       </Box>
 
       <Box sx={{ paddingInline: "16px" }}>
@@ -110,8 +134,9 @@ const Monthly: React.FC<{
             {monthlyTotal}円
           </Typography>
         </Box>
+
         <Typography variant="subtitle1">内訳</Typography>
-        <Box sx={{pl: 2}}>
+        <Box sx={{ pl: 2 }}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="body1">食品</Typography>
             <Typography
@@ -132,7 +157,13 @@ const Monthly: React.FC<{
             </Typography>
           </Box>
 
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "24px",
+            }}
+          >
             <Typography variant="body1">その他</Typography>
             <Typography
               variant="body1"
@@ -143,19 +174,22 @@ const Monthly: React.FC<{
           </Box>
         </Box>
 
-        <ul>
-          {monthOthers?.map((stock) => (
-            <Box key={stock.id}>
-              <UsedItem
-                id={stock.id}
-                name={stock.name}
-                stocks={stocks}
-                setStocks={setStocks}
-                price={stock.price}
-              />
-            </Box>
-          ))}
-        </ul>
+        <Box>
+          <Typography variant="h6">消費品目（その他） </Typography>
+          <ul>
+            {monthOthers?.map((stock) => (
+              <Box key={stock.id}>
+                <UsedItem
+                  id={stock.id}
+                  name={stock.name}
+                  stocks={stocks}
+                  setStocks={setStocks}
+                  price={tax ? stock.price : Math.ceil(stock.price / 1.1)}
+                />
+              </Box>
+            ))}
+          </ul>
+        </Box>
       </Box>
     </Grid>
   );

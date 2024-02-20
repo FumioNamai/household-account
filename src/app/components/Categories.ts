@@ -8,5 +8,4 @@ export const Categories: string[] = [
   "フルーツ",
   "お菓子",
   "その他",
-  ""
 ];

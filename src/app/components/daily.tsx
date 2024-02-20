@@ -5,7 +5,9 @@ import UsedItem from "@/app/components/usedItem";
 import { Stock } from "../../../utils/type";
 import ja from "dayjs/locale/ja";
 import { Dayjs } from "dayjs";
-import useStore from "@/store";
+import useStore, { useTaxStore } from "@/store";
+import TaxSwitch from "./taxSwitch";
+
 
 
 type Props = {
@@ -17,6 +19,7 @@ type Props = {
 
 const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
   const { user } = useStore();
+  const { tax,} = useTaxStore();
 
   const selectedDate: string | undefined = date
     ?.locale(ja)
@@ -30,25 +33,32 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
   const todayFoods: Stock[] = todayUsed.filter(
     (todayUsed: Stock) => todayUsed.type === "食品"
   );
-  const todaysFoodsTotal: number = todayFoods.reduce((sum: number, el) => {
-    return sum + el.price;
+  let todaysFoodsTotal: number = todayFoods.reduce((sum: number, el) => {
+      return sum + el.price;
   }, 0);
+
+  todaysFoodsTotal = tax ? todaysFoodsTotal : Math.ceil(todaysFoodsTotal / 1.08)
+
 
   // その日に使用した雑貨の合計金額を算出
   const todayItems: Stock[] = todayUsed.filter(
     (todayUsed: Stock) => todayUsed.type === "雑貨"
   );
-  const todaysItemsTotal: number = todayItems.reduce((sum: number, el) => {
+  let todaysItemsTotal: number = todayItems.reduce((sum: number, el) => {
     return sum + el.price;
   }, 0);
+
+  todaysItemsTotal = tax ? todaysItemsTotal : Math.ceil(todaysItemsTotal / 1.1)
 
   // その日に使用した雑貨の合計金額を算出
   const todayOthers: Stock[] = todayUsed.filter(
     (todayUsed: Stock) => todayUsed.type === "その他"
   );
-  const todaysOthersTotal: number = todayOthers.reduce((sum: number, el) => {
+  let todaysOthersTotal: number = todayOthers.reduce((sum: number, el) => {
     return sum + el.price;
   }, 0);
+
+  todaysOthersTotal = tax ? todaysOthersTotal : Math.ceil(todaysOthersTotal / 1.1)
 
   // その月に使用したその他の合計金額を算出
 
@@ -77,8 +87,14 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
           </LocalizationProvider>
         </FormControl>
       </Box>
+
+      {/* 税表示切替 */}
+      <Box sx={{ display:"flex", justifyContent:"end", marginRight: "8px" }}>
+      <TaxSwitch />
+      </Box>
+
       {/* <Daily stocks={stocks}/> */}
-      <Box sx={{ paddingInline: "1rem" }}>
+      <Box sx={{ paddingInline: "16px" }}>
         <Box
           sx={{
             display: "flex",
@@ -108,7 +124,6 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              marginBottom: "24px",
             }}
           >
             <Typography variant="body1">雑貨</Typography>
@@ -119,8 +134,24 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
               {todaysItemsTotal}円
             </Typography>
           </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "24px",
+            }}
+          >
+            <Typography variant="body1">その他</Typography>
+            <Typography
+              variant="body1"
+              sx={{ width: "6rem", textAlign: "right" }}
+            >
+              {todaysOthersTotal}円
+            </Typography>
+          </Box>
         </Box>
-        <Box sx={{}}>
+
+        <Box>
           <Typography variant="h6">消費品目</Typography>
           <Box>
             <Typography variant="subtitle1">食品</Typography>
@@ -132,7 +163,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
                     <UsedItem
                       id={todayFood.id}
                       name={todayFood.name}
-                      price={todayFood.price}
+                      price={tax ? todayFood.price : Math.ceil(todayFood.price / 1.08)}
                       stocks={stocks}
                       setStocks={setStocks}
                     />
@@ -152,7 +183,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
                     <UsedItem
                       id={todayItem.id}
                       name={todayItem.name}
-                      price={todayItem.price}
+                      price={tax ? todayItem.price : Math.ceil(todayItem.price / 1.1)}
                       stocks={stocks}
                       setStocks={setStocks}
                     />
@@ -172,7 +203,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
                     <UsedItem
                       id={todayOther.id}
                       name={todayOther.name}
-                      price={todayOther.price}
+                      price={tax ? todayOther.price : Math.ceil(todayOther.price / 1.1)}
                       stocks={stocks}
                       setStocks={setStocks}
                     />
