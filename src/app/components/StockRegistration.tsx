@@ -144,18 +144,19 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           </ToggleButtonGroup>
 
           <FormControl
-            sx={{ display: "flex", marginBottom: "12px", width: 120 }}
+            sx={{ display: "flex", marginBottom: "12px", width: 150 }}
           >
-            <InputLabel>分類</InputLabel>
+            <InputLabel>食品の分類</InputLabel>
             <Select
-              // disabled
+              disabled = {type !== "食品"}
               id="category"
               value={categoryItem}
-              label="分類"
+              label="食品の分類"
               onChange={handleSelectItem}
             >
               <MenuItem value={""}></MenuItem>
               {Categories.map((category) => (
+                category !== "すべて" &&
                 <MenuItem key={category} value={category}>
                   {category}
                 </MenuItem>

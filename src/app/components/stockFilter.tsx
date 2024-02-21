@@ -277,21 +277,6 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
                                 date={selectedDate}
                               />
                             ) : null}
-                            {/* {stock.user_id === user.id &&
-                            stock.type === type &&
-                            // stock.category === category &&
-                            stock.use_date === null ? (
-                              <Item
-                                id={stock.id}
-                                name={stock.name}
-                                price={stock.price.toString()}
-                                setPrice={setPrice}
-                                type={stock.type}
-                                stocks={stocks}
-                                setStocks={setStocks}
-                                date={selectedDate}
-                              />
-                            ) : null} */}
                           </li>
                         ))}
                     </ul>
@@ -326,11 +311,11 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
         ) : null
       )}
 
-      <FormControl sx={{ marginBottom: "12px" }}>
+      <FormControl sx={{ marginBottom: "12px",width:"280px"}}>
       {/* <InputLabel>商品名で検索</InputLabel> */}
         <TextField
           // onFocus={() => setIsFocus(true)}
-          label="商品名で検索"
+          label="すべての在庫から商品名で検索"
           // variant="standard"
           type="text"
           id="name"
