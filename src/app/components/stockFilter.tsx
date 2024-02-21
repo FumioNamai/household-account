@@ -249,7 +249,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
                         .sort((a, b) => a.name.localeCompare(b.name, "ja"))
                         .map((stock) => (
                           <li key={stock.id}>
-                            { category !=="全て" ?
+                            { category !=="すべて" ?
                             stock.user_id === user.id && stock.type === type && stock.category === category &&
                             stock.use_date === null &&
                               <Item
@@ -265,7 +265,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
                             : stock.user_id === user.id &&
                             stock.type === type &&
                             // stock.category === category && "全て"の場合はカテゴリーを絞らない
-                            stock.use_date === null &&
+                            stock.use_date === null ? (
                               <Item
                                 id={stock.id}
                                 name={stock.name}
@@ -276,7 +276,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
                                 setStocks={setStocks}
                                 date={selectedDate}
                               />
-                            }
+                            ) : null}
                             {/* {stock.user_id === user.id &&
                             stock.type === type &&
                             // stock.category === category &&
