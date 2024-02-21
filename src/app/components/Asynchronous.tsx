@@ -1,3 +1,5 @@
+//検索機能
+
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getAllStocks } from "../../../utils/supabaseFunctions";

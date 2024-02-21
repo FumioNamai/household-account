@@ -1,4 +1,5 @@
 export const Categories: string[] = [
+  "全て",
   "肉",
   "魚介",
   "野菜",

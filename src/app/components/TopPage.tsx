@@ -1,22 +1,21 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
+import { Stock } from "../../../utils/type";
+import { useSnackbarContext } from "@/providers/context-provider";
+import { supabase } from "../../../utils/supabase";
+
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 
 import Monthly from "@/app/components/monthly";
 import Daily from "@/app/components/daily";
-import StockList from "./StockList";
-import { Stock } from "../../../utils/type";
-import { useSnackbarContext } from "@/providers/context-provider";
-import { supabase } from "../../../utils/supabase";
-import useStore from "@/store";
 import StockFilter from "@/app/components/stockFilter";
+
 
 export default function TopPage() {
   const { showSnackbar } = useSnackbarContext();
   const [stocks, setStocks] = useState<Stock[]>([]);
-  // const { setTax } = useStore()
 
   const getStocks = async () => {
     try {
@@ -37,13 +36,6 @@ export default function TopPage() {
   }, []);
 
   let [date, setDate] = useState<Dayjs | null>(dayjs());
-
-  // Itemコンポーネントの削除ボタン押下で在庫情報を更新
-  // const del = (stocks: Stock[]) => setStocks(stocks);
-
-  // const handleTax = () => {
-  //   setTax();
-  // };
 
   return (
     <>

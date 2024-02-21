@@ -50,12 +50,10 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const [type, setType] = useState<string>("");
   const [itemName, setItemName] = useState<string>("");
   const [amount, setAmount] = useState<number>(1);
-
   const amounts: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  // let [date, setDate] = React.useState<Dayjs | null>(dayjs());
   let [newPrice, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
-  const [isFocus, setIsFocus] = useState(false);
+  const [, setIsFocus] = useState(false);
 
   const selectedDate: string | undefined = date
   ?.locale(ja)
@@ -74,7 +72,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
 
     try {
       for (let i = 0; i < amount; i++) {
-
         const { error } = await supabase.from("stocks").insert({
           type: type,
           name: itemName,
@@ -151,6 +148,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           >
             <InputLabel>分類</InputLabel>
             <Select
+              // disabled
               id="category"
               value={categoryItem}
               label="分類"
@@ -215,13 +213,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
                 登録
               </Button>
             </div>
-            {/* <Box sx={{height: "50px"}}>
-              {showStocks.map((stock) => {
-                return (
-                  <div key={stock.id}>{stock.name}</div>
-                )
-              })}
-        </Box> */}
           </div>
         </form>
       </Box>

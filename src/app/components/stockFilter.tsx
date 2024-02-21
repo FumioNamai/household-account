@@ -1,6 +1,7 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -24,6 +25,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ModalStockRegistration from "./ModalStockRegistration";
 import TaxSwitch from "@/app/components/taxSwitch";
+import { getAllStocks } from "../../../utils/supabaseFunctions";
 
 type Props = {
   stocks: Stock[] | null;
@@ -45,6 +47,81 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
   const handleSelectItem = (event: SelectChangeEvent) => {
     setCategoryItem(event.target.value as string);
   };
+
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState([]);
+  const loading = open && options.length === 0;
+
+  // useEffect(() => {
+  //   let active = true;
+  //   if (!loading) {
+  //     return undefined;
+  //   }
+
+  //   (async () => {
+  //     const stocks:Stock[] | null = await getAllStocks();
+  //       if (stocks!.some((stock) => stock.user_id !== user.id )) {
+  //         alert("在庫データがありません。在庫登録を行ってください。");
+  //         setOpen(false)
+  //       }
+        // const filteredStocks = stocks!.filter((stock) => stock.user_id === user.id && stock.use_date === null)
+        // 同じnameで、同じpriceのものはcount数で表示
+        // const group = (arr: any | null, func = (v:any) => v, detail = false ) => {
+        //   const index: string[] = [];
+          // const result: [
+          //   {
+          //     id: number;
+          //     type: string;
+          //     name: string;
+          //     length: number;
+          //   }
+          // ] = [{id: 0 , type:"", name:"", length }];
+
+      //     const result: any = []
+      //     arr!.forEach((v:any) => {
+      //       const funcResult: string = func(v);
+      //       const i:number = index.indexOf(funcResult);
+      //       if (i === -1) {
+      //         index.push(funcResult);
+      //         result.push([v]);
+      //       } else {
+      //         result[i].push(v);
+      //       }
+      //     });
+      //     if (detail) {
+      //       return { index, result };
+      //     }
+      //     return result;
+      //   };
+
+      //   const groupedStocks = group(filteredStocks, (d) => d.name + d.price, true ).result.map(
+      //     (e: any) => ({
+      //       id: e[0].id,
+      //       name: e[0].name,
+      //       price: e[0].price,
+      //       type: e [0].type,
+      //       category: e[0].category,
+      //       count: e.length,
+      //     })
+      //     )
+      //     console.log(groupedStocks);
+      //     if (active) {
+      //       setOptions(groupedStocks);
+      //     }
+      //   })();
+
+      //   return () => {
+      //     active = false;
+      //   };
+      // }, [loading]);
+
+      // React.useEffect(() => {
+      //   if (!open) {
+      //     setOptions([]);
+      //   }
+      // }, [open]);
+
+
 
   return (
     <>
@@ -138,7 +215,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
             <Typography variant="h5" sx={{ marginBottom: "12px" }}>
               {type}
             </Typography>
-            {type === "食品" ? (
+            {type === "食品" && (
               //  分類検索
               <FormControl
                 variant="standard"
@@ -161,21 +238,48 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
                   ))}
                 </Select>
               </FormControl>
-            ) : null}
+            )}
 
             {type === "食品" ? (
               Categories.map((category) =>
                 category === categoryItem ? (
                   <div key={category}>
-                    {/* <Typography variant="h6">{category}</Typography> */}
                     <ul>
                       {stocks!
                         .sort((a, b) => a.name.localeCompare(b.name, "ja"))
                         .map((stock) => (
                           <li key={stock.id}>
-                            {stock.user_id === user.id &&
+                            { category !=="全て" ?
+                            stock.user_id === user.id && stock.type === type && stock.category === category &&
+                            stock.use_date === null &&
+                              <Item
+                                id={stock.id}
+                                name={stock.name}
+                                price={stock.price.toString()}
+                                setPrice={setPrice}
+                                type={stock.type}
+                                stocks={stocks}
+                                setStocks={setStocks}
+                                date={selectedDate}
+                              />
+                            : stock.user_id === user.id &&
                             stock.type === type &&
-                            stock.category === category &&
+                            // stock.category === category && "全て"の場合はカテゴリーを絞らない
+                            stock.use_date === null &&
+                              <Item
+                                id={stock.id}
+                                name={stock.name}
+                                price={stock.price.toString()}
+                                setPrice={setPrice}
+                                type={stock.type}
+                                stocks={stocks}
+                                setStocks={setStocks}
+                                date={selectedDate}
+                              />
+                            }
+                            {/* {stock.user_id === user.id &&
+                            stock.type === type &&
+                            // stock.category === category &&
                             stock.use_date === null ? (
                               <Item
                                 id={stock.id}
@@ -185,10 +289,9 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
                                 type={stock.type}
                                 stocks={stocks}
                                 setStocks={setStocks}
-                                // onDelete={del}
                                 date={selectedDate}
                               />
-                            ) : null}
+                            ) : null} */}
                           </li>
                         ))}
                     </ul>
@@ -212,7 +315,6 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
                           type={stock.type}
                           stocks={stocks}
                           setStocks={setStocks}
-                          // onDelete={del}
                           date={selectedDate}
                         />
                       ) : null}
@@ -248,19 +350,7 @@ const StockFilter = ({ stocks, setStocks, date, setDate }: Props) => {
           marginBottom:"40px"
         }}
       >
-        {/* <FormControl sx={{ marginBottom: "12px" }}>
-          <TextField
-            // onFocus={() => setIsFocus(true)}
-            label="商品名で検索"
-            variant="standard"
-            type="text"
-            id="name"
-            name="name"
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-          />
-        </FormControl> */}
-        {/* <Typography variant="subtitle1">検索結果</Typography> */}
+
         <ul>
           {stocks!
             .filter(

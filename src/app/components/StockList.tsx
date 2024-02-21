@@ -23,8 +23,6 @@ import Item from "@/app/components/item";
 type Props = {
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  // handleTax:(event: React.ChangeEvent<HTMLInputElement>) => void;
-  // del: (stocks: Stock[]) => void;
   date: Dayjs | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 };
@@ -35,21 +33,17 @@ const StockList = ({
   date,
   setDate,
 }: Props) => {
+  let [price, setPrice] = useState<string>("");
   const { user } = useStore();
   const { tax, setTax } = useTaxStore();
+  const handleTax = () => {
+    setTax();
+  };
+
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
 
-  // stocksから取得したpriceの状態を管理
-  let [price, setPrice] = useState<string>("");
-
-  // Itemコンポーネントの削除ボタン押下で在庫情報を更新
-  // const del = (stocks: Stock[]) => setStocks(stocks);
-
-  const handleTax = () => {
-    setTax();
-  };
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
@@ -84,9 +78,6 @@ const StockList = ({
             alignItems: "center",
           }}
         >
-          {/* <Typography
-        sx={{marginRight:"1rem"}}
-        >金額表示設定</Typography> */}
           <Typography>税抜</Typography>
           <Switch checked={tax} onChange={handleTax} />
           <Typography>税込</Typography>
@@ -138,7 +129,6 @@ const StockList = ({
                             type={stock.type}
                             stocks={stocks}
                             setStocks={setStocks}
-                            // onDelete={del}
                             date={selectedDate}
                           />
                         ) : null}
@@ -180,7 +170,6 @@ const StockList = ({
                       type={stock.type}
                       stocks={stocks}
                       setStocks={setStocks}
-                      // onDelete={del}
                       date={selectedDate}
                     />
                   ) : null}
@@ -226,7 +215,6 @@ const StockList = ({
                         type={stock.type}
                         stocks={stocks}
                         setStocks={setStocks}
-                        // onDelete={del}
                         date={selectedDate}
                       />
                     </AccordionDetails>
