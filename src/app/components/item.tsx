@@ -212,6 +212,7 @@ Props) => {
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  alignItems:"center"
                 }}
               >
                 <Typography variant="body2" sx={{ alignItems: "" }}>
@@ -258,7 +259,7 @@ Props) => {
         ) : (
           <>
             <Box sx={{ display: "flex", flexDirection: "column", width: "100%"  }}>
-              <Box sx={{ display: "flex", flexDirection: "row", justifyContent:"space-between"}}>
+              <Box sx={{ display: "flex", flexDirection: "row", justifyContent:"space-between",alignItems:"center"}}>
                 <Typography variant="body2">{name}</Typography>
                 <Box sx={{ display: "flex" , flexDirection:"row", alignItems:"center"}}>
                   <TextField
