@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { Stock } from "../../../utils/type";
 import { supabase } from "../../../utils/supabase";
-import {
-  Box,
-  IconButton,
-  List,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, IconButton, List, TextField, Typography } from "@mui/material";
 import { useSnackbarContext } from "@/providers/context-provider";
-import { CheckCircleTwoTone, DeleteTwoTone, ModeTwoTone } from "@mui/icons-material";
-import PlusOneTwoToneIcon from '@mui/icons-material/PlusOneTwoTone';
+import {
+  CheckCircleTwoTone,
+  DeleteTwoTone,
+  ModeTwoTone,
+} from "@mui/icons-material";
+import PlusOneTwoToneIcon from "@mui/icons-material/PlusOneTwoTone";
 import useStore, { useTaxStore } from "@/store";
 
 type Props = {
@@ -24,7 +22,7 @@ type Props = {
   // onDelete:(stocks: Stock[]) => void;
   date: string | undefined | null;
   // tax: boolean;
-}
+};
 
 const Item = ({
   id,
@@ -35,11 +33,11 @@ const Item = ({
   // stocks,
   setStocks,
   date,
-  // tax,
-} : Props) => {
-  const { showSnackbar } = useSnackbarContext()
+}: // tax,
+Props) => {
+  const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
-  const { tax } = useTaxStore()
+  const { tax } = useTaxStore();
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   // UPDATE 使った日をuse_dateに記録する
@@ -47,7 +45,7 @@ const Item = ({
     if (date !== undefined) {
       try {
         // 使うボタンで選択した項目をnewStockへコピー
-        const { data: restocks} = await supabase
+        const { data: restocks } = await supabase
           .from("stocks")
           .select()
           .eq("id", propsID);
@@ -72,22 +70,23 @@ const Item = ({
         await supabase.from("stocks").insert({ ...newStock });
 
         // 在庫データを更新して、画面を更新
-        const { data } = await supabase
-        .from("stocks")
-        .select("*");
+        const { data } = await supabase.from("stocks").select("*");
 
-        onUpdate( data );
-        if(showSnackbar){
-          showSnackbar("success", `${name}を${date}付けで計上しました。`)
+        onUpdate(data);
+        if (showSnackbar) {
+          showSnackbar("success", `${name}を${date}付けで計上しました。`);
         }
-      } catch (error : any ) {
-        if(showSnackbar){
-          showSnackbar("error", "使用日登録ができませんでした。" + error.message)
+      } catch (error: any) {
+        if (showSnackbar) {
+          showSnackbar(
+            "error",
+            "使用日登録ができませんでした。" + error.message
+          );
         }
       }
     } else {
-      if(showSnackbar){
-        showSnackbar("error", "日付を選択してください。")
+      if (showSnackbar) {
+        showSnackbar("error", "日付を選択してください。");
       }
     }
   };
@@ -98,20 +97,19 @@ const Item = ({
         .from("stocks")
         .delete()
         .eq("id", propsID);
-        if(error) throw error
+      if (error) throw error;
       const { data: updatedStocks } = await supabase.from("stocks").select("*");
       onUpdate(updatedStocks);
 
       // 親コンポーネントにstocksを渡して在庫情報を更新
       // onDelete(stocks);
 
-      if(showSnackbar){
-        showSnackbar("success", `${name}を在庫一覧から削除しました。`)
+      if (showSnackbar) {
+        showSnackbar("success", `${name}を在庫一覧から削除しました。`);
       }
-
-    } catch (error:any) {
-      if(showSnackbar){
-        showSnackbar("error", "削除できませんでした。" + error.message)
+    } catch (error: any) {
+      if (showSnackbar) {
+        showSnackbar("error", "削除できませんでした。" + error.message);
       }
     }
   };
@@ -125,26 +123,27 @@ const Item = ({
     }
 
     try {
-      await supabase.from("stocks").update({ price: newPrice }).eq("id", propsID);
+      await supabase
+        .from("stocks")
+        .update({ price: newPrice })
+        .eq("id", propsID);
       const { data: updatedStocks } = await supabase.from("stocks").select("*");
       onUpdate(updatedStocks);
 
-      if(showSnackbar){
-        showSnackbar("success", `${name}の価格を更新しました。`)
+      if (showSnackbar) {
+        showSnackbar("success", `${name}の価格を更新しました。`);
       }
-
-    } catch (error:any) {
-      if(showSnackbar){
-        showSnackbar("error", "価格を更新できませんでした。" + error.message)
+    } catch (error: any) {
+      if (showSnackbar) {
+        showSnackbar("error", "価格を更新できませんでした。" + error.message);
       }
-
     }
   };
 
   const handlePlus = async (propsID: number) => {
     try {
       // 追加ボタンで選択した項目をnewStockへコピー
-      const { data: restocks} = await supabase
+      const { data: restocks } = await supabase
         .from("stocks")
         .select()
         .eq("id", propsID);
@@ -163,20 +162,21 @@ const Item = ({
       await supabase.from("stocks").insert({ ...newStock });
 
       // 在庫データを更新して、画面を更新
-      const { data } = await supabase
-      .from("stocks")
-      .select("*");
+      const { data } = await supabase.from("stocks").select("*");
 
-      onUpdate( data );
-      if(showSnackbar){
-        showSnackbar("success", `${name}を在庫に追加しました。`)
+      onUpdate(data);
+      if (showSnackbar) {
+        showSnackbar("success", `${name}を在庫に追加しました。`);
       }
-    } catch (error : any ) {
-      if(showSnackbar){
-        showSnackbar("error", `${name}を在庫に追加できません。`+ error.message)
+    } catch (error: any) {
+      if (showSnackbar) {
+        showSnackbar(
+          "error",
+          `${name}を在庫に追加できません。` + error.message
+        );
       }
     }
-  }
+  };
 
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
@@ -198,70 +198,104 @@ const Item = ({
         sx={{
           display: "flex",
           flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
+          // alignItems: "center",
+          // justifyContent: "space-between",
         }}
       >
-        <Typography variant="body2">{name}</Typography>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          {parseInt(price) !== 0 ? (
-            <>
-              <Typography variant="body1">{calcPrice()}円</Typography>
-              <IconButton
-                aria-label="plus1"
-                color="primary"
-                onClick={() => handlePlus(id)}
-              >
-                <PlusOneTwoToneIcon />
-              </IconButton>
-
-              <IconButton
-                aria-label="use-item"
-                color="primary"
-                onClick={() => handleUse(id)}
-              >
-                <CheckCircleTwoTone />
-              </IconButton>
-
-              <IconButton
-                aria-label="delete"
-                color="error"
-                onClick={() => handleDelete(id)}
-              >
-                <DeleteTwoTone />
-              </IconButton>
-            </>
-          ) : (
-            <>
-              <TextField
-                variant="standard"
-                type="string"
-                size="small"
-                sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
-                value={newPrice}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  setNewPrice(event.target.value);
+        {parseInt(price) !== 0 ? (
+          <>
+            <Box
+              sx={{ display: "flex", flexDirection: "column", width: "100%" }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                 }}
-              />
-              <Typography variant="body1">円</Typography>
+              >
+                <Typography variant="body2" sx={{ alignItems: "" }}>
+                  {name}
+                </Typography>
+                <Typography variant="body1" sx={{ textAlign: "right" }}>
+                  {calcPrice()}円
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  // alignItems:"flex-end",
+                  justifyContent: "right",
+                }}
+              >
+                <IconButton
+                  aria-label="plus1"
+                  color="primary"
+                  onClick={() => handlePlus(id)}
+                >
+                  <PlusOneTwoToneIcon />
+                </IconButton>
 
-              <IconButton
-                aria-label="update"
-                color="success"
-                onClick={() => handleUpdate(id)}
-              >
-                <ModeTwoTone />
-              </IconButton>
-              <IconButton
-                aria-label="delete"
-                color="error"
-                onClick={() => handleDelete(id)}
-              >
-                <DeleteTwoTone />
-              </IconButton>
-            </>
-          )}
-        </Box>
+                <IconButton
+                  aria-label="use-item"
+                  color="primary"
+                  onClick={() => handleUse(id)}
+                >
+                  <CheckCircleTwoTone />
+                </IconButton>
+
+                <IconButton
+                  aria-label="delete"
+                  color="error"
+                  onClick={() => handleDelete(id)}
+                >
+                  <DeleteTwoTone />
+                </IconButton>
+              </Box>
+            </Box>
+          </>
+        ) : (
+          <>
+            <Box sx={{ display: "flex", flexDirection: "column", width: "100%"  }}>
+              <Box sx={{ display: "flex", flexDirection: "row", justifyContent:"space-between"}}>
+                <Typography variant="body2">{name}</Typography>
+                <Box sx={{ display: "flex" , flexDirection:"row", alignItems:"center"}}>
+                  <TextField
+                    variant="standard"
+                    type="string"
+                    size="small"
+                    sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
+                    value={newPrice}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setNewPrice(event.target.value);
+                    }}
+                  />
+                  <Typography variant="body1">円</Typography>
+                  <IconButton
+                    aria-label="update"
+                    color="success"
+                    onClick={() => handleUpdate(id)}
+                  >
+                    <ModeTwoTone />
+                  </IconButton>
+                </Box>
+
+                </Box>
+                <Box sx={{ display: "flex", flexDirection: "row", justifyContent:"end" }}>
+
+                  <IconButton
+                    aria-label="delete"
+                    color="error"
+                    onClick={() => handleDelete(id)}
+                  >
+                    <DeleteTwoTone />
+                  </IconButton>
+
+              </Box>
+            </Box>
+          </>
+        )}
       </List>
     </>
   );
