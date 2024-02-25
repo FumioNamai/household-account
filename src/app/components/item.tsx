@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { CheckCircleTwoTone, DeleteTwoTone, ModeTwoTone } from "@mui/icons-material";
+import PlusOneTwoToneIcon from '@mui/icons-material/PlusOneTwoTone';
 import useStore, { useTaxStore } from "@/store";
 
 type Props = {
@@ -140,6 +141,43 @@ const Item = ({
     }
   };
 
+  const handlePlus = async (propsID: number) => {
+    try {
+      // 追加ボタンで選択した項目をnewStockへコピー
+      const { data: restocks} = await supabase
+        .from("stocks")
+        .select()
+        .eq("id", propsID);
+      const newStock = {
+        id: undefined,
+        type: restocks![0].type,
+        category: restocks![0].category,
+        name: restocks![0].name,
+        user_id: restocks![0].user_id,
+        price: restocks![0].price,
+        registration_date: null,
+        use_date: null,
+      };
+
+      // newStockを在庫に登録（追加ボタンで選択した項目を複製して在庫リストに追加する）
+      await supabase.from("stocks").insert({ ...newStock });
+
+      // 在庫データを更新して、画面を更新
+      const { data } = await supabase
+      .from("stocks")
+      .select("*");
+
+      onUpdate( data );
+      if(showSnackbar){
+        showSnackbar("success", `${name}を在庫に追加しました。`)
+      }
+    } catch (error : any ) {
+      if(showSnackbar){
+        showSnackbar("error", `${name}を在庫に追加できません。`+ error.message)
+      }
+    }
+  }
+
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
     if (type === "食品" && tax === false) {
@@ -170,12 +208,21 @@ const Item = ({
             <>
               <Typography variant="body1">{calcPrice()}円</Typography>
               <IconButton
+                aria-label="plus1"
+                color="primary"
+                onClick={() => handlePlus(id)}
+              >
+                <PlusOneTwoToneIcon />
+              </IconButton>
+
+              <IconButton
                 aria-label="use-item"
                 color="primary"
                 onClick={() => handleUse(id)}
               >
                 <CheckCircleTwoTone />
               </IconButton>
+
               <IconButton
                 aria-label="delete"
                 color="error"
@@ -197,6 +244,7 @@ const Item = ({
                 }}
               />
               <Typography variant="body1">円</Typography>
+
               <IconButton
                 aria-label="update"
                 color="success"
