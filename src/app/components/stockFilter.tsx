@@ -18,14 +18,14 @@ import { Categories } from "@/app/components/Categories";
 import { Types } from "@/app/components/types";
 import Item from "./item";
 import { Stock } from "../../../utils/type";
-import useStore, { useTaxStore } from "@/store";
+// import useStore, { useTaxStore } from "@/store";
 import ja from "dayjs/locale/ja";
 import { Dayjs } from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ModalStockRegistration from "./ModalStockRegistration";
 import TaxSwitch from "@/app/components/taxSwitch";
-import { getAllStocks } from "../../../utils/supabaseFunctions";
+// import { getAllStocks } from "../../../utils/supabaseFunctions";
 
 type Props = {
   groupedDataArr: any[] //要定義
@@ -36,7 +36,7 @@ type Props = {
 };
 
 const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props) => {
-  const { user } = useStore();
+  // const { user } = useStore();
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
@@ -52,77 +52,6 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
-
-  // useEffect(() => {
-  //   let active = true;
-  //   if (!loading) {
-  //     return undefined;
-  //   }
-
-  //   (async () => {
-  //     const stocks:Stock[] | null = await getAllStocks();
-  //       if (stocks!.some((stock) => stock.user_id !== user.id )) {
-  //         alert("在庫データがありません。在庫登録を行ってください。");
-  //         setOpen(false)
-  //       }
-        // const filteredStocks = stocks!.filter((stock) => stock.user_id === user.id && stock.use_date === null)
-        // 同じnameで、同じpriceのものはcount数で表示
-        // const group = (arr: any | null, func = (v:any) => v, detail = false ) => {
-        //   const index: string[] = [];
-          // const result: [
-          //   {
-          //     id: number;
-          //     type: string;
-          //     name: string;
-          //     length: number;
-          //   }
-          // ] = [{id: 0 , type:"", name:"", length }];
-
-      //     const result: any = []
-      //     arr!.forEach((v:any) => {
-      //       const funcResult: string = func(v);
-      //       const i:number = index.indexOf(funcResult);
-      //       if (i === -1) {
-      //         index.push(funcResult);
-      //         result.push([v]);
-      //       } else {
-      //         result[i].push(v);
-      //       }
-      //     });
-      //     if (detail) {
-      //       return { index, result };
-      //     }
-      //     return result;
-      //   };
-
-      //   const groupedStocks = group(filteredStocks, (d) => d.name + d.price, true ).result.map(
-      //     (e: any) => ({
-      //       id: e[0].id,
-      //       name: e[0].name,
-      //       price: e[0].price,
-      //       type: e [0].type,
-      //       category: e[0].category,
-      //       count: e.length,
-      //     })
-      //     )
-      //     console.log(groupedStocks);
-      //     if (active) {
-      //       setOptions(groupedStocks);
-      //     }
-      //   })();
-
-      //   return () => {
-      //     active = false;
-      //   };
-      // }, [loading]);
-
-      // React.useEffect(() => {
-      //   if (!open) {
-      //     setOptions([]);
-      //   }
-      // }, [open]);
-
-
 
   return (
     <>
@@ -248,10 +177,9 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                     <ul>
                       {groupedDataArr!
                         .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-                        .map((groupedData, index) => (
-                          <li key={groupedData.name + groupedData.count + index}>
+                        .map((groupedData) => (
+                          <li key={groupedData.id}>
                             { category !=="すべて" ?
-                            // stock.user_id === user.id &&
                             groupedData.type === type && groupedData.category === category &&
                             groupedData.use_date === null &&
                               <Item
@@ -266,9 +194,7 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                                 date={selectedDate}
                               />
                             :
-                            // stock.user_id === user.id &&
                             groupedData.type === type &&
-                            // stock.category === category && "全て"の場合はカテゴリーを絞らない
                             groupedData.use_date === null ? (
                               <Item
                                 id={groupedData.id}
@@ -292,10 +218,9 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
               <ul>
                 {groupedDataArr!
                   .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-                  .map((groupedData, index) => (
-                    <li key={groupedData.name + groupedData.count + index}>
+                  .map((groupedData) => (
+                    <li key={groupedData.id}>
                       {
-                      // stock.user_id === user.id &&
                       groupedData.type === type &&
                       groupedData.use_date === null ? (
                         <Item
@@ -321,9 +246,7 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
       <FormControl sx={{ marginBottom: "12px",width:"280px"}}>
       {/* <InputLabel>商品名で検索</InputLabel> */}
         <TextField
-          // onFocus={() => setIsFocus(true)}
           label="すべての在庫から商品名で検索"
-          // variant="standard"
           type="text"
           id="name"
           name="name"
@@ -350,9 +273,8 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
             )
             .sort((a, b) => a.name.localeCompare(b.name, "ja"))
             .map((groupedData, index) => (
-              <li key={groupedData.name + groupedData.count + index}>
+              <li key={groupedData.id}>
                 {
-                // stock.user_id === user.id &&
                 groupedData.use_date === null ? (
                   <Item
                     id={groupedData.id}
@@ -363,7 +285,6 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                     type={groupedData.type}
                     stocks={stocks}
                     setStocks={setStocks}
-                    // onDelete={del}
                     date={selectedDate}
                   />
                 ) : null}

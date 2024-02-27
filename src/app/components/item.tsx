@@ -241,7 +241,7 @@ Props) => {
                 <Typography variant="body1" sx={{minWidth:"80px", textAlign:"end"}}>
                   {calcPrice()}円
                 </Typography>
-                <Typography variant="body1" sx={{minWidth:"50px", textAlign:"end"}}>
+                <Typography variant="body1" sx={{minWidth:"50px", textAlign:"end", paddingRight:"8px"}}>
                   x {count}
                 </Typography>
 
@@ -257,7 +257,7 @@ Props) => {
               >
                 <IconButton
                   aria-label="use-item"
-                  color="primary"
+                  color="success"
                   onClick={() => handleUse(id)}
                 >
                   <CheckCircleTwoTone />

@@ -14,28 +14,13 @@ import StockFilter from "@/app/components/stockFilter";
 import useStore from "@/store";
 
 
-
 export default function TopPage() {
   const { showSnackbar } = useSnackbarContext();
   const [stocks, setStocks] = useState<Stock[]>([]);
   const { user } = useStore()
-  // const getStocks = async () => {
-  //   try {
-  //     const { data, error } = await supabase.from("stocks").select("*");
-  //     if (error) throw error;
-  //     setStocks(data);
-  //   } catch (error: any) {
-  //     if (showSnackbar) {
-  //       showSnackbar("error", "在庫データを取得できません。" + error.message);
-  //     }
-  //     setStocks([]);
-  //   }
-  // };
-
 
   const getStocks = async (userId: string) => {
     try {
-      // console.log(user);
       const { data, error } = await supabase.from("stocks").select("*")
       .eq("user_id", userId);
       if (error) throw error;
@@ -72,6 +57,7 @@ export default function TopPage() {
   })
 
   const groupedDataArr = Object.values(groupedData)
+// console.log(groupedDataArr);
 
   let [date, setDate] = useState<Dayjs | null>(dayjs());
 
