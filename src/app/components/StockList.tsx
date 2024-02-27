@@ -21,6 +21,7 @@ import useStore, { useTaxStore } from "@/store";
 import Item from "@/app/components/item";
 
 type Props = {
+  groupedDataArr: any[] //要定義
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
@@ -28,6 +29,7 @@ type Props = {
 };
 
 const StockList = ({
+  groupedDataArr,
   stocks,
   setStocks,
   date,
@@ -106,27 +108,28 @@ const StockList = ({
               </AccordionSummary>
               <div>
                 <ul>
-                  {stocks!
+                  {groupedDataArr!
                     .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-                    .map((stock: Stock) => (
+                    .map((groupedData: Stock) => (
                       <AccordionDetails
-                        key={stock.id}
+                        key={groupedData.id}
                         sx={{
                           paddingBlock: "0",
                           paddingInline: "4px",
                           boxShadow: 1,
                         }}
                       >
-                        {stock.user_id === user.id &&
-                        stock.type === "食品" &&
-                        stock.category === category &&
-                        stock.use_date === null ? (
+                        {groupedData.user_id === user.id &&
+                        groupedData.type === "食品" &&
+                        groupedData.category === category &&
+                        groupedData.use_date === null ? (
                           <Item
-                            id={stock.id}
-                            name={stock.name}
-                            price={stock.price.toString()}
+                          count={groupedData.count}
+                            id={groupedData.id}
+                            name={groupedData.name}
+                            price={groupedData.price.toString()}
                             setPrice={setPrice}
-                            type={stock.type}
+                            type={groupedData.type}
                             stocks={stocks}
                             setStocks={setStocks}
                             date={selectedDate}
@@ -152,22 +155,24 @@ const StockList = ({
         </AccordionSummary>
         <div>
           <ul>
-            {stocks!
+            {groupedDataArr!
               .sort((a, b) => b.id - a.id)
-              .map((stock: Stock) => (
+              .map((groupedData) => (
                 <AccordionDetails
-                  key={stock.id}
+                  key={groupedData.id}
                   sx={{ paddingBlock: "0", paddingInline: "8px", boxShadow: 1 }}
                 >
-                  {stock.user_id === user.id &&
-                  stock.type === "雑貨" &&
-                  stock.use_date === null ? (
+                  {
+                  // groupedData.user_id === user.id &&
+                  groupedData.type === "雑貨" &&
+                  groupedData.use_date === null ? (
                     <Item
-                      id={stock.id}
-                      name={stock.name}
-                      price={stock.price.toString()}
+                    count={groupedData.count}
+                      id={groupedData.id}
+                      name={groupedData.name}
+                      price={groupedData.price.toString()}
                       setPrice={setPrice}
-                      type={stock.type}
+                      type={groupedData.type}
                       stocks={stocks}
                       setStocks={setStocks}
                       date={selectedDate}
@@ -189,18 +194,19 @@ const StockList = ({
         </AccordionSummary>
         <div>
           <ul>
-            {stocks!
+            {groupedDataArr!
               .sort((a, b) => b.id - a.id)
-              .map((stock: Stock) => (
+              .map((groupedData) => (
                 <AccordionDetails
-                  key={stock.id}
+                  key={groupedData.id}
                   sx={{ paddingBlock: "0", paddingInline: "4px", boxShadow: 1 }}
                 >
-                  {stock.user_id === user.id &&
-                  stock.type === "その他" &&
-                  stock.use_date === null ? (
+                  {
+                  // stock.user_id === user.id &&
+                  groupedData.type === "その他" &&
+                  groupedData.use_date === null ? (
                     <AccordionDetails
-                      key={stock.id}
+                      key={groupedData.id}
                       sx={{
                         paddingBlock: "0",
                         paddingInline: "4px",
@@ -208,11 +214,12 @@ const StockList = ({
                       }}
                     >
                       <Item
-                        id={stock.id}
-                        name={stock.name}
-                        price={stock.price.toString()}
+                      count={groupedData.count}
+                        id={groupedData.id}
+                        name={groupedData.name}
+                        price={groupedData.price.toString()}
                         setPrice={setPrice}
-                        type={stock.type}
+                        type={groupedData.type}
                         stocks={stocks}
                         setStocks={setStocks}
                         date={selectedDate}

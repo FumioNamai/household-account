@@ -8,7 +8,8 @@ import {
   DeleteTwoTone,
   ModeTwoTone,
 } from "@mui/icons-material";
-import PlusOneTwoToneIcon from "@mui/icons-material/PlusOneTwoTone";
+import ControlPointTwoToneIcon from '@mui/icons-material/ControlPointTwoTone';
+import RemoveCircleTwoToneIcon from '@mui/icons-material/RemoveCircleTwoTone';
 import useStore, { useTaxStore } from "@/store";
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
   name: string;
   price: string;
   setPrice: React.Dispatch<React.SetStateAction<string>>;
+  count: any; //要定義
   type: string;
   stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
@@ -29,6 +31,7 @@ const Item = ({
   name,
   price,
   // setPrice,
+  count,
   type,
   // stocks,
   setStocks,
@@ -122,6 +125,7 @@ Props) => {
       newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
     }
 
+
     try {
       await supabase
         .from("stocks")
@@ -191,6 +195,17 @@ Props) => {
     }
   };
 
+  // supabase
+  // .from("count_stocks")
+  // .select("*")
+  // .then((data,error) => {
+  //   if (error) {
+  //     console.error(error)
+  //     return
+  //   }
+  //   console.log(data);
+  // })
+
   return (
     <>
       <List
@@ -204,6 +219,7 @@ Props) => {
       >
         {parseInt(price) !== 0 ? (
           <>
+            {/* 在庫あり */}
             <Box
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >
@@ -215,12 +231,21 @@ Props) => {
                   alignItems:"center"
                 }}
               >
-                <Typography variant="body2" sx={{ alignItems: "" }}>
+                <Typography variant="body2">
                   {name}
                 </Typography>
-                <Typography variant="body1" sx={{ textAlign: "right" }}>
+                <Box sx={{display:"flex", flexDirection:"row", justifyContent:"space-between",
+                alignItems:"center",
+                }}
+                >
+                <Typography variant="body1" sx={{minWidth:"80px", textAlign:"end"}}>
                   {calcPrice()}円
                 </Typography>
+                <Typography variant="body1" sx={{minWidth:"50px", textAlign:"end"}}>
+                  x {count}
+                </Typography>
+
+                </Box>
               </Box>
               <Box
                 sx={{
@@ -231,14 +256,6 @@ Props) => {
                 }}
               >
                 <IconButton
-                  aria-label="plus1"
-                  color="primary"
-                  onClick={() => handlePlus(id)}
-                >
-                  <PlusOneTwoToneIcon />
-                </IconButton>
-
-                <IconButton
                   aria-label="use-item"
                   color="primary"
                   onClick={() => handleUse(id)}
@@ -247,17 +264,26 @@ Props) => {
                 </IconButton>
 
                 <IconButton
+                  aria-label="plus1"
+                  color="primary"
+                  onClick={() => handlePlus(id)}
+                >
+                  <ControlPointTwoToneIcon />
+                </IconButton>
+
+                <IconButton
                   aria-label="delete"
                   color="error"
                   onClick={() => handleDelete(id)}
                 >
-                  <DeleteTwoTone />
+                  <RemoveCircleTwoToneIcon />
                 </IconButton>
               </Box>
             </Box>
           </>
         ) : (
           <>
+          {/* 在庫なし */}
             <Box sx={{ display: "flex", flexDirection: "column", width: "100%"  }}>
               <Box sx={{ display: "flex", flexDirection: "row", justifyContent:"space-between",alignItems:"center"}}>
                 <Typography variant="body2">{name}</Typography>
@@ -284,7 +310,6 @@ Props) => {
 
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "row", justifyContent:"end" }}>
-
                   <IconButton
                     aria-label="delete"
                     color="error"

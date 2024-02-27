@@ -11,15 +11,33 @@ import dayjs from "dayjs";
 import Monthly from "@/app/components/monthly";
 import Daily from "@/app/components/daily";
 import StockFilter from "@/app/components/stockFilter";
+import useStore from "@/store";
+
 
 
 export default function TopPage() {
   const { showSnackbar } = useSnackbarContext();
   const [stocks, setStocks] = useState<Stock[]>([]);
+  const { user } = useStore()
+  // const getStocks = async () => {
+  //   try {
+  //     const { data, error } = await supabase.from("stocks").select("*");
+  //     if (error) throw error;
+  //     setStocks(data);
+  //   } catch (error: any) {
+  //     if (showSnackbar) {
+  //       showSnackbar("error", "在庫データを取得できません。" + error.message);
+  //     }
+  //     setStocks([]);
+  //   }
+  // };
 
-  const getStocks = async () => {
+
+  const getStocks = async (userId: string) => {
     try {
-      const { data, error } = await supabase.from("stocks").select("*");
+      // console.log(user);
+      const { data, error } = await supabase.from("stocks").select("*")
+      .eq("user_id", userId);
       if (error) throw error;
       setStocks(data);
     } catch (error: any) {
@@ -31,9 +49,29 @@ export default function TopPage() {
   };
 
   useEffect(() => {
-    (async () => await getStocks())();
+    (async () => await getStocks(user.id))();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
+
+  const groupedData: { [key: string]: any }  = {}
+
+  stocks.forEach(stock => {
+    const key = `${stock.name}-${stock.price}`
+    groupedData[key] = groupedData[key] ||
+    {
+      id: stock.id,
+      name:stock.name,
+      price: stock.price,
+      count:0,
+      type: stock.type,
+      registration_date:stock.registration_date,
+      use_date:stock.use_date,
+      category: stock.category,
+    }
+    groupedData[key].count++
+  })
+
+  const groupedDataArr = Object.values(groupedData)
 
   let [date, setDate] = useState<Dayjs | null>(dayjs());
 
@@ -61,6 +99,7 @@ export default function TopPage() {
 
         {/* 在庫検索 */}
         <StockFilter
+        groupedDataArr={groupedDataArr}
         stocks={stocks}
         setStocks={setStocks}
         date={date}

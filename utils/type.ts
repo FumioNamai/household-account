@@ -7,4 +7,5 @@ export type Stock = {
   category: string | null;
   registration_date: string | null;
   use_date:  string | null;
+  count: number;
 }
