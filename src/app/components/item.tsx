@@ -41,10 +41,11 @@ Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
   const { tax } = useTaxStore();
+  const { user } = useStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   // UPDATE 使った日をuse_dateに記録する
-  const handleUse = async (propsID: number) => {
+  const handleUse = async (propsID: number,userId: string) => {
     if (date !== undefined) {
       try {
         // 使うボタンで選択した項目をnewStockへコピー
@@ -73,7 +74,7 @@ Props) => {
         await supabase.from("stocks").insert({ ...newStock });
 
         // 在庫データを更新して、画面を更新
-        const { data } = await supabase.from("stocks").select("*");
+        const { data } = await supabase.from("stocks").select("*").eq("user_id", userId);
 
         onUpdate(data);
         if (showSnackbar) {
@@ -94,14 +95,14 @@ Props) => {
     }
   };
 
-  const handleDelete = async (propsID: number) => {
+  const handleDelete = async (propsID: number,userId: string) => {
     try {
       const { error } = await supabase
         .from("stocks")
         .delete()
         .eq("id", propsID);
       if (error) throw error;
-      const { data: updatedStocks } = await supabase.from("stocks").select("*");
+      const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
       onUpdate(updatedStocks);
 
       // 親コンポーネントにstocksを渡して在庫情報を更新
@@ -117,7 +118,7 @@ Props) => {
     }
   };
 
-  const handleUpdate = async (propsID: number) => {
+  const handleUpdate = async (propsID: number,userId: string) => {
     if (type === "食品" && tax === false) {
       newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
     }
@@ -131,7 +132,7 @@ Props) => {
         .from("stocks")
         .update({ price: newPrice })
         .eq("id", propsID);
-      const { data: updatedStocks } = await supabase.from("stocks").select("*");
+      const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
       onUpdate(updatedStocks);
 
       if (showSnackbar) {
@@ -144,7 +145,7 @@ Props) => {
     }
   };
 
-  const handlePlus = async (propsID: number) => {
+  const handlePlus = async (propsID: number,userId: string) => {
     try {
       // 追加ボタンで選択した項目をnewStockへコピー
       const { data: restocks } = await supabase
@@ -166,7 +167,7 @@ Props) => {
       await supabase.from("stocks").insert({ ...newStock });
 
       // 在庫データを更新して、画面を更新
-      const { data } = await supabase.from("stocks").select("*");
+      const { data } = await supabase.from("stocks").select("*").eq("user_id", userId);
 
       onUpdate(data);
       if (showSnackbar) {
@@ -258,7 +259,7 @@ Props) => {
                 <IconButton
                   aria-label="use-item"
                   color="success"
-                  onClick={() => handleUse(id)}
+                  onClick={() => handleUse(id, user.id)}
                 >
                   <CheckCircleTwoTone />
                 </IconButton>
@@ -266,7 +267,7 @@ Props) => {
                 <IconButton
                   aria-label="plus1"
                   color="primary"
-                  onClick={() => handlePlus(id)}
+                  onClick={() => handlePlus(id,user.id)}
                 >
                   <ControlPointTwoToneIcon />
                 </IconButton>
@@ -274,7 +275,7 @@ Props) => {
                 <IconButton
                   aria-label="delete"
                   color="error"
-                  onClick={() => handleDelete(id)}
+                  onClick={() => handleDelete(id, user.id)}
                 >
                   <RemoveCircleTwoToneIcon />
                 </IconButton>
@@ -302,7 +303,7 @@ Props) => {
                   <IconButton
                     aria-label="update"
                     color="success"
-                    onClick={() => handleUpdate(id)}
+                    onClick={() => handleUpdate(id, user.id)}
                   >
                     <ModeTwoTone />
                   </IconButton>
@@ -313,7 +314,7 @@ Props) => {
                   <IconButton
                     aria-label="delete"
                     color="error"
-                    onClick={() => handleDelete(id)}
+                    onClick={() => handleDelete(id, user.id)}
                   >
                     <DeleteTwoTone />
                   </IconButton>
