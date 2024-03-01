@@ -54,15 +54,13 @@ Props) => {
           .update({ use_date: date })
           .eq("id", propsID);
 
-          console.log(count);
-
+          // 残数が1の在庫の使うボタンを押した場合、
           if(count === 1) {
-            // 使うボタンで選択した項目をnewStockへコピー
             const { data: restocks } = await supabase
               .from("stocks")
               .select("*")
               .eq("id", propsID);
-              // console.log(restocks);
+              // newStockへ一部をコピーする
             const newStock = {
               id: undefined,
               type: restocks![0].type,
@@ -79,10 +77,8 @@ Props) => {
           }
 
         // 在庫データを更新して、画面を更新
-
         const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
         onUpdate(updatedStocks);
-        console.log(updatedStocks);
         if (showSnackbar) {
           showSnackbar("success", `${name}を${date}付けで計上しました。`);
         }
@@ -202,17 +198,6 @@ Props) => {
     }
   };
 
-  // supabase
-  // .from("count_stocks")
-  // .select("*")
-  // .then((data,error) => {
-  //   if (error) {
-  //     console.error(error)
-  //     return
-  //   }
-  //   console.log(data);
-  // })
-
   return (
     <>
       <List
@@ -220,6 +205,8 @@ Props) => {
         sx={{
           display: "flex",
           flexDirection: "row",
+          borderBottom:"1px solid",
+          borderBottomColor:"grey.300",
           // alignItems: "center",
           // justifyContent: "space-between",
         }}
@@ -306,9 +293,6 @@ Props) => {
                     }}
                   />
                   <Typography variant="body1">円</Typography>
-                  <Typography variant="body1" sx={{minWidth:"50px", textAlign:"end", paddingRight:"8px"}}>
-                  x {count}
-                </Typography>
                   <IconButton
                     aria-label="update"
                     color="success"
