@@ -222,7 +222,8 @@ Props) => {
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  alignItems:"center"
+                  alignItems:"center",
+                  paddingBlock:"8px",
                 }}
               >
                 <Typography variant="body2">
