@@ -165,6 +165,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
             </Typography>
           </Box>
         </Box>
+
       </Box>
       <Accordion sx={{ borderRadius: "5px",backgroundColor:"none" }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
