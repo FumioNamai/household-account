@@ -25,7 +25,7 @@ export default function TopPage() {
       .eq("user_id", userId);
       if (error) throw error;
       setStocks(data);
-      console.log(data);
+      // console.log(data);
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "在庫データを取得できません。" + error.message);
@@ -43,7 +43,7 @@ export default function TopPage() {
 
 
   const groupedData: { [key: string]: any }  = {}
-  console.log(stocks);
+  // console.log(stocks);
 
   stocks.forEach(stock => {
     if(!stock.use_date) {
@@ -66,7 +66,7 @@ export default function TopPage() {
     })
     const groupedDataArr = Object.values(groupedData)
 
-    console.log(groupedDataArr);
+    // console.log(groupedDataArr);
   let [date, setDate] = useState<Dayjs | null>(dayjs());
 
   return (

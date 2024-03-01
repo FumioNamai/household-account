@@ -60,7 +60,7 @@ Props) => {
           .select("*")
           .eq("id", propsID);
 
-          console.log(restocks);
+          // console.log(restocks);
 
         const newStock = {
           id: undefined,
@@ -130,8 +130,6 @@ Props) => {
     if (type !== "食品" && tax === false) {
       newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
     }
-
-
     try {
       await supabase
         .from("stocks")
@@ -143,6 +141,7 @@ Props) => {
       if (showSnackbar) {
         showSnackbar("success", `${name}の価格を更新しました。`);
       }
+      setNewPrice("")
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "価格を更新できませんでした。" + error.message);
@@ -305,6 +304,9 @@ Props) => {
                     }}
                   />
                   <Typography variant="body1">円</Typography>
+                  <Typography variant="body1" sx={{minWidth:"50px", textAlign:"end", paddingRight:"8px"}}>
+                  x {count}
+                </Typography>
                   <IconButton
                     aria-label="update"
                     color="success"
