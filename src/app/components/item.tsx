@@ -54,27 +54,29 @@ Props) => {
           .update({ use_date: date })
           .eq("id", propsID);
 
-        // 使うボタンで選択した項目をnewStockへコピー
-        const { data: restocks } = await supabase
-          .from("stocks")
-          .select("*")
-          .eq("id", propsID);
+          console.log(count);
 
-          // console.log(restocks);
+          if(count === 1) {
+            // 使うボタンで選択した項目をnewStockへコピー
+            const { data: restocks } = await supabase
+              .from("stocks")
+              .select("*")
+              .eq("id", propsID);
+              // console.log(restocks);
+            const newStock = {
+              id: undefined,
+              type: restocks![0].type,
+              category: restocks![0].category,
+              name: restocks![0].name,
+              user_id: restocks![0].user_id,
+              price: 0,
+              registration_date: null,
+              use_date: null,
+            };
 
-        const newStock = {
-          id: undefined,
-          type: restocks![0].type,
-          category: restocks![0].category,
-          name: restocks![0].name,
-          user_id: restocks![0].user_id,
-          price: 0,
-          registration_date: null,
-          use_date: null,
-        };
-
-        // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
-        await supabase.from("stocks").insert({ ...newStock });
+            // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
+            await supabase.from("stocks").insert({ ...newStock });
+          }
 
         // 在庫データを更新して、画面を更新
 
