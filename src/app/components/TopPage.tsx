@@ -25,6 +25,7 @@ export default function TopPage() {
       .eq("user_id", userId);
       if (error) throw error;
       setStocks(data);
+      console.log(data);
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "在庫データを取得できません。" + error.message);
@@ -32,33 +33,40 @@ export default function TopPage() {
       setStocks([]);
     }
   };
+  // getStocks(user.id)
+
 
   useEffect(() => {
     (async () => await getStocks(user.id))();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+
   const groupedData: { [key: string]: any }  = {}
+  console.log(stocks);
 
   stocks.forEach(stock => {
-    const key = `${stock.name}-${stock.price}`
-    groupedData[key] = groupedData[key] ||
-    {
-      id: stock.id,
-      name:stock.name,
-      price: stock.price,
-      count:0,
-      type: stock.type,
-      registration_date:stock.registration_date,
-      use_date:stock.use_date,
-      category: stock.category,
+    if(!stock.use_date) {
+      const key = `${stock.name}-${stock.price}`;
+      if (!groupedData[key]) {
+        groupedData[key] =
+        {
+            id: stock.id,
+            name:stock.name,
+            price: stock.price,
+            count:0,
+            type: stock.type,
+            registration_date:stock.registration_date,
+            use_date:stock.use_date,
+            category: stock.category,
+          }
+        }
+        groupedData[key].count++
     }
-    groupedData[key].count++
-  })
+    })
+    const groupedDataArr = Object.values(groupedData)
 
-  const groupedDataArr = Object.values(groupedData)
-// console.log(groupedDataArr);
-
+    console.log(groupedDataArr);
   let [date, setDate] = useState<Dayjs | null>(dayjs());
 
   return (

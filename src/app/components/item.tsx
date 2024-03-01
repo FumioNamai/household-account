@@ -16,10 +16,10 @@ type Props = {
   id: number;
   name: string;
   price: string;
-  setPrice: React.Dispatch<React.SetStateAction<string>>;
+  // setPrice: React.Dispatch<React.SetStateAction<string>>;
   count: any; //要定義
   type: string;
-  stocks: Stock[] | null;
+  // stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   // onDelete:(stocks: Stock[]) => void;
   date: string | undefined | null;
@@ -45,14 +45,23 @@ Props) => {
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   // UPDATE 使った日をuse_dateに記録する
-  const handleUse = async (propsID: number,userId: string) => {
+  const handleUse = async (propsID: number, userId: string) => {
     if (date !== undefined) {
       try {
+        // 使うボタン押下でuse_dateに記録してdailyに移動
+        await supabase
+          .from("stocks")
+          .update({ use_date: date })
+          .eq("id", propsID);
+
         // 使うボタンで選択した項目をnewStockへコピー
         const { data: restocks } = await supabase
           .from("stocks")
-          .select()
+          .select("*")
           .eq("id", propsID);
+
+          console.log(restocks);
+
         const newStock = {
           id: undefined,
           type: restocks![0].type,
@@ -64,19 +73,14 @@ Props) => {
           use_date: null,
         };
 
-        // 使うボタン押下でuse_dateに記録してdailyに移動
-        await supabase
-          .from("stocks")
-          .update({ use_date: date })
-          .eq("id", propsID);
-
         // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
         await supabase.from("stocks").insert({ ...newStock });
 
         // 在庫データを更新して、画面を更新
-        const { data } = await supabase.from("stocks").select("*").eq("user_id", userId);
 
-        onUpdate(data);
+        const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
+        onUpdate(updatedStocks);
+        console.log(updatedStocks);
         if (showSnackbar) {
           showSnackbar("success", `${name}を${date}付けで計上しました。`);
         }
@@ -101,10 +105,11 @@ Props) => {
         .from("stocks")
         .delete()
         .eq("id", propsID);
-      if (error) throw error;
-      const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
-      onUpdate(updatedStocks);
 
+        const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
+        onUpdate(updatedStocks);
+
+        if (error) throw error;
       // 親コンポーネントにstocksを渡して在庫情報を更新
       // onDelete(stocks);
 

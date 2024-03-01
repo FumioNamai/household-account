@@ -40,7 +40,7 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
-  let [price, setPrice] = useState<string>("");
+  // let [price, setPrice] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
   const [searchName, setSearchName] = useState<string>("");
@@ -177,8 +177,8 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                     <ul>
                       {groupedDataArr!
                         .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-                        .map((groupedData) => (
-                          <li key={groupedData.id}>
+                        .map((groupedData,index) => (
+                          <li key={groupedData.name + groupedData.count + index}>
                             { category !=="すべて" ?
                             groupedData.type === type && groupedData.category === category &&
                             groupedData.use_date === null &&
@@ -187,9 +187,9 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                                 name={groupedData.name}
                                 price={groupedData.price.toString()}
                                 count={groupedData.count}
-                                setPrice={setPrice}
+                                // setPrice={setPrice}
                                 type={groupedData.type}
-                                stocks={stocks}
+                                // stocks={stocks}
                                 setStocks={setStocks}
                                 date={selectedDate}
                               />
@@ -200,10 +200,10 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                                 id={groupedData.id}
                                 name={groupedData.name}
                                 price={groupedData.price.toString()}
-                                setPrice={setPrice}
+                                // setPrice={setPrice}
                                 count={groupedData.count}
                                 type={groupedData.type}
-                                stocks={stocks}
+                                // stocks={stocks}
                                 setStocks={setStocks}
                                 date={selectedDate}
                               />
@@ -218,8 +218,8 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
               <ul>
                 {groupedDataArr!
                   .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-                  .map((groupedData) => (
-                    <li key={groupedData.id}>
+                  .map((groupedData, index) => (
+                    <li key={groupedData.name + groupedData.count + index}>
                       {
                       groupedData.type === type &&
                       groupedData.use_date === null ? (
@@ -227,10 +227,10 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                           id={groupedData.id}
                           name={groupedData.name}
                           price={groupedData.price.toString()}
-                          setPrice={setPrice}
+                          // setPrice={setPrice}
                           count={groupedData.count}
                           type={groupedData.type}
-                          stocks={stocks}
+                          // stocks={stocks}
                           setStocks={setStocks}
                           date={selectedDate}
                         />
@@ -273,17 +273,17 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
             )
             .sort((a, b) => a.name.localeCompare(b.name, "ja"))
             .map((groupedData, index) => (
-              <li key={groupedData.id}>
+              <li key={groupedData.name + groupedData.count + index}>
                 {
                 groupedData.use_date === null ? (
                   <Item
                     id={groupedData.id}
                     name={groupedData.name}
                     price={groupedData.price.toString()}
-                    setPrice={setPrice}
+                    // setPrice={setPrice}
                     count={groupedData.count}
                     type={groupedData.type}
-                    stocks={stocks}
+                    // stocks={stocks}
                     setStocks={setStocks}
                     date={selectedDate}
                   />
