@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -7,8 +7,6 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  Stack,
-  Switch,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
@@ -17,18 +15,16 @@ import {
 import { Categories } from "@/app/components/Categories";
 import { Types } from "@/app/components/types";
 import Item from "./item";
-import { Stock } from "../../../utils/type";
-// import useStore, { useTaxStore } from "@/store";
+import { GroupedData, Stock } from "../../../utils/type";
 import ja from "dayjs/locale/ja";
 import { Dayjs } from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ModalStockRegistration from "./ModalStockRegistration";
 import TaxSwitch from "@/app/components/taxSwitch";
-// import { getAllStocks } from "../../../utils/supabaseFunctions";
 
 type Props = {
-  groupedDataArr: any[] //要定義
+  groupedDataArr: GroupedData[]
   stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
@@ -36,11 +32,9 @@ type Props = {
 };
 
 const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props) => {
-  // const { user } = useStore();
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
-  // let [price, setPrice] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
   const [searchName, setSearchName] = useState<string>("");
@@ -190,9 +184,7 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                                 name={groupedData.name}
                                 price={groupedData.price.toString()}
                                 count={groupedData.count}
-                                // setPrice={setPrice}
                                 type={groupedData.type}
-                                // stocks={stocks}
                                 setStocks={setStocks}
                                 date={selectedDate}
                               />
@@ -203,10 +195,8 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                                 id={groupedData.id}
                                 name={groupedData.name}
                                 price={groupedData.price.toString()}
-                                // setPrice={setPrice}
                                 count={groupedData.count}
                                 type={groupedData.type}
-                                // stocks={stocks}
                                 setStocks={setStocks}
                                 date={selectedDate}
                               />
@@ -230,10 +220,8 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                           id={groupedData.id}
                           name={groupedData.name}
                           price={groupedData.price.toString()}
-                          // setPrice={setPrice}
                           count={groupedData.count}
                           type={groupedData.type}
-                          // stocks={stocks}
                           setStocks={setStocks}
                           date={selectedDate}
                         />
@@ -247,7 +235,6 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
       )}
 
       <FormControl sx={{ display:"flex", flexDirection:"row", marginBottom: "12px", gap:"10px"}}>
-      {/* <InputLabel>商品名で検索</InputLabel> */}
         <TextField
           label="すべての在庫から商品名で検索"
           type="text"
@@ -292,10 +279,8 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                     id={groupedData.id}
                     name={groupedData.name}
                     price={groupedData.price.toString()}
-                    // setPrice={setPrice}
                     count={groupedData.count}
                     type={groupedData.type}
-                    // stocks={stocks}
                     setStocks={setStocks}
                     date={selectedDate}
                   />

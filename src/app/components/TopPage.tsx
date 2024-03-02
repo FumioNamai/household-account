@@ -63,7 +63,6 @@ export default function TopPage() {
     })
     const groupedDataArr = Object.values(groupedData)
 
-    // console.log(groupedDataArr);
   let [date, setDate] = useState<Dayjs | null>(dayjs());
 
   return (

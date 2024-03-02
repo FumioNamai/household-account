@@ -14,10 +14,8 @@ type Props = {
   stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
-// export type OnUpdateProps = { onUpdate: (stocks: Stock[] | null) => void };
 
-// const UsedItem: React.FC<Stock & OnUpdateProps> = ({
-const UsedItem = ({ id, name, price, stocks, setStocks }: Props) => {
+const UsedItem = ({ id, name, price, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const { user } = useStore()
   const onUpdate = (data: any | undefined) => setStocks(data);

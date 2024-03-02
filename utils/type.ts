@@ -9,3 +9,14 @@ export type Stock = {
   use_date:  string | null;
   count: number;
 }
+
+export type GroupedData  = {
+  id: number;
+  type: string;
+  name: string;
+  price: number;
+  category: string | null;
+  registration_date: string | null;
+  use_date:  string | null;
+  count: number;
+}

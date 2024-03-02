@@ -94,7 +94,6 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
             <DatePicker
               sx={{ maxWidth: "200px" }}
               value={date}
-              // defaultValue={dayjs()}
               label={"対象年月日"}
               format="YYYY年MM月DD日"
               onChange={(date) => setDate(date)}
@@ -108,7 +107,6 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
         <TaxSwitch />
       </Box>
 
-      {/* <Daily stocks={stocks}/> */}
       <Box sx={{ paddingInline: "16px" }}>
         <Box
           sx={{
@@ -191,9 +189,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
               </div>
             ))}
           </ul>
-          {/* </AccordionDetails> */}
 
-          {/* <Box> */}
           <Typography variant="subtitle1">雑貨</Typography>
           <ul>
             {todayItems.map((todayItem: Stock) => (
@@ -213,9 +209,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
               </div>
             ))}
           </ul>
-          {/* </Box> */}
 
-          {/* <Box> */}
           <Typography variant="subtitle1">その他</Typography>
           <ul>
             {todayOthers.map((todayOther: Stock) => (
@@ -235,7 +229,6 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
               </div>
             ))}
           </ul>
-          {/* </Box> */}
         </AccordionDetails>
       </Accordion>
     </Grid>

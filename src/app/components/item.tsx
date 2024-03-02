@@ -16,27 +16,21 @@ type Props = {
   id: number;
   name: string;
   price: string;
-  // setPrice: React.Dispatch<React.SetStateAction<string>>;
-  count: any; //要定義
+  count: number;
   type: string;
-  // stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  // onDelete:(stocks: Stock[]) => void;
   date: string | undefined | null;
-  // tax: boolean;
 };
 
 const Item = ({
   id,
   name,
   price,
-  // setPrice,
   count,
   type,
-  // stocks,
   setStocks,
   date,
-}: // tax,
+}:
 Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
@@ -109,7 +103,6 @@ Props) => {
 
         if (error) throw error;
       // 親コンポーネントにstocksを渡して在庫情報を更新
-      // onDelete(stocks);
 
       if (showSnackbar) {
         showSnackbar("success", `${name}を在庫一覧から削除しました。`);
@@ -251,8 +244,6 @@ Props) => {
           flexDirection: "row",
           borderBottom:"1px solid",
           borderBottomColor:"grey.300",
-          // alignItems: "center",
-          // justifyContent: "space-between",
         }}
       >
         {parseInt(price) !== 0 ? (
@@ -290,7 +281,6 @@ Props) => {
                 sx={{
                   display: "flex",
                   flexDirection: "row",
-                  // alignItems:"flex-end",
                   justifyContent: "right",
                 }}
               >

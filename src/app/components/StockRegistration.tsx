@@ -81,7 +81,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           user_id: user.id,
         });
         if (error) throw error;
-        // const { data } = await supabase.from("stocks").select("*");
         const { data } = await supabase
           .from("stocks")
           .select("*")
