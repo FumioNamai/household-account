@@ -185,6 +185,50 @@ Props) => {
     }
   };
 
+  const handleMinus = async (propsID: number,userId: string) => {
+    try {
+      if ( count === 1 ) {
+        const { data: restocks } = await supabase
+        .from("stocks")
+        .select()
+        .eq("id", propsID);
+        const { error } = await supabase
+        .from("stocks")
+        .delete()
+        .eq("id", propsID);
+      const newStock = {
+        id: undefined,
+        type: restocks![0].type,
+        category: restocks![0].category,
+        name: restocks![0].name,
+        user_id: restocks![0].user_id,
+        price: 0,
+        registration_date: null,
+        use_date: null,
+      };
+
+      // newStockを在庫に登録（マイナスボタンで選択した項目を複製して在庫リストに追加する）
+      await supabase.from("stocks").insert({ ...newStock });
+      if (error) throw error;
+      } else {
+        const { error } = await supabase
+        .from("stocks")
+        .delete()
+        .eq("id", propsID);
+        if (error) throw error;
+      }
+        const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
+        onUpdate(updatedStocks);
+      if (showSnackbar) {
+        showSnackbar("success", `${name}を在庫一覧から削除しました。`);
+      }
+    } catch (error: any) {
+      if (showSnackbar) {
+        showSnackbar("error", "削除できませんでした。" + error.message);
+      }
+    }
+  }
+
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
     if (type === "食品" && tax === false) {
@@ -269,7 +313,7 @@ Props) => {
                 <IconButton
                   aria-label="delete"
                   color="error"
-                  onClick={() => handleDelete(id, user.id)}
+                  onClick={() => handleMinus(id, user.id)}
                 >
                   <RemoveCircleTwoToneIcon />
                 </IconButton>
