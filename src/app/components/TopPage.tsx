@@ -25,7 +25,7 @@ export default function TopPage() {
       .eq("user_id", userId);
       if (error) throw error;
       setStocks(data);
-      // console.log(data);
+      return
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "在庫データを取得できません。" + error.message);
@@ -33,17 +33,14 @@ export default function TopPage() {
       setStocks([]);
     }
   };
-  // getStocks(user.id)
-
 
   useEffect(() => {
     (async () => await getStocks(user.id))();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user.id]);
 
 
   const groupedData: { [key: string]: any }  = {}
-  // console.log(stocks);
 
   stocks.forEach(stock => {
     if(!stock.use_date) {

@@ -53,6 +53,9 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
 
+  const handleDelete = () => {
+    setSearchName("")
+  }
   return (
     <>
       <Box
@@ -243,7 +246,7 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
         ) : null
       )}
 
-      <FormControl sx={{ marginBottom: "12px",width:"280px"}}>
+      <Box sx={{ display:"flex", flexDirection:"row", marginBottom: "12px", gap:"10px"}}>
       {/* <InputLabel>商品名で検索</InputLabel> */}
         <TextField
           label="すべての在庫から商品名で検索"
@@ -252,8 +255,18 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
           name="name"
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
+          sx={{ width:"280px"}}
         />
-      </FormControl>
+        <Button
+        // size="large"
+        variant="outlined"
+        color="error"
+        onClick={handleDelete}
+        sx={{ padding:"0px", height:"42px",
+        marginBlock:"auto"
+      }}
+        >消去</Button>
+        </Box>
       {/* 商品名検索 */}
       <Box
         sx={{
