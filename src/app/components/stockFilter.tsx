@@ -169,13 +169,14 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
 
             {type === "食品" ? (
               Categories.map((category) =>
-                category === categoryItem ? (
+                category === categoryItem && (
+
                   <div key={category}>
                     <ul>
                       {groupedDataArr!
                         .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-                        .map((groupedData,index) => (
-                          <li key={groupedData.name + groupedData.count + index}>
+                        .map((groupedData) => (
+                          <li key={groupedData.id}>
                             { category !=="すべて" ?
                             groupedData.type === type && groupedData.category === category &&
                             groupedData.use_date === null &&
@@ -190,7 +191,7 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                               />
                             :
                             groupedData.type === type &&
-                            groupedData.use_date === null ? (
+                            groupedData.use_date === null && (
                               <Item
                                 id={groupedData.id}
                                 name={groupedData.name}
@@ -200,22 +201,23 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                                 setStocks={setStocks}
                                 date={selectedDate}
                               />
-                            ) : null}
+                            )}
                           </li>
                         ))}
                     </ul>
                   </div>
-                ) : null
+                )
+
               )
             ) : (
               <ul>
                 {groupedDataArr!
                   .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-                  .map((groupedData, index) => (
-                    <li key={groupedData.name + groupedData.count + index}>
+                  .map((groupedData) => (
+                    <li key={groupedData.id}>
                       {
                       groupedData.type === type &&
-                      groupedData.use_date === null ? (
+                      groupedData.use_date === null && (
                         <Item
                           id={groupedData.id}
                           name={groupedData.name}
@@ -225,7 +227,7 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                           setStocks={setStocks}
                           date={selectedDate}
                         />
-                      ) : null}
+                      )}
                     </li>
                   ))}
               </ul>
@@ -271,10 +273,10 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
               (groupedData) => groupedData.name === groupedData.name.match(searchName)?.input
             )
             .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-            .map((groupedData, index) => (
-              <li key={groupedData.name + groupedData.count + index}>
+            .map((groupedData) => (
+              <li key={groupedData.id}>
                 {
-                groupedData.use_date === null ? (
+                groupedData.use_date === null && (
                   <Item
                     id={groupedData.id}
                     name={groupedData.name}
@@ -284,7 +286,7 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
                     setStocks={setStocks}
                     date={selectedDate}
                   />
-                ) : null}
+                )}
               </li>
             ))}
         </ul>

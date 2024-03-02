@@ -43,7 +43,6 @@ export default function ModalStockRegistration({
             maxHeight:"90%",
             overflow:"scroll",
             bgcolor: "background.paper",
-            // border: '2px solid #000',
             boxShadow: 24,
             p: 2,
           }}

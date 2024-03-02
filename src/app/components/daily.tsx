@@ -175,7 +175,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
             {todayFoods.map((todayFood: Stock) => (
               <div key={todayFood.id}>
                 {todayFood.type === "食品" &&
-                todayFood.use_date === `${selectedDate}` ? (
+                todayFood.use_date === `${selectedDate}` && (
                   <UsedItem
                     id={todayFood.id}
                     name={todayFood.name}
@@ -185,7 +185,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
                     stocks={stocks}
                     setStocks={setStocks}
                   />
-                ) : null}
+                )}
               </div>
             ))}
           </ul>
@@ -195,7 +195,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
             {todayItems.map((todayItem: Stock) => (
               <div key={todayItem.id}>
                 {todayItem.type === "雑貨" &&
-                todayItem.use_date === `${selectedDate}` ? (
+                todayItem.use_date === `${selectedDate}` && (
                   <UsedItem
                     id={todayItem.id}
                     name={todayItem.name}
@@ -205,7 +205,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
                     stocks={stocks}
                     setStocks={setStocks}
                   />
-                ) : null}
+                )}
               </div>
             ))}
           </ul>
@@ -215,7 +215,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
             {todayOthers.map((todayOther: Stock) => (
               <div key={todayOther.id}>
                 {todayOther.type === "その他" &&
-                todayOther.use_date === `${selectedDate}` ? (
+                todayOther.use_date === `${selectedDate}` && (
                   <UsedItem
                     id={todayOther.id}
                     name={todayOther.name}
@@ -225,7 +225,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
                     stocks={stocks}
                     setStocks={setStocks}
                   />
-                ) : null}
+                )}
               </div>
             ))}
           </ul>
