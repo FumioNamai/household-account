@@ -1,22 +1,28 @@
 import { useTaxStore } from "@/store";
-import { FormControl, Stack, Switch, Typography } from "@mui/material"
+import {
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  Switch,
+} from "@mui/material";
 
 const TaxSwitch = () => {
   const { tax, setTax } = useTaxStore();
   const handleTax = () => {
-    setTax()
-  }
+    setTax();
+  };
 
   return (
     <FormControl>
-    <Stack direction="row" alignItems="center">
-    <Typography>税抜</Typography>
-    <Switch checked={tax} onChange={handleTax} />
-    <Typography>税込</Typography>
-    </Stack>
-  </FormControl>
-  )
-}
+      <FormGroup>
+        <FormControlLabel
+          control={<Switch checked={tax} onChange={handleTax} />}
+          label={tax ? "税込" : "税抜"}
+          sx={{marginRight:"0"}}
+        />
+      </FormGroup>
+    </FormControl>
+  );
+};
 
-
-export default TaxSwitch
+export default TaxSwitch;

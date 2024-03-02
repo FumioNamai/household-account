@@ -44,7 +44,7 @@ type Props = {
 
 const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const { user } = useStore();
-  const { tax, } = useTaxStore();
+  const { tax } = useTaxStore();
 
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
@@ -56,9 +56,9 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const [, setIsFocus] = useState(false);
 
   const selectedDate: string | undefined = date
-  ?.locale(ja)
-  .format("YYYY-MM-DD");
-  const onUpdate = (data:any| undefined) => setStocks(data);
+    ?.locale(ja)
+    .format("YYYY-MM-DD");
+  const onUpdate = (data: any | undefined) => setStocks(data);
 
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -80,19 +80,24 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           category: categoryItem,
           user_id: user.id,
         });
-      if (error) throw error;
-      // const { data } = await supabase.from("stocks").select("*");
-      const { data } = await supabase.from("stocks").select("*").eq("user_id",user.id);
+        if (error) throw error;
+        // const { data } = await supabase.from("stocks").select("*");
+        const { data } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", user.id);
 
-      onUpdate(data);
-      setItemName("");
-      setNewPrice("");
-      setCategoryItem("");
-    }
-      if (showSnackbar) {
-        showSnackbar("success", `${itemName}を${amount}個、在庫一覧に登録しました。`);
+        onUpdate(data);
+        setItemName("");
+        setNewPrice("");
+        setCategoryItem("");
       }
-
+      if (showSnackbar) {
+        showSnackbar(
+          "success",
+          `${itemName}を${amount}個、在庫一覧に登録しました。`
+        );
+      }
     } catch (error) {
       if (showSnackbar) {
         showSnackbar("error", "データの新規登録ができません。");
@@ -108,13 +113,13 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
     setNewPrice(event.target.value);
   };
 
-  const handleAmountChange = (event:any) => {
-    setAmount(event.target.value)
+  const handleAmountChange = (event: any) => {
+    setAmount(event.target.value);
   };
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "20px" }}>
-      <Typography variant="h4" sx={{marginBottom:"40px"}}>
+      <Typography variant="h4" sx={{ marginBottom: "40px" }}>
         在庫登録
       </Typography>
       <Box sx={{ paddingInline: "0px" }}>
@@ -148,19 +153,21 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           >
             <InputLabel>食品の分類</InputLabel>
             <Select
-              disabled = {type !== "食品"}
+              disabled={type !== "食品"}
               id="category"
               value={categoryItem}
               label="食品の分類"
               onChange={handleSelectItem}
             >
               <MenuItem value={""}></MenuItem>
-              {Categories.map((category) => (
-                category !== "すべて" &&
-                <MenuItem key={category} value={category}>
-                  {category}
-                </MenuItem>
-              ))}
+              {Categories.map(
+                (category) =>
+                  category !== "すべて" && (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  )
+              )}
             </Select>
           </FormControl>
 
@@ -177,8 +184,8 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
             />
           </FormControl>
 
-
-          <div className="flex flex-row items-center gap-5 mb-3">
+          <div className="flex flex-row items-center gap-2 mb-3">
+            <TaxSwitch />
             <TextField
               type="string"
               label="価格"
@@ -192,22 +199,24 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               }}
               onChange={handlePriceChange}
             />
-            <TaxSwitch />
-          </div>
-          <FormControl sx={{marginBottom:"24px"}}>
-            <InputLabel>数量</InputLabel>
-            <Select
-              id="amount"
-              type="number"
-              value={amount}
-              label="数量"
-              onChange={handleAmountChange}
-            >
-              {amounts.map((amount) => (
-                <MenuItem key={amount} value={amount}>{amount}</MenuItem>
-              ))}
-            </Select>
+            <FormControl>
+              <InputLabel>数量</InputLabel>
+              <Select
+                id="amount"
+                type="number"
+                value={amount}
+                label="数量"
+                onChange={handleAmountChange}
+              >
+                {amounts.map((amount) => (
+                  <MenuItem key={amount} value={amount}>
+                    {amount}
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl>
+          </div>
+
           <div className="flex flex-col">
             <div>
               <Button variant="outlined" type="submit">

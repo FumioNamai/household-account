@@ -167,8 +167,8 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
         </Box>
 
       </Box>
-      <Accordion sx={{ borderRadius: "5px",backgroundColor:"none" }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ fontWeight:"400" }}>
           消費品目
         </AccordionSummary>
         <AccordionDetails>

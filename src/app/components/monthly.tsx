@@ -175,7 +175,7 @@ const Monthly: React.FC<{
         </Box>
 
         <Box>
-          <Typography variant="h6">消費品目（その他） </Typography>
+          <Typography variant="subtitle1">消費品目（その他） </Typography>
           <ul>
             {monthOthers?.map((stock) => (
               <Box key={stock.id}>

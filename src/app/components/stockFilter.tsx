@@ -246,7 +246,7 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
         ) : null
       )}
 
-      <Box sx={{ display:"flex", flexDirection:"row", marginBottom: "12px", gap:"10px"}}>
+      <FormControl sx={{ display:"flex", flexDirection:"row", marginBottom: "12px", gap:"10px"}}>
       {/* <InputLabel>商品名で検索</InputLabel> */}
         <TextField
           label="すべての在庫から商品名で検索"
@@ -258,7 +258,6 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
           sx={{ width:"280px"}}
         />
         <Button
-        // size="large"
         variant="outlined"
         color="error"
         onClick={handleDelete}
@@ -266,7 +265,7 @@ const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props)
         marginBlock:"auto"
       }}
         >消去</Button>
-        </Box>
+        </FormControl>
       {/* 商品名検索 */}
       <Box
         sx={{
