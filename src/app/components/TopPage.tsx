@@ -13,8 +13,8 @@ import Daily from "@/app/components/daily";
 import StockFilter from "@/app/components/stockFilter";
 import useStore from "@/store";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Button, CssBaseline, FormControlLabel } from "@mui/material";
-import { blue, grey } from "@mui/material/colors";
+import { Button, CssBaseline } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import NightlightRoundedIcon from '@mui/icons-material/NightlightRounded';
 
@@ -51,7 +51,6 @@ export default function TopPage() {
       })
     },
   })
-
 
   const toggleColorMode = () => {
     setMode((prevMode) => (prevMode === "light" ? 'dark' :'light' ))
@@ -108,8 +107,10 @@ export default function TopPage() {
         <ThemeProvider theme={theme}>
         <CssBaseline />
         <Button
+        sx={{padding:0, minWidth:"24px"}}
         onClick={toggleColorMode}
-        >{mode === 'dark' ? <LightModeRoundedIcon /> : <NightlightRoundedIcon /> }</Button>
+        >{mode === 'dark' ? <LightModeRoundedIcon /> : <NightlightRoundedIcon /> }
+        </Button>
 
       <main>
 
