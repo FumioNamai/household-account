@@ -1,13 +1,13 @@
+
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Container } from "@mui/material"
-import { SnackbarProvider } from '@/providers/context-provider'
-import SupabaseListener from "@/app/components/supabase-listener";
-import Link from 'next/link'
+// import { SnackbarProvider } from '@/providers/context-provider'
+import Header from './components/header'
 
 
 const inter = Inter({ subsets: ['latin'] })
+
 
 export const metadata: Metadata = {
   title: 'N式家計簿',
@@ -19,25 +19,17 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
   return (
     <html lang="ja">
-      <head>
+      {/* <head>
       <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </head>
+      </head> */}
       <body className={inter.className}>
-        <header className='flex flex-row justify-between py-5 px-5 mx-auto max-w-screen-sm '>
-        <Link href="/">
-        <h1 className=' text-xl font-medium '>N式家計簿</h1>
-        </Link>
-        <SupabaseListener />
-        </header>
-        <SnackbarProvider>
-        <Container maxWidth="sm" sx={{padding:"0"}} className="mx-auto">
-          <main>
+        <Header />
+        {/* <SnackbarProvider> */}
         {children}
-          </main>
-        </Container>
-        </SnackbarProvider>
+        {/* </SnackbarProvider> */}
       </body>
     </html>
   )

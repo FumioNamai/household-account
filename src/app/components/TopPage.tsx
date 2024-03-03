@@ -12,12 +12,51 @@ import Monthly from "@/app/components/monthly";
 import Daily from "@/app/components/daily";
 import StockFilter from "@/app/components/stockFilter";
 import useStore from "@/store";
-
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Button, CssBaseline, FormControlLabel } from "@mui/material";
+import { grey } from "@mui/material/colors";
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+import NightlightRoundedIcon from '@mui/icons-material/NightlightRounded';
 
 export default function TopPage() {
   const { showSnackbar } = useSnackbarContext();
   const [stocks, setStocks] = useState<Stock[]>([]);
   const { user } = useStore()
+
+  const [mode, setMode] = useState('dark')
+  const theme = createTheme({
+    palette: {
+      mode,
+      ...(mode === 'light' ? {
+        // primary: blueGrey,
+        // divider:blueGrey[200],
+        text: {
+          primary: grey[900],
+          secondary: grey[800],
+        },
+        background: {
+          paper: grey[100],
+          default: grey[100],
+        }
+      } : {
+        // primary:blueGrey,
+        // divider:blueGrey[200],
+        text: {
+          primary: grey[100],
+          secondary: grey[200],
+        },
+        background: {
+          paper: grey[800],
+          default: grey[800],
+        }
+      })
+    },
+  })
+
+
+  const toggleColorMode = () => {
+    setMode((prevMode) => (prevMode === "light" ? 'dark' :'light' ))
+  }
 
   const getStocks = async (userId: string) => {
     try {
@@ -67,7 +106,14 @@ export default function TopPage() {
 
   return (
     <>
+        <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Button
+        onClick={toggleColorMode}
+        >{mode === 'dark' ? <LightModeRoundedIcon /> : <NightlightRoundedIcon /> }</Button>
+
       <main>
+
         {/* 月別集計 */}
         <Monthly stocks={stocks} setStocks={setStocks} />
 
@@ -96,6 +142,7 @@ export default function TopPage() {
         setDate={setDate}
         />
       </main>
+      </ThemeProvider>
     </>
   );
 }
