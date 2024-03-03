@@ -14,7 +14,7 @@ import StockFilter from "@/app/components/stockFilter";
 import useStore from "@/store";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Button, CssBaseline, FormControlLabel } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { blue, grey } from "@mui/material/colors";
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import NightlightRoundedIcon from '@mui/icons-material/NightlightRounded';
 
@@ -26,10 +26,7 @@ export default function TopPage() {
   const [mode, setMode] = useState('dark')
   const theme = createTheme({
     palette: {
-      mode,
       ...(mode === 'light' ? {
-        // primary: blueGrey,
-        // divider:blueGrey[200],
         text: {
           primary: grey[900],
           secondary: grey[800],
@@ -39,8 +36,7 @@ export default function TopPage() {
           default: grey[100],
         }
       } : {
-        // primary:blueGrey,
-        // divider:blueGrey[200],
+        divider:grey[700],
         text: {
           primary: grey[100],
           secondary: grey[200],
@@ -48,6 +44,9 @@ export default function TopPage() {
         background: {
           paper: grey[800],
           default: grey[800],
+        },
+        action: {
+          active: grey[200],
         }
       })
     },

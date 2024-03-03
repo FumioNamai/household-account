@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Stock } from "../../../utils/type";
 import { supabase } from "../../../utils/supabase";
-import { Box, IconButton, List, TextField, Typography } from "@mui/material";
+import { Box, Divider, IconButton, List, TextField, Typography } from "@mui/material";
 import { useSnackbarContext } from "@/providers/context-provider";
 import {
   CheckCircleTwoTone,
@@ -242,8 +242,8 @@ Props) => {
         sx={{
           display: "flex",
           flexDirection: "row",
-          borderBottom:"1px solid",
-          borderBottomColor:"grey.300",
+          // borderBottom:"1px solid",
+          // borderBottomColor:"grey.300",
         }}
       >
         {parseInt(price) !== 0 ? (
@@ -352,6 +352,7 @@ Props) => {
           </>
         )}
       </List>
+      <Divider variant="middle" />
     </>
   );
 };
