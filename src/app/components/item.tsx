@@ -352,7 +352,7 @@ Props) => {
           </>
         )}
       </List>
-      <Divider variant="middle" />
+      <Divider />
     </>
   );
 };

@@ -37,7 +37,7 @@ const Navigation = ({
         <Box sx={{ display:"flex", flexDirection:"row", gap:1,alignItems:"center"}}>
             {profile &&
             <>
-            <Typography variant="body1" sx={{ fontSize: 18}}>{profile.name}さん</Typography>
+            <Typography variant="body1" sx={{ fontSize: 16}}>{profile.name}さん</Typography>
             <Link underline="hover" href="/settings/profile">
               <SettingsIcon sx={{width:"30px", height:"30px"}}/>
             </Link>

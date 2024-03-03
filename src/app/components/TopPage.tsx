@@ -23,7 +23,7 @@ export default function TopPage() {
   const [stocks, setStocks] = useState<Stock[]>([]);
   const { user } = useStore()
 
-  const [mode, setMode] = useState('dark')
+  const [mode, setMode] = useState('light')
   const theme = createTheme({
     palette: {
       ...(mode === 'light' ? {
@@ -42,8 +42,8 @@ export default function TopPage() {
           secondary: grey[200],
         },
         background: {
-          paper: grey[800],
-          default: grey[800],
+          paper: grey[900],
+          default: grey[900],
         },
         action: {
           active: grey[200],

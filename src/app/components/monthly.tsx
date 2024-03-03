@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Box, FormControl, Grid, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  FormControl,
+  Grid,
+  Typography
+} from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
@@ -9,6 +17,8 @@ import UsedItem from "@/app/components/usedItem";
 import { Stock } from "../../../utils/type";
 import useStore, { useTaxStore } from "@/store";
 import TaxSwitch from "./taxSwitch";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 
 const Monthly: React.FC<{
   stocks: Stock[];
@@ -173,9 +183,12 @@ const Monthly: React.FC<{
             </Typography>
           </Box>
         </Box>
-
-        <Box>
-          <Typography variant="subtitle1">消費品目（その他） </Typography>
+        </Box>
+        <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ fontWeight:"400" }}>
+          消費品目（その他）
+        </AccordionSummary>
+        <AccordionDetails>
           <ul>
             {monthOthers?.map((stock) => (
               <Box key={stock.id}>
@@ -189,8 +202,9 @@ const Monthly: React.FC<{
               </Box>
             ))}
           </ul>
-        </Box>
-      </Box>
+          </AccordionDetails>
+      </Accordion>
+
     </Grid>
   );
 };
