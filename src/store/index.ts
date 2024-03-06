@@ -20,7 +20,6 @@ export const useStore = create<StateType>((set) => ({
 type TaxStateType = {
   tax : boolean
   setTax: () => void
-  // handleTax: ((event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void) | undefined
 }
 
 export const useTaxStore = create<TaxStateType>((set) => ({
@@ -31,23 +30,14 @@ export const useTaxStore = create<TaxStateType>((set) => ({
   //   set( isChecked )}
 }))
 
+type ModeStateType = {
+  mode : boolean
+  setMode : () => void
+}
 
-
-// type PriceState = {
-//   price : string;
-//   setPrice : (price:string) => void
-//   handlePriceChange: (event: React.ChangeEvent<HTMLInputElement>) =>
-//     void
-// }
-
-
-// export const usePriceStore = create<PriceState>((set) => ({
-//   price:"",
-//   setPrice:(newPrice) => set({ price: newPrice}),
-//   handlePriceChange : (event) => {
-//     const newPrice = event.target.value;
-//     set({price:newPrice})
-//   }
-// }))
+export const useModeStore = create<ModeStateType>((set) => ({
+  mode: true,
+  setMode: () => set( state => ({mode : !state.mode}))
+}))
 
 export default useStore

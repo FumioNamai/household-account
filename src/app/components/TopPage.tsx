@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Stock } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
@@ -11,50 +11,58 @@ import dayjs from "dayjs";
 import Monthly from "@/app/components/monthly";
 import Daily from "@/app/components/daily";
 import StockFilter from "@/app/components/stockFilter";
-import useStore from "@/store";
+import useStore, { useModeStore } from "@/store";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Button, CssBaseline } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import NightlightRoundedIcon from '@mui/icons-material/NightlightRounded';
+import ModeSwitch from "./modeSwitch";
+import { colorTheme } from "./colorTheme";
 
 export default function TopPage() {
   const { showSnackbar } = useSnackbarContext();
   const [stocks, setStocks] = useState<Stock[]>([]);
   const { user } = useStore()
-
-  const [mode, setMode] = useState('light')
-  const theme = createTheme({
-    palette: {
-      ...(mode === 'light' ? {
-        text: {
-          primary: grey[900],
-          secondary: grey[800],
-        },
-        background: {
-          paper: grey[100],
-          default: grey[100],
-        }
-      } : {
-        divider:grey[700],
-        text: {
-          primary: grey[100],
-          secondary: grey[200],
-        },
-        background: {
-          paper: grey[900],
-          default: grey[900],
-        },
-        action: {
-          active: grey[200],
-        }
-      })
-    },
-  })
-
-  const toggleColorMode = () => {
-    setMode((prevMode) => (prevMode === "light" ? 'dark' :'light' ))
-  }
+  const { mode, } = useModeStore()
+  const theme = useMemo(()=>colorTheme(mode),
+    [mode]
+  )
+  // const { mode,setMode}  = useModeStore()
+  // const [mode, setMode] = useState('light')
+  // const theme = createTheme({
+  //   palette: {
+  //     ...(mode === true ? {
+  //       text: {
+  //         primary: grey[900],
+  //         secondary: grey[800],
+  //       },
+  //       background: {
+  //         paper: grey[100],
+  //         default: grey[100],
+  //       }
+  //     } : {
+  //       divider:grey[700],
+  //       text: {
+  //         primary: grey[100],
+  //         secondary: grey[200],
+  //       },
+  //       background: {
+  //         paper: grey[900],
+  //         default: grey[900],
+  //       },
+  //       action: {
+  //         active: grey[200],
+  //       }
+  //     })
+  //   },
+  // })
+  // const toggleColorMode = () => {
+  //   setMode()
+  // }
+  // const toggleColorMode = () => {
+  //   setMode((prevMode) => (prevMode === "light" ? 'dark' :'light' ))
+  // }
 
   const getStocks = async (userId: string) => {
     try {
@@ -106,11 +114,12 @@ export default function TopPage() {
     <>
         <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Button
+        <ModeSwitch />
+        {/* <Button
         sx={{padding:0, minWidth:"24px"}}
         onClick={toggleColorMode}
-        >{mode === 'dark' ? <LightModeRoundedIcon /> : <NightlightRoundedIcon /> }
-        </Button>
+        >{mode === false ? <LightModeRoundedIcon /> : <NightlightRoundedIcon /> }
+        </Button> */}
 
       <main>
 

@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import Loading from "./loading";
@@ -22,6 +22,9 @@ import { ThemeProvider,CssBaseline } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import NightlightRoundedIcon from '@mui/icons-material/NightlightRounded';
+import { useModeStore } from "@/store";
+import { colorTheme } from "./colorTheme";
+import ModeSwitch from "./modeSwitch";
 
 // 入力データの検証ルールを定義
 const schema = z.object({
@@ -73,50 +76,54 @@ const Login = () => {
     }
   };
 
-  const [mode, setMode] = useState('light')
-  const theme = createTheme({
-    palette: {
-      ...(mode === 'light' ? {
-        text: {
-          primary: grey[900],
-          secondary: grey[800],
-        },
-        background: {
-          paper: grey[100],
-          default: grey[100],
-        }
-      } : {
-        divider:grey[700],
-        text: {
-          primary: grey[100],
-          secondary: grey[200],
-        },
-        background: {
-          paper: grey[900],
-          default: grey[900],
-        },
-        action: {
-          active: grey[200],
-        }
-      })
-    },
-  })
+  const { mode, } = useModeStore()
+  const theme = useMemo(()=>colorTheme(mode),
+    [mode]
+  )
+  // const [mode, setMode] = useState('light')
+  // const theme = createTheme({
+  //   palette: {
+  //     ...(mode === 'light' ? {
+  //       text: {
+  //         primary: grey[900],
+  //         secondary: grey[800],
+  //       },
+  //       background: {
+  //         paper: grey[100],
+  //         default: grey[100],
+  //       }
+  //     } : {
+  //       divider:grey[700],
+  //       text: {
+  //         primary: grey[100],
+  //         secondary: grey[200],
+  //       },
+  //       background: {
+  //         paper: grey[900],
+  //         default: grey[900],
+  //       },
+  //       action: {
+  //         active: grey[200],
+  //       }
+  //     })
+  //   },
+  // })
 
-  const toggleColorMode = () => {
-    setMode((prevMode) => (prevMode === "light" ? 'dark' :'light' ))
-  }
+  // const toggleColorMode = () => {
+  //   setMode((prevMode) => (prevMode === "light" ? 'dark' :'light' ))
+  // }
 
 
   return (
     <div>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Button
+        {/* <Button
         sx={{padding:0, minWidth:"24px"}}
         onClick={toggleColorMode}
         >{mode === 'dark' ? <LightModeRoundedIcon /> : <NightlightRoundedIcon /> }
-        </Button>
-
+        </Button> */}
+        <ModeSwitch />
       <Typography
         variant="h5"
         sx={{ fontWeight: "bold", textAlign: "center", mb: 3 }}

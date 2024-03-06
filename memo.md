@@ -49,6 +49,8 @@
 
 - [ ] ダークモード対応
 
+- [ ] 通常, settings, auth ヘッダーのレイアウトのズレ
+
 - [ ] supabase からのデータ取得のコードを修正
       "const { error: updateError } "
                        　　↑　正しい記述
