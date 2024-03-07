@@ -1,4 +1,5 @@
 import { Database } from "@/lib/database.types";
+import { PaletteMode } from "@mui/material";
 
 // Zustand Reactの状態管理ライブラリ
 import { create } from "zustand";
@@ -31,13 +32,16 @@ export const useTaxStore = create<TaxStateType>((set) => ({
 }))
 
 type ModeStateType = {
-  mode : boolean
-  setMode : () => void
+  mode: PaletteMode
+  toggleColorMode : () => void
 }
 
 export const useModeStore = create<ModeStateType>((set) => ({
-  mode: true,
-  setMode: () => set( state => ({mode : !state.mode}))
+  mode: "light" as PaletteMode,
+  toggleColorMode: () => {
+    set((state) => ({mode: state.mode === "light" ? "dark" : "light"}));
+  },
+  // (prevMode === "light" ? "dark" : "light")
 }))
 
 export default useStore

@@ -1,9 +1,9 @@
-import { createTheme } from "@mui/material";
+import { colors, createTheme } from "@mui/material";
 import { grey } from "@mui/material/colors";
 
-export const colorTheme = (mode:boolean) => createTheme({
+export const colorTheme = (mode:any) => createTheme({
   palette: {
-    ...(mode === true
+    ...(mode === "light"
       ? {
           text: {
             primary: grey[900],
@@ -29,4 +29,10 @@ export const colorTheme = (mode:boolean) => createTheme({
           },
         }),
   },
+  // palette: {
+  //   primary: {
+  //     main: colors.blue[800],
+  //   },
+  //   mode: 'dark' ? "dark" : "light",
+  // },
 });
