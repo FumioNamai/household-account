@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect,useMemo,useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Stock } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
@@ -12,24 +12,23 @@ import Monthly from "@/app/components/monthly";
 import Daily from "@/app/components/daily";
 import StockFilter from "@/app/components/stockFilter";
 import useStore, { useModeStore } from "@/store";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Button, CssBaseline, PaletteMode, colors } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import NightlightRoundedIcon from '@mui/icons-material/NightlightRounded';
+import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
+import NightlightRoundedIcon from "@mui/icons-material/NightlightRounded";
 import ModeSwitch from "./modeSwitch";
 // import ModeSwitch from "./modeSwitch";
-// import { colorTheme } from "./colorTheme";
+import { colorTheme } from "./colorTheme";
 
 export default function TopPage() {
   const { showSnackbar } = useSnackbarContext();
   const [stocks, setStocks] = useState<Stock[]>([]);
-  const { user } = useStore()
+  const { user } = useStore();
+
   // const { mode, setMode} = useModeStore()
-  // const theme = useMemo(()=>colorTheme(mode),
-  //   [mode]
-  // )
-  const { mode,}  = useModeStore()
+  const { mode } = useModeStore();
+  const theme = useMemo(() => colorTheme(mode), [mode]);
   // const [mode, setMode] = useState<PaletteMode>('light')
 
   // const colorMode = useMemo(() => ({
@@ -40,14 +39,16 @@ export default function TopPage() {
   // })
   // ,[]
   // )
-  const theme = useMemo(() =>
-  createTheme({
-    palette: {
-      mode: mode as PaletteMode,
-    },
-  }),
-  [mode]
-  )
+
+  // const theme = useMemo(() =>
+  // createTheme({
+  //   palette: {
+  //     mode: mode as PaletteMode,
+  //   },
+  // }),
+  // [mode]
+  // )
+
   // const theme = createTheme({
   //   palette: {
   //     ...(mode === "light" ? {
@@ -82,19 +83,19 @@ export default function TopPage() {
   //   mode: 'dark' ? "dark" : "light",
   // },
 
-
   // const toggleColorMode = () => {
   //   setMode()
   // }
 
-
   const getStocks = async (userId: string) => {
     try {
-      const { data, error } = await supabase.from("stocks").select("*")
-      .eq("user_id", userId);
+      const { data, error } = await supabase
+        .from("stocks")
+        .select("*")
+        .eq("user_id", userId);
       if (error) throw error;
       setStocks(data);
-      return
+      return;
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "在庫データを取得できません。" + error.message);
@@ -108,68 +109,65 @@ export default function TopPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id]);
 
+  const groupedData: { [key: string]: any } = {};
 
-  const groupedData: { [key: string]: any }  = {}
-
-  stocks.forEach(stock => {
-    if(!stock.use_date) {
+  stocks.forEach((stock) => {
+    if (!stock.use_date) {
       const key = `${stock.name}-${stock.price}`;
       if (!groupedData[key]) {
-        groupedData[key] =
-        {
-            id: stock.id,
-            name:stock.name,
-            price: stock.price,
-            count:0,
-            type: stock.type,
-            registration_date:stock.registration_date,
-            use_date:stock.use_date,
-            category: stock.category,
-          }
-        }
-        groupedData[key].count++
+        groupedData[key] = {
+          id: stock.id,
+          name: stock.name,
+          price: stock.price,
+          count: 0,
+          type: stock.type,
+          registration_date: stock.registration_date,
+          use_date: stock.use_date,
+          category: stock.category,
+        };
+      }
+      groupedData[key].count++;
     }
-    })
-    const groupedDataArr = Object.values(groupedData)
+  });
+  const groupedDataArr = Object.values(groupedData);
 
   let [date, setDate] = useState<Dayjs | null>(dayjs());
 
   return (
     <>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <ModeSwitch />
 
-      <main>
+        <main>
+          {/* 月別集計 */}
+          <Monthly stocks={stocks} setStocks={setStocks} />
 
-        {/* 月別集計 */}
-        <Monthly stocks={stocks} setStocks={setStocks} />
+          {/* 日別集計 */}
+          <Daily
+            stocks={stocks}
+            setStocks={setStocks}
+            date={date}
+            setDate={setDate}
+          />
 
-        {/* 日別集計 */}
-        <Daily
-          stocks={stocks}
-          setStocks={setStocks}
-          date={date}
-          setDate={setDate}
-        />
-
-        {/* 在庫一覧 */}
-        {/* <StockList
+          {/* 在庫一覧 */}
+          {/* <StockList
           stocks={stocks}
           setStocks={setStocks}
           date={date}
           setDate={setDate}
         /> */}
 
-        {/* 在庫検索 */}
-        <StockFilter
-        groupedDataArr={groupedDataArr}
-        stocks={stocks}
-        setStocks={setStocks}
-        date={date}
-        setDate={setDate}
-        />
-      </main>
+          {/* 在庫検索 */}
+          <StockFilter
+            groupedDataArr={groupedDataArr}
+            stocks={stocks}
+            setStocks={setStocks}
+            date={date}
+            setDate={setDate}
+          />
+        </main>
       </ThemeProvider>
     </>
   );

@@ -14,17 +14,17 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname(); // 現在のページのパスを取得できる
 
   const { mode, }  = useModeStore()
-  // const theme = useMemo(()=>colorTheme(mode),
-  // [mode]
-// )
-const theme = useMemo(() =>
-createTheme({
-  palette: {
-    mode: mode as PaletteMode,
-  },
-}),
-[mode]
+  const theme = useMemo(()=>colorTheme(mode),
+  [mode]
 )
+// const theme = useMemo(() =>
+// createTheme({
+//   palette: {
+//     mode: mode as PaletteMode,
+//   },
+// }),
+// [mode]
+// )
 
   return (
       <Container maxWidth="sm">
