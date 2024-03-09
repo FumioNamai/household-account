@@ -13,7 +13,7 @@ import Daily from "@/app/components/daily";
 import StockFilter from "@/app/components/stockFilter";
 import useStore, { useModeStore } from "@/store";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Button, CssBaseline, PaletteMode, colors } from "@mui/material";
+import { Button, CssBaseline, PaletteMode, colors, useMediaQuery } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import NightlightRoundedIcon from "@mui/icons-material/NightlightRounded";
@@ -24,11 +24,17 @@ import { colorTheme } from "./colorTheme";
 export default function TopPage() {
   const { showSnackbar } = useSnackbarContext();
   const [stocks, setStocks] = useState<Stock[]>([]);
-  const { user } = useStore();
+  const user = useStore((state) => (state.user));
 
   // const { mode, setMode} = useModeStore()
-  const { mode } = useModeStore();
+  const mode = useModeStore((state) => (state.mode));
+  // console.log("TopPage",mode);
   const theme = useMemo(() => colorTheme(mode), [mode]);
+
+    // OSの設定に連動させるパターン
+  // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+  // const theme = useMemo(() => colorTheme(prefersDarkMode), [prefersDarkMode]);
+
   // const [mode, setMode] = useState<PaletteMode>('light')
 
   // const colorMode = useMemo(() => ({
@@ -138,7 +144,6 @@ export default function TopPage() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ModeSwitch />
-
         <main>
           {/* 月別集計 */}
           <Monthly stocks={stocks} setStocks={setStocks} />

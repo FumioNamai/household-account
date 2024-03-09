@@ -25,8 +25,8 @@ type Props = {
 };
 
 const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
-  const { user } = useStore();
-  const { tax } = useTaxStore();
+  const user = useStore((state) => (state.user));
+  const tax = useTaxStore((state) => (state.tax));
 
   const selectedDate: string | undefined = date
     ?.locale(ja)

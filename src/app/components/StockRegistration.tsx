@@ -43,8 +43,8 @@ type Props = {
 };
 
 const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
-  const { user } = useStore();
-  const { tax } = useTaxStore();
+  const user = useStore((state) => (state.user));
+  const tax = useTaxStore((state) => (state.tax));
 
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");

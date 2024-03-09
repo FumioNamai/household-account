@@ -19,6 +19,7 @@ import { useMemo, useState } from "react";
 import { useModeStore } from "@/store";
 import ModeSwitch from "../components/modeSwitch";
 import { colorTheme } from "../components/colorTheme";
+import { log } from "console";
 
 // セッティングス用のナビゲーション
 const subNavigation = [
@@ -47,13 +48,14 @@ const subNavigation = [
 //レイアウト
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname(); // 現在のページのパスを取得できる
-  const { mode } = useModeStore();
+  const mode = useModeStore((state) => state.mode);
+  // console.log("layout", mode);
   const theme = useMemo(() => colorTheme(mode), [mode]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container maxWidth="sm">
+    <Container maxWidth="sm">
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
         <ModeSwitch />
         <Stack spacing={1}>
           {subNavigation.map((item, index) => (
@@ -81,8 +83,8 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
           </Link>
         </Stack>
         <Box sx={{ marginTop: 5, marginInline: 2 }}>{children}</Box>
-      </Container>
-    </ThemeProvider>
+      </ThemeProvider>
+    </Container>
   );
 };
 

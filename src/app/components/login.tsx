@@ -74,18 +74,8 @@ const Login = () => {
     }
   };
 
-  const { mode, } = useModeStore()
-  // const theme = useMemo(()=>colorTheme(mode),
-  //   [mode]
-  // )
-  const theme = useMemo(() =>
-  createTheme({
-    palette: {
-      mode: mode as PaletteMode,
-    },
-  }),
-  [mode]
-  )
+  const mode = useModeStore((state) => (state.mode));
+  const theme = useMemo(() => colorTheme(mode), [mode]);
 
   return (
     <div>

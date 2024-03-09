@@ -17,7 +17,7 @@ type Props = {
 
 const UsedItem = ({ id, name, price, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
-  const { user } = useStore()
+  const user = useStore((state) => (state.user));
   const onUpdate = (data: any | undefined) => setStocks(data);
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number,userId: string) => {

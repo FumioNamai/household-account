@@ -34,8 +34,8 @@ const Item = ({
 Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
-  const { tax } = useTaxStore();
-  const { user } = useStore()
+  const tax = useTaxStore((state) => (state.tax));
+  const user = useStore((state) => (state.user));
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   // UPDATE 使った日をuse_dateに記録する

@@ -25,8 +25,8 @@ const Monthly: React.FC<{
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 }> = ({ stocks, setStocks }) => {
   const [month, setMonth] = useState<Dayjs | null>(dayjs());
-  const { user } = useStore();
-  const { tax } = useTaxStore();
+  const user = useStore((state) => (state.user));
+  const tax = useTaxStore((state) => (state.tax));
 
   const selectedMonth: string | null = month!.format("YYYY-MM");
 

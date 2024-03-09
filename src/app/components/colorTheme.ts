@@ -30,6 +30,13 @@ import { grey } from "@mui/material/colors";
   //       }),
   // },
 
+  // OSの設定に連動させるパターン
+  // export const colorTheme = (prefersDarkMode:any) =>
+  // createTheme({
+  //   palette: {
+  //     mode:prefersDarkMode ? 'dark' : 'light',
+  //   },
+  // })
 
 export const colorTheme = (mode:PaletteMode) =>
 createTheme({
@@ -47,3 +54,17 @@ createTheme({
 //     mode:mode,
 //   },
 // });
+
+// const lightTheme = {
+//   backgroundColor: "#ffffff",
+//   color: "#333333",
+// };
+
+// const darkTheme = {
+//   backgroundColor: "#333333",
+//   color: "#ffffff",
+// };
+
+// export function colorTheme(mode) {
+//   return mode === "dark" ? darkTheme : lightTheme;
+// }

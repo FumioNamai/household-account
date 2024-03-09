@@ -13,7 +13,7 @@ import { colorTheme } from "../components/colorTheme";
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname(); // 現在のページのパスを取得できる
 
-  const { mode, }  = useModeStore()
+  const mode = useModeStore((state) => (state.mode));
   const theme = useMemo(()=>colorTheme(mode),
   [mode]
 )

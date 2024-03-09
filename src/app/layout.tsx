@@ -14,17 +14,13 @@ export const metadata: Metadata = {
   description: '家計簿',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children,}: { children: React.ReactNode }) {
 
   return (
     <html lang="ja">
-      {/* <head>
+      <head>
       <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </head> */}
+      </head>
       <body className={inter.className}>
         <Header />
         {/* <SnackbarProvider> */}

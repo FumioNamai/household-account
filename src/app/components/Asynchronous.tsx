@@ -10,7 +10,7 @@ export default function Asynchronous() {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
-  const { user } = useStore();
+  const user = useStore((state) => (state.user));
 
   useEffect(() => {
     let active = true;
