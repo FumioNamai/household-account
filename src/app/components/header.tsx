@@ -1,6 +1,7 @@
 
 import SupabaseListener from "@/app/components/supabase-listener";
 import Link from 'next/link'
+import ModeSwitch from "./modeSwitch";
 
 const Header = () => {
   return (

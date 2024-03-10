@@ -23,7 +23,6 @@ type Schema = z.infer<typeof schema>;
 import { ThemeProvider,CssBaseline } from "@mui/material";
 import { useModeStore } from "@/store/mode";
 import { colorTheme } from "./colorTheme";
-// import ModeSwitch from "./modeSwitch";
 
 // 入力データの検証ルールを定義
 const schema = z.object({
@@ -74,10 +73,6 @@ const Login = () => {
       router.refresh();
     }
   };
-
-    // OSの設定に連動させるパターン
-    // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-    // const theme = useMemo(() => colorTheme(prefersDarkMode), [prefersDarkMode]);
 
   const mode = useModeStore((state) => (state.mode));
   const theme = useMemo(() => colorTheme(mode), [mode]);
