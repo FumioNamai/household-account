@@ -32,10 +32,10 @@ export const useTaxStore = create<TaxStateType>((set) => ({
   //   set( isChecked )}
 }))
 
-type ModeStateType = {
-  mode: PaletteMode
-  toggleColorMode : () => void
-}
+// type ModeStateType = {
+//   mode: PaletteMode
+//   toggleColorMode : () => void
+// }
 
 // export const useModeStore = create<ModeStateType>((set) => ({
 //   mode: "light" as PaletteMode,
@@ -45,18 +45,18 @@ type ModeStateType = {
 // }))
 
 //データを永続化
-export const useModeStore = create<ModeStateType>()(
-  persist(
-    (set) => ({
-      mode: "light",
-      toggleColorMode: () =>
-          set((state) => ({mode: state.mode === "light" ? "dark" : "light"})),
-    }),
-    {
-      name:"mode-storage",
-    },
-  ),
-)
-    // console.log("persist メソッドが呼び出されました");
+// export const useModeStore = create<ModeStateType>()(
+//   persist(
+//     (set) => ({
+//       mode: "light",
+//       toggleColorMode: () =>
+//           set((state) => ({mode: state.mode === "light" ? "dark" : "light"})),
+//     }),
+//     {
+//       name:"mode-storage",
+//     },
+//   ),
+// )
+    // console.log("store/indexが呼び出されました");
 
 export default useStore

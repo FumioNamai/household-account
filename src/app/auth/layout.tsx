@@ -1,11 +1,11 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { Box, Button, Container, PaletteMode, createTheme } from "@mui/material";
+import { Box, Button, Container, PaletteMode, createTheme, useMediaQuery } from "@mui/material";
 
 import { ThemeProvider, CssBaseline } from "@mui/material";
 
 import { useMemo, useState } from "react";
-import { useModeStore } from "@/store";
+import { useModeStore } from "@/store/mode";
 import ModeSwitch from "../components/modeSwitch";
 import { colorTheme } from "../components/colorTheme";
 
@@ -17,6 +17,11 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   const theme = useMemo(()=>colorTheme(mode),
   [mode]
 )
+
+// OSの設定に連動させるパターン
+// const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+// const theme = useMemo(() => colorTheme(prefersDarkMode), [prefersDarkMode]);
+
 // const theme = useMemo(() =>
 // createTheme({
 //   palette: {
@@ -30,7 +35,7 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
       <Container maxWidth="sm">
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <ModeSwitch />
+          {/* <ModeSwitch /> */}
           <Box sx={{ marginTop: 5, marginInline: 2 }}>{children}</Box>
         </ThemeProvider>
       </Container>

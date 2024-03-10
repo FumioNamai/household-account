@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
   createTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
@@ -20,9 +21,9 @@ import Link from "next/link";
 type Schema = z.infer<typeof schema>;
 
 import { ThemeProvider,CssBaseline } from "@mui/material";
-import { useModeStore } from "@/store";
+import { useModeStore } from "@/store/mode";
 import { colorTheme } from "./colorTheme";
-import ModeSwitch from "./modeSwitch";
+// import ModeSwitch from "./modeSwitch";
 
 // 入力データの検証ルールを定義
 const schema = z.object({
@@ -74,6 +75,10 @@ const Login = () => {
     }
   };
 
+    // OSの設定に連動させるパターン
+    // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+    // const theme = useMemo(() => colorTheme(prefersDarkMode), [prefersDarkMode]);
+
   const mode = useModeStore((state) => (state.mode));
   const theme = useMemo(() => colorTheme(mode), [mode]);
 
@@ -81,7 +86,7 @@ const Login = () => {
     <div>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ModeSwitch />
+        {/* <ModeSwitch /> */}
       <Typography
         variant="h5"
         sx={{ fontWeight: "bold", textAlign: "center", mb: 3 }}

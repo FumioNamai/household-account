@@ -16,7 +16,7 @@ const Navigation = ({
   session: Session | null;
   profile: ProfileType | null;
 }) => {
-  const { setUser } = useStore();
+  const setUser = useStore((state) => (state.setUser));
 
   // 状態管理にユーザー情報を保存
   // セッションが無い場合は状態管理も空になる

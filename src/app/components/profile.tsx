@@ -25,7 +25,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   // const [fileMessage, setFileMessage] = useState("");
-  const { user } = useStore();
+  const user = useStore((state) => (state.user));
 
 
   // フォームの状態管理

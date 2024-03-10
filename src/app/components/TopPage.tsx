@@ -11,7 +11,8 @@ import dayjs from "dayjs";
 import Monthly from "@/app/components/monthly";
 import Daily from "@/app/components/daily";
 import StockFilter from "@/app/components/stockFilter";
-import useStore, { useModeStore } from "@/store";
+import useStore from "@/store/index";
+import {useModeStore} from "@/store/mode";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Button, CssBaseline, PaletteMode, colors, useMediaQuery } from "@mui/material";
 import { grey } from "@mui/material/colors";
@@ -22,18 +23,23 @@ import ModeSwitch from "./modeSwitch";
 import { colorTheme } from "./colorTheme";
 
 export default function TopPage() {
-  const { showSnackbar } = useSnackbarContext();
   const [stocks, setStocks] = useState<Stock[]>([]);
+  const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => (state.user));
 
-  // const { mode, setMode} = useModeStore()
   const mode = useModeStore((state) => (state.mode));
-  // console.log("TopPage",mode);
+  console.log("TopPage",mode);
   const theme = useMemo(() => colorTheme(mode), [mode]);
+
+
+  // const { mode, setMode} = useModeStore()
+
 
     // OSの設定に連動させるパターン
   // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   // const theme = useMemo(() => colorTheme(prefersDarkMode), [prefersDarkMode]);
+  // const theme = colorTheme(prefersDarkMode)
+
 
   // const [mode, setMode] = useState<PaletteMode>('light')
 
