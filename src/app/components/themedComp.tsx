@@ -12,7 +12,9 @@ type Props = {
 export const ThemedComp: FC<Props> = ({ children }) => {
   const mode = useModeStore((state) => state.mode);
   const theme = useMemo(() => colorTheme(mode), [mode]);
-  const darkmode = localStorage.getItem("mode-storage")
+  // const data = JSON.parse(localStorage.getItem("mode-storage"))
+  // console.log(data.state.mode);
+
 
   // OSの設定に連動させるパターン
   // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')

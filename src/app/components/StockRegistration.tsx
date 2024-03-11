@@ -23,7 +23,7 @@ import { supabase } from "../../../utils/supabase";
 import { Stock } from "../../../utils/type";
 import dayjs, { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
-import Asynchronous from "./Asynchronous";
+// import Asynchronous from "./Asynchronous";
 import { useStore, useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/taxSwitch";
 

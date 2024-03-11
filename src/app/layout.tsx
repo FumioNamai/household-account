@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 // import { SnackbarProvider } from '@/providers/context-provider'
 import Header from './components/header'
+import { ThemedComp } from './components/themedComp'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,12 +22,12 @@ export default function RootLayout({ children,}: { children: React.ReactNode }) 
       <head>
       <meta name="viewport" content="initial-scale=1, width=device-width" />
       </head>
+      <ThemedComp>
       <body className={inter.className}>
         <Header />
-        {/* <SnackbarProvider> */}
         {children}
-        {/* </SnackbarProvider> */}
       </body>
+      </ThemedComp>
     </html>
   )
 }
