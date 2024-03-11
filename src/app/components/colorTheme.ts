@@ -17,7 +17,7 @@ createTheme({
   },
 })
 
-// console.log("colorThemeが呼ばれました");
+console.log("colorThemeが呼ばれました");
 
 
 // export const colorTheme = (mode:any) => createTheme({

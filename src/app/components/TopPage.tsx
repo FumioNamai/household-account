@@ -68,7 +68,6 @@ export default function TopPage() {
   return (
     <>
       <main>
-      <ModeSwitch />
         {/* 月別集計 */}
         <Monthly stocks={stocks} setStocks={setStocks} />
 

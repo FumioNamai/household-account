@@ -5,8 +5,9 @@ import { Database } from "@/lib/database.types";
 // import Link from "next/link";
 import { useEffect } from "react";
 import useStore from "@/store/index";
-import { Box, Stack,Link, Typography} from "@mui/material";
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Box, Stack, Link, Typography } from "@mui/material";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ModeSwitch from "./modeSwitch";
 
 type ProfileType = Database["public"]["Tables"]["profiles"]["Row"];
 const Navigation = ({
@@ -16,7 +17,7 @@ const Navigation = ({
   session: Session | null;
   profile: ProfileType | null;
 }) => {
-  const setUser = useStore((state) => (state.setUser));
+  const setUser = useStore((state) => state.setUser);
 
   // 状態管理にユーザー情報を保存
   // セッションが無い場合は状態管理も空になる
@@ -33,23 +34,45 @@ const Navigation = ({
 
   return (
     <>
-      { session ? (
-        <Box sx={{ display:"flex", flexDirection:"row", gap:1,alignItems:"center"}}>
-            {profile &&
+      {session ? (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 1,
+            alignItems: "center",
+          }}
+        >
+          {profile && (
             <>
-            <Typography variant="body1" sx={{ fontSize: 16}}>{profile.name}さん</Typography>
-            <Link underline="hover" href="/settings/profile">
-              <SettingsIcon sx={{width:"30px", height:"30px"}}/>
-            </Link>
+              <Typography variant="body1" sx={{ fontSize: 16 }}>
+                {profile.name}さん
+              </Typography>
+              <Link underline="hover" href="/settings/profile">
+                <SettingsIcon sx={{ width: "30px", height: "30px" }} />
+              </Link>
+              <ModeSwitch />
             </>
-            }
+          )}
         </Box>
       ) : (
         <>
-        <Box sx={{ display:"flex", flexDirection:"row", gap:2,alignItems:"center"}}>
-          <Link href="/auth/login" underline="hover">ログイン</Link>
-          <Link href="/auth/sign-up" underline="hover">ユーザー登録</Link>
-        </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 2,
+              alignItems: "center",
+            }}
+          >
+            <Link href="/auth/login" underline="hover">
+              ログイン
+            </Link>
+            <Link href="/auth/sign-up" underline="hover">
+              ユーザー登録
+            </Link>
+          </Box>
+          <ModeSwitch />
         </>
       )}
     </>
