@@ -1,6 +1,6 @@
 "use client";
-import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
-import { FC, ReactNode, useMemo } from "react";
+import { CssBaseline, PaletteMode, ThemeProvider, useMediaQuery } from "@mui/material";
+import { FC, ReactNode, useMemo, useState } from "react";
 import ModeSwitch from "./modeSwitch";
 import { useModeStore } from "@/store/mode";
 import { colorTheme } from "./colorTheme";
@@ -10,11 +10,14 @@ type Props = {
 };
 
 export const ThemedComp: FC<Props> = ({ children }) => {
+  // const [isDarkMode, setIsDarkMode] = useState<PaletteMode>("light")
   const mode = useModeStore((state) => state.mode);
   const theme = useMemo(() => colorTheme(mode), [mode]);
-  // const data = JSON.parse(localStorage.getItem("mode-storage"))
-  // console.log(data.state.mode);
+  console.log(mode);
 
+
+  const data = JSON.parse(localStorage.getItem("mode-storage"))
+  console.log(data.state.mode);
 
   // OSの設定に連動させるパターン
   // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')

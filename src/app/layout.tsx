@@ -7,6 +7,7 @@ import { ThemedComp } from "./components/themedComp";
 
 const inter = Inter({ subsets: ["latin"] });
 
+
 export const metadata: Metadata = {
   title: "N式家計簿",
   description: "家計簿",
@@ -17,6 +18,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang="ja">
       <head>

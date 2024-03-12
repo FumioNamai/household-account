@@ -20,7 +20,7 @@ type ModeStateType = {
 export const useModeStore = create<ModeStateType>()(
     persist(
       (set) => ({
-        mode: "dark",
+        mode: "dark" ? "dark" : "light",
         // mode: typeof window !== 'undefined' && JSON.parse(localStorage.getItem("mode-storage")).state.mode === "dark" ? "light" :"dark",
         toggleColorMode: () =>
             set((state) => ({mode: state.mode === "dark" ? "light" : "dark"})),

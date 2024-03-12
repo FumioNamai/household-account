@@ -13,7 +13,7 @@ import { grey } from "@mui/material/colors";
 export const colorTheme = (mode:PaletteMode) =>
 createTheme({
   palette: {
-    mode:mode,
+    mode: mode === "dark" ? "dark" :"light",
   },
 })
 
