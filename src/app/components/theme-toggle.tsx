@@ -62,6 +62,7 @@ export const ThemeToggle = () => {
       </select> */}
 
       <Button
+        size="small"
         onClick={() => {
           setTheme("light");
         }}
@@ -70,6 +71,7 @@ export const ThemeToggle = () => {
         Light
       </Button>
       <Button
+        size="small"
         onClick={() => {
           setTheme("dark");
         }}
@@ -78,6 +80,7 @@ export const ThemeToggle = () => {
         Dark
       </Button>
       <Button
+        size="small"
         onClick={() => {
           setTheme("system");
         }}

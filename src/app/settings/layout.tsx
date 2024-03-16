@@ -11,7 +11,7 @@ import {
   Link,
   Stack,
 } from "@mui/material";
-import { ThemedComp } from "../components/themedComp";
+// import { ThemedComp } from "../components/themedComp";
 
 // セッティングス用のナビゲーション
 const subNavigation = [
@@ -50,8 +50,7 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
               href={item.href}
               key={index}
               underline="none"
-              sx={{ color: "black" }}
-            >
+              >
               <div
                 className={`flex flex-row items-center text-xl mx-8 py-3 ${
                   item.href == pathname &&
