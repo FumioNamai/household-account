@@ -3,13 +3,14 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 // import { SnackbarProvider } from '@/providers/context-provider'
 import Header from "./components/header";
-import { ThemedComp } from "./components/themedComp";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+// import { ThemedComp } from "./components/themedComp";
+// import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 // import { ThemeProvider } from "./components/theme-provider";
 import { ThemeToggle } from "./components/theme-toggle";
 // import { ThemeProvider as PreferredThemeProvider } from "next-themes";
 import { Providers } from "./components/theme-provider";
 import React, { type FC } from "react";
+import { Box } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,7 +39,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <Header />
         <Providers>
+          <Box height={40} marginBlock="20px">
         <ThemeToggle />
+          </Box>
           {children}
         </Providers>
       </body>
