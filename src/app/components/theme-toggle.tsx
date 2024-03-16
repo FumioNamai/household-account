@@ -17,7 +17,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export const ThemeToggle = () => {
-  const [mounted, setMounted] = useState<boolean>(false);
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
   // const [mode, setMode] = useState("light")

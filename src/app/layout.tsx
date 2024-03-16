@@ -14,10 +14,9 @@ import { Box } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
 type RootLayoutProps = {
   children: React.ReactNode;
-}
+};
 
 export const metadata: Metadata = {
   title: "N式家計簿",
@@ -29,7 +28,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     // <html lang="ja" suppressContentEditableWarning>
     <html lang="ja" suppressHydrationWarning>
@@ -40,7 +38,7 @@ export default function RootLayout({
         <Header />
         <Providers>
           <Box height={40} marginBlock="20px">
-        <ThemeToggle />
+            <ThemeToggle />
           </Box>
           {children}
         </Providers>
