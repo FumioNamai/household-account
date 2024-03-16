@@ -48,7 +48,7 @@ export const ThemeToggle = () => {
         justifyContent: "center",
         marginInline: "auto",
         height: "40px",
-        marginBlock: "20px",
+        marginBottom: "10px",
       }}
     >
       {/* 現在のテーマ{theme} */}

@@ -37,7 +37,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Header />
         <Providers>
-          <div className="h-10 my-5">
+          <div className="h-10 mb-5">
           {/* <Box height={40} marginBlock="20px"> */}
             <ThemeToggle />
           {/* </Box> */}
