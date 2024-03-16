@@ -7,7 +7,7 @@ import NightlightRoundedIcon from '@mui/icons-material/NightlightRounded'
 
 const ModeSwitch = () => {
   const mode = useModeStore((state) => (state.mode));
-  const toggleColorMode = useModeStore((state) => (state.toggleColorMode));
+  const toggleColorMode =  ((state) => (state.toggleColorMode));
 
   return (
     <Button

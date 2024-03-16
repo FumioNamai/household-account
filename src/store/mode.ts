@@ -21,7 +21,7 @@ export const useModeStore = create<ModeStateType>()(
     persist(
       (set) => ({
         mode: "dark" ? "dark" : "light",
-        // mode: typeof window !== 'undefined' && JSON.parse(localStorage.getItem("mode-storage")).state.mode === "dark" ? "light" :"dark",
+        // mode: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("mode-storage") ?? '{"state": {"mode": "dark"}}').state.mode : "dark",
         toggleColorMode: () =>
             set((state) => ({mode: state.mode === "dark" ? "light" : "dark"})),
       }),
@@ -30,4 +30,4 @@ export const useModeStore = create<ModeStateType>()(
       },
     ),
 )
-// console.log("store/modeが呼び出されました");
+console.log("store/modeが呼び出されました");

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import useStore from "@/store/index";
 import { Box, Stack, Link, Typography } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
-import ModeSwitch from "./modeSwitch";
+// import ModeSwitch from "./modeSwitch";
 
 type ProfileType = Database["public"]["Tables"]["profiles"]["Row"];
 const Navigation = ({
@@ -51,7 +51,7 @@ const Navigation = ({
               <Link underline="hover" href="/settings/profile">
                 <SettingsIcon sx={{ width: "30px", height: "30px" }} />
               </Link>
-              <ModeSwitch />
+              {/* <ModeSwitch /> */}
             </>
           )}
         </Box>
@@ -72,7 +72,7 @@ const Navigation = ({
               ユーザー登録
             </Link>
           </Box>
-          <ModeSwitch />
+          {/* <ModeSwitch /> */}
         </>
       )}
     </>

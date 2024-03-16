@@ -12,7 +12,6 @@ import Monthly from "@/app/components/monthly";
 import Daily from "@/app/components/daily";
 import StockFilter from "@/app/components/stockFilter";
 import useStore from "@/store/index";
-import ModeSwitch from "./modeSwitch";
 
 export default function TopPage() {
   const [stocks, setStocks] = useState<Stock[]>([]);
