@@ -5,13 +5,7 @@ import PasswordOutlinedIcon from "@mui/icons-material/PasswordOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 import { usePathname } from "next/navigation";
-import {
-  Box,
-  Container,
-  Link,
-  Stack,
-} from "@mui/material";
-// import { ThemedComp } from "../components/themedComp";
+import { Box, Container, Link, Stack } from "@mui/material";
 
 // セッティングス用のナビゲーション
 const subNavigation = [
@@ -42,35 +36,29 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname(); // 現在のページのパスを取得できる
 
   return (
-    // <ThemedComp>
-      <Container maxWidth="sm">
-        <Stack spacing={1}>
-          {subNavigation.map((item, index) => (
-            <Link
-              href={item.href}
-              key={index}
-              underline="none"
-              >
-              <div
-                className={`flex flex-row items-center text-xl mx-8 py-3 ${
-                  item.href == pathname &&
-                  "bg-sky-100 text-sky-500 hover:bg-sky-100 mx-3 px-5 rounded-full "
-                }`}
-              >
-                <item.icon className=" inline-block mr-2 "></item.icon>
-                {item.name}
-              </div>
-            </Link>
-          ))}
-          <Link href="/" underline="hover">
-            <div className="flex justify-end item-center text-md py-3 px-4">
-              トップページへ戻る
+    <Container maxWidth="sm">
+      <Stack spacing={1}>
+        {subNavigation.map((item, index) => (
+          <Link href={item.href} key={index} underline="none">
+            <div
+              className={`flex flex-row items-center text-xl mx-8 py-3 ${
+                item.href == pathname &&
+                "bg-sky-100 text-sky-500 hover:bg-sky-100 mx-3 px-5 rounded-full "
+              }`}
+            >
+              <item.icon className=" inline-block mr-2 "></item.icon>
+              {item.name}
             </div>
           </Link>
-        </Stack>
-        <Box sx={{ marginTop: 5, marginInline: 2 }}>{children}</Box>
-      </Container>
-    // </ThemedComp>
+        ))}
+        <Link href="/" underline="hover">
+          <div className="flex justify-end item-center text-md py-3 px-4">
+            トップページへ戻る
+          </div>
+        </Link>
+      </Stack>
+      <Box sx={{ marginTop: 5, marginInline: 2 }}>{children}</Box>
+    </Container>
   );
 };
 

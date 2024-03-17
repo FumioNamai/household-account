@@ -1,9 +1,7 @@
 import { Database } from "@/lib/database.types";
-import { PaletteMode } from "@mui/material";
 
 // Zustand Reactの状態管理ライブラリ
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 // プロフィール情報を状態管理に格納する⇒どこでもプロフィール情報を取得できるようになる
 type ProfileType = Database['public']['Tables']['profiles']['Row']
