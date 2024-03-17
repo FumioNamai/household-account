@@ -31,6 +31,7 @@ export default function RootLayout({
   return (
     // <html lang="ja" suppressContentEditableWarning>
     <html lang="ja" suppressHydrationWarning>
+    {/* <html lang="ja"> */}
       <head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </head>

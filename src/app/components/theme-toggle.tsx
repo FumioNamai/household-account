@@ -3,10 +3,11 @@
 import {
   Box,
   Button,
+  // Skeleton,
   // MenuItem,
   // Select,
   // SelectChangeEvent,
-  // Skeleton,
+  Typography,
 } from "@mui/material";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import NightlightRoundedIcon from "@mui/icons-material/NightlightRounded";
@@ -19,7 +20,7 @@ import { useEffect, useState } from "react";
 export const ThemeToggle = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-
+  const [isLoading, setIsLoading] = useState(true)
   // const [mode, setMode] = useState("light")
   // console.log("useTheme", useTheme());
   // console.log("mounted", mounted);
@@ -27,6 +28,16 @@ export const ThemeToggle = () => {
 
   // const mode = localStorage.getItem("theme")
   // console.log("mode",mode);
+
+  useEffect(() => {
+    if (mounted === false) {
+      setIsLoading(true)
+      console.log("ローディング中");
+    } else {
+      setIsLoading(false)
+      console.log("ローディング終了");
+    }
+  },[mounted])
 
   useEffect(() => {
     setMounted(true);
@@ -41,6 +52,13 @@ export const ThemeToggle = () => {
 
   // const theme = useMemo(() => colorTheme(mode), [mode]);
   return (
+    <>
+
+    {
+      isLoading ?
+      "ローディング中"
+      :
+
     <Box
       maxWidth="sm"
       sx={{
@@ -89,5 +107,7 @@ export const ThemeToggle = () => {
         System
       </Button>
     </Box>
+  }
+  </>
   );
 };
