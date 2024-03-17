@@ -2,15 +2,7 @@
 
 import { Database } from "@/lib/database.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  PaletteMode,
-  Stack,
-  TextField,
-  Typography,
-  createTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -19,11 +11,6 @@ import { z } from "zod";
 import Loading from "./loading";
 import Link from "next/link";
 type Schema = z.infer<typeof schema>;
-
-import { ThemeProvider, CssBaseline } from "@mui/material";
-import { useModeStore } from "@/store/mode";
-import { colorTheme } from "./colorTheme";
-import { ThemedComp } from "./themedComp";
 
 // 入力データの検証ルールを定義
 const schema = z.object({
@@ -80,92 +67,81 @@ const Login = () => {
 
   return (
     <div>
-      {/* <ThemeProvider theme={theme}> */}
-      {/* <CssBaseline /> */}
-      {/* <ModeSwitch /> */}
-      {/* <ThemedComp> */}
-        <Typography
-          variant="h5"
-          sx={{ fontWeight: "bold", textAlign: "center", mb: 3 }}
-        >
-          ログイン
-        </Typography>
-        <Stack
-          component="form"
-          noValidate
-          spacing={2}
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          {/* メールアドレス */}
-          <div>
-            <TextField
-              type="email"
-              label="メールアドレス"
-              id="email"
-              sx={{ width: "100%" }}
-              // register関数で入力を登録する
-              {...register("email", { required: true })}
-            />
-          </div>
+      <Typography
+        variant="h5"
+        sx={{ fontWeight: "bold", textAlign: "center", mb: 3 }}
+      >
+        ログイン
+      </Typography>
+      <Stack
+        component="form"
+        noValidate
+        spacing={2}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {/* メールアドレス */}
+        <div>
+          <TextField
+            type="email"
+            label="メールアドレス"
+            id="email"
+            sx={{ width: "100%" }}
+            // register関数で入力を登録する
+            {...register("email", { required: true })}
+          />
+        </div>
 
-          {/* パスワード */}
-          <div>
-            <TextField
-              type="password"
-              label="パスワード"
-              id="password"
-              sx={{ width: "100%" }}
-              {...register("password", { required: true })}
-            />
-            <Typography
-              variant="body1"
-              sx={{ color: "red", textAlign: "center" }}
-            >
-              {errors.password?.message}
-            </Typography>
-          </div>
-
-          {/* ログインボタン */}
-          <div>
-            {loading ? (
-              <Loading />
-            ) : (
-              <Button variant="outlined" type="submit" sx={{ width: "100%" }}>
-                ログイン
-              </Button>
-            )}
-          </div>
-        </Stack>
-
-        {/* ログインに失敗したときにメッセージを表示 */}
-        {message && (
+        {/* パスワード */}
+        <div>
+          <TextField
+            type="password"
+            label="パスワード"
+            id="password"
+            sx={{ width: "100%" }}
+            {...register("password", { required: true })}
+          />
           <Typography
             variant="body1"
             sx={{ color: "red", textAlign: "center" }}
           >
-            {message}
+            {errors.password?.message}
           </Typography>
-        )}
+        </div>
 
-        {/* パスワードを忘れた場合のリンクを作成 */}
-        <Stack spacing={2} sx={{ mt: 5 }}>
-          <Typography
-            variant="body1"
-            sx={{ color: "gray", fontWeight: "bold", textAlign: "center" }}
-          >
-            <Link href="/auth/reset-password">
-              パスワードを忘れた方はこちら
-            </Link>
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{ color: "gray", fontWeight: "bold", textAlign: "center" }}
-          >
-            <Link href="/auth/sign-up">アカウントを作成する</Link>
-          </Typography>
-        </Stack>
-      {/* </ThemedComp> */}
-      {/* </ThemeProvider> */}
+        {/* ログインボタン */}
+        <div>
+          {loading ? (
+            <Loading />
+          ) : (
+            <Button variant="outlined" type="submit" sx={{ width: "100%" }}>
+              ログイン
+            </Button>
+          )}
+        </div>
+      </Stack>
+
+      {/* ログインに失敗したときにメッセージを表示 */}
+      {message && (
+        <Typography variant="body1" sx={{ color: "red", textAlign: "center" }}>
+          {message}
+        </Typography>
+      )}
+
+      {/* パスワードを忘れた場合のリンクを作成 */}
+      <Stack spacing={2} sx={{ mt: 5 }}>
+        <Typography
+          variant="body1"
+          sx={{ color: "gray", fontWeight: "bold", textAlign: "center" }}
+        >
+          <Link href="/auth/reset-password">パスワードを忘れた方はこちら</Link>
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{ color: "gray", fontWeight: "bold", textAlign: "center" }}
+        >
+          <Link href="/auth/sign-up">アカウントを作成する</Link>
+        </Typography>
+      </Stack>
     </div>
   );
 };
