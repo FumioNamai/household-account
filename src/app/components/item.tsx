@@ -265,13 +265,13 @@ Props) => {
                   {name}
                 </Typography>
                 <Box sx={{display:"flex", flexDirection:"row", justifyContent:"space-between",
-                alignItems:"center",
+                alignItems:"center"
                 }}
                 >
                 <Typography variant="body1" sx={{minWidth:"80px", textAlign:"end"}}>
                   {calcPrice()}円
                 </Typography>
-                <Typography variant="body2" sx={{marginLeft:"4px"}}>
+                <Typography variant="body2" sx={{marginLeft:"4px", color:"grey", fontSize:"10px"}}>
                   {tax === true ? "(込)" : "(抜)"}
                 </Typography >
                 <Typography variant="body1" sx={{minWidth:"50px", textAlign:"end", paddingRight:"8px"}}>
@@ -331,7 +331,7 @@ Props) => {
                     }}
                   />
                   <Typography variant="body1">円</Typography>
-                  <Typography variant="body2" sx={{marginLeft:"4px"}}>
+                  <Typography variant="body2" sx={{marginLeft:"4px", color:"grey", fontSize:"10px"}}>
                   {tax === true ? "(込)" : "(抜)"}
                 </Typography >
                   <IconButton
