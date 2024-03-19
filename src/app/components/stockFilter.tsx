@@ -24,14 +24,14 @@ import ModalStockRegistration from "./ModalStockRegistration";
 import TaxSwitch from "@/app/components/taxSwitch";
 
 type Props = {
-  countStocks: GroupedData[]
+  groupedDataArr: GroupedData[]
   stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 };
 
-const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) => {
+const StockFilter = ({ groupedDataArr,stocks, setStocks, date, setDate }: Props) => {
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
@@ -39,12 +39,7 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
   const [categoryItem, setCategoryItem] = useState("");
   const [searchName, setSearchName] = useState<string>("");
 
-  const handleSelectType = (event:any) => {
-    setSelectedType(event.target.value)
-    setCategoryItem("")
-  }
-
-  const handleSelectCategory = (event: SelectChangeEvent) => {
+  const handleSelectItem = (event: SelectChangeEvent) => {
     setCategoryItem(event.target.value as string);
   };
 
@@ -55,21 +50,6 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
   const handleDelete = () => {
     setSearchName("")
   }
-  // console.log(countStocks);
-  // const result = Object.groupBy(countStocks,(countStocks) =>
-  //   selectedType === "食品" ?
-  //   countStocks.category === categoryItem
-  //   :
-  //   countStocks.type === selectedType && countStocks.category === ""
-  // )
-
-
-
-  const groupedStocks = Object.groupBy(countStocks, (countStock: GroupedData) =>
-  categoryItem === "すべて"? countStock.type === selectedType :
-  countStock.type === selectedType && countStock.category === categoryItem
-  )
-
   return (
     <>
       <Box
@@ -124,8 +104,7 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
             color="primary"
             value={selectedType}
             exclusive
-            onChange={handleSelectType}
-            // onChange = {(event, newType) => setSelectedType(newType)}
+            onChange={(event, newType) => setSelectedType(newType)}
             sx={{ marginBottom: "12px" }}
           >
             <ToggleButton value="食品">食品</ToggleButton>
@@ -176,7 +155,7 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
                   id="category"
                   value={categoryItem}
                   label="分類"
-                  onChange={handleSelectCategory}
+                  onChange={handleSelectItem}
                 >
                   <MenuItem value={""}></MenuItem>
                   {Categories.map((category) => (
@@ -191,58 +170,40 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
             {type === "食品" ? (
               Categories.map((category) =>
                 category === categoryItem && (
+
                   <div key={category}>
                     <ul>
-                      {
-                        groupedStocks.true &&
-                        groupedStocks.true.map((groupedStock:any) => (
-                        <li key={groupedStock.id}>
-                          <Item
-                                id={groupedStock.id}
-                                name={groupedStock.name}
-                                price={groupedStock.price.toString()}
-                                count={groupedStock.count}
-                                type={groupedStock.type}
-                                setStocks={setStocks}
-                                date={selectedDate}
-                              />
-                        </li>
-                      ))
-                      }
-                      {/* 食品の各カテゴリー */}
-                      {/* {countStocks!
+                      {groupedDataArr!
                         .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-                        .map((countStock) => (
-                          <li key={countStock.id}> */}
-                            {/* カテゴリー　!=　すべて */}
-                            {/* { category !=="すべて" ?
-                            countStock.type === type && countStock.category === category &&
-                            countStock.use_date === null &&
+                        .map((groupedData) => (
+                          <li key={groupedData.id}>
+                            { category !=="すべて" ?
+                            groupedData.type === type && groupedData.category === category &&
+                            groupedData.use_date === null &&
                               <Item
-                                id={countStock.id}
-                                name={countStock.name}
-                                price={countStock.price.toString()}
-                                count={countStock.count}
-                                type={countStock.type}
+                                id={groupedData.id}
+                                name={groupedData.name}
+                                price={groupedData.price.toString()}
+                                count={groupedData.count}
+                                type={groupedData.type}
                                 setStocks={setStocks}
                                 date={selectedDate}
                               />
-                            : */}
-                          {/* カテゴリー　=　すべて */}
-                            {/* countStock.type === type &&
-                            countStock.use_date === null && (
+                            :
+                            groupedData.type === type &&
+                            groupedData.use_date === null && (
                               <Item
-                                id={countStock.id}
-                                name={countStock.name}
-                                price={countStock.price.toString()}
-                                count={countStock.count}
-                                type={countStock.type}
+                                id={groupedData.id}
+                                name={groupedData.name}
+                                price={groupedData.price.toString()}
+                                count={groupedData.count}
+                                type={groupedData.type}
                                 setStocks={setStocks}
                                 date={selectedDate}
                               />
                             )}
                           </li>
-                        ))} */}
+                        ))}
                     </ul>
                   </div>
                 )
@@ -250,38 +211,25 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
               )
             ) : (
               <ul>
-                {groupedStocks.true && groupedStocks.true.map((groupedStock:any) => (
-                        <li key={groupedStock.id}>
-                          <Item
-                                id={groupedStock.id}
-                                name={groupedStock.name}
-                                price={groupedStock.price.toString()}
-                                count={groupedStock.count}
-                                type={groupedStock.type}
-                                setStocks={setStocks}
-                                date={selectedDate}
-                              />
-                        </li>
-                      ))}
-                {/* {countStocks!
+                {groupedDataArr!
                   .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-                  .map((countStock) => (
-                    <li key={countStock.id}>
+                  .map((groupedData) => (
+                    <li key={groupedData.id}>
                       {
-                      countStock.type === type &&
-                      countStock.use_date === null && (
+                      groupedData.type === type &&
+                      groupedData.use_date === null && (
                         <Item
-                          id={countStock.id}
-                          name={countStock.name}
-                          price={countStock.price.toString()}
-                          count={countStock.count}
-                          type={countStock.type}
+                          id={groupedData.id}
+                          name={groupedData.name}
+                          price={groupedData.price.toString()}
+                          count={groupedData.count}
+                          type={groupedData.type}
                           setStocks={setStocks}
                           date={selectedDate}
                         />
                       )}
                     </li>
-                  ))} */}
+                  ))}
               </ul>
             )}
           </Box>
@@ -320,21 +268,21 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
       >
 
         <ul>
-          {countStocks!
+          {groupedDataArr!
             .filter(
-              (countStock) => countStock.name === countStock.name.match(searchName)?.input
+              (groupedData) => groupedData.name === groupedData.name.match(searchName)?.input
             )
             .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-            .map((countStock) => (
-              <li key={countStock.id}>
+            .map((groupedData) => (
+              <li key={groupedData.id}>
                 {
-                countStock.use_date === null && (
+                groupedData.use_date === null && (
                   <Item
-                    id={countStock.id}
-                    name={countStock.name}
-                    price={countStock.price.toString()}
-                    count={countStock.count}
-                    type={countStock.type}
+                    id={groupedData.id}
+                    name={groupedData.name}
+                    price={groupedData.price.toString()}
+                    count={groupedData.count}
+                    type={groupedData.type}
                     setStocks={setStocks}
                     date={selectedDate}
                   />
