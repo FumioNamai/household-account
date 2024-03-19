@@ -39,11 +39,10 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
   const [categoryItem, setCategoryItem] = useState("");
   const [searchName, setSearchName] = useState<string>("");
 
-  const handleSelectType = (event, newType: string) => {
-    setSelectedType(newType)
+  const handleSelectType = (event:any) => {
+    setSelectedType(event.target.value)
     setCategoryItem("")
   }
-  console.log(selectedType,categoryItem);
 
   const handleSelectCategory = (event: SelectChangeEvent) => {
     setCategoryItem(event.target.value as string);
@@ -66,13 +65,9 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
 
 
 
-  const groupedStocks = Object.groupBy(countStocks, (countStock) =>
-  categoryItem === "すべて" ? countStock.type === selectedType :
-  countStock.type === selectedType &&
-  countStock.category === categoryItem
+  const groupedStocks = Object.groupBy(countStocks, (countStock: GroupedData) =>
+  categoryItem === "すべて" ? countStock.type : `${countStock.type}_${countStock.category}`
   )
-  console.log(groupedStocks.true);
-console.log(categoryItem);
 
   return (
     <>
@@ -198,7 +193,7 @@ console.log(categoryItem);
 
                   <div key={category}>
                     <ul>
-                      {groupedStocks.true.map((groupedStock) => (
+                      {groupedStocks.true?.map((groupedStock:any) => (
                         <li key={groupedStock.id}>
                           <Item
                                 id={groupedStock.id}
@@ -253,7 +248,7 @@ console.log(categoryItem);
               )
             ) : (
               <ul>
-                {groupedStocks.true.map((groupedStock) => (
+                {groupedStocks.true?.map((groupedStock:any) => (
                         <li key={groupedStock.id}>
                           <Item
                                 id={groupedStock.id}

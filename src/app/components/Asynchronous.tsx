@@ -72,7 +72,7 @@ export default function Asynchronous() {
         return () => {
           active = false;
         };
-      }, [loading]);
+      }, [loading, user.id]);
 
       React.useEffect(() => {
         if (!open) {
