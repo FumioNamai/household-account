@@ -66,7 +66,8 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
 
 
   const groupedStocks = Object.groupBy(countStocks, (countStock: GroupedData) =>
-  categoryItem === "すべて" ? countStock.type : `${countStock.type}_${countStock.category}`
+  categoryItem === "すべて"? countStock.type === selectedType :
+  countStock.type === selectedType && countStock.category === categoryItem
   )
 
   return (
@@ -190,10 +191,11 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
             {type === "食品" ? (
               Categories.map((category) =>
                 category === categoryItem && (
-
                   <div key={category}>
                     <ul>
-                      {groupedStocks.true!.map((groupedStock:any) => (
+                      {
+                        groupedStocks.true &&
+                        groupedStocks.true.map((groupedStock:any) => (
                         <li key={groupedStock.id}>
                           <Item
                                 id={groupedStock.id}
@@ -248,7 +250,7 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
               )
             ) : (
               <ul>
-                {groupedStocks.true!.map((groupedStock:any) => (
+                {groupedStocks.true && groupedStocks.true.map((groupedStock:any) => (
                         <li key={groupedStock.id}>
                           <Item
                                 id={groupedStock.id}
