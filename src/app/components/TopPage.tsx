@@ -40,13 +40,12 @@ export default function TopPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id]);
 
-  const groupedData: { [key: string]: any } = {};
-
-  stocks.forEach((stock) => {
-    if (!stock.use_date) {
-      const key = `${stock.name}-${stock.price}`;
-      if (!groupedData[key]) {
-        groupedData[key] = {
+  const countStock: { [key: string]: any } = {}; //空のオブジェクトを定義
+  stocks.forEach((stock) => { //在庫から
+    if (!stock.use_date) { //使っていないものを取り出して
+      const key = `${stock.name}-${stock.price}`; //
+      if (!countStock[key]) { //key(同じ名前で同じ価格）がないときは
+        countStock[key] = { //keyを作成
           id: stock.id,
           name: stock.name,
           price: stock.price,
@@ -57,10 +56,10 @@ export default function TopPage() {
           category: stock.category,
         };
       }
-      groupedData[key].count++;
+      countStock[key].count++; //key(同じ名前で同じ価格）があるときは 在庫数をひとつ増やす
     }
   });
-  const groupedDataArr = Object.values(groupedData);
+  const countStocks = Object.values(countStock);
 
   let [date, setDate] = useState<Dayjs | null>(dayjs());
 
@@ -88,7 +87,7 @@ export default function TopPage() {
 
         {/* 在庫検索 */}
         <StockFilter
-          groupedDataArr={groupedDataArr}
+          countStocks={countStocks}
           stocks={stocks}
           setStocks={setStocks}
           date={date}

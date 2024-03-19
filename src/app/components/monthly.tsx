@@ -114,11 +114,14 @@ const Monthly: React.FC<{
           月別集計
         </Typography>
         <FormControl sx={{ maxWidth: "200px" }}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <LocalizationProvider
+          dateAdapter={AdapterDayjs}
+          dateFormats={{ monthAndYear: "YYYY年 MM月" }}
+          >
             <DatePicker
               defaultValue={dayjs()}
               label={"対象年月"}
-              views={["year", "month"]}
+              views={["month", "year"]}
               format="YYYY年MM月"
               onChange={(month) => setMonth(month)}
             />
