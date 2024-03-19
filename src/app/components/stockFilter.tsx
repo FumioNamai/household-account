@@ -193,7 +193,7 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
 
                   <div key={category}>
                     <ul>
-                      {groupedStocks.true?.map((groupedStock:any) => (
+                      {groupedStocks.true!.map((groupedStock:any) => (
                         <li key={groupedStock.id}>
                           <Item
                                 id={groupedStock.id}
@@ -248,7 +248,7 @@ const StockFilter = ({ countStocks,stocks, setStocks, date, setDate }: Props) =>
               )
             ) : (
               <ul>
-                {groupedStocks.true?.map((groupedStock:any) => (
+                {groupedStocks.true!.map((groupedStock:any) => (
                         <li key={groupedStock.id}>
                           <Item
                                 id={groupedStock.id}
