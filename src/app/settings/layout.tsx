@@ -41,7 +41,7 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
         {subNavigation.map((item, index) => (
           <Link href={item.href} key={index} underline="none">
             <div
-              className={`flex flex-row items-center text-xl mx-8 py-3 ${
+              className={`flex flex-row items-center text-xl mx-8 py-3 px-5 ${
                 item.href == pathname &&
                 "bg-sky-100 text-sky-500 hover:bg-sky-100 mx-3 px-5 rounded-full "
               }`}

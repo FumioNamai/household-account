@@ -43,8 +43,8 @@ type Props = {
 };
 
 const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
-  const user = useStore((state) => (state.user));
-  const tax = useTaxStore((state) => (state.tax));
+  const user = useStore((state) => state.user);
+  const tax = useTaxStore((state) => state.tax);
 
   const { showSnackbar } = useSnackbarContext();
   const [type, setType] = useState<string>("");
@@ -118,7 +118,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
 
   return (
     <Grid item xs={12} sx={{ marginBottom: "20px" }}>
-      <Typography variant="h4" sx={{ marginBottom: "40px" }}>
+      <Typography variant="h4" sx={{ marginBottom: "20px" }}>
         在庫登録
       </Typography>
       <Box sx={{ paddingInline: "0px" }}>
@@ -126,14 +126,14 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
           <InputLabel>購入日</InputLabel>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              sx={{ maxWidth: "180px", marginBottom: "12px" }}
+              sx={{ maxWidth: "238px", marginBottom: "12px" }}
               value={date}
               format="YYYY/MM/DD"
               onChange={setDate}
             />
           </LocalizationProvider>
 
-          <InputLabel>種別</InputLabel>
+          <InputLabel id="type" >種別</InputLabel>
           <ToggleButtonGroup
             // size="small"
             color="primary"
@@ -142,18 +142,25 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
             onChange={(event, newType) => setType(newType)}
             sx={{ marginBottom: "12px" }}
           >
-            <ToggleButton value="食品">食品</ToggleButton>
-            <ToggleButton value="雑貨">雑貨</ToggleButton>
-            <ToggleButton value="その他">その他</ToggleButton>
+            <ToggleButton value="食品" sx={{ width: "80px" }}>
+              食品
+            </ToggleButton>
+            <ToggleButton value="雑貨" sx={{ width: "80px" }}>
+              雑貨
+            </ToggleButton>
+            <ToggleButton value="その他" sx={{ width: "80px" }}>
+              その他
+            </ToggleButton>
           </ToggleButtonGroup>
 
           <FormControl
-            sx={{ display: "flex", marginBottom: "12px", width: 150 }}
+            disabled={type !== "食品"}
+            sx={{ display: "flex", marginBottom: "12px" }}
           >
             <InputLabel>食品の分類</InputLabel>
             <Select
-              disabled={type !== "食品"}
               id="category"
+              sx={{ width: "238px" }}
               value={categoryItem}
               label="食品の分類"
               onChange={handleSelectItem}
@@ -178,6 +185,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               type="text"
               id="name"
               name="name"
+              sx={{ width: "293px" }}
               value={itemName}
               onChange={(e) => setItemName(e.target.value)}
             />
@@ -199,16 +207,21 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               onChange={handlePriceChange}
             />
             <FormControl>
-              <InputLabel>数量</InputLabel>
+              <InputLabel id="amount">数量</InputLabel>
               <Select
                 id="amount"
                 type="number"
                 value={amount}
                 label="数量"
                 onChange={handleAmountChange}
+                sx={{ width: "80px" }}
               >
                 {amounts.map((amount) => (
-                  <MenuItem key={amount} value={amount}>
+                  <MenuItem
+                    key={amount}
+                    value={amount}
+                    sx={{ justifyContent: "center" }}
+                  >
                     {amount}
                   </MenuItem>
                 ))}

@@ -19,9 +19,9 @@ export default async function Home() {
     <>
     <SnackbarProvider>
     <main>
-    <Container maxWidth="sm">
+    {/* <Container maxWidth="sm"> */}
         { session ? <TopPage /> : <Login />}
-    </Container>
+    {/* </Container> */}
     </main>
     </SnackbarProvider>
     </>

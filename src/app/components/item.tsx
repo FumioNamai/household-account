@@ -1,16 +1,24 @@
 import React, { useState } from "react";
 import { Stock } from "../../../utils/type";
 import { supabase } from "../../../utils/supabase";
-import { Box, Divider, IconButton, List, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  List,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useSnackbarContext } from "@/providers/context-provider";
 import {
   CheckCircleTwoTone,
   DeleteTwoTone,
   ModeTwoTone,
 } from "@mui/icons-material";
-import ControlPointTwoToneIcon from '@mui/icons-material/ControlPointTwoTone';
-import RemoveCircleTwoToneIcon from '@mui/icons-material/RemoveCircleTwoTone';
+import ControlPointTwoToneIcon from "@mui/icons-material/ControlPointTwoTone";
+import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
 import useStore, { useTaxStore } from "@/store";
+import { z } from "zod";
 
 type Props = {
   id: number;
@@ -22,21 +30,16 @@ type Props = {
   date: string | undefined | null;
 };
 
-const Item = ({
-  id,
-  name,
-  price,
-  count,
-  type,
-  setStocks,
-  date,
-}:
-Props) => {
+const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
-  const tax = useTaxStore((state) => (state.tax));
-  const user = useStore((state) => (state.user));
+  const tax = useTaxStore((state) => state.tax);
+  const user = useStore((state) => state.user);
   const onUpdate = (data: any | undefined) => setStocks(data);
+
+  const handleNewPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPrice(event.target.value);
+  };
 
   // UPDATE 使った日をuse_dateに記録する
   const handleUse = async (propsID: number, userId: string) => {
@@ -48,30 +51,33 @@ Props) => {
           .update({ use_date: date })
           .eq("id", propsID);
 
-          // 残数が1の在庫の使うボタンを押した場合、
-          if(count === 1) {
-            const { data: restocks } = await supabase
-              .from("stocks")
-              .select("*")
-              .eq("id", propsID);
-              // newStockへ一部をコピーする
-            const newStock = {
-              id: undefined,
-              type: restocks![0].type,
-              category: restocks![0].category,
-              name: restocks![0].name,
-              user_id: restocks![0].user_id,
-              price: 0,
-              registration_date: null,
-              use_date: null,
-            };
+        // 残数が1の在庫の使うボタンを押した場合、
+        if (count === 1) {
+          const { data: restocks } = await supabase
+            .from("stocks")
+            .select("*")
+            .eq("id", propsID);
+          // newStockへ一部をコピーする
+          const newStock = {
+            id: undefined,
+            type: restocks![0].type,
+            category: restocks![0].category,
+            name: restocks![0].name,
+            user_id: restocks![0].user_id,
+            price: 0,
+            registration_date: null,
+            use_date: null,
+          };
 
-            // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
-            await supabase.from("stocks").insert({ ...newStock });
-          }
+          // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
+          await supabase.from("stocks").insert({ ...newStock });
+        }
 
         // 在庫データを更新して、画面を更新
-        const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
+        const { data: updatedStocks } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId);
         onUpdate(updatedStocks);
         if (showSnackbar) {
           showSnackbar("success", `${name}を${date}付けで計上しました。`);
@@ -91,17 +97,20 @@ Props) => {
     }
   };
 
-  const handleDelete = async (propsID: number,userId: string) => {
+  const handleDelete = async (propsID: number, userId: string) => {
     try {
       const { error } = await supabase
         .from("stocks")
         .delete()
         .eq("id", propsID);
 
-        const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
-        onUpdate(updatedStocks);
+      const { data: updatedStocks } = await supabase
+        .from("stocks")
+        .select("*")
+        .eq("user_id", userId);
+      onUpdate(updatedStocks);
 
-        if (error) throw error;
+      if (error) throw error;
       // 親コンポーネントにstocksを渡して在庫情報を更新
 
       if (showSnackbar) {
@@ -114,33 +123,42 @@ Props) => {
     }
   };
 
-  const handleUpdate = async (propsID: number,userId: string) => {
+  const handleUpdate = async (propsID: number, userId: string) => {
     if (type === "食品" && tax === false) {
       newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
     }
     if (type !== "食品" && tax === false) {
       newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
     }
-    try {
-      await supabase
-        .from("stocks")
-        .update({ price: newPrice })
-        .eq("id", propsID);
-      const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
-      onUpdate(updatedStocks);
 
-      if (showSnackbar) {
-        showSnackbar("success", `${name}の価格を更新しました。`);
+    if (parseInt(newPrice) >= 1) {
+      try {
+        await supabase
+          .from("stocks")
+          .update({ price: newPrice })
+          .eq("id", propsID);
+        const { data: updatedStocks } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId);
+        onUpdate(updatedStocks);
+        if (showSnackbar) {
+          showSnackbar("success", `${name}の価格を更新しました。`);
+        }
+        setNewPrice("");
+      } catch (error: any) {
+        if (showSnackbar) {
+          showSnackbar("error", "価格を更新できませんでした。" + error.message);
+        }
       }
-      setNewPrice("")
-    } catch (error: any) {
+    } else {
       if (showSnackbar) {
-        showSnackbar("error", "価格を更新できませんでした。" + error.message);
+        showSnackbar("error", "1円以上の価格を入力してください。");
       }
     }
   };
 
-  const handlePlus = async (propsID: number,userId: string) => {
+  const handlePlus = async (propsID: number, userId: string) => {
     try {
       // 追加ボタンで選択した項目をnewStockへコピー
       const { data: restocks } = await supabase
@@ -162,7 +180,10 @@ Props) => {
       await supabase.from("stocks").insert({ ...newStock });
 
       // 在庫データを更新して、画面を更新
-      const { data } = await supabase.from("stocks").select("*").eq("user_id", userId);
+      const { data } = await supabase
+        .from("stocks")
+        .select("*")
+        .eq("user_id", userId);
 
       onUpdate(data);
       if (showSnackbar) {
@@ -178,40 +199,43 @@ Props) => {
     }
   };
 
-  const handleMinus = async (propsID: number,userId: string) => {
+  const handleMinus = async (propsID: number, userId: string) => {
     try {
-      if ( count === 1 ) {
+      if (count === 1) {
         const { data: restocks } = await supabase
-        .from("stocks")
-        .select()
-        .eq("id", propsID);
+          .from("stocks")
+          .select()
+          .eq("id", propsID);
         const { error } = await supabase
-        .from("stocks")
-        .delete()
-        .eq("id", propsID);
-      const newStock = {
-        id: undefined,
-        type: restocks![0].type,
-        category: restocks![0].category,
-        name: restocks![0].name,
-        user_id: restocks![0].user_id,
-        price: 0,
-        registration_date: null,
-        use_date: null,
-      };
+          .from("stocks")
+          .delete()
+          .eq("id", propsID);
+        const newStock = {
+          id: undefined,
+          type: restocks![0].type,
+          category: restocks![0].category,
+          name: restocks![0].name,
+          user_id: restocks![0].user_id,
+          price: 0,
+          registration_date: null,
+          use_date: null,
+        };
 
-      // newStockを在庫に登録（マイナスボタンで選択した項目を複製して在庫リストに追加する）
-      await supabase.from("stocks").insert({ ...newStock });
-      if (error) throw error;
+        // newStockを在庫に登録（マイナスボタンで選択した項目を複製して在庫リストに追加する）
+        await supabase.from("stocks").insert({ ...newStock });
+        if (error) throw error;
       } else {
         const { error } = await supabase
-        .from("stocks")
-        .delete()
-        .eq("id", propsID);
+          .from("stocks")
+          .delete()
+          .eq("id", propsID);
         if (error) throw error;
       }
-        const { data: updatedStocks } = await supabase.from("stocks").select("*").eq("user_id", userId);
-        onUpdate(updatedStocks);
+      const { data: updatedStocks } = await supabase
+        .from("stocks")
+        .select("*")
+        .eq("user_id", userId);
+      onUpdate(updatedStocks);
       if (showSnackbar) {
         showSnackbar("success", `${name}を在庫一覧から削除しました。`);
       }
@@ -220,7 +244,7 @@ Props) => {
         showSnackbar("error", "削除できませんでした。" + error.message);
       }
     }
-  }
+  };
 
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
@@ -257,27 +281,41 @@ Props) => {
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  alignItems:"center",
-                  paddingBlock:"8px",
+                  alignItems: "center",
+                  paddingBlock: "8px",
                 }}
               >
-                <Typography variant="body2">
-                  {name}
-                </Typography>
-                <Box sx={{display:"flex", flexDirection:"row", justifyContent:"space-between",
-                alignItems:"center",
-                }}
+                <Typography variant="body2">{name}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
                 >
-                <Typography variant="body1" sx={{minWidth:"80px", textAlign:"end"}}>
-                  {calcPrice()}円
-                </Typography>
-                <Typography variant="body2" sx={{marginLeft:"4px", color:"grey", fontSize:"10px"}}>
-                  {tax === true ? "(込)" : "(抜)"}
-                </Typography >
-                <Typography variant="body1" sx={{minWidth:"50px", textAlign:"end", paddingRight:"8px"}}>
-                  x {count}
-                </Typography>
-
+                  <Typography
+                    variant="body1"
+                    sx={{ minWidth: "80px", textAlign: "end" }}
+                  >
+                    {calcPrice()}円
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ marginLeft: "4px", color: "grey", fontSize: "10px" }}
+                  >
+                    {tax === true ? "(込)" : "(抜)"}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      minWidth: "50px",
+                      textAlign: "end",
+                      paddingRight: "8px",
+                    }}
+                  >
+                    x {count}
+                  </Typography>
                 </Box>
               </Box>
               <Box
@@ -298,7 +336,7 @@ Props) => {
                 <IconButton
                   aria-label="plus1"
                   color="primary"
-                  onClick={() => handlePlus(id,user.id)}
+                  onClick={() => handlePlus(id, user.id)}
                 >
                   <ControlPointTwoToneIcon />
                 </IconButton>
@@ -315,25 +353,44 @@ Props) => {
           </>
         ) : (
           <>
-          {/* 在庫なし */}
-            <Box sx={{ display: "flex", flexDirection: "column", width: "100%"  }}>
-              <Box sx={{ display: "flex", flexDirection: "row", justifyContent:"space-between",alignItems:"center"}}>
+            {/* 在庫なし */}
+            <Box
+              sx={{ display: "flex", flexDirection: "column", width: "100%" }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
                 <Typography variant="body2">{name}</Typography>
-                <Box sx={{ display: "flex" , flexDirection:"row", alignItems:"center"}}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
                   <TextField
                     variant="standard"
                     type="string"
                     size="small"
                     sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
                     value={newPrice}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      setNewPrice(event.target.value);
-                    }}
+                    // onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    //   setNewPrice(event.target.value);
+                    // }}
+                    onChange={handleNewPrice}
                   />
                   <Typography variant="body1">円</Typography>
-                  <Typography variant="body2" sx={{marginLeft:"4px", color:"grey", fontSize:"10px"}}>
-                  {tax === true ? "(込)" : "(抜)"}
-                </Typography >
+                  <Typography
+                    variant="body2"
+                    sx={{ marginLeft: "4px", color: "grey", fontSize: "10px" }}
+                  >
+                    {tax === true ? "(込)" : "(抜)"}
+                  </Typography>
                   <IconButton
                     aria-label="update"
                     color="success"
@@ -342,17 +399,21 @@ Props) => {
                     <ModeTwoTone />
                   </IconButton>
                 </Box>
-
-                </Box>
-                <Box sx={{ display: "flex", flexDirection: "row", justifyContent:"end" }}>
-                  <IconButton
-                    aria-label="delete"
-                    color="error"
-                    onClick={() => handleDelete(id, user.id)}
-                  >
-                    <DeleteTwoTone />
-                  </IconButton>
-
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "end",
+                }}
+              >
+                <IconButton
+                  aria-label="delete"
+                  color="error"
+                  onClick={() => handleDelete(id, user.id)}
+                >
+                  <DeleteTwoTone />
+                </IconButton>
               </Box>
             </Box>
           </>

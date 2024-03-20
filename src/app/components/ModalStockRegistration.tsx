@@ -1,8 +1,9 @@
-import { Box, Button, Modal } from "@mui/material";
+import { Box, Button, IconButton, Modal, Stack } from "@mui/material";
 import { useState } from "react";
 import StockRegistration from "./StockRegistration";
 import { Stock } from "../../../utils/type";
 import { Dayjs } from "dayjs";
+import { CancelOutlined } from "@mui/icons-material";
 
 type Props = {
   stocks: Stock[] | null;
@@ -44,7 +45,7 @@ export default function ModalStockRegistration({
             overflow:"scroll",
             bgcolor: "background.paper",
             boxShadow: 24,
-            p: 2,
+            padding: "16px",
           }}
         >
           <StockRegistration
@@ -53,7 +54,9 @@ export default function ModalStockRegistration({
             date={date}
             setDate={setDate}
           />
-          <Button onClick={handleClose}>閉じる</Button>
+          <Button onClick={handleClose} size="small" color="error" variant="outlined" sx={
+            {marginTop:"30px"}
+          }>閉じる</Button>
         </Box>
       </Modal>
     </>

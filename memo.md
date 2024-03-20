@@ -51,6 +51,8 @@
 
 - [x] 在庫一覧の価格に　(税)込|抜　表示させる　
 
+- [x] 通常, settings, auth ヘッダーのレイアウトのズレ
+
 - [ ] アプリを開いたときにデータが表示されないバグを修正
 
 - [ ] TopPage.tsxのgroupedDataをgroupBy関数を使ってリファクタリング
@@ -58,7 +60,6 @@
 
 - [ ] 対象年月日を上下または左右ボタンで変更できる機能
 
-- [ ] 通常, settings, auth ヘッダーのレイアウトのズレ
 
 - [ ] supabase からのデータ取得のコードを修正
       "const { error: updateError } "
