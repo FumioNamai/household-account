@@ -5,6 +5,7 @@ import Header from "./components/header";
 import { ThemeToggle } from "./components/theme-toggle";
 import { Providers } from "./components/theme-provider";
 import React, { type FC } from "react";
+import { Container } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,17 +25,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja" suppressHydrationWarning>
-    {/* <html lang="ja"> */}
+      {/* <html lang="ja"> */}
       <head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </head>
       <body className={inter.className}>
         <Header />
         <Providers>
-          <div className="h-10 mb-5">
-            <ThemeToggle />
-          </div>
-          {children}
+          <Container maxWidth="sm">
+            <div className="h-10 mb-5">
+              <ThemeToggle />
+            </div>
+            {children}
+          </Container>
         </Providers>
       </body>
     </html>
