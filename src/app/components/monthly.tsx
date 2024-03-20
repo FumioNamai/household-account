@@ -187,7 +187,7 @@ const Monthly: React.FC<{
           </Box>
         </Box>
         </Box>
-        <Accordion>
+        <Accordion square={true}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ fontWeight:"400" }}>
           消費品目（その他）
         </AccordionSummary>

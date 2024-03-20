@@ -165,12 +165,16 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
         </Box>
       </Box>
 
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ fontWeight:"400" }}>
+      <Accordion square={true}>
+        <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        sx={{ fontWeight:"400" }}>
           消費品目
         </AccordionSummary>
         <AccordionDetails>
-          <Typography variant="subtitle1">食品</Typography>
+          <Typography variant="subtitle1">
+            食品
+          </Typography>
           <ul>
             {todayFoods.map((todayFood: Stock) => (
               <div key={todayFood.id}>

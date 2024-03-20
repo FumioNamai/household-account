@@ -95,7 +95,7 @@ const StockFilter = ({
               onChange={setDate}
             />
           </LocalizationProvider>
-          <Typography variant="body2" sx={{ textAlign: "center" }}>
+          <Typography variant="body2" sx={{ textAlign: "center", marginTop:"4px" }}>
             指定された日付で登録します
           </Typography>
         </Box>
@@ -105,7 +105,6 @@ const StockFilter = ({
             display: "flex",
             alignItems: "flex-end",
             marginRight: "8px",
-            paddingBottom: "4px",
             verticalAlign: "text-bottom",
           }}
         >
@@ -136,7 +135,6 @@ const StockFilter = ({
             <ToggleButton value="食品" sx={{ width: "80px" }}>食品</ToggleButton>
             <ToggleButton value="雑貨" sx={{ width: "80px" }}>雑貨</ToggleButton>
             <ToggleButton value="その他" sx={{ width: "80px" }}>その他</ToggleButton>
-            {/* <ToggleButton value="" type="reset">［閉じる］</ToggleButton> */}
           </ToggleButtonGroup>
           <Button
             size="small"
