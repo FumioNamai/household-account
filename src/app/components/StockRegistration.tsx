@@ -185,7 +185,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               type="text"
               id="name"
               name="name"
-              sx={{ width: "293px" }}
+              sx={{ width: "292px" }}
               value={itemName}
               onChange={(e) => setItemName(e.target.value)}
             />
@@ -197,7 +197,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               type="string"
               label="価格"
               id="outlined-start-adornment"
-              sx={{ width: "120px" }}
+              sx={{ width: "116px" }}
               value={newPrice}
               InputProps={{
                 endAdornment: (
