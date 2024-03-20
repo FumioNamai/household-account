@@ -45,17 +45,15 @@ const StockFilter = ({
   const [categoryItem, setCategoryItem] = useState("");
   const [searchName, setSearchName] = useState<string>("");
 
-  const handleSelectItem = (event: SelectChangeEvent) => {
-    setCategoryItem(event.target.value as string);
-  };
+  const handleSelectItem = (event: SelectChangeEvent) => setCategoryItem(event.target.value as string)
 
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
 
-  const handleDelete = () => {
-    setSearchName("");
-  };
+  const handleDelete = () => setSearchName("")
+
+  const handleSelectType = (event:any, newType:string) => setSelectedType(newType)
   return (
     <>
       <Box
@@ -126,19 +124,28 @@ const StockFilter = ({
         }}
       >
         {/* 種別検索 */}
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
           <InputLabel>種別で検索</InputLabel>
+        <Box sx={{ display: "flex", flexDirection: "row", alignItems:"center", gap:"10px"}}>
           <ToggleButtonGroup
             color="primary"
             value={selectedType}
             exclusive
-            onChange={(event, newType) => setSelectedType(newType)}
+            onChange={handleSelectType}
             sx={{ marginBlock: "12px" }}
           >
-            <ToggleButton value="食品">食品</ToggleButton>
-            <ToggleButton value="雑貨">雑貨</ToggleButton>
-            <ToggleButton value="その他">その他</ToggleButton>
+            <ToggleButton value="食品" sx={{ width: "80px" }}>食品</ToggleButton>
+            <ToggleButton value="雑貨" sx={{ width: "80px" }}>雑貨</ToggleButton>
+            <ToggleButton value="その他" sx={{ width: "80px" }}>その他</ToggleButton>
+            {/* <ToggleButton value="" type="reset">［閉じる］</ToggleButton> */}
           </ToggleButtonGroup>
+          <Button
+            size="small"
+            onClick={() => setSelectedType("")}
+            color="error"
+            variant="outlined"
+            sx={{height:"42px"}}>
+            閉じる
+          </Button>
         </Box>
         {Types.map((type) =>
           selectedType === type ? (
