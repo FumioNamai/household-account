@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Header />
         <Providers>
-          <Container maxWidth="sm">
+          <Container maxWidth="sm" sx={{minWidth:"375px"}}>
             <div className="h-10 mb-5">
               <ThemeToggle />
             </div>
