@@ -131,29 +131,44 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
       newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
     }
 
-    if (parseInt(newPrice) >= 1) {
-      try {
-        await supabase
-          .from("stocks")
-          .update({ price: newPrice })
-          .eq("id", propsID);
-        const { data: updatedStocks } = await supabase
-          .from("stocks")
-          .select("*")
-          .eq("user_id", userId);
-        onUpdate(updatedStocks);
-        if (showSnackbar) {
-          showSnackbar("success", `${name}の価格を更新しました。`);
-        }
-        setNewPrice("");
-      } catch (error: any) {
-        if (showSnackbar) {
-          showSnackbar("error", "価格を更新できませんでした。" + error.message);
-        }
-      }
-    } else {
+    if (parseInt(newPrice) < 1 || newPrice === "") {
       if (showSnackbar) {
         showSnackbar("error", "1円以上の価格を入力してください。");
+      }
+      return;
+    }
+
+    if (parseInt(newPrice) < 0) {
+      if (showSnackbar) {
+        showSnackbar("error", "価格を入力してください。");
+      }
+      return;
+    }
+
+    if (isNaN(parseInt(newPrice))) {
+      if (showSnackbar) {
+        showSnackbar("error", "価格は半角の数字を入力してください。");
+      }
+      return;
+    }
+
+    try {
+      await supabase
+        .from("stocks")
+        .update({ price: newPrice })
+        .eq("id", propsID);
+      const { data: updatedStocks } = await supabase
+        .from("stocks")
+        .select("*")
+        .eq("user_id", userId);
+      onUpdate(updatedStocks);
+      if (showSnackbar) {
+        showSnackbar("success", `${name}の価格を更新しました。`);
+      }
+      setNewPrice("");
+    } catch (error: any) {
+      if (showSnackbar) {
+        showSnackbar("error", "価格を更新できませんでした。" + error.message);
       }
     }
   };

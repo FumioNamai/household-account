@@ -8,8 +8,6 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  // Snackbar,
-  // Switch,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
@@ -24,20 +22,9 @@ import { supabase } from "../../../utils/supabase";
 import { Stock } from "../../../utils/type";
 import dayjs, { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
-// import Asynchronous from "./Asynchronous";
+
 import { useStore, useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/taxSwitch";
-// import { SubmitHandler, useForm } from "react-hook-form";
-// import { z } from "zod";
-// import { zodResolver } from "@hookform/resolvers/zod";
-
-// type Schema = z.infer<typeof schema>;
-
-// 入力データの検証ルールを定義する
-// const schema = z.object({
-//   name: z.string().min(2, { message: "2文字以上入力する必要があります。" }),
-//   introduce: z.string().min(0),
-// });
 
 type Props = {
   stocks: Stock[] | null;
@@ -51,17 +38,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const tax = useTaxStore((state) => state.tax);
 
   const { showSnackbar } = useSnackbarContext();
-  // const [open, setOpen] = useState(false)
-
-  // const handleClick = () => {
-  //   setOpen(true)
-  // }
-  // const handleClose = (event? : React.SyntheticEvent | Event, reason? :string) => {
-  //   if(reason === "clickaway") {
-  //     return
-  //   }
-  //   setOpen(false)
-  // }
 
   const [type, setType] = useState<string>("食品");
   const [itemName, setItemName] = useState<string>("");
@@ -71,21 +47,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const [categoryItem, setCategoryItem] = useState("");
   const [, setIsFocus] = useState(false);
 
-  // type Schema = z.infer<typeof schema>;
-
-  // const schema = z.object({
-  //   itemName: z.string().min(1,{message: "1文字以上入力する必要があります。"}),
-  // })
-
-  // const {register, handleSubmit,formState:{errors}} = useForm({
-  //   defaultValues: {
-  //     itemName: ""
-  //   },
-  //   resolver: zodResolver(schema),
-  // })
-
-  // const onSubmit = (data) => console.log(data);
-
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
@@ -93,7 +54,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
 
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const onSubmit: SubmitHandler<Schema>  = async (data) => {
 
     if (type === "食品" && tax === false) {
       newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
@@ -124,6 +84,13 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
     }
 
     if (parseInt(newPrice) < 1 || newPrice === "") {
+      if (showSnackbar) {
+        showSnackbar("error", "1円以上の価格を入力してください。");
+      }
+      return;
+    }
+
+    if (parseInt(newPrice) < 0) {
       if (showSnackbar) {
         showSnackbar("error", "価格を入力してください。");
       }
@@ -171,8 +138,12 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
     }
   };
 
-  const handleSelectItem = (event: SelectChangeEvent) => {
+  const handleSelectCategory = (event: SelectChangeEvent) => {
     setCategoryItem(event.target.value as string);
+  };
+
+  const handleItemNameChange = (event: any) => {
+    setItemName(event.target.value);
   };
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -183,10 +154,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
     setAmount(event.target.value);
   };
 
-  const handleItemNameChange = (event: any) => {
-    setItemName(event.target.value);
-  };
-
   return (
     <Grid item xs={12} sx={{ marginBottom: "20px" }}>
       <Typography variant="h4" sx={{ marginBottom: "20px" }}>
@@ -194,7 +161,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
       </Typography>
       <Box sx={{ paddingInline: "0px" }}>
         <form className="" onSubmit={handleForm}>
-          {/* <form className="" onSubmit={handleSubmit(onSubmit)}> */}
           <InputLabel>購入日</InputLabel>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
@@ -236,7 +202,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               sx={{ width: "238px" }}
               value={categoryItem}
               label="食品の分類"
-              onChange={handleSelectItem}
+              onChange={handleSelectCategory}
             >
               <MenuItem value={""}></MenuItem>
               {Categories.map(
@@ -257,25 +223,8 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               variant="outlined"
               type="text"
               id="name"
-              // name="name"
-              // {...register("itemName",{required:true})}
-              // sx={{ width: "292px" }}
-              // value={itemName}
-              // onChange={(e) => setItemName(e.target.value)}
               onChange={handleItemNameChange}
             />
-            {/* <Typography>{ errors.itemName?.message}</Typography> */}
-            {/* <Button onClick={handleClick}>Open Snackbar</Button> */}
-            {/* {
-              showSnackbar &&
-            <Snackbar
-            open={open}
-            onClose={handleClose}
-            autoHideDuration={3000}
-            // message={errors.itemName?.message}
-            message={"エラー"}
-            />
-          } */}
           </FormControl>
 
           <div className="flex flex-row items-center gap-2 mb-3">
