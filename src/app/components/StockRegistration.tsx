@@ -55,6 +55,9 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const x = Number.isInteger(1.1)
+    console.log(x);
+
     if (type === "食品" && tax === false) {
       newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
     }
@@ -83,23 +86,23 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
       return;
     }
 
-    if (parseInt(newPrice) < 1 || newPrice === "") {
+    if (parseFloat(newPrice) <= 0) {
       if (showSnackbar) {
-        showSnackbar("error", "1円以上の価格を入力してください。");
+        showSnackbar("error", "価格を1円以上で入力してください。");
       }
       return;
     }
 
-    if (parseInt(newPrice) < 0) {
+    if (Number.isInteger(parseFloat(newPrice)) === false) {
       if (showSnackbar) {
-        showSnackbar("error", "価格を入力してください。");
+        showSnackbar("error", "価格を整数で入力してください。");
       }
       return;
     }
 
-    if (isNaN(parseInt(newPrice))) {
+    if (isNaN(parseFloat(newPrice))) {
       if (showSnackbar) {
-        showSnackbar("error", "価格は半角の数字を入力してください。");
+        showSnackbar("error", "価格を半角数字(整数)で入力してください。");
       }
       return;
     }
