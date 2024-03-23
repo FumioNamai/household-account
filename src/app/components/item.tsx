@@ -7,6 +7,7 @@ import {
   IconButton,
   List,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useSnackbarContext } from "@/providers/context-provider";
@@ -340,29 +341,35 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
                   justifyContent: "right",
                 }}
               >
-                <IconButton
-                  aria-label="use-item"
-                  color="success"
-                  onClick={() => handleUse(id, user.id)}
-                >
-                  <CheckCircleTwoTone />
-                </IconButton>
+                <Tooltip title="使用済みにする" placement="bottom">
+                  <IconButton
+                    aria-label="use-item"
+                    color="success"
+                    onClick={() => handleUse(id, user.id)}
+                  >
+                    <CheckCircleTwoTone />
+                  </IconButton>
+                </Tooltip>
 
-                <IconButton
-                  aria-label="plus1"
-                  color="primary"
-                  onClick={() => handlePlus(id, user.id)}
-                >
-                  <ControlPointTwoToneIcon />
-                </IconButton>
+                <Tooltip title="在庫を増やす" placement="bottom">
+                  <IconButton
+                    aria-label="plus1"
+                    color="primary"
+                    onClick={() => handlePlus(id, user.id)}
+                  >
+                    <ControlPointTwoToneIcon />
+                  </IconButton>
+                </Tooltip>
 
-                <IconButton
-                  aria-label="delete"
-                  color="error"
-                  onClick={() => handleMinus(id, user.id)}
-                >
-                  <RemoveCircleTwoToneIcon />
-                </IconButton>
+                <Tooltip title="在庫を減らす" placement="bottom">
+                  <IconButton
+                    aria-label="delete"
+                    color="error"
+                    onClick={() => handleMinus(id, user.id)}
+                  >
+                    <RemoveCircleTwoToneIcon />
+                  </IconButton>
+                </Tooltip>
               </Box>
             </Box>
           </>
@@ -406,13 +413,16 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
                   >
                     {tax === true ? "(込)" : "(抜)"}
                   </Typography>
-                  <IconButton
-                    aria-label="update"
-                    color="success"
-                    onClick={() => handleUpdate(id, user.id)}
-                  >
-                    <ModeTwoTone />
-                  </IconButton>
+
+                  <Tooltip title="価格を更新する" placement="bottom">
+                    <IconButton
+                      aria-label="update"
+                      color="success"
+                      onClick={() => handleUpdate(id, user.id)}
+                    >
+                      <ModeTwoTone />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               </Box>
               <Box
@@ -422,13 +432,15 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
                   justifyContent: "end",
                 }}
               >
-                <IconButton
-                  aria-label="delete"
-                  color="error"
-                  onClick={() => handleDelete(id, user.id)}
-                >
-                  <DeleteTwoTone />
-                </IconButton>
+                <Tooltip title="一覧から削除する" placement="bottom">
+                  <IconButton
+                    aria-label="delete"
+                    color="error"
+                    onClick={() => handleDelete(id, user.id)}
+                  >
+                    <DeleteTwoTone />
+                  </IconButton>
+                </Tooltip>
               </Box>
             </Box>
           </>
