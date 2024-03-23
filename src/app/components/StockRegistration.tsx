@@ -100,13 +100,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
       return;
     }
 
-    // if (isNaN(parseFloat(newPrice))) {
-    //   if (showSnackbar) {
-    //     showSnackbar("error", "価格を半角数字(整数)で入力してください。");
-    //   }
-    //   return;
-    // }
-
     try {
       for (let i = 0; i < amount; i++) {
         const { error } = await supabase.from("stocks").insert({
@@ -226,6 +219,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               variant="outlined"
               type="text"
               id="name"
+              value={itemName}
               onChange={handleItemNameChange}
             />
           </FormControl>

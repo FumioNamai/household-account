@@ -146,13 +146,6 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
       return;
     }
 
-    // if (isNaN(parseFloat(newPrice))) {
-    //   if (showSnackbar) {
-    //     showSnackbar("error", "価格を半角数字(整数)で入力してください。");
-    //   }
-    //   return;
-    // }
-
     try {
       await supabase
         .from("stocks")
