@@ -95,17 +95,17 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
 
     if (Number.isInteger(parseFloat(newPrice)) === false) {
       if (showSnackbar) {
-        showSnackbar("error", "価格を整数で入力してください。");
-      }
-      return;
-    }
-
-    if (isNaN(parseFloat(newPrice))) {
-      if (showSnackbar) {
         showSnackbar("error", "価格を半角数字(整数)で入力してください。");
       }
       return;
     }
+
+    // if (isNaN(parseFloat(newPrice))) {
+    //   if (showSnackbar) {
+    //     showSnackbar("error", "価格を半角数字(整数)で入力してください。");
+    //   }
+    //   return;
+    // }
 
     try {
       for (let i = 0; i < amount; i++) {
