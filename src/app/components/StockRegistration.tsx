@@ -136,7 +136,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
     setCategoryItem(event.target.value as string);
   };
 
-  const handleItemNameChange = (event: any) => {
+  const handleItemNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setItemName(event.target.value);
   };
 
@@ -144,8 +144,8 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
     setNewPrice(event.target.value);
   };
 
-  const handleAmountChange = (event: any) => {
-    setAmount(event.target.value);
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(parseInt(event.target.value));
   };
 
   return (
