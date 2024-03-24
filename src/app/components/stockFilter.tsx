@@ -45,15 +45,17 @@ const StockFilter = ({
   const [categoryItem, setCategoryItem] = useState("");
   const [searchName, setSearchName] = useState<string>("");
 
-  const handleSelectItem = (event: SelectChangeEvent) => setCategoryItem(event.target.value as string)
+  const handleSelectItem = (event: SelectChangeEvent) =>
+    setCategoryItem(event.target.value as string);
 
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
 
-  const handleDelete = () => setSearchName("")
+  const handleDelete = () => setSearchName("");
 
-  const handleSelectType = (event:any, newType:string) => setSelectedType(newType)
+  const handleSelectType = (event: any, newType: string) =>
+    setSelectedType(newType);
   return (
     <>
       <Box
@@ -81,11 +83,12 @@ const StockFilter = ({
         sx={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between", marginBottom: "20px"
+          justifyContent: "space-between",
+          marginBottom: "20px",
         }}
       >
         {/* 使用日指定 */}
-        <Box sx={{ width: "200px"}}>
+        <Box sx={{ width: "200px" }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label={"使用日"}
@@ -95,7 +98,10 @@ const StockFilter = ({
               onChange={setDate}
             />
           </LocalizationProvider>
-          <Typography variant="body2" sx={{ textAlign: "center", marginTop:"4px" }}>
+          <Typography
+            variant="body2"
+            sx={{ textAlign: "center", marginTop: "4px" }}
+          >
             指定された日付で登録します
           </Typography>
         </Box>
@@ -123,8 +129,15 @@ const StockFilter = ({
         }}
       >
         {/* 種別検索 */}
-          <InputLabel>種別で検索</InputLabel>
-        <Box sx={{ display: "flex", flexDirection: "row", alignItems:"center", gap:"10px"}}>
+        <InputLabel>種別で検索</InputLabel>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
           <ToggleButtonGroup
             color="primary"
             value={selectedType}
@@ -132,16 +145,23 @@ const StockFilter = ({
             onChange={handleSelectType}
             sx={{ marginBlock: "12px" }}
           >
-            <ToggleButton value="食品" sx={{ width: "80px" }}>食品</ToggleButton>
-            <ToggleButton value="雑貨" sx={{ width: "80px" }}>雑貨</ToggleButton>
-            <ToggleButton value="その他" sx={{ width: "80px" }}>その他</ToggleButton>
+            <ToggleButton value="食品" sx={{ width: "80px" }}>
+              食品
+            </ToggleButton>
+            <ToggleButton value="雑貨" sx={{ width: "80px" }}>
+              雑貨
+            </ToggleButton>
+            <ToggleButton value="その他" sx={{ width: "80px" }}>
+              その他
+            </ToggleButton>
           </ToggleButtonGroup>
           <Button
             size="small"
             onClick={() => setSelectedType("")}
             color="error"
             variant="outlined"
-            sx={{height:"42px"}}>
+            sx={{ height: "42px" }}
+          >
             閉じる
           </Button>
         </Box>
@@ -149,7 +169,6 @@ const StockFilter = ({
           selectedType === type ? (
             <Box key={type}>
               {type === "食品" && (
-
                 //  分類検索
                 <FormControl
                   variant="standard"
@@ -270,10 +289,22 @@ const StockFilter = ({
         </Button>
       </FormControl>
 
-      {/* 商品名検索 */}
+      {/* 税表示切替 */}
       <Box
         sx={{
-          height: "500px",
+          display: "flex",
+          justifyContent: "end",
+          marginRight: "8px",
+        }}
+      >
+        <TaxSwitch />
+      </Box>
+
+      {/* 商品名検索 */}
+
+      <Box
+        sx={{
+          height: "300px",
           overflowY: "scroll",
           boxShadow: 2,
           padding: "12px",
@@ -281,29 +312,31 @@ const StockFilter = ({
           marginBottom: "40px",
         }}
       >
-        <ul>
-          {groupedDataArr!
-            .filter(
-              (groupedData) =>
-                groupedData.name === groupedData.name.match(searchName)?.input
-            )
-            .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-            .map((groupedData) => (
-              <li key={groupedData.id}>
-                {groupedData.use_date === null && (
-                  <Item
-                    id={groupedData.id}
-                    name={groupedData.name}
-                    price={groupedData.price.toString()}
-                    count={groupedData.count}
-                    type={groupedData.type}
-                    setStocks={setStocks}
-                    date={selectedDate}
-                  />
-                )}
-              </li>
-            ))}
-        </ul>
+        {searchName !== "" ? (
+          <ul>
+            {groupedDataArr!
+              .filter(
+                (groupedData) =>
+                  groupedData.name === groupedData.name.match(searchName)?.input
+              )
+              .sort((a, b) => a.name.localeCompare(b.name, "ja"))
+              .map((groupedData) => (
+                <li key={groupedData.id}>
+                  {groupedData.use_date === null && (
+                    <Item
+                      id={groupedData.id}
+                      name={groupedData.name}
+                      price={groupedData.price.toString()}
+                      count={groupedData.count}
+                      type={groupedData.type}
+                      setStocks={setStocks}
+                      date={selectedDate}
+                    />
+                  )}
+                </li>
+              ))}
+          </ul>
+        ) : "検索結果が表示されます"}
       </Box>
     </>
   );
