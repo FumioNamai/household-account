@@ -106,7 +106,7 @@ const StockFilter = ({
           </Typography>
         </Box>
         {/* 税表示切替 */}
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             alignItems: "flex-end",
@@ -115,7 +115,7 @@ const StockFilter = ({
           }}
         >
           <TaxSwitch />
-        </Box>
+        </Box> */}
       </Box>
 
       {/* 在庫一覧 */}
@@ -165,10 +165,19 @@ const StockFilter = ({
             閉じる
           </Button>
         </Box>
+
         {Types.map((type) =>
           selectedType === type ? (
             <Box key={type}>
-              {type === "食品" && (
+            <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems:"center",
+              marginRight: "-4px",
+            }}
+          >
+              {
                 //  分類検索
                 <FormControl
                   variant="standard"
@@ -182,6 +191,7 @@ const StockFilter = ({
                     value={categoryItem}
                     label="分類"
                     onChange={handleSelectItem}
+                    disabled = {type !== "食品" && true}
                   >
                     <MenuItem value={""}></MenuItem>
                     {Categories.map((category) => (
@@ -191,8 +201,11 @@ const StockFilter = ({
                     ))}
                   </Select>
                 </FormControl>
-              )}
+              }
+              {/* 税表示切替 */}
 
+                <TaxSwitch />
+              </Box>
               {type === "食品" ? (
                 Categories.map(
                   (category) =>
@@ -301,7 +314,6 @@ const StockFilter = ({
       </Box>
 
       {/* 商品名検索 */}
-
       <Box
         sx={{
           height: "300px",
@@ -336,7 +348,9 @@ const StockFilter = ({
                 </li>
               ))}
           </ul>
-        ) : "検索結果が表示されます"}
+        ) : (
+          "検索結果が表示されます"
+        )}
       </Box>
     </>
   );
