@@ -31,7 +31,7 @@ const UsedItem = ({ id, name, price, setStocks }: Props) => {
       if (showSnackbar) {
         showSnackbar(
           "success",
-          `${name}の使用を取り消し、在庫一覧に戻しました。`
+          `『${name}』の使用を取り消し、在庫一覧に戻しました。`
         );
       }
     } catch (error: any) {

@@ -122,7 +122,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
       if (showSnackbar) {
         showSnackbar(
           "success",
-          `${itemName}を${amount}個、在庫として登録しました。`
+          `『${itemName}』を${amount}個、在庫として登録しました。`
         );
       }
     } catch (error) {

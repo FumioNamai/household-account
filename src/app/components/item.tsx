@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Stock } from "../../../utils/type";
 import { supabase } from "../../../utils/supabase";
 import {
+  Alert,
   Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
   Divider,
   IconButton,
   List,
@@ -19,7 +25,6 @@ import {
 import ControlPointTwoToneIcon from "@mui/icons-material/ControlPointTwoTone";
 import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
 import useStore, { useTaxStore } from "@/store";
-import { z } from "zod";
 
 type Props = {
   id: number;
@@ -37,6 +42,14 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
   const onUpdate = (data: any | undefined) => setStocks(data);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setDialogOpen(true);
+  };
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
 
   const handleNewPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewPrice(event.target.value);
@@ -81,7 +94,7 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
           .eq("user_id", userId);
         onUpdate(updatedStocks);
         if (showSnackbar) {
-          showSnackbar("success", `${name}を${date}付けで計上しました。`);
+          showSnackbar("success", `『${name}』を${date}付けで計上しました。`);
         }
       } catch (error: any) {
         if (showSnackbar) {
@@ -115,7 +128,7 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
       // 親コンポーネントにstocksを渡して在庫情報を更新
 
       if (showSnackbar) {
-        showSnackbar("success", `${name}を在庫一覧から削除しました。`);
+        showSnackbar("success", `『${name}』を在庫一覧から削除しました。`);
       }
     } catch (error: any) {
       if (showSnackbar) {
@@ -125,8 +138,6 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
   };
 
   const handleUpdate = async (propsID: number, userId: string) => {
-
-
     if (parseFloat(newPrice) <= 0) {
       if (showSnackbar) {
         showSnackbar("error", "価格を1円以上で入力してください。");
@@ -159,7 +170,7 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
         .eq("user_id", userId);
       onUpdate(updatedStocks);
       if (showSnackbar) {
-        showSnackbar("success", `${name}の価格を更新しました。`);
+        showSnackbar("success", `『${name}』の価格を更新しました。`);
       }
       setNewPrice("");
     } catch (error: any) {
@@ -198,13 +209,13 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
 
       onUpdate(data);
       if (showSnackbar) {
-        showSnackbar("success", `${name}を在庫に追加しました。`);
+        showSnackbar("success", `『${name}』の在庫を1つ増やしました。`);
       }
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar(
           "error",
-          `${name}を在庫に追加できません。` + error.message
+          `『${name}』を在庫に追加できません。` + error.message
         );
       }
     }
@@ -248,7 +259,7 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
         .eq("user_id", userId);
       onUpdate(updatedStocks);
       if (showSnackbar) {
-        showSnackbar("success", `${name}を在庫一覧から削除しました。`);
+        showSnackbar("success", `『${name}』の在庫を1つ減らしました。`);
       }
     } catch (error: any) {
       if (showSnackbar) {
@@ -396,9 +407,6 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
                     size="small"
                     sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
                     value={newPrice}
-                    // onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    //   setNewPrice(event.target.value);
-                    // }}
                     onChange={handleNewPrice}
                   />
                   <Typography variant="body1">円</Typography>
@@ -418,7 +426,6 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
                       <ModeTwoTone />
                     </IconButton>
                   </Tooltip>
-
                 </Box>
               </Box>
               <Box
@@ -432,11 +439,30 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
                   <IconButton
                     aria-label="delete"
                     color="error"
-                    onClick={() => handleDelete(id, user.id)}
+                    // onClick={() => handleDelete(id, user.id)}
+                    onClick={handleClickOpen}
                   >
                     <DeleteTwoTone />
                   </IconButton>
                 </Tooltip>
+                <Dialog
+                  open={dialogOpen}
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogContent>
+                    <DialogContentText
+                    id="alert-dialog-description"
+                    >
+                      {`『${name}』を在庫一覧から削除しますか？`}
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>削除しない</Button>
+                    <Button onClick={()=>handleDelete(id, user.id)} color="error">削除する</Button>
+                  </DialogActions>
+                </Dialog>
               </Box>
             </Box>
           </>
