@@ -41,7 +41,7 @@ const StockFilter = ({
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
-  const [selectedType, setSelectedType] = useState<string>("");
+  const [selectedType, setSelectedType] = useState<string>("食品");
   const [categoryItem, setCategoryItem] = useState("");
   const [searchName, setSearchName] = useState<string>("");
 

@@ -41,8 +41,8 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
 
   const [type, setType] = useState<string>("食品");
   const [itemName, setItemName] = useState<string>("");
-  const [amount, setAmount] = useState<number>(1);
-  const amounts: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const [amount, setAmount] = useState<string>("1");
+  const amounts: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
   let [newPrice, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
   const [, setIsFocus] = useState(false);
@@ -99,7 +99,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
 
 
     try {
-      for (let i = 0; i < amount; i++) {
+      for (let i = 0; i < parseInt(amount); i++) {
         const { error } = await supabase.from("stocks").insert({
           type: type,
           name: itemName,
@@ -122,7 +122,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
       if (showSnackbar) {
         showSnackbar(
           "success",
-          `${itemName}を${amount}個、在庫一覧に登録しました。`
+          `${itemName}を${amount}個、在庫として登録しました。`
         );
       }
     } catch (error) {
@@ -144,8 +144,9 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
     setNewPrice(event.target.value);
   };
 
-  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(parseInt(event.target.value));
+  const handleAmountChange = (event: SelectChangeEvent) => {
+    // setAmount(parseInt(event.target.value));
+    setAmount(event.target.value);
   };
 
   return (
