@@ -55,16 +55,6 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const x = Number.isInteger(1.1)
-    console.log(x);
-
-    if (type === "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
-    }
-    if (type !== "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
-    }
-
     if (!type) {
       if (showSnackbar) {
         showSnackbar("error", "種別を選択してください。");
@@ -99,6 +89,14 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
       }
       return;
     }
+
+    if (type === "食品" && tax === false) {
+      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
+    }
+    if (type !== "食品" && tax === false) {
+      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
+    }
+
 
     try {
       for (let i = 0; i < amount; i++) {

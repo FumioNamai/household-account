@@ -125,12 +125,7 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
   };
 
   const handleUpdate = async (propsID: number, userId: string) => {
-    if (type === "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
-    }
-    if (type !== "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
-    }
+
 
     if (parseFloat(newPrice) <= 0) {
       if (showSnackbar) {
@@ -144,6 +139,13 @@ const Item = ({ id, name, price, count, type, setStocks, date }: Props) => {
         showSnackbar("error", "価格を半角数字(整数)で入力してください。");
       }
       return;
+    }
+
+    if (type === "食品" && tax === false) {
+      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
+    }
+    if (type !== "食品" && tax === false) {
+      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
     }
 
     try {
