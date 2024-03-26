@@ -8,6 +8,7 @@ export type Stock = {
   registration_date: string | null;
   use_date:  string | null;
   count: number;
+  to_buy: boolean;
 }
 
 export type GroupedData  = {
@@ -19,4 +20,5 @@ export type GroupedData  = {
   registration_date: string | null;
   use_date:  string | null;
   count: number;
+  to_buy: boolean;
 }

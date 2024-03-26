@@ -12,6 +12,7 @@ import Monthly from "@/app/components/monthly";
 import Daily from "@/app/components/daily";
 import StockFilter from "@/app/components/stockFilter";
 import useStore from "@/store/index";
+import ToBuyList from "./to-buy-list";
 
 export default function TopPage() {
   const [stocks, setStocks] = useState<Stock[]>([]);
@@ -55,6 +56,7 @@ export default function TopPage() {
           registration_date: stock.registration_date,
           use_date: stock.use_date,
           category: stock.category,
+          to_buy: stock.to_buy,
         };
       }
       groupedData[key].count++;
@@ -94,6 +96,11 @@ export default function TopPage() {
           date={date}
           setDate={setDate}
         />
+
+        <ToBuyList
+          groupedDataArr={groupedDataArr}
+          setStocks={setStocks}
+          />
       </main>
     </>
   );

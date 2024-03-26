@@ -228,6 +228,7 @@ const StockFilter = ({
                                         type={groupedData.type}
                                         setStocks={setStocks}
                                         date={selectedDate}
+                                        to_buy={groupedData.to_buy}
                                       />
                                     )
                                   : groupedData.type === type &&
@@ -240,6 +241,7 @@ const StockFilter = ({
                                         type={groupedData.type}
                                         setStocks={setStocks}
                                         date={selectedDate}
+                                        to_buy={groupedData.to_buy}
                                       />
                                     )}
                               </li>
@@ -264,6 +266,7 @@ const StockFilter = ({
                               type={groupedData.type}
                               setStocks={setStocks}
                               date={selectedDate}
+                              to_buy={groupedData.to_buy}
                             />
                           )}
                       </li>
@@ -343,6 +346,7 @@ const StockFilter = ({
                       type={groupedData.type}
                       setStocks={setStocks}
                       date={selectedDate}
+                      to_buy={groupedData.to_buy}
                     />
                   )}
                 </li>
