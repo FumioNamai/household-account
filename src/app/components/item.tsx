@@ -38,7 +38,16 @@ type Props = {
   to_buy: boolean;
 };
 
-const Item = ({ id, name, price, count, type, setStocks, date, to_buy }: Props) => {
+const Item = ({
+  id,
+  name,
+  price,
+  count,
+  type,
+  date,
+  to_buy,
+  setStocks
+}: Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
   const tax = useTaxStore((state) => state.tax);
@@ -307,7 +316,7 @@ const Item = ({ id, name, price, count, type, setStocks, date, to_buy }: Props) 
       try {
         await supabase
           .from("stocks")
-          .update({ to_buy: false })
+          .update({ to_buy: false ,checked: false})
           .eq("id", propsID);
         const { data: updatedStocks } = await supabase
           .from("stocks")

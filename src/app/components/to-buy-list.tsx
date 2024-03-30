@@ -8,6 +8,7 @@ type Props = {
 };
 
 const ToBuyList = ({ groupedDataArr, setStocks }: Props) => {
+
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
       <Box>
@@ -22,6 +23,7 @@ const ToBuyList = ({ groupedDataArr, setStocks }: Props) => {
                   key={groupedData.id}
                   id={groupedData.id}
                   to_buy={groupedData.to_buy}
+                  checked = {groupedData.checked}
                   name={groupedData.name}
                   setStocks={setStocks}
                 />

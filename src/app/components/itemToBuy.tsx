@@ -6,15 +6,17 @@ import useStore from "@/store";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { Stock } from "../../../utils/type";
 import { useState } from "react";
+import { log } from "console";
 
 type Props = {
   id: number;
   name: string;
   to_buy: boolean;
+  checked: boolean;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const ItemToBuy = ({ id, name, to_buy, setStocks }: Props) => {
+const ItemToBuy = ({ id, name, to_buy,checked, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
   const onUpdate = (data: any | undefined) => setStocks(data);
@@ -24,6 +26,43 @@ const ItemToBuy = ({ id, name, to_buy, setStocks }: Props) => {
   // const handleCheck = (event:React.ChangeEvent<HTMLInputElement>) => {
   //   setChecked(event.target.checked)
   // }
+
+
+  const handleCheck = async (propsID: number, userId: string)  => {
+    if (checked === false) {
+      try {
+        await supabase
+          .from("stocks")
+          .update({ checked: true })
+          .eq("id", propsID);
+        const { data: updatedStocks } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId);
+        onUpdate(updatedStocks);
+      } catch (error: any) {
+        if (showSnackbar) {
+          showSnackbar("error", "できませんでした。" + error.message);
+        }
+      }
+    } else {
+      try {
+        await supabase
+          .from("stocks")
+          .update({ checked: false })
+          .eq("id", propsID);
+        const { data: updatedStocks } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId);
+        onUpdate(updatedStocks);
+      } catch (error: any) {
+        if (showSnackbar) {
+          showSnackbar("error", "できませんでした。" + error.message);
+        }
+      }
+    };
+  };
 
   const handleToBuyListed = async (propsID: number, userId: string) => {
     if (to_buy === false) {
@@ -52,7 +91,7 @@ const ItemToBuy = ({ id, name, to_buy, setStocks }: Props) => {
       try {
         await supabase
           .from("stocks")
-          .update({ to_buy: false })
+          .update({ to_buy: false ,checked: false})
           .eq("id", propsID);
         const { data } = await supabase
           .from("stocks")
@@ -93,7 +132,8 @@ const ItemToBuy = ({ id, name, to_buy, setStocks }: Props) => {
             sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
           >
             <Checkbox
-            // onChange={handleCheck}
+            checked={checked ? true : false}
+            onChange={() => handleCheck(id, user.id)}
             />
             <Typography>{name}</Typography>
           </Box>
