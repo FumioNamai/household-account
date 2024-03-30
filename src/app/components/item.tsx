@@ -24,7 +24,7 @@ import {
 } from "@mui/icons-material";
 import ControlPointTwoToneIcon from "@mui/icons-material/ControlPointTwoTone";
 import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
-import PlaylistAddCheckOutlinedIcon from "@mui/icons-material/PlaylistAddCheckOutlined";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import useStore, { useTaxStore } from "@/store";
 
 type Props = {
@@ -427,7 +427,7 @@ const Item = ({ id, name, price, count, type, setStocks, date, to_buy }: Props) 
                   color = {to_buy === true ? "warning" : "default"}
                   onClick={() => handleToBuyListed(id, user.id)}
                   >
-                    <PlaylistAddCheckOutlinedIcon />
+                    <ShoppingCartOutlinedIcon />
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -471,7 +471,7 @@ const Item = ({ id, name, price, count, type, setStocks, date, to_buy }: Props) 
                     {tax === true ? "(込)" : "(抜)"}
                   </Typography>
 
-                  <Tooltip title="価格を更新する" placement="bottom">
+                  <Tooltip title="価格を更新する" placement="top">
                     <IconButton
                       aria-label="update"
                       color="success"
@@ -526,7 +526,7 @@ const Item = ({ id, name, price, count, type, setStocks, date, to_buy }: Props) 
                   color = {to_buy === true ? "warning" : "default"}
                   onClick={() => handleToBuyListed(id, user.id)}
                   >
-                    <PlaylistAddCheckOutlinedIcon />
+                    <ShoppingCartOutlinedIcon />
                   </IconButton>
                 </Tooltip>
 
