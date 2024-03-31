@@ -25,7 +25,6 @@ import TaxSwitch from "@/app/components/taxSwitch";
 
 type Props = {
   groupedDataArr: GroupedData[];
-  stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
@@ -33,7 +32,6 @@ type Props = {
 
 const StockFilter = ({
   groupedDataArr,
-  stocks,
   setStocks,
   date,
   setDate,
@@ -48,9 +46,9 @@ const StockFilter = ({
   const handleSelectItem = (event: SelectChangeEvent) =>
     setCategoryItem(event.target.value as string);
 
-  const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState([]);
-  const loading = open && options.length === 0;
+  // const [open, setOpen] = useState(false);
+  // const [options, setOptions] = useState([]);
+  // const loading = open && options.length === 0;
 
   const handleDelete = () => setSearchName("");
 
@@ -73,7 +71,6 @@ const StockFilter = ({
 
         {/* 在庫登録 */}
         <ModalStockRegistration
-          stocks={stocks}
           setStocks={setStocks}
           date={date}
           setDate={setDate}

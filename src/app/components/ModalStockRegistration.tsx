@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Modal, Stack } from "@mui/material";
+import { Box, Button, IconButton, Modal, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import StockRegistration from "./StockRegistration";
 import { Stock } from "../../../utils/type";
@@ -6,14 +6,12 @@ import { Dayjs } from "dayjs";
 import { CancelOutlined } from "@mui/icons-material";
 
 type Props = {
-  stocks: Stock[] | null;
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
   setDate:React.Dispatch<React.SetStateAction<Dayjs | null>>;
 }
 
 export default function ModalStockRegistration({
-  stocks,
   setStocks,
   date,
   setDate,
@@ -25,7 +23,7 @@ export default function ModalStockRegistration({
   return (
     <>
     <Box>
-      <Button variant="outlined" size="large" onClick={handleOpen}>在庫登録</Button>
+      <Button variant="outlined" size="large" onClick={handleOpen}>在庫 / 商品登録</Button>
       </Box>
       <Modal
         open={open}
@@ -49,7 +47,6 @@ export default function ModalStockRegistration({
           }}
         >
           <StockRegistration
-            stocks={stocks}
             setStocks={setStocks}
             date={date}
             setDate={setDate}

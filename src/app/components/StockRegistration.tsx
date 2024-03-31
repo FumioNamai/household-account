@@ -20,20 +20,19 @@ import { useSnackbarContext } from "@/providers/context-provider";
 import React, { useState } from "react";
 import { supabase } from "../../../utils/supabase";
 import { Stock } from "../../../utils/type";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
 
 import { useStore, useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/taxSwitch";
 
 type Props = {
-  stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 };
 
-const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
+const StockRegistration = ({ setStocks, date, setDate }: Props) => {
   const user = useStore((state) => state.user);
   const tax = useTaxStore((state) => state.tax);
 
@@ -42,7 +41,19 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   const [type, setType] = useState<string>("食品");
   const [itemName, setItemName] = useState<string>("");
   const [amount, setAmount] = useState<string>("1");
-  const amounts: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  const amounts: string[] = [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+  ];
   let [newPrice, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
   const [, setIsFocus] = useState(false);
@@ -76,37 +87,71 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
       return;
     }
 
-    if (parseFloat(newPrice) <= 0) {
-      if (showSnackbar) {
-        showSnackbar("error", "価格を1円以上で入力してください。");
+    if (parseInt(amount) > 0) {
+      if (parseFloat(newPrice) <= 0) {
+        if (showSnackbar) {
+          showSnackbar("error", "価格を1円以上で入力してください。");
+        }
+        return;
       }
-      return;
-    }
-
-    if (Number.isInteger(parseFloat(newPrice)) === false) {
-      if (showSnackbar) {
-        showSnackbar("error", "価格を半角数字(整数)で入力してください。");
+      if (Number.isInteger(parseFloat(newPrice)) === false) {
+        if (showSnackbar) {
+          showSnackbar("error", "価格を半角数字(整数)で入力してください。");
+        }
+        return;
       }
-      return;
-    }
 
-    if (type === "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
-    }
-    if (type !== "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
-    }
+      if (type === "食品" && tax === false) {
+        newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
+      }
+      if (type !== "食品" && tax === false) {
+        newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
+      }
 
+      try {
+        // １個以上の在庫を登録する処理
+        for (let i = 0; i < parseInt(amount); i++) {
+          const { error } = await supabase.from("stocks").insert({
+            type: type,
+            name: itemName,
+            price: newPrice,
+            registration_date: selectedDate,
+            category: categoryItem,
+            user_id: user.id,
+          });
+          if (error) throw error;
+          const { data } = await supabase
+            .from("stocks")
+            .select("*")
+            .eq("user_id", user.id);
 
-    try {
-      for (let i = 0; i < parseInt(amount); i++) {
+          onUpdate(data);
+          setItemName("");
+          setNewPrice("");
+          setCategoryItem("");
+        }
+        if (showSnackbar) {
+          showSnackbar(
+            "success",
+            `『${itemName}』を${amount}個、在庫として登録しました。`
+          );
+        }
+      } catch (error) {
+        if (showSnackbar) {
+          showSnackbar("error", "データの新規登録ができません。");
+        }
+      }
+    } else {
+      try {
+        // 買い物リストに登録する処理 (amount === 0)
         const { error } = await supabase.from("stocks").insert({
           type: type,
           name: itemName,
-          price: newPrice,
+          price: 0,
           registration_date: selectedDate,
           category: categoryItem,
           user_id: user.id,
+          to_buy: true,
         });
         if (error) throw error;
         const { data } = await supabase
@@ -118,16 +163,16 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
         setItemName("");
         setNewPrice("");
         setCategoryItem("");
-      }
-      if (showSnackbar) {
-        showSnackbar(
-          "success",
-          `『${itemName}』を${amount}個、在庫として登録しました。`
-        );
-      }
-    } catch (error) {
-      if (showSnackbar) {
-        showSnackbar("error", "データの新規登録ができません。");
+        if (showSnackbar) {
+          showSnackbar(
+            "success",
+            `『${itemName}』を買い物リストに追加しました。`
+          );
+        }
+      } catch (error) {
+        if (showSnackbar) {
+          showSnackbar("error", "買い物リストに追加できませんでした。");
+        }
       }
     }
   };
@@ -152,7 +197,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
   return (
     <Grid item xs={12} sx={{ marginBottom: "20px" }}>
       <Typography variant="h4" sx={{ marginBottom: "20px" }}>
-        在庫登録
+        在庫 / 商品登録
       </Typography>
       <Box sx={{ paddingInline: "0px" }}>
         <form className="" onSubmit={handleForm}>
@@ -223,7 +268,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
             />
           </FormControl>
 
-          <div className="flex flex-row items-center gap-2 mb-3">
+          <div className="flex flex-row items-center gap-2">
             <TaxSwitch />
             <TextField
               type="string"
@@ -237,6 +282,7 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
                 ),
               }}
               onChange={handlePriceChange}
+              disabled={parseInt(amount) === 0 ? true : false}
             />
 
             <FormControl>
@@ -261,11 +307,14 @@ const StockRegistration = ({ stocks, setStocks, date, setDate }: Props) => {
               </Select>
             </FormControl>
           </div>
+            <Typography variant="body2" sx={{marginBottom:"24px", color:"gray"}}>数量を0にすると買い物リストに追加できます</Typography>
 
           <div className="flex flex-col">
             <div>
               <Button variant="outlined" type="submit">
-                登録
+                {parseInt(amount) === 0
+                  ? "買い物リストに追加する"
+                  : "在庫に追加する"}
               </Button>
             </div>
           </div>

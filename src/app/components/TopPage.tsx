@@ -92,7 +92,6 @@ export default function TopPage() {
         {/* 在庫検索 */}
         <StockFilter
           groupedDataArr={groupedDataArr}
-          stocks={stocks}
           setStocks={setStocks}
           date={date}
           setDate={setDate}
