@@ -8,7 +8,6 @@ type Props = {
 };
 
 const ToBuyList = ({ groupedDataArr, setStocks }: Props) => {
-
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
       <Box>
@@ -16,19 +15,21 @@ const ToBuyList = ({ groupedDataArr, setStocks }: Props) => {
           買い物リスト
         </Typography>
         <ul>
-          {groupedDataArr.map(
-            (groupedData) =>
-              groupedData.to_buy === true && (
-                <ItemToBuy
-                  key={groupedData.id}
-                  id={groupedData.id}
-                  to_buy={groupedData.to_buy}
-                  checked = {groupedData.checked}
-                  name={groupedData.name}
-                  setStocks={setStocks}
-                />
-              )
-          )}
+          {groupedDataArr
+            .sort((a, b) => a.name.localeCompare(b.name, "ja"))
+            .map(
+              (groupedData) =>
+                groupedData.to_buy === true && (
+                  <ItemToBuy
+                    key={groupedData.id}
+                    id={groupedData.id}
+                    to_buy={groupedData.to_buy}
+                    checked={groupedData.checked}
+                    name={groupedData.name}
+                    setStocks={setStocks}
+                  />
+                )
+            )}
         </ul>
       </Box>
     </Grid>
