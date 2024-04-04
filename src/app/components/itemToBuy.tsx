@@ -131,10 +131,13 @@ const ItemToBuy = ({ id, name, to_buy,checked, setStocks }: Props) => {
           <Box
             sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
           >
+            <Tooltip
+            title={checked ? "チェックを外す" : "チェックを入れる"}>
             <Checkbox
             checked={checked ? true : false}
             onChange={() => handleCheck(id, user.id)}
             />
+            </Tooltip>
             <Typography>{name}</Typography>
           </Box>
           <Tooltip title="買い物リストから削除">
