@@ -13,9 +13,9 @@ type Props = {
   price: string;
   count: number;
   type: string;
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: string | undefined | null;
   to_buy: boolean;
+  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
 const Item = ({

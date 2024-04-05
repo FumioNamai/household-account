@@ -13,9 +13,9 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+// import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { Categories } from "./Categories";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useSnackbarContext } from "@/providers/context-provider";
 import React, { useState } from "react";
 import { supabase } from "../../../utils/supabase";
@@ -25,6 +25,7 @@ import ja from "dayjs/locale/ja";
 
 import { useStore, useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/taxSwitch";
+import RegistrationDateSelector from "./registration-date-selector";
 
 type Props = {
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
@@ -201,7 +202,11 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
       </Typography>
       <Box sx={{ paddingInline: "0px" }}>
         <form className="" onSubmit={handleForm}>
-          <InputLabel>購入日</InputLabel>
+          <RegistrationDateSelector
+          date={date}
+          setDate={setDate}
+          />
+          {/* <InputLabel>購入日</InputLabel>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               sx={{ maxWidth: "238px", marginBottom: "12px" }}
@@ -209,7 +214,7 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
               format="YYYY/MM/DD"
               onChange={setDate}
             />
-          </LocalizationProvider>
+          </LocalizationProvider> */}
 
           <InputLabel id="type">種別</InputLabel>
 

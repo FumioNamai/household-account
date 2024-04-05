@@ -96,6 +96,7 @@ export default function TopPage() {
         <ToBuyList
           groupedDataArr={groupedDataArr}
           setStocks={setStocks}
+          date={date}
           />
       </main>
     </>
