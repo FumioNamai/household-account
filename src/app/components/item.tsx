@@ -13,7 +13,7 @@ type Props = {
   price: string;
   count: number;
   type: string;
-  date: string | undefined | null;
+  selectedDate: string | undefined | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   to_buy: boolean;
 };
@@ -24,7 +24,7 @@ const Item = ({
   price,
   count,
   type,
-  date,
+  selectedDate,
   to_buy,
   setStocks,
 }: Props) => {
@@ -46,7 +46,7 @@ const Item = ({
             price={price}
             count={count}
             type={type}
-            date={date}
+            selectedDate={selectedDate}
             to_buy={to_buy}
             setStocks={setStocks}
           />

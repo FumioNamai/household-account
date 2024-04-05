@@ -7,12 +7,14 @@ import { supabase } from "../../../utils/supabase";
 
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
+import ja from "dayjs/locale/ja";
 
 import Monthly from "@/app/components/monthly";
 import Daily from "@/app/components/daily";
 import StockFilter from "@/app/components/stockFilter";
 import useStore from "@/store/index";
 import ToBuyList from "./to-buy-list";
+
 
 export default function TopPage() {
   const [stocks, setStocks] = useState<Stock[]>([]);
@@ -66,6 +68,9 @@ export default function TopPage() {
   const groupedDataArr = Object.values(groupedData);
 
   let [date, setDate] = useState<Dayjs | null>(dayjs());
+  const selectedDate: string | undefined = date
+    ?.locale(ja)
+    .format("YYYY-MM-DD");
 
   return (
     <>
@@ -96,7 +101,7 @@ export default function TopPage() {
         <ToBuyList
           groupedDataArr={groupedDataArr}
           setStocks={setStocks}
-          date={date}
+          selectedDate={selectedDate}
           />
       </main>
     </>

@@ -212,7 +212,7 @@ const StockFilter = ({
                                         count={groupedData.count}
                                         type={groupedData.type}
                                         setStocks={setStocks}
-                                        date={selectedDate}
+                                        selectedDate={selectedDate}
                                         to_buy={groupedData.to_buy}
                                       />
                                     )
@@ -225,7 +225,7 @@ const StockFilter = ({
                                         count={groupedData.count}
                                         type={groupedData.type}
                                         setStocks={setStocks}
-                                        date={selectedDate}
+                                        selectedDate={selectedDate}
                                         to_buy={groupedData.to_buy}
                                       />
                                     )}
@@ -250,7 +250,7 @@ const StockFilter = ({
                               count={groupedData.count}
                               type={groupedData.type}
                               setStocks={setStocks}
-                              date={selectedDate}
+                              selectedDate={selectedDate}
                               to_buy={groupedData.to_buy}
                             />
                           )}
@@ -330,7 +330,7 @@ const StockFilter = ({
                       count={groupedData.count}
                       type={groupedData.type}
                       setStocks={setStocks}
-                      date={selectedDate}
+                      selectedDate={selectedDate}
                       to_buy={groupedData.to_buy}
                     />
                   )}

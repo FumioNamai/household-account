@@ -16,7 +16,7 @@ name: string;
 price: string;
 count: number;
 type: string;
-date: string | undefined | null;
+selectedDate: string | undefined | null;
 to_buy: boolean;
 setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
@@ -27,7 +27,7 @@ const InStockItem = ({
   price,
   count,
   type,
-  date,
+  selectedDate,
   to_buy,
   setStocks
 }: Props) => {
@@ -38,12 +38,12 @@ const InStockItem = ({
 
   // UPDATE 使った日をuse_dateに記録する
   const handleUse = async (propsID: number, userId: string) => {
-    if (date !== undefined) {
+    if (selectedDate !== undefined) {
       try {
         // 使うボタン押下でuse_dateに記録してdailyに移動
         await supabase
           .from("stocks")
-          .update({ use_date: date })
+          .update({ use_date: selectedDate })
           .eq("id", propsID);
 
         // 残数が1の在庫の使うボタンを押した場合、
@@ -75,7 +75,7 @@ const InStockItem = ({
           .eq("user_id", userId);
         onUpdate(updatedStocks);
         if (showSnackbar) {
-          showSnackbar("success", `『${name}』を${date}付けで計上しました。`);
+          showSnackbar("success", `『${name}』を${selectedDate}付けで計上しました。`);
         }
       } catch (error: any) {
         if (showSnackbar) {

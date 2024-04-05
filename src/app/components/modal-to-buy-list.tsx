@@ -3,7 +3,6 @@ import { Stock } from "../../../utils/type";
 import { useState } from "react";
 import InStockItem from "./in-stock-item";
 import OutOfStockItem from "./out-of-stock-item";
-import { Dayjs } from "dayjs";
 
 type Props = {
   id: number;
@@ -12,7 +11,7 @@ type Props = {
   count: number;
   type: string;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  date: Dayjs | null;
+  selectedDate: string | undefined | null;
   to_buy: boolean;
 };
 
@@ -22,7 +21,7 @@ const ModalToBuyList = ({
   price,
   count,
   type,
-  date,
+  selectedDate,
   to_buy,
   setStocks,
 }: Props) => {
@@ -59,7 +58,7 @@ const ModalToBuyList = ({
               price={price}
               count={count}
               type={type}
-              date={date}
+              selectedDate={selectedDate}
               to_buy={to_buy}
               setStocks={setStocks}
             />

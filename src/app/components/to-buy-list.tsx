@@ -1,15 +1,14 @@
 import { GroupedData, Stock } from "../../../utils/type";
 import { Box, Grid, Typography } from "@mui/material";
 import ItemToBuy from "./itemToBuy";
-import { Dayjs } from "dayjs";
 
 type Props = {
   groupedDataArr: GroupedData[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  date: Dayjs | null;
+  selectedDate: string | undefined | null;
 };
 
-const ToBuyList = ({ groupedDataArr, setStocks, date}: Props) => {
+const ToBuyList = ({ groupedDataArr, setStocks, selectedDate}: Props) => {
   return (
     <Grid item xs={12} sx={{ marginBottom: "80px" }}>
       <Box>
@@ -32,7 +31,7 @@ const ToBuyList = ({ groupedDataArr, setStocks, date}: Props) => {
                     count={groupedData.count}
                     to_buy={groupedData.to_buy}
                     checked={groupedData.checked}
-                    date={date}
+                    selectedDate={selectedDate}
                     setStocks={setStocks}
                   />
                 )

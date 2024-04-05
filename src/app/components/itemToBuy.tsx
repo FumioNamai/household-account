@@ -12,13 +12,13 @@ type Props = {
   price: string;
   count: number;
   type: string;
-  date: Dayjs | null;
+  selectedDate: string | undefined | null;
   to_buy: boolean;
   checked:boolean;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const ItemToBuy = ({ id, name, price, count, type, date, to_buy, checked, setStocks }: Props) => {
+const ItemToBuy = ({ id, name, price, count, type, selectedDate, to_buy, checked, setStocks }: Props) => {
 
   return (
     <>
@@ -46,7 +46,7 @@ const ItemToBuy = ({ id, name, price, count, type, date, to_buy, checked, setSto
               price={price}
               count={count}
               type={type}
-              date={date}
+              selectedDate={selectedDate}
               to_buy={to_buy}
               setStocks={setStocks}
             />
