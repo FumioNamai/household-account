@@ -1,28 +1,21 @@
-import { supabase } from "../../../utils/supabase";
-import {
-  Box,
-  Divider,
-  IconButton,
-  List,
-  Tooltip,
-} from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import useStore from "@/store";
+import { supabase } from "../../../utils/supabase";
 import { useSnackbarContext } from "@/providers/context-provider";
+import useStore from "@/store";
 import { Stock } from "../../../utils/type";
-import CheckBox from "./check-box";
 
 type Props = {
   id: number;
   name: string;
   to_buy: boolean;
-  checked: boolean;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const ItemToBuy = ({ id, name, to_buy, checked, setStocks }: Props) => {
+const ToBuyButton = ({ id, name, to_buy, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
+
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   const handleToBuyListed = async (propsID: number, userId: string) => {
@@ -32,11 +25,11 @@ const ItemToBuy = ({ id, name, to_buy, checked, setStocks }: Props) => {
           .from("stocks")
           .update({ to_buy: true })
           .eq("id", propsID);
-        const { data } = await supabase
+        const { data: updatedStocks } = await supabase
           .from("stocks")
           .select("*")
           .eq("user_id", userId);
-        onUpdate(data);
+        onUpdate(updatedStocks);
         if (showSnackbar) {
           showSnackbar("success", `『${name}』を買い物リストに追加しました。`);
         }
@@ -52,13 +45,13 @@ const ItemToBuy = ({ id, name, to_buy, checked, setStocks }: Props) => {
       try {
         await supabase
           .from("stocks")
-          .update({ to_buy: false ,checked: false})
+          .update({ to_buy: false, checked: false })
           .eq("id", propsID);
-        const { data } = await supabase
+        const { data: updatedStocks } = await supabase
           .from("stocks")
           .select("*")
           .eq("user_id", userId);
-        onUpdate(data);
+        onUpdate(updatedStocks);
         if (showSnackbar) {
           showSnackbar(
             "success",
@@ -77,36 +70,18 @@ const ItemToBuy = ({ id, name, to_buy, checked, setStocks }: Props) => {
   };
 
   return (
-    <>
-      <List key={id}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <CheckBox
-            id={id}
-            name={name}
-            checked={checked}
-            setStocks={setStocks}
-          />
-
-          <Tooltip title="買い物リストから削除">
-            <IconButton
-              color="warning"
-              onClick={() => handleToBuyListed(id, user.id)}
-            >
-              <ShoppingCartOutlinedIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </List>
-      <Divider />
-    </>
+    <Tooltip
+      title={to_buy === true ? "買い物リストから削除" : "買い物リストに追加"}
+      placement="bottom"
+    >
+      <IconButton
+        color={to_buy === true ? "warning" : "default"}
+        onClick={() => handleToBuyListed(id, user.id)}
+      >
+        <ShoppingCartOutlinedIcon />
+      </IconButton>
+    </Tooltip>
   );
 };
 
-export default ItemToBuy;
+export default ToBuyButton;

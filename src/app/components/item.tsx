@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Stock } from "../../../utils/type";
 import { supabase } from "../../../utils/supabase";
 import {
-  Alert,
   Box,
   Button,
   Dialog,
@@ -24,8 +23,8 @@ import {
 } from "@mui/icons-material";
 import ControlPointTwoToneIcon from "@mui/icons-material/ControlPointTwoTone";
 import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import useStore, { useTaxStore } from "@/store";
+import ToBuyButton from "./to-buy-button";
 
 type Props = {
   id: number;
@@ -292,48 +291,6 @@ const Item = ({
     }
   };
 
-  const handleToBuyListed = async (propsID: number, userId: string)  => {
-    if (to_buy === false) {
-      try {
-        await supabase
-          .from("stocks")
-          .update({ to_buy: true })
-          .eq("id", propsID);
-        const { data: updatedStocks } = await supabase
-          .from("stocks")
-          .select("*")
-          .eq("user_id", userId);
-        onUpdate(updatedStocks);
-        if (showSnackbar) {
-          showSnackbar("success", `『${name}』を買い物リストに追加しました。`);
-        }
-      } catch (error: any) {
-        if (showSnackbar) {
-          showSnackbar("error", "買い物リストに追加できませんでした。" + error.message);
-        }
-      }
-    } else {
-      try {
-        await supabase
-          .from("stocks")
-          .update({ to_buy: false ,checked: false})
-          .eq("id", propsID);
-        const { data: updatedStocks } = await supabase
-          .from("stocks")
-          .select("*")
-          .eq("user_id", userId);
-        onUpdate(updatedStocks);
-        if (showSnackbar) {
-          showSnackbar("success", `『${name}』を買い物リストから削除しました。`);
-        }
-      } catch (error: any) {
-        if (showSnackbar) {
-          showSnackbar("error", "買い物リストから削除できませんでした。" + error.message);
-        }
-      }
-    };
-  };
-
   return (
     <>
       <List
@@ -429,16 +386,12 @@ const Item = ({
                     <RemoveCircleTwoToneIcon />
                   </IconButton>
                 </Tooltip>
-
-                <Tooltip title={to_buy === true ? "買い物リストから削除" : "買い物リストに追加"} placement="bottom">
-                  <IconButton
-                  // aria-label
-                  color = {to_buy === true ? "warning" : "default"}
-                  onClick={() => handleToBuyListed(id, user.id)}
-                  >
-                    <ShoppingCartOutlinedIcon />
-                  </IconButton>
-                </Tooltip>
+                <ToBuyButton
+                  id={id}
+                  name={name}
+                  to_buy={to_buy}
+                  setStocks={setStocks}
+                />
               </Box>
             </Box>
           </>
@@ -529,16 +482,12 @@ const Item = ({
                     </Button>
                   </DialogActions>
                 </Dialog>
-
-                <Tooltip title={to_buy === true ? "買い物リストから削除" : "買い物リストに追加"} placement="bottom">
-                  <IconButton
-                  color = {to_buy === true ? "warning" : "default"}
-                  onClick={() => handleToBuyListed(id, user.id)}
-                  >
-                    <ShoppingCartOutlinedIcon />
-                  </IconButton>
-                </Tooltip>
-
+                <ToBuyButton
+                  id={id}
+                  name={name}
+                  to_buy={to_buy}
+                  setStocks={setStocks}
+                />
               </Box>
             </Box>
           </>
