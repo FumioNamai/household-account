@@ -1,9 +1,8 @@
-import { Box, Button, IconButton, Modal, Stack, Typography } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 import { useState } from "react";
 import StockRegistration from "./StockRegistration";
 import { Stock } from "../../../utils/type";
 import { Dayjs } from "dayjs";
-import { CancelOutlined } from "@mui/icons-material";
 
 type Props = {
   setStocks:React.Dispatch<React.SetStateAction<Stock[]>>;
