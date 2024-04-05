@@ -11,7 +11,7 @@ type Props = {
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const CheckBox = ({ id, name, checked, setStocks }: Props) => {
+const CheckBox = ({ id, checked, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
   const onUpdate = (data: any | undefined) => setStocks(data);

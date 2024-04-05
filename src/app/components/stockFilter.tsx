@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import ja from "dayjs/locale/ja";
+import { Dayjs } from "dayjs";
+
 import {
   Box,
   Button,
@@ -12,16 +15,16 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { Categories } from "@/app/components/Categories";
-import { Types } from "@/app/components/types";
-import Item from "./item";
-import { GroupedData, Stock } from "../../../utils/type";
-import ja from "dayjs/locale/ja";
-import { Dayjs } from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import ModalStockRegistration from "./ModalStockRegistration";
+
+import { Categories } from "@/app/components/Categories";
+import Item from "@/app/components/item";
+import ModalStockRegistration from "@/app/components/ModalStockRegistration";
 import TaxSwitch from "@/app/components/taxSwitch";
+
+import { Types } from "@/app/components/types";
+import { GroupedData, Stock } from "../../../utils/type";
 
 type Props = {
   groupedDataArr: GroupedData[];
@@ -45,10 +48,6 @@ const StockFilter = ({
 
   const handleSelectItem = (event: SelectChangeEvent) =>
     setCategoryItem(event.target.value as string);
-
-  // const [open, setOpen] = useState(false);
-  // const [options, setOptions] = useState([]);
-  // const loading = open && options.length === 0;
 
   const handleDelete = () => setSearchName("");
 
@@ -99,20 +98,9 @@ const StockFilter = ({
             variant="body2"
             sx={{ textAlign: "center", marginTop: "4px" }}
           >
-            指定された日付で登録します
+            選択した日付で記録します
           </Typography>
         </Box>
-        {/* 税表示切替 */}
-        {/* <Box
-          sx={{
-            display: "flex",
-            alignItems: "flex-end",
-            marginRight: "8px",
-            verticalAlign: "text-bottom",
-          }}
-        >
-          <TaxSwitch />
-        </Box> */}
       </Box>
 
       {/* 在庫一覧 */}
@@ -200,8 +188,8 @@ const StockFilter = ({
                 </FormControl>
               }
               {/* 税表示切替 */}
-
                 <TaxSwitch />
+
               </Box>
               {type === "食品" ? (
                 Categories.map(

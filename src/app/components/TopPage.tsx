@@ -71,7 +71,10 @@ export default function TopPage() {
     <>
       <main>
         {/* 月別集計 */}
-        <Monthly stocks={stocks} setStocks={setStocks} />
+        <Monthly
+          stocks={stocks}
+          setStocks={setStocks}
+        />
 
         {/* 日別集計 */}
         <Daily
@@ -81,14 +84,6 @@ export default function TopPage() {
           setDate={setDate}
         />
 
-        {/* 在庫一覧 */}
-        {/* <StockList
-          stocks={stocks}
-          setStocks={setStocks}
-          date={date}
-          setDate={setDate}
-        /> */}
-
         {/* 在庫検索 */}
         <StockFilter
           groupedDataArr={groupedDataArr}
@@ -97,6 +92,7 @@ export default function TopPage() {
           setDate={setDate}
         />
 
+        {/* 買い物リスト */}
         <ToBuyList
           groupedDataArr={groupedDataArr}
           setStocks={setStocks}
