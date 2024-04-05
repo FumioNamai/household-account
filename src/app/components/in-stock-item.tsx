@@ -9,7 +9,6 @@ import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 
 import ToBuyButton from "./to-buy-button";
 import { Stock } from "../../../utils/type";
-import { Dayjs } from "dayjs";
 
 type Props = {
 id: number;
@@ -17,7 +16,7 @@ name: string;
 price: string;
 count: number;
 type: string;
-date: Dayjs | null;
+date: string | undefined | null;
 to_buy: boolean;
 setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };

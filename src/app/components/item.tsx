@@ -14,8 +14,8 @@ type Props = {
   count: number;
   type: string;
   date: string | undefined | null;
-  to_buy: boolean;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
+  to_buy: boolean;
 };
 
 const Item = ({
