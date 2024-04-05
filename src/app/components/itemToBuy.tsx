@@ -1,12 +1,16 @@
 import { supabase } from "../../../utils/supabase";
-import { Box, Checkbox, Divider, IconButton, List, Tooltip, Typography } from "@mui/material";
-// import PlaylistAddCheckOutlinedIcon from "@mui/icons-material/PlaylistAddCheckOutlined";
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import {
+  Box,
+  Divider,
+  IconButton,
+  List,
+  Tooltip,
+} from "@mui/material";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import useStore from "@/store";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { Stock } from "../../../utils/type";
-import { useState } from "react";
-import { log } from "console";
+import CheckBox from "./check-box";
 
 type Props = {
   id: number;
@@ -16,53 +20,10 @@ type Props = {
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const ItemToBuy = ({ id, name, to_buy,checked, setStocks }: Props) => {
+const ItemToBuy = ({ id, name, to_buy, checked, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
   const onUpdate = (data: any | undefined) => setStocks(data);
-
-  // 購入済みとしてデータベースに記録する場合、useStateとイベントハンドラーを使う
-  // const [checked, setChecked] = useState(false)
-  // const handleCheck = (event:React.ChangeEvent<HTMLInputElement>) => {
-  //   setChecked(event.target.checked)
-  // }
-
-
-  const handleCheck = async (propsID: number, userId: string)  => {
-    if (checked === false) {
-      try {
-        await supabase
-          .from("stocks")
-          .update({ checked: true })
-          .eq("id", propsID);
-        const { data: updatedStocks } = await supabase
-          .from("stocks")
-          .select("*")
-          .eq("user_id", userId);
-        onUpdate(updatedStocks);
-      } catch (error: any) {
-        if (showSnackbar) {
-          showSnackbar("error", "できませんでした。" + error.message);
-        }
-      }
-    } else {
-      try {
-        await supabase
-          .from("stocks")
-          .update({ checked: false })
-          .eq("id", propsID);
-        const { data: updatedStocks } = await supabase
-          .from("stocks")
-          .select("*")
-          .eq("user_id", userId);
-        onUpdate(updatedStocks);
-      } catch (error: any) {
-        if (showSnackbar) {
-          showSnackbar("error", "できませんでした。" + error.message);
-        }
-      }
-    };
-  };
 
   const handleToBuyListed = async (propsID: number, userId: string) => {
     if (to_buy === false) {
@@ -117,8 +78,7 @@ const ItemToBuy = ({ id, name, to_buy,checked, setStocks }: Props) => {
 
   return (
     <>
-    <List key={id}>
-    {/* {to_buy === true && ( */}
+      <List key={id}>
         <Box
           sx={{
             display: "flex",
@@ -127,19 +87,12 @@ const ItemToBuy = ({ id, name, to_buy,checked, setStocks }: Props) => {
             justifyContent: "space-between",
           }}
         >
-          {/* コンポーネントとして分離する必要あり */}
-          <Box
-            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-          >
-            <Tooltip
-            title={checked ? "チェックを外す" : "チェックを入れる"}>
-            <Checkbox
-            checked={checked ? true : false}
-            onChange={() => handleCheck(id, user.id)}
-            />
-            </Tooltip>
-            <Typography>{name}</Typography>
-          </Box>
+          <CheckBox
+            id={id}
+            name={name}
+            checked={checked}
+            setStocks={setStocks}
+          />
           <Tooltip title="買い物リストから削除">
             <IconButton
               color="warning"
@@ -149,9 +102,8 @@ const ItemToBuy = ({ id, name, to_buy,checked, setStocks }: Props) => {
             </IconButton>
           </Tooltip>
         </Box>
-    {/* )} */}
-    </List>
-    <Divider />
+      </List>
+      <Divider />
     </>
   );
 };
