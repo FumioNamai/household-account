@@ -45,12 +45,7 @@ export default function TopPage() {
 
   const groupedData: { [key: string]: any } = {};
 
-  console.log(Array.isArray(stocks));
-  const result = Object.groupBy(stocks,({type})=> {
-    return type ==="食品" ? "食品" : "食品以外"} )
-  console.log(result);
-
-
+  //nameとpriceが同じものをグループにまとめて、countに個数を登録したい
 
   stocks.forEach((stock) => {
     if (!stock.use_date) {
@@ -83,10 +78,7 @@ export default function TopPage() {
     <>
       <main>
         {/* 月別集計 */}
-        <Monthly
-          stocks={stocks}
-          setStocks={setStocks}
-        />
+        <Monthly stocks={stocks} setStocks={setStocks} />
 
         {/* 日別集計 */}
         <Daily
@@ -109,7 +101,7 @@ export default function TopPage() {
           groupedDataArr={groupedDataArr}
           setStocks={setStocks}
           selectedDate={selectedDate}
-          />
+        />
       </main>
     </>
   );
