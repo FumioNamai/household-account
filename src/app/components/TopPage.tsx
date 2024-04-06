@@ -45,6 +45,12 @@ export default function TopPage() {
 
   const groupedData: { [key: string]: any } = {};
 
+  console.log(Array.isArray(stocks));
+  const result = Object.groupBy(stocks,({type})=> type ==="食品" )
+  console.log(result);
+
+
+
   stocks.forEach((stock) => {
     if (!stock.use_date) {
       const key = `${stock.name}-${stock.price}`;
