@@ -46,7 +46,8 @@ export default function TopPage() {
   const groupedData: { [key: string]: any } = {};
 
   console.log(Array.isArray(stocks));
-  const result = Object.groupBy(stocks,({type})=> type ==="食品" )
+  const result = Object.groupBy(stocks,({type})=> {
+    return type ==="食品" ? "食品" : "食品以外"} )
   console.log(result);
 
 
