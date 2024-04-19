@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import Loading from "./loading";
+import Loading from "@/app/components/Loading";
 import Link from "next/link";
 
 type Schema = z.infer<typeof schema>;

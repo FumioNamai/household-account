@@ -4,7 +4,7 @@ import { supabase } from "../../../utils/supabase";
 import { DeleteTwoTone, ModeTwoTone } from "@mui/icons-material";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, IconButton, TextField, Tooltip, Typography } from "@mui/material";
 
-import ToBuyButton from "./to-buy-button";
+import ToBuyButton from "./ToBuyButton";
 
 import useStore, { useTaxStore } from "@/store";
 import { Stock } from "../../../utils/type";

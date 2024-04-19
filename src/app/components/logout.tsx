@@ -4,7 +4,7 @@ import { Database } from "@/lib/database.types"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
-import Loading from "./loading"
+import Loading from "@/app/components/Loading"
 import { Button, Typography } from "@mui/material"
 
 const Logout = () => {

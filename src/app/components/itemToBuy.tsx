@@ -1,10 +1,9 @@
 
-import { Box, Divider, List, Typography } from "@mui/material";
+import { Box, Divider, List } from "@mui/material";
 import { Stock } from "../../../utils/type";
-import CheckBox from "./check-box";
-import ToBuyButton from "./to-buy-button";
-import ModalToBuyList from "./modal-to-buy-list";
-import { Dayjs } from "dayjs";
+import CheckBox from "@/app/components/check-box";
+import ModalToBuyList from "@/app/components/ModalToBuyList";
+import ToBuyButton from "@/app/components/ToBuyButton";
 
 type Props = {
   id: number;

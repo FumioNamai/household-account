@@ -2,7 +2,7 @@
 import { CssBaseline, ThemeProvider, } from "@mui/material";
 import { FC, ReactNode, useEffect, useMemo, useState } from "react";
 // import { useModeStore } from "@/store/mode";
-import { colorTheme } from "./colorTheme";
+// import { colorTheme } from "./colorTheme";
 import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "../styles/theme";
 
@@ -56,7 +56,6 @@ export const ThemedComp: FC<Props> = ({ children }) => {
   return (
     <ThemeProvider theme={currentTheme}>
       <CssBaseline />
-      {/* <ModeSwitch /> */}
       {children}
     </ThemeProvider>
   );

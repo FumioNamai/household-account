@@ -1,8 +1,8 @@
 import { Box, Button, Modal } from "@mui/material";
 import { Stock } from "../../../utils/type";
 import { useState } from "react";
-import InStockItem from "./in-stock-item";
-import OutOfStockItem from "./out-of-stock-item";
+import InStockItem from "@/app/components/InStockItem";
+import OutOfStockItem from "@/app/components/OutOfStockItem";
 
 type Props = {
   id: number;

@@ -19,9 +19,9 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import { Categories } from "@/app/components/Categories";
-import Item from "@/app/components/item";
 import ModalStockRegistration from "@/app/components/ModalStockRegistration";
-import TaxSwitch from "@/app/components/taxSwitch";
+import Item from "./Item";
+import TaxSwitch from "@/app/components/TaxSwitch";
 
 import { Types } from "@/app/components/types";
 import { GroupedData, Stock } from "../../../utils/type";

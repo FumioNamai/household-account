@@ -4,8 +4,8 @@ import {
   Divider,
   List,
 } from "@mui/material";
-import InStockItem from "./in-stock-item";
-import OutOfStockItem from "./out-of-stock-item";
+import InStockItem from "@/app/components/InStockItem";
+import OutOfStockItem from "@/app/components/OutOfStockItem";
 
 type Props = {
   id: number;

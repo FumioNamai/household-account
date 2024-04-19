@@ -2,7 +2,7 @@
 
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { z } from "zod";
-import Loading from "./loading";
+import Loading from "@/app/components/Loading";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";

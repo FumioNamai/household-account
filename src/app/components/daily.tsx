@@ -9,12 +9,12 @@ import {
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import UsedItem from "@/app/components/usedItem";
+import UsedItem from "@/app/components/UsedItem";
 import { Stock } from "../../../utils/type";
 import ja from "dayjs/locale/ja";
 import { Dayjs } from "dayjs";
 import useStore, { useTaxStore } from "@/store";
-import TaxSwitch from "./taxSwitch";
+import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 type Props = {

@@ -13,10 +13,10 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
-import UsedItem from "@/app/components/usedItem";
+import UsedItem from "@/app/components/UsedItem";
 import { Stock } from "../../../utils/type";
 import useStore, { useTaxStore } from "@/store";
-import TaxSwitch from "./taxSwitch";
+import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 

@@ -16,10 +16,6 @@ export const ThemeToggle = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  // console.log("useTheme", useTheme());
-  // console.log("mounted", mounted);
-  // console.log("theme", theme);
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -39,15 +35,6 @@ export const ThemeToggle = () => {
           marginBottom: "10px",
         }}
       >
-        {/* 現在のテーマ{theme} */}
-        {/* <select
-        value={theme}
-        onChange={(e) => setTheme(e.target.value) }
-        >
-        <option value="system">システム</option>
-        <option value="dark">ダーク</option>
-        <option value="light">ライト</option>
-      </select> */}
 
         <Button
           size="small"

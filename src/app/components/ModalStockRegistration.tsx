@@ -1,6 +1,6 @@
 import { Box, Button, Modal } from "@mui/material";
 import { useState } from "react";
-import StockRegistration from "./StockRegistration";
+import StockRegistration from "@/app/components/StockRegistration";
 import { Stock } from "../../../utils/type";
 import { Dayjs } from "dayjs";
 

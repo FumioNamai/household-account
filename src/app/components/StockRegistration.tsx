@@ -24,8 +24,8 @@ import { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
 
 import { useStore, useTaxStore } from "@/store";
-import TaxSwitch from "@/app/components/taxSwitch";
-import RegistrationDateSelector from "./registration-date-selector";
+import TaxSwitch from "@/app/components/TaxSwitch";
+import RegistrationDateSelector from "./RegistrationDateSelector";
 
 type Props = {
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;

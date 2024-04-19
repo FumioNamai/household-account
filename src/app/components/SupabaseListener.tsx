@@ -3,7 +3,7 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Database } from "../../lib/database.types"
 import { cookies } from 'next/headers'
-import Navigation from "./navigation"
+import Navigation from "@/app/components/Navigation"
 
 // 認証状態の監視
 const SupabaseListener = async () => {

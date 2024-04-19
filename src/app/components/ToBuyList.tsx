@@ -1,6 +1,6 @@
 import { GroupedData, Stock } from "../../../utils/type";
 import { Box, Grid, Typography } from "@mui/material";
-import ItemToBuy from "./itemToBuy";
+import ItemToBuy from "@/app/components/ItemToBuy";
 
 type Props = {
   groupedDataArr: GroupedData[];

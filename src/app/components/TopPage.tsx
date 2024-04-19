@@ -9,11 +9,11 @@ import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import ja from "dayjs/locale/ja";
 
-import Monthly from "@/app/components/monthly";
-import Daily from "@/app/components/daily";
-import StockFilter from "@/app/components/stockFilter";
+import Monthly from "@/app/components/Monthly";
+import Daily from "@/app/components/Daily";
+import StockFilter from "@/app/components/StockFilter";
 import useStore from "@/store/index";
-import ToBuyList from "./to-buy-list";
+import ToBuyList from "@/app/components/ToBuyList";
 
 
 export default function TopPage() {

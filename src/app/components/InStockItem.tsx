@@ -7,7 +7,7 @@ import ControlPointTwoToneIcon from "@mui/icons-material/ControlPointTwoTone";
 import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 
-import ToBuyButton from "./to-buy-button";
+import ToBuyButton from "@/app/components/ToBuyButton";
 import { Stock } from "../../../utils/type";
 
 type Props = {
