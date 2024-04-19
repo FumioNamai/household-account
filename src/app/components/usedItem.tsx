@@ -19,6 +19,7 @@ const UsedItem = ({ id, name, price, setStocks }: Props) => {
   const user = useStore((state) => state.user);
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
+
   // 戻すボタン押下でuse_dataの値を取り除き、在庫に差し戻す処理
   const handleReturn = async (propsID: number, userId: string) => {
     try {

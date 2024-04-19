@@ -43,7 +43,7 @@ const InStockItem = ({
         // 使うボタン押下でuse_dateに記録してdailyに移動
         await supabase
           .from("stocks")
-          .update({ use_date: selectedDate })
+          .update({ use_date: selectedDate , to_buy: false})
           .eq("id", propsID);
 
         // 残数が1の在庫の使うボタンを押した場合、
@@ -99,6 +99,10 @@ const InStockItem = ({
         .from("stocks")
         .select()
         .eq("id", propsID);
+        const { error } = await supabase
+        .from("stocks")
+        .update({to_buy: false})
+        .eq("id", propsID)
       const newStock = {
         id: undefined,
         type: restocks![0].type,
@@ -155,6 +159,7 @@ const InStockItem = ({
           use_date: null,
         };
 
+
         // newStockを在庫に登録（マイナスボタンで選択した項目を複製して在庫リストに追加する）
         await supabase.from("stocks").insert({ ...newStock });
         if (error) throw error;
@@ -195,7 +200,6 @@ const InStockItem = ({
 
   return (
     <>
-      {/* 在庫あり */}
       <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
         <Box
           sx={{

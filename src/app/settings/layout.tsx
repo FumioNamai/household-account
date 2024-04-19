@@ -10,7 +10,7 @@ import { Box, Container, Link, Stack } from "@mui/material";
 // セッティングス用のナビゲーション
 const subNavigation = [
   {
-    name: "プロフィール",
+    name: "ユーザー名",
     icon: AccountCircleOutlinedIcon,
     href: "/settings/profile",
   },

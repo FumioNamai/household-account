@@ -30,12 +30,11 @@ const Monthly: React.FC<{
 
   const selectedMonth: string | null = month!.format("YYYY-MM");
 
+  // 指定した月の1日ごとの種別使用金額を取得
   let date = "0";
   let dailyTotals = [];
-
   for (let i = 1; i < 32; i++) {
     date = ("0" + `${i}`).slice(-2);
-
     const todayUsed: Stock[] = stocks!.filter(
       (stock) =>
         stock.user_id === user.id &&
@@ -68,7 +67,7 @@ const Monthly: React.FC<{
     });
   }
 
-  //その他の今月使用済みリストを表示させる
+  //指定した月の消費品目を取得する
   const monthOthers: Stock[] = stocks?.filter(
     (stock) =>
       stock.user_id === user.id &&
@@ -76,27 +75,34 @@ const Monthly: React.FC<{
       stock.use_date?.startsWith(selectedMonth)
   );
 
+  // 指定した月に使用した食品の合計金額を算出
   let monthlyFoodsTotal: number = dailyTotals.reduce((sum, el) => {
     return sum + el.todayFoodsTotal;
   }, 0);
+  // 税込・税抜金額の切り替え
   monthlyFoodsTotal = tax
     ? monthlyFoodsTotal
     : Math.ceil(monthlyFoodsTotal / 1.08);
 
+  // 指定した月に使用した雑貨の合計金額を算出
   let monthlyItemsTotal: number = dailyTotals.reduce((sum, el) => {
     return sum + el.todayItemsTotal;
   }, 0);
+  // 税込・税抜金額の切り替え
   monthlyItemsTotal = tax
     ? monthlyItemsTotal
     : Math.ceil(monthlyItemsTotal / 1.1);
 
+  // 指定した月に使用したその他の合計金額を算出
   let monthlyOthersTotal: number = dailyTotals.reduce((sum, el) => {
     return sum + el.todayOthersTotal;
   }, 0);
+  // 税込・税抜金額の切り替え
   monthlyOthersTotal = tax
     ? monthlyOthersTotal
     : Math.ceil(monthlyOthersTotal / 1.1);
 
+  // 指定した月の合計使用金額を算出
   const monthlyTotal: number =
     monthlyFoodsTotal + monthlyItemsTotal + monthlyOthersTotal;
 

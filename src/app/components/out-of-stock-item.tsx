@@ -69,14 +69,17 @@ const OutOfStockItem = ({
     }
   };
 
+  // 価格の更新処理
   const handleUpdate = async (propsID: number, userId: string) => {
+    // 価格入力に対してのバリデーション
+    // 0以下の数字
     if (parseFloat(newPrice) <= 0) {
       if (showSnackbar) {
         showSnackbar("error", "価格を1円以上で入力してください。");
       }
       return;
     }
-
+    // 整数でない場合
     if (Number.isInteger(parseFloat(newPrice)) === false) {
       if (showSnackbar) {
         showSnackbar("error", "価格を半角数字(整数)で入力してください。");
@@ -84,6 +87,7 @@ const OutOfStockItem = ({
       return;
     }
 
+    // 税込・税抜金額切り替え
     if (type === "食品" && tax === false) {
       newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
     }
@@ -94,7 +98,7 @@ const OutOfStockItem = ({
     try {
       await supabase
         .from("stocks")
-        .update({ price: newPrice })
+        .update({ price: newPrice ,to_buy: false })
         .eq("id", propsID);
       const { data: updatedStocks } = await supabase
         .from("stocks")

@@ -33,12 +33,7 @@ type Props = {
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 };
 
-const StockFilter = ({
-  groupedDataArr,
-  setStocks,
-  date,
-  setDate,
-}: Props) => {
+const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
@@ -53,6 +48,7 @@ const StockFilter = ({
 
   const handleSelectType = (event: any, newType: string) =>
     setSelectedType(newType);
+
   return (
     <>
       <Box
@@ -130,15 +126,11 @@ const StockFilter = ({
             onChange={handleSelectType}
             sx={{ marginBlock: "12px" }}
           >
-            <ToggleButton value="食品" sx={{ width: "80px" }}>
-              食品
-            </ToggleButton>
-            <ToggleButton value="雑貨" sx={{ width: "80px" }}>
-              雑貨
-            </ToggleButton>
-            <ToggleButton value="その他" sx={{ width: "80px" }}>
-              その他
-            </ToggleButton>
+            {Types.map((type) => (
+              <ToggleButton key={type} value={type} sx={{ width: "80px" }}>
+                {type}
+              </ToggleButton>
+            ))}
           </ToggleButtonGroup>
           <Button
             size="small"
@@ -154,42 +146,41 @@ const StockFilter = ({
         {Types.map((type) =>
           selectedType === type ? (
             <Box key={type}>
-            <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems:"center",
-              marginRight: "-4px",
-            }}
-          >
-              {
-                //  分類検索
-                <FormControl
-                  variant="standard"
-                  sx={{
-                    width: 140,
-                  }}
-                >
-                  <InputLabel>分類</InputLabel>
-                  <Select
-                    id="category"
-                    value={categoryItem}
-                    label="分類"
-                    onChange={handleSelectItem}
-                    disabled = {type !== "食品" && true}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginRight: "-4px",
+                }}
+              >
+                {
+                  //  分類検索
+                  <FormControl
+                    variant="standard"
+                    sx={{
+                      width: 140,
+                    }}
                   >
-                    <MenuItem value={""}></MenuItem>
-                    {Categories.map((category) => (
-                      <MenuItem key={category} value={category}>
-                        {category}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              }
-              {/* 税表示切替 */}
+                    <InputLabel>分類</InputLabel>
+                    <Select
+                      id="category"
+                      value={categoryItem}
+                      label="分類"
+                      onChange={handleSelectItem}
+                      disabled={type !== "食品" && true}
+                    >
+                      <MenuItem value={""}></MenuItem>
+                      {Categories.map((category) => (
+                        <MenuItem key={category} value={category}>
+                          {category}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                }
+                {/* 税表示切替 */}
                 <TaxSwitch />
-
               </Box>
               {type === "食品" ? (
                 Categories.map(

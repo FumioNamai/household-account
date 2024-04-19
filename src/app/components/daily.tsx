@@ -32,48 +32,47 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
     ?.locale(ja)
     .format("YYYY-MM-DD");
 
+  // 指定した日に使用した商品を取得
   const todayUsed: Stock[] = stocks!.filter(
     (stock: Stock) =>
       stock.user_id === user.id && stock.use_date === `${selectedDate}`
   );
 
-  // その日に使用した食品の合計金額を算出
+  // 指定した日に使用した食品の合計金額を算出
   const todayFoods: Stock[] = todayUsed.filter(
     (todayUsed: Stock) => todayUsed.type === "食品"
   );
   let todaysFoodsTotal: number = todayFoods.reduce((sum: number, el) => {
     return sum + el.price;
   }, 0);
-
+  // 税込・税抜金額の切り替え
   todaysFoodsTotal = tax
     ? todaysFoodsTotal
     : Math.ceil(todaysFoodsTotal / 1.08);
 
-  // その日に使用した雑貨の合計金額を算出
+  // 指定した日に使用した雑貨の合計金額を算出
   const todayItems: Stock[] = todayUsed.filter(
     (todayUsed: Stock) => todayUsed.type === "雑貨"
   );
   let todaysItemsTotal: number = todayItems.reduce((sum: number, el) => {
     return sum + el.price;
   }, 0);
-
+  // 税込・税抜金額の切り替え
   todaysItemsTotal = tax ? todaysItemsTotal : Math.ceil(todaysItemsTotal / 1.1);
 
-  // その日に使用した雑貨の合計金額を算出
+  // 指定した日に使用した雑貨の合計金額を算出
   const todayOthers: Stock[] = todayUsed.filter(
     (todayUsed: Stock) => todayUsed.type === "その他"
   );
   let todaysOthersTotal: number = todayOthers.reduce((sum: number, el) => {
     return sum + el.price;
   }, 0);
-
+  // 税込・税抜金額の切り替え
   todaysOthersTotal = tax
     ? todaysOthersTotal
     : Math.ceil(todaysOthersTotal / 1.1);
 
-  // その月に使用したその他の合計金額を算出
-
-  // その日の合計金額を算出
+  // 指定した日の合計金額を算出
   const total: number = todaysFoodsTotal + todaysItemsTotal + todaysOthersTotal;
 
   return (

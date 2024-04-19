@@ -17,7 +17,7 @@ import ToBuyList from "./to-buy-list";
 
 
 export default function TopPage() {
-  const [stocks, setStocks] = useState<Stock[]>([]);
+  let [stocks, setStocks] = useState<Stock[]>([]);
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
 
@@ -40,13 +40,13 @@ export default function TopPage() {
 
   useEffect(() => {
     (async () => await getStocks(user.id))();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id]);
 
   const groupedData: { [key: string]: any } = {};
 
   //nameとpriceが同じものをグループにまとめて、countに個数を登録したい
 
+  stocks = stocks.sort((a,b) => a.id - b.id)
   stocks.forEach((stock) => {
     if (!stock.use_date) {
       const key = `${stock.name}-${stock.price}`;

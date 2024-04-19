@@ -16,7 +16,7 @@ type Schema = z.infer<typeof schema>;
 // 入力データの検証ルールを定義する
 const schema = z.object({
   name: z.string().min(2, { message: "2文字以上入力する必要があります。" }),
-  introduce: z.string().min(0),
+  // introduce: z.string().min(0),
 });
 
 const Profile = () => {
@@ -37,7 +37,7 @@ const Profile = () => {
     // 初期値
     defaultValues: {
       name: user.name ? user.name : "",
-      introduce: user.introduce ? user.introduce : "",
+      // introduce: user.introduce ? user.introduce : "",
     },
     // 入力値の検証
     resolver: zodResolver(schema),
@@ -53,7 +53,7 @@ const Profile = () => {
         .from("profiles")
         .update({
           name: data.name,
-          introduce: data.introduce,
+          // introduce: data.introduce,
         })
         .eq("id", user.id);
 
@@ -84,7 +84,7 @@ const Profile = () => {
           mb: 3,
         }}
       >
-        プロフィール
+        ユーザー名変更
       </Typography>
 
       <Stack
@@ -106,14 +106,14 @@ const Profile = () => {
         <Typography variant="body1" sx={{ color: "red", textAlign: "center" }}>{errors.name?.message}</Typography>
 
         {/* 自己紹介 */}
-        <TextField
+        {/* <TextField
           label="自己紹介"
           multiline
           id="introduce"
           rows={5}
           sx={{ width: "100%" }}
           {...register("introduce")}
-        />
+        /> */}
 
         {/* 変更ボタン */}
         <Box>
