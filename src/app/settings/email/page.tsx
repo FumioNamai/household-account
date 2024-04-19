@@ -1,4 +1,4 @@
-import Email from "@/app/components/email"
+import Email from "@/app/components/Email"
 import { Database } from "@/lib/database.types"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { redirect } from "next/navigation"

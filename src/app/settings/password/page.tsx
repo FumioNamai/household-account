@@ -1,4 +1,4 @@
-import Password from "@/app/components/password"
+import Password from "@/app/components/Password"
 import { Database } from "@/lib/database.types"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
