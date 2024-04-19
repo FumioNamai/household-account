@@ -16,10 +16,8 @@ const Navigation = ({
   profile: ProfileType | null;
 }) => {
   const setUser = useStore((state) => state.setUser);
-
   // 状態管理にユーザー情報を保存
   // セッションが無い場合は状態管理も空になる
-
   useEffect(() => {
     setUser({
       email: session ? session.user.email : "",

@@ -1,4 +1,3 @@
-
 import { Box, Divider, List } from "@mui/material";
 import { Stock } from "../../../utils/type";
 import CheckBox from "@/app/components/check-box";

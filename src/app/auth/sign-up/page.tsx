@@ -1,4 +1,4 @@
-import SignUp from "@/app/components/sign-up";
+import SignUp from "@/app/components/SignUp";
 import { Database } from "@/lib/database.types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";

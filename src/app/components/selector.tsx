@@ -4,7 +4,7 @@ import { Container } from "@mui/material";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from 'next/headers'
 import TopPage from "@/app/components/TopPage";
-import Login from "@/app/components/Login";
+import Login from "../components/Login";
 
 export default async function Selector() {
   const supabase = createServerComponentClient<Database>({

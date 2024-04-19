@@ -1,9 +1,8 @@
-import ResetPassword from "@/app/components/reset-password"
+import ResetPassword from "@/app/components/ResetPassword"
 import { Database } from "@/lib/database.types"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
-import { Box } from "@mui/material"
 
 // パスワードリセットページ
 const ResetPasswordPage = async() => {

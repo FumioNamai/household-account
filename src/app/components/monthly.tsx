@@ -19,7 +19,6 @@ import useStore, { useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-
 const Monthly: React.FC<{
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
