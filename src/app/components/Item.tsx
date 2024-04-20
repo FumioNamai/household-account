@@ -29,7 +29,7 @@ const Item = ({
   type,
   selectedDate,
   to_buy,
-  setStocks,
+  setStocks
 }: Props) => {
   return (
     <>
@@ -52,7 +52,7 @@ const Item = ({
             selectedDate={selectedDate}
             to_buy={to_buy}
             setStocks={setStocks}
-            open = {false}
+            modalOpen={false}
           />
         ) : (
           <OutOfStockItem
