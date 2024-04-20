@@ -63,6 +63,7 @@ const InStockItem = ({
             name: restocks![0].name,
             user_id: restocks![0].user_id,
             price: 0,
+            reference_price: restocks![0].reference_price,
             registration_date: null,
             use_date: null,
           };
@@ -168,12 +169,12 @@ const InStockItem = ({
           type: restocks![0].type,
           category: restocks![0].category,
           name: restocks![0].name,
+          reference_price : restocks![0].reference_price,
           user_id: restocks![0].user_id,
           price: 0,
           registration_date: null,
           use_date: null,
         };
-
 
         // newStockを在庫に登録（マイナスボタンで選択した項目を複製して在庫リストに追加する）
         await supabase.from("stocks").insert({ ...newStock });
