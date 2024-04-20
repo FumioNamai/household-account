@@ -19,6 +19,7 @@ type: string;
 selectedDate: string | undefined | null;
 to_buy: boolean;
 setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
+open: boolean;
 };
 
 const InStockItem = ({
@@ -29,8 +30,10 @@ const InStockItem = ({
   type,
   selectedDate,
   to_buy,
-  setStocks
+  setStocks,
+  open
 }: Props) => {
+
   const { showSnackbar } = useSnackbarContext();
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
@@ -254,6 +257,7 @@ const InStockItem = ({
             <IconButton
               aria-label="use-item"
               color="success"
+              disabled={ open ? true : false }
               onClick={() => handleUse(id, user.id)}
             >
               <CheckCircleTwoTone />
@@ -274,6 +278,7 @@ const InStockItem = ({
             <IconButton
               aria-label="delete"
               color="error"
+              disabled={ open ? true : false }
               onClick={() => handleMinus(id, user.id)}
             >
               <RemoveCircleTwoToneIcon />

@@ -16,6 +16,7 @@ type Props = {
   type: string;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   to_buy: boolean;
+  open: boolean;
 };
 
 const OutOfStockItem = ({
@@ -23,7 +24,8 @@ const OutOfStockItem = ({
   name,
   type,
   to_buy,
-  setStocks
+  setStocks,
+  open
 }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
@@ -176,6 +178,7 @@ const OutOfStockItem = ({
               aria-label="delete"
               color="error"
               // onClick={() => handleDelete(id, user.id)}
+              disabled={ open ? true : false }
               onClick={handleClickOpen}
             >
               <DeleteTwoTone />

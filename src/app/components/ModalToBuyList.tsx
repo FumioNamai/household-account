@@ -63,6 +63,7 @@ const ModalToBuyList = ({
               selectedDate={selectedDate}
               to_buy={to_buy}
               setStocks={setStocks}
+              open={open}
             />
           ) : (
             <OutOfStockItem
@@ -71,6 +72,7 @@ const ModalToBuyList = ({
               type={type}
               to_buy={to_buy}
               setStocks={setStocks}
+              open={open}
             />
           )}
         </Box>
