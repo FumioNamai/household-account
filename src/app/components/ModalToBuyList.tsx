@@ -69,6 +69,7 @@ const ModalToBuyList = ({
                 <OutOfStockItem
                   id={id}
                   name={name}
+                  price={price}
                   type={type}
                   category={category}
                   to_buy={to_buy}
@@ -102,6 +103,7 @@ const ModalToBuyList = ({
             <OutOfStockItem
               id={id}
               name={name}
+              price={price}
               type={type}
               category={category}
               to_buy={to_buy}

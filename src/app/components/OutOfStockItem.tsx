@@ -24,6 +24,7 @@ import { useSnackbarContext } from "@/providers/context-provider";
 type Props = {
   id: number;
   name: string;
+  price: number;
   type: string;
   category: string;
   reference_price: number | null;
@@ -35,6 +36,7 @@ type Props = {
 const OutOfStockItem = ({
   id,
   name,
+  price,
   type,
   reference_price,
   category,
@@ -126,6 +128,12 @@ const OutOfStockItem = ({
           .from("stocks")
           .select("*")
           .eq("user_id", userId);
+          if(price === 0) {
+            await supabase
+          .from("stocks")
+          .delete()
+          .eq("id", propsID);
+          }
         onUpdate(updatedStocks);
         if (showSnackbar) {
           showSnackbar(
