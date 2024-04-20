@@ -55,6 +55,7 @@ export default function TopPage() {
           id: stock.id,
           name: stock.name,
           price: stock.price,
+          reference_price: stock.reference_price,
           count: 0,
           type: stock.type,
           registration_date: stock.registration_date,

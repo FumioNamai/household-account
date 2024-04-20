@@ -199,6 +199,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                                         id={groupedData.id}
                                         name={groupedData.name}
                                         price={groupedData.price.toString()}
+                                        reference_price={groupedData.reference_price}
                                         count={groupedData.count}
                                         type={groupedData.type}
                                         setStocks={setStocks}
@@ -212,6 +213,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                                         id={groupedData.id}
                                         name={groupedData.name}
                                         price={groupedData.price.toString()}
+                                        reference_price={groupedData.reference_price}
                                         count={groupedData.count}
                                         type={groupedData.type}
                                         setStocks={setStocks}
@@ -237,6 +239,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                               id={groupedData.id}
                               name={groupedData.name}
                               price={groupedData.price.toString()}
+                              reference_price={groupedData.reference_price}
                               count={groupedData.count}
                               type={groupedData.type}
                               setStocks={setStocks}
@@ -317,6 +320,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                       id={groupedData.id}
                       name={groupedData.name}
                       price={groupedData.price.toString()}
+                      reference_price={groupedData.reference_price}
                       count={groupedData.count}
                       type={groupedData.type}
                       setStocks={setStocks}

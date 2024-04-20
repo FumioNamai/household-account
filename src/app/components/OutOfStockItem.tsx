@@ -25,12 +25,13 @@ type Props = {
   id: number;
   name: string;
   type: string;
+  reference_price: number | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   to_buy: boolean;
   open: boolean | undefined;
 };
 
-const OutOfStockItem = ({ id, name, type, to_buy, setStocks, open }: Props) => {
+const OutOfStockItem = ({ id, name, type, reference_price, setStocks, to_buy, open }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
   const tax = useTaxStore((state) => state.tax);
@@ -158,6 +159,8 @@ const OutOfStockItem = ({ id, name, type, to_buy, setStocks, open }: Props) => {
               variant="standard"
               type="string"
               size="small"
+              placeholder={`${reference_price}`}
+              inputProps={{sx:{textAlign:"right",marginRight:"8px"}}}
               sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
               value={newPrice}
               onChange={handleNewPrice}

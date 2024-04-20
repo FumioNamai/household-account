@@ -28,6 +28,7 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate}: Props) => {
                     name={groupedData.name}
                     type={groupedData.type}
                     price={groupedData.price.toString()}
+                    reference_price={groupedData.reference_price}
                     count={groupedData.count}
                     to_buy={groupedData.to_buy}
                     checked={groupedData.checked}

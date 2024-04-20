@@ -4,6 +4,7 @@ export type Stock = {
   name: string;
   user_id: string | null;
   price: number;
+  reference_price: number | null;
   category: string | null;
   registration_date: string | null;
   use_date:  string | null;
@@ -17,6 +18,7 @@ export type GroupedData  = {
   type: string;
   name: string;
   price: number;
+  reference_price: number | null;
   category: string | null;
   registration_date: string | null;
   use_date:  string | null;
