@@ -7,7 +7,7 @@ import OutOfStockItem from "@/app/components/OutOfStockItem";
 type Props = {
   id: number;
   name: string;
-  price: string;
+  price: number;
   reference_price: number | null;
   count: number;
   type: string;
@@ -56,7 +56,7 @@ const ModalToBuyList = ({
             padding: "8px",
           }}
         >
-          {parseInt(price) !== 0 ? (
+          {price !== 0 ? (
             <InStockItem
               id={id}
               name={name}

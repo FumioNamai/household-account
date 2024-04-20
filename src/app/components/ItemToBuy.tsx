@@ -8,7 +8,7 @@ import { useTaxStore } from "@/store";
 type Props = {
   id: number;
   name: string;
-  price: string;
+  price: number;
   reference_price: number | null;
   count: number;
   type: string;

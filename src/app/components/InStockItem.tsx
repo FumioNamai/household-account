@@ -13,7 +13,7 @@ import { Stock } from "../../../utils/type";
 type Props = {
 id: number;
 name: string;
-price: string;
+price: number;
 count: number;
 type: string;
 selectedDate: string | undefined | null;
@@ -203,10 +203,10 @@ const InStockItem = ({
   // 税抜き⇔税込みで表示金額を切り替える処理
   const calcPrice = () => {
     if (type === "食品" && tax === false) {
-      let taxExcluded = Math.ceil(parseInt(price) / 1.08).toString();
+      let taxExcluded = Math.ceil(price / 1.08)
       return taxExcluded;
     } else if (type !== "食品" && tax === false) {
-      let taxExcluded = Math.ceil(parseInt(price) / 1.1).toString();
+      let taxExcluded = Math.ceil(price / 1.1)
       return taxExcluded;
     } else {
       return price;

@@ -198,7 +198,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                                       <Item
                                         id={groupedData.id}
                                         name={groupedData.name}
-                                        price={groupedData.price.toString()}
+                                        price={groupedData.price}
                                         reference_price={groupedData.reference_price}
                                         count={groupedData.count}
                                         type={groupedData.type}
@@ -212,7 +212,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                                       <Item
                                         id={groupedData.id}
                                         name={groupedData.name}
-                                        price={groupedData.price.toString()}
+                                        price={groupedData.price}
                                         reference_price={groupedData.reference_price}
                                         count={groupedData.count}
                                         type={groupedData.type}
@@ -238,7 +238,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                             <Item
                               id={groupedData.id}
                               name={groupedData.name}
-                              price={groupedData.price.toString()}
+                              price={groupedData.price}
                               reference_price={groupedData.reference_price}
                               count={groupedData.count}
                               type={groupedData.type}
@@ -319,7 +319,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                     <Item
                       id={groupedData.id}
                       name={groupedData.name}
-                      price={groupedData.price.toString()}
+                      price={groupedData.price}
                       reference_price={groupedData.reference_price}
                       count={groupedData.count}
                       type={groupedData.type}

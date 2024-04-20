@@ -11,7 +11,7 @@ import OutOfStockItem from "@/app/components/OutOfStockItem";
 type Props = {
   id: number;
   name: string;
-  price: string;
+  price: number;
   count: number;
   type: string;
   reference_price: number | null;
@@ -42,7 +42,7 @@ const Item = ({
           // borderBottomColor:"grey.300",
         }}
       >
-        {parseInt(price) !== 0 ? (
+        {price !== 0 ? (
           <InStockItem
             id={id}
             name={name}
