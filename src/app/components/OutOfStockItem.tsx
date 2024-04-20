@@ -2,7 +2,18 @@ import { useState } from "react";
 import { supabase } from "../../../utils/supabase";
 
 import { DeleteTwoTone, ModeTwoTone } from "@mui/icons-material";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, IconButton, TextField, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  IconButton,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import ToBuyButton from "./ToBuyButton";
 
@@ -19,14 +30,7 @@ type Props = {
   open: boolean | undefined;
 };
 
-const OutOfStockItem = ({
-  id,
-  name,
-  type,
-  to_buy,
-  setStocks,
-  open
-}: Props) => {
+const OutOfStockItem = ({ id, name, type, to_buy, setStocks, open }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
   const tax = useTaxStore((state) => state.tax);
@@ -43,7 +47,6 @@ const OutOfStockItem = ({
   const handleNewPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewPrice(event.target.value);
   };
-
 
   const handleDelete = async (propsID: number, userId: string) => {
     try {
@@ -100,7 +103,7 @@ const OutOfStockItem = ({
     try {
       await supabase
         .from("stocks")
-        .update({ price: newPrice ,to_buy: false })
+        .update({ price: newPrice })
         .eq("id", propsID);
       const { data: updatedStocks } = await supabase
         .from("stocks")
@@ -111,13 +114,25 @@ const OutOfStockItem = ({
         showSnackbar("success", `『${name}』の価格を更新しました。`);
       }
       setNewPrice("");
+      // モーダルからの操作の場合、1秒遅らせて
+      if (open) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+      // 買い物リストから外す処理
+      await supabase.from("stocks").update({ to_buy: false }).eq("id", propsID);
+      // 在庫データを更新して、画面を更新
+      const { data } = await supabase
+        .from("stocks")
+        .select("*")
+        .eq("user_id", userId);
+      onUpdate(data);
+
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "価格を更新できませんでした。" + error.message);
       }
     }
   };
-
 
   return (
     <>
@@ -178,7 +193,7 @@ const OutOfStockItem = ({
               aria-label="delete"
               color="error"
               // onClick={() => handleDelete(id, user.id)}
-              disabled={ open ? true : false }
+              disabled={open ? true : false}
               onClick={handleClickOpen}
             >
               <DeleteTwoTone />
