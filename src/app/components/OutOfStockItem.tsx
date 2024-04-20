@@ -104,7 +104,7 @@ const OutOfStockItem = ({ id, name, type, reference_price, setStocks, to_buy, op
     try {
       await supabase
         .from("stocks")
-        .update({ price: newPrice })
+        .update({ price: newPrice, reference_price: newPrice })
         .eq("id", propsID);
       const { data: updatedStocks } = await supabase
         .from("stocks")

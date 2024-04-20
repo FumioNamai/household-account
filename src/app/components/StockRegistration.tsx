@@ -116,6 +116,7 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
             type: type,
             name: itemName,
             price: newPrice,
+            reference_price: newPrice,
             registration_date: selectedDate,
             category: categoryItem,
             user_id: user.id,
@@ -191,7 +192,6 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
   };
 
   const handleAmountChange = (event: SelectChangeEvent) => {
-    // setAmount(parseInt(event.target.value));
     setAmount(event.target.value);
   };
 
@@ -287,7 +287,7 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
                 ),
               }}
               onChange={handlePriceChange}
-              disabled={parseInt(amount) === 0 ? true : false}
+              disabled={amount === "0" ? true : false}
             />
 
             <FormControl>
