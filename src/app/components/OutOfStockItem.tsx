@@ -25,13 +25,23 @@ type Props = {
   id: number;
   name: string;
   type: string;
+  category: string;
   reference_price: number | null;
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   to_buy: boolean;
-  open: boolean | undefined;
+  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
+  modalOpen: boolean | undefined;
 };
 
-const OutOfStockItem = ({ id, name, type, reference_price, setStocks, to_buy, open }: Props) => {
+const OutOfStockItem = ({
+  id,
+  name,
+  type,
+  reference_price,
+  category,
+  to_buy,
+  setStocks,
+  modalOpen,
+}: Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
   const tax = useTaxStore((state) => state.tax);
@@ -101,36 +111,77 @@ const OutOfStockItem = ({ id, name, type, reference_price, setStocks, to_buy, op
       newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
     }
 
-    try {
-      await supabase
-        .from("stocks")
-        .update({ price: newPrice, reference_price: newPrice })
-        .eq("id", propsID);
-      const { data: updatedStocks } = await supabase
-        .from("stocks")
-        .select("*")
-        .eq("user_id", userId);
-      onUpdate(updatedStocks);
-      if (showSnackbar) {
-        showSnackbar("success", `『${name}』の価格を更新しました。`);
-      }
-      setNewPrice("");
-      // モーダルからの操作の場合、1秒遅らせて
-      if (open) {
+    // モーダルからの変更
+    if (modalOpen) {
+      try {
+        await supabase.from("stocks").insert({
+          type: type,
+          name: name,
+          price: newPrice,
+          reference_price: newPrice,
+          category: category,
+          user_id: user.id,
+        });
+        const { data: updatedStocks } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId);
+        onUpdate(updatedStocks);
+        if (showSnackbar) {
+          showSnackbar(
+            "success",
+            `『${name}』を『${newPrice}円』で登録しました。`
+          );
+        }
+        // モーダルからの操作の場合、1秒遅らせて
         await new Promise((resolve) => setTimeout(resolve, 1000));
+        // 買い物リストから外す処理
+        await supabase
+          .from("stocks")
+          .update({ to_buy: false })
+          .eq("id", propsID);
+        // 在庫データを更新して、画面を更新
+        const { data } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId);
+        onUpdate(data);
+      } catch (error: any) {
+        if (showSnackbar) {
+          showSnackbar("error", "登録できませんでした。" + error.message);
+        }
       }
-      // 買い物リストから外す処理
-      await supabase.from("stocks").update({ to_buy: false }).eq("id", propsID);
-      // 在庫データを更新して、画面を更新
-      const { data } = await supabase
-        .from("stocks")
-        .select("*")
-        .eq("user_id", userId);
-      onUpdate(data);
+    } else {
+      try {
+        await supabase
+          .from("stocks")
+          .update({ price: newPrice, reference_price: newPrice })
+          .eq("id", propsID);
+        const { data: updatedStocks } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId);
+        onUpdate(updatedStocks);
+        if (showSnackbar) {
+          showSnackbar("success", `『${name}』の価格を更新しました。`);
+        }
+        setNewPrice("");
 
-    } catch (error: any) {
-      if (showSnackbar) {
-        showSnackbar("error", "価格を更新できませんでした。" + error.message);
+        // 買い物リストから外す処理
+        await supabase
+          .from("stocks")
+          .update({ to_buy: false })
+          .eq("id", propsID);
+        // 在庫データを更新して、画面を更新
+        const { data } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId);
+        onUpdate(data);
+      } catch (error: any) {
+        if (showSnackbar) {
+          showSnackbar("error", "価格を更新できませんでした。" + error.message);
+        }
       }
     }
   };
@@ -160,7 +211,7 @@ const OutOfStockItem = ({ id, name, type, reference_price, setStocks, to_buy, op
               type="string"
               size="small"
               placeholder={`${reference_price}`}
-              inputProps={{sx:{textAlign:"right",marginRight:"8px"}}}
+              inputProps={{ sx: { textAlign: "right", marginRight: "8px" } }}
               sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
               value={newPrice}
               onChange={handleNewPrice}
@@ -196,7 +247,7 @@ const OutOfStockItem = ({ id, name, type, reference_price, setStocks, to_buy, op
               aria-label="delete"
               color="error"
               // onClick={() => handleDelete(id, user.id)}
-              disabled={open ? true : false}
+              disabled={modalOpen ? true : false}
               onClick={handleClickOpen}
             >
               <DeleteTwoTone />

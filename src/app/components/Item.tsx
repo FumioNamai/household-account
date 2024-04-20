@@ -14,6 +14,7 @@ type Props = {
   price: number;
   count: number;
   type: string;
+  category: string;
   reference_price: number | null;
   selectedDate: string | undefined | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
@@ -27,6 +28,7 @@ const Item = ({
   reference_price,
   count,
   type,
+  category,
   selectedDate,
   to_buy,
   setStocks
@@ -59,10 +61,11 @@ const Item = ({
             id={id}
             name={name}
             type={type}
+            category={category}
             to_buy={to_buy}
             reference_price={reference_price}
             setStocks={setStocks}
-            open = {false}
+            modalOpen = {false}
           />
         )}
       </List>

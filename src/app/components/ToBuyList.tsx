@@ -27,6 +27,7 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate}: Props) => {
                     id={groupedData.id}
                     name={groupedData.name}
                     type={groupedData.type}
+                    category={groupedData.category!}
                     price={groupedData.price}
                     reference_price={groupedData.reference_price}
                     count={groupedData.count}

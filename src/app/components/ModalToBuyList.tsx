@@ -11,6 +11,7 @@ type Props = {
   reference_price: number | null;
   count: number;
   type: string;
+  category: string;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   selectedDate: string | undefined | null;
   to_buy: boolean;
@@ -23,6 +24,7 @@ const ModalToBuyList = ({
   reference_price,
   count,
   type,
+  category,
   selectedDate,
   to_buy,
   setStocks,
@@ -68,10 +70,11 @@ const ModalToBuyList = ({
                   id={id}
                   name={name}
                   type={type}
+                  category={category}
                   to_buy={to_buy}
                   reference_price={reference_price}
                   setStocks={setStocks}
-                  open={modalOpen}
+                  modalOpen={modalOpen}
                 />
               :
                 <InStockItem
@@ -100,10 +103,11 @@ const ModalToBuyList = ({
               id={id}
               name={name}
               type={type}
+              category={category}
               to_buy={to_buy}
               reference_price={reference_price}
               setStocks={setStocks}
-              open={modalOpen}
+              modalOpen={modalOpen}
             />
           )}
         </Box>

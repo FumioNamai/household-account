@@ -12,13 +12,14 @@ type Props = {
   reference_price: number | null;
   count: number;
   type: string;
+  category: string;
   selectedDate: string | undefined | null;
   to_buy: boolean;
   checked:boolean;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const ItemToBuy = ({ id, name, price,reference_price, count, type, selectedDate, to_buy, checked, setStocks }: Props) => {
+const ItemToBuy = ({ id, name, price,reference_price, count, type, category,selectedDate, to_buy, checked, setStocks }: Props) => {
   const tax = useTaxStore((state) => state.tax);
     // 税抜き⇔税込みで表示金額を切り替える処理
     const calcPrice = () => {
@@ -60,6 +61,7 @@ const ItemToBuy = ({ id, name, price,reference_price, count, type, selectedDate,
               reference_price={reference_price}
               count={count}
               type={type}
+              category={category}
               selectedDate={selectedDate}
               to_buy={to_buy}
               setStocks={setStocks}
