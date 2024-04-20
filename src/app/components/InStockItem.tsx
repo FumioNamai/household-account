@@ -19,7 +19,7 @@ type: string;
 selectedDate: string | undefined | null;
 to_buy: boolean;
 setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-open: boolean;
+open: boolean | undefined;
 };
 
 const InStockItem = ({
@@ -102,10 +102,6 @@ const InStockItem = ({
         .from("stocks")
         .select()
         .eq("id", propsID);
-        const { error } = await supabase
-        .from("stocks")
-        .update({to_buy: false})
-        .eq("id", propsID)
       const newStock = {
         id: undefined,
         type: restocks![0].type,
@@ -125,11 +121,27 @@ const InStockItem = ({
         .from("stocks")
         .select("*")
         .eq("user_id", userId);
-
       onUpdate(data);
       if (showSnackbar) {
         showSnackbar("success", `『${name}』の在庫を1つ増やしました。`);
       }
+
+      // モーダルからの操作の場合、1秒遅らせて
+      if (open) {
+        await new Promise(resolve => setTimeout(resolve,1000))
+      }
+        // 買い物リストから外す処理
+        await supabase
+        .from("stocks")
+        .update({to_buy: false})
+        .eq("id", propsID)
+        // 在庫データを更新して、画面を更新
+        const { data: data2 } = await supabase
+        .from("stocks")
+        .select("*")
+        .eq("user_id", userId);
+        onUpdate(data2);
+
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar(

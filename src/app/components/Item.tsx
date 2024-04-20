@@ -50,6 +50,7 @@ const Item = ({
             selectedDate={selectedDate}
             to_buy={to_buy}
             setStocks={setStocks}
+            open = {false}
           />
         ) : (
           <OutOfStockItem
@@ -58,6 +59,7 @@ const Item = ({
             type={type}
             to_buy={to_buy}
             setStocks={setStocks}
+            open = {false}
           />
         )}
       </List>

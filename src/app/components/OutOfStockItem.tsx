@@ -16,7 +16,7 @@ type Props = {
   type: string;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   to_buy: boolean;
-  open: boolean;
+  open: boolean | undefined;
 };
 
 const OutOfStockItem = ({
