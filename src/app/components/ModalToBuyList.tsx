@@ -1,4 +1,4 @@
-import { Box, Button, Modal } from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import { Stock } from "../../../utils/type";
 import { useState } from "react";
 import InStockItem from "@/app/components/InStockItem";
@@ -27,19 +27,23 @@ const ModalToBuyList = ({
   to_buy,
   setStocks,
 }: Props) => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+  const [toggle, setToggle] = useState(false);
+  const handleSwitch = () => setToggle(!toggle);
 
   return (
     <>
       <Button
-        onClick={handleOpen}
-        sx={{textTransform:"none", justifyContent:"left"}}>{name}</Button>
+        onClick={handleModalOpen}
+        sx={{ textTransform: "none", justifyContent: "left" }}
+      >
+        {name}
+      </Button>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={modalOpen}
+        onClose={handleModalClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         sx={{ maxWidth: "sm", mx: "auto" }}
@@ -57,17 +61,40 @@ const ModalToBuyList = ({
           }}
         >
           {price !== 0 ? (
-            <InStockItem
-              id={id}
-              name={name}
-              price={price}
-              count={count}
-              type={type}
-              selectedDate={selectedDate}
-              to_buy={to_buy}
-              setStocks={setStocks}
-              open={open}
-            />
+            <Box>
+              {
+              toggle ?
+                <OutOfStockItem
+                  id={id}
+                  name={name}
+                  type={type}
+                  to_buy={to_buy}
+                  reference_price={reference_price}
+                  setStocks={setStocks}
+                  open={modalOpen}
+                />
+              :
+                <InStockItem
+                  id={id}
+                  name={name}
+                  price={price}
+                  count={count}
+                  type={type}
+                  selectedDate={selectedDate}
+                  to_buy={to_buy}
+                  setStocks={setStocks}
+                  modalOpen={modalOpen}
+                />
+              }
+              <Box sx={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"right"}}>
+              <Typography variant="body2">価格を</Typography>
+              <Button onClick={handleSwitch}>
+                {
+                  toggle ? "変更しない" : "変更する"
+                }
+              </Button>
+              </Box>
+            </Box>
           ) : (
             <OutOfStockItem
               id={id}
@@ -76,7 +103,7 @@ const ModalToBuyList = ({
               to_buy={to_buy}
               reference_price={reference_price}
               setStocks={setStocks}
-              open={open}
+              open={modalOpen}
             />
           )}
         </Box>
