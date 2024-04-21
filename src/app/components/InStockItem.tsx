@@ -5,7 +5,7 @@ import useStore, { useTaxStore } from "@/store";
 import { CheckCircleTwoTone } from "@mui/icons-material";
 import ControlPointTwoToneIcon from "@mui/icons-material/ControlPointTwoTone";
 import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { Box, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 
 import ToBuyButton from "@/app/components/ToBuyButton";
 import { Stock } from "../../../utils/type";
@@ -211,25 +211,14 @@ const InStockItem = ({
 
   return (
     <>
-      <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
-        <Box
+      <Stack direction="column" sx={{ width: "100%" }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center"
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
             paddingBlock: "8px",
           }}
         >
           <Typography variant="body2">{name}</Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography
               variant="body1"
               sx={{ minWidth: "80px", textAlign: "end" }}
@@ -252,15 +241,10 @@ const InStockItem = ({
             >
               x {count}
             </Typography>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "right",
-          }}
-        >
+          </Stack>
+        </Stack>
+
+        <Stack direction="row" justifyContent="right">
           <Tooltip title="使用済みにする" placement="top">
             <IconButton
               aria-label="use-item"
@@ -296,8 +280,8 @@ const InStockItem = ({
             to_buy={to_buy}
             setStocks={setStocks}
           />
-        </Box>
-      </Box>
+        </Stack>
+      </Stack>
     </>
   );
 };

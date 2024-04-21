@@ -31,14 +31,7 @@ const Navigation = ({
   return (
     <>
       {session ? (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 1,
-            alignItems: "center",
-          }}
-        >
+        <Stack direction="row" alignItems="center" spacing={1}>
           {profile && (
             <>
               <Typography variant="body1" sx={{ fontSize: 16 }}>
@@ -49,24 +42,17 @@ const Navigation = ({
               </Link>
             </>
           )}
-        </Box>
+        </Stack>
       ) : (
         <>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 2,
-              alignItems: "center",
-            }}
-          >
+          <Stack direction="row" spacing={2}>
             <Link href="/auth/login" underline="hover">
               ログイン
             </Link>
             <Link href="/auth/sign-up" underline="hover">
               ユーザー登録
             </Link>
-          </Box>
+          </Stack>
         </>
       )}
     </>

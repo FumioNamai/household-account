@@ -8,6 +8,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Stack,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
@@ -198,7 +199,7 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
   };
 
   return (
-    <Grid item xs={12} sx={{ marginBottom: "20px" }}>
+    <Box sx={{ marginBottom: "20px" }}>
       <Typography variant="h4" sx={{ marginBottom: "20px" }}>
         在庫 / 商品登録
       </Typography>
@@ -275,7 +276,7 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
             />
           </FormControl>
 
-          <div className="flex flex-row items-center gap-2">
+          <Stack direction="row" alignItems="center" spacing={2}>
             <TaxSwitch />
             <TextField
               type="string"
@@ -313,21 +314,21 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
                 ))}
               </Select>
             </FormControl>
-          </div>
+          </Stack>
             <Typography variant="body2" sx={{marginBottom:"24px", color:"gray"}}>数量を0にすると買い物リストに追加できます</Typography>
 
-          <div className="flex flex-col">
-            <div>
+          <Stack direction="column">
+            <Box>
               <Button variant="outlined" type="submit">
                 {parseInt(amount) === 0
                   ? "買い物リストに追加する"
                   : "在庫に追加する"}
               </Button>
-            </div>
-          </div>
+            </Box>
+          </Stack>
         </form>
       </Box>
-    </Grid>
+    </Box>
   );
 };
 

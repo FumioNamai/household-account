@@ -10,7 +10,7 @@ type Props = {
 
 const ToBuyList = ({ groupedDataArr, setStocks, selectedDate}: Props) => {
   return (
-    <Grid item xs={12} sx={{ marginBottom: "80px" }}>
+    <Box sx={{ marginBottom: "80px" }}>
       <Box>
         <Typography variant="h2" sx={{ fontSize: "24px" }}>
           買い物リスト
@@ -40,7 +40,7 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate}: Props) => {
             )}
         </ul>
       </Box>
-    </Grid>
+    </Box>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   Box,
   FormControl,
   Grid,
+  Stack,
   Typography
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -106,12 +107,9 @@ const Monthly: React.FC<{
     monthlyFoodsTotal + monthlyItemsTotal + monthlyOthersTotal;
 
   return (
-    <Grid item xs={12} sx={{ marginBottom: "80px" }}>
-      <Box
+    <Box sx={{ marginBottom: "80px" }}>
+      <Stack direction="row" alignItems="center" spacing={4}
         sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: "24px",
           marginBottom: "16px",
         }}
       >
@@ -132,12 +130,12 @@ const Monthly: React.FC<{
             />
           </LocalizationProvider>
         </FormControl>
-      </Box>
+      </Stack>
 
       {/* 税表示切替 */}
-      <Box sx={{ display: "flex", justifyContent: "end", marginRight: "8px" }}>
+      <Stack direction="row" justifyContent="end" sx={{ marginRight: "8px" }}>
         <TaxSwitch />
-      </Box>
+      </Stack>
 
       <Box sx={{ paddingInline: "16px" }}>
         <Box
@@ -155,7 +153,7 @@ const Monthly: React.FC<{
 
         <Typography variant="subtitle1">内訳</Typography>
         <Box sx={{ paddingLeft: 2 }}>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Stack direction="row" justifyContent="space-between">
             <Typography variant="body1">食品</Typography>
             <Typography
               variant="body1"
@@ -163,9 +161,9 @@ const Monthly: React.FC<{
             >
               {monthlyFoodsTotal}円
             </Typography>
-          </Box>
+          </Stack>
 
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Stack direction="row" justifyContent="space-between">
             <Typography variant="body1">雑貨</Typography>
             <Typography
               variant="body1"
@@ -173,12 +171,10 @@ const Monthly: React.FC<{
             >
               {monthlyItemsTotal}円
             </Typography>
-          </Box>
+          </Stack>
 
-          <Box
+          <Stack direction="row" justifyContent="space-between"
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
               marginBottom: "24px",
             }}
           >
@@ -189,7 +185,7 @@ const Monthly: React.FC<{
             >
               {monthlyOthersTotal}円
             </Typography>
-          </Box>
+          </Stack>
         </Box>
         </Box>
         <Accordion square={true}>
@@ -213,7 +209,7 @@ const Monthly: React.FC<{
           </AccordionDetails>
       </Accordion>
 
-    </Grid>
+    </Box>
   );
 };
 

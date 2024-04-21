@@ -1,4 +1,4 @@
-import { Box, Divider, List, Typography } from "@mui/material";
+import { Box, Divider, List, Stack, Typography } from "@mui/material";
 import { Stock } from "../../../utils/type";
 import CheckBox from "@/app/components/CheckBox";
 import ModalToBuyList from "@/app/components/ModalToBuyList";
@@ -37,17 +37,8 @@ const ItemToBuy = ({ id, name, price,reference_price, count, type, category,sele
   return (
     <>
       <List key={id}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box
-            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-          >
+        <Stack direction="row" alignItems="center" justifyContent="space-between" >
+          <Stack direction="row" alignItems="center">
             <CheckBox
               id={id}
               name={name}
@@ -63,12 +54,10 @@ const ItemToBuy = ({ id, name, price,reference_price, count, type, category,sele
               type={type}
               category={category}
               selectedDate={selectedDate}
-              // to_buy={to_buy}
               setStocks={setStocks}
             />
-            {/* <Typography>{name}</Typography> */}
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+          </Stack>
+          <Stack direction="row" alignItems="center">
           <Typography
               variant="body1"
               sx={{ minWidth: "80px", textAlign: "end" }}
@@ -81,20 +70,15 @@ const ItemToBuy = ({ id, name, price,reference_price, count, type, category,sele
             >
               {tax === true ? "(込)" : "(抜)"}
             </Typography>
-          <Typography
-              variant="caption"
-              sx={{ minWidth: "40px", textAlign: "end", color:"grey"}}
-            >
-              (参考)
-            </Typography>
+
             <ToBuyButton
               id={id}
               name={name}
               to_buy={to_buy}
               setStocks={setStocks}
             />
-            </Box>
-        </Box>
+            </Stack>
+        </Stack>
       </List>
       <Divider />
     </>

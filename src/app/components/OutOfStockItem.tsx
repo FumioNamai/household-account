@@ -3,13 +3,13 @@ import { supabase } from "../../../utils/supabase";
 
 import { DeleteTwoTone, ModeTwoTone } from "@mui/icons-material";
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   IconButton,
+  Stack,
   TextField,
   Tooltip,
   Typography,
@@ -133,23 +133,10 @@ const OutOfStockItem = ({ id, name, type, to_buy, setStocks }: Props) => {
   return (
     <>
       {/* 在庫なし */}
-      <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+      <Stack direction="column" justifyContent="space-between" sx={{ width: "100%" }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="body2">{name}</Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
+          <Stack direction="row" alignItems="center">
             <TextField
               variant="standard"
               type="string"
@@ -176,15 +163,9 @@ const OutOfStockItem = ({ id, name, type, to_buy, setStocks }: Props) => {
                 <ModeTwoTone />
               </IconButton>
             </Tooltip>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "end",
-          }}
-        >
+          </Stack>
+        </Stack>
+        <Stack direction="row" justifyContent="end">
           <Tooltip title="一覧から削除する" placement="top">
             <IconButton
               aria-label="delete"
@@ -218,8 +199,8 @@ const OutOfStockItem = ({ id, name, type, to_buy, setStocks }: Props) => {
             to_buy={to_buy}
             setStocks={setStocks}
           />
-        </Box>
-      </Box>
+        </Stack>
+      </Stack>
     </>
   );
 };

@@ -6,6 +6,7 @@ import {
   Modal,
   Select,
   SelectChangeEvent,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -153,12 +154,8 @@ const ModalToBuyList = ({
             padding: "16px",
           }}
         >
-          <Box
+          <Stack direction="row" justifyContent="space-between" alignItems="center"
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
               marginBottom: "20px",
             }}
           >
@@ -166,23 +163,13 @@ const ModalToBuyList = ({
               在庫登録
             </Typography>
             <TaxSwitch />
-          </Box>
+          </Stack>
           <Typography variant="body2">現在の在庫</Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="body2">種別:{type}</Typography>
             <Typography variant="body2">分類:{category}</Typography>
-            <Box
+            <Stack direction="row" alignItems="center"
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
                 paddingBlock: "8px",
               }}
             >
@@ -202,27 +189,17 @@ const ModalToBuyList = ({
               >
                 x{calcPrice(price) ? count : 0}
               </Typography>
-            </Box>
-          </Box>
+            </Stack>
+          </Stack>
           <form onSubmit={handleForm}>
-            <Box
+          <Stack direction="row" justifyContent="space-between" alignItems="center"
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
                 paddingBlock: "8px",
               }}
             >
               <Typography variant="body1">{name}</Typography>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
+              <Stack direction="row" alignItems="center">
                 <TextField
                   variant="standard"
                   type="string"
@@ -268,8 +245,8 @@ const ModalToBuyList = ({
                     ))}
                   </Select>
                 </FormControl>
-              </Box>
-            </Box>
+              </Stack>
+            </Stack>
 
             <div className="flex flex-row justify-between mt-5">
               <Button

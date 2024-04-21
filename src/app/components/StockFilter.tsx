@@ -9,6 +9,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Stack,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
@@ -50,12 +51,11 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
 
   return (
     <>
-      <Box
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
         sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
           marginBottom: "24px",
         }}
       >
@@ -69,12 +69,9 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
           date={date}
           setDate={setDate}
         />
-      </Box>
-      <Box
+      </Stack>
+      <Stack direction="row" justifyContent="space-between"
         sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
           marginBottom: "20px",
         }}
       >
@@ -96,7 +93,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
             選択した日付で記録します
           </Typography>
         </Box>
-      </Box>
+      </Stack>
 
       {/* 在庫一覧 */}
 
@@ -110,13 +107,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
       >
         {/* 種別検索 */}
         <InputLabel>種別で検索</InputLabel>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: "10px",
-          }}
+        <Stack direction="row" alignItems="center" spacing={1}
         >
           <ToggleButtonGroup
             color="primary"
@@ -140,19 +131,12 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
           >
             閉じる
           </Button>
-        </Box>
+        </Stack>
 
         {Types.map((type) =>
           selectedType === type ? (
             <Box key={type}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginRight: "-4px",
-                }}
-              >
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
                 {
                   //  分類検索
                   <FormControl
@@ -180,7 +164,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                 }
                 {/* 税表示切替 */}
                 <TaxSwitch />
-              </Box>
+              </Stack>
               {type === "食品" ? (
                 Categories.map(
                   (category) =>
@@ -199,7 +183,9 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                                         id={groupedData.id}
                                         name={groupedData.name}
                                         price={groupedData.price}
-                                        reference_price={groupedData.reference_price}
+                                        reference_price={
+                                          groupedData.reference_price
+                                        }
                                         count={groupedData.count}
                                         type={groupedData.type}
                                         setStocks={setStocks}
@@ -213,7 +199,9 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                                         id={groupedData.id}
                                         name={groupedData.name}
                                         price={groupedData.price}
-                                        reference_price={groupedData.reference_price}
+                                        reference_price={
+                                          groupedData.reference_price
+                                        }
                                         count={groupedData.count}
                                         type={groupedData.type}
                                         setStocks={setStocks}
@@ -284,15 +272,13 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
       </FormControl>
 
       {/* 税表示切替 */}
-      <Box
+      <Stack direction="row" justifyContent="end"
         sx={{
-          display: "flex",
-          justifyContent: "end",
           marginRight: "8px",
         }}
       >
         <TaxSwitch />
-      </Box>
+      </Stack>
 
       {/* 商品名検索 */}
       <Box

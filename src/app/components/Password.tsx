@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { z } from "zod";
 import Loading from "@/app/components/Loading";
 import { useRouter } from "next/navigation";
@@ -111,7 +111,7 @@ const Password = () => {
         </Typography>
 
         {/* 変更ボタン */}
-        <div>
+        <Box>
           {loading ? (
             <Loading />
           ) : (
@@ -119,7 +119,7 @@ const Password = () => {
               変更
             </Button>
           )}
-        </div>
+        </Box>
         {/* メッセージ */}
         {message && (
           <Typography
