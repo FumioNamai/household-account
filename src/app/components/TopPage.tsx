@@ -46,7 +46,12 @@ export default function TopPage() {
 
   //nameとpriceが同じものをグループにまとめて、countに個数を登録したい
 
-  stocks = stocks.sort((a,b) => a.id - b.id)
+  stocks = stocks.sort((a,b) => {
+    if (a.name === b.name) {
+      return a.reference_price! - b.reference_price!
+    }
+    return a.id - b.id
+  })
   stocks.forEach((stock) => {
     if (!stock.use_date) {
       const key = `${stock.name}-${stock.price}`;
@@ -69,6 +74,7 @@ export default function TopPage() {
     }
   });
   const groupedDataArr = Object.values(groupedData);
+console.log(stocks);
 
   let [date, setDate] = useState<Dayjs | null>(dayjs());
   const selectedDate: string | undefined = date
