@@ -266,7 +266,7 @@ const InStockItem = ({
             justifyContent: "right",
           }}
         >
-          <Tooltip title="使用済みにする" placement="bottom">
+          <Tooltip title="使用済みにする" placement="top">
             <IconButton
               aria-label="use-item"
               color="success"
@@ -277,7 +277,7 @@ const InStockItem = ({
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="在庫を増やす" placement="bottom">
+          <Tooltip title="在庫を増やす" placement="top">
             <IconButton
               aria-label="plus1"
               color="primary"
@@ -287,7 +287,7 @@ const InStockItem = ({
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="在庫を減らす" placement="bottom">
+          <Tooltip title="在庫を減らす" placement="top">
             <IconButton
               aria-label="delete"
               color="error"

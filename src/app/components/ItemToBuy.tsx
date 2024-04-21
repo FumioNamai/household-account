@@ -1,6 +1,6 @@
 import { Box, Divider, List, Typography } from "@mui/material";
 import { Stock } from "../../../utils/type";
-import CheckBox from "@/app/components/check-box";
+import CheckBox from "@/app/components/CheckBox";
 import ModalToBuyList from "@/app/components/ModalToBuyList";
 import ToBuyButton from "@/app/components/ToBuyButton";
 import { useTaxStore } from "@/store";

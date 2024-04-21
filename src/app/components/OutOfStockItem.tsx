@@ -250,7 +250,7 @@ const OutOfStockItem = ({
             justifyContent: "end",
           }}
         >
-          <Tooltip title="一覧から削除する" placement="bottom">
+          <Tooltip title="一覧から削除する" placement="top">
             <IconButton
               aria-label="delete"
               color="error"

@@ -53,7 +53,7 @@ const CheckBox = ({ id, checked, setStocks }: Props) => {
   };
 
   return (
-    <Tooltip title={checked ? "チェックを外す" : "チェックを入れる"}>
+    <Tooltip title={checked ? "チェックを外す" : "チェックを入れる"} placement="top">
       <Checkbox
         checked={checked ? true : false}
         onChange={() => handleCheck(id, user.id)}

@@ -72,7 +72,7 @@ const ToBuyButton = ({ id, name, to_buy, setStocks }: Props) => {
   return (
     <Tooltip
       title={to_buy === true ? "買い物リストから削除" : "買い物リストに追加"}
-      placement="bottom"
+      placement="top"
     >
       <IconButton
         color={to_buy === true ? "warning" : "default"}
