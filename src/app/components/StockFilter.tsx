@@ -202,7 +202,6 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                                         reference_price={groupedData.reference_price}
                                         count={groupedData.count}
                                         type={groupedData.type}
-                                        category={groupedData.category}
                                         setStocks={setStocks}
                                         selectedDate={selectedDate}
                                         to_buy={groupedData.to_buy}
@@ -217,7 +216,6 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                                         reference_price={groupedData.reference_price}
                                         count={groupedData.count}
                                         type={groupedData.type}
-                                        category={groupedData.category!}
                                         setStocks={setStocks}
                                         selectedDate={selectedDate}
                                         to_buy={groupedData.to_buy}
@@ -244,7 +242,6 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                               reference_price={groupedData.reference_price}
                               count={groupedData.count}
                               type={groupedData.type}
-                              category={groupedData.category!}
                               setStocks={setStocks}
                               selectedDate={selectedDate}
                               to_buy={groupedData.to_buy}
@@ -326,7 +323,6 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                       reference_price={groupedData.reference_price}
                       count={groupedData.count}
                       type={groupedData.type}
-                      category={groupedData.category!}
                       setStocks={setStocks}
                       selectedDate={selectedDate}
                       to_buy={groupedData.to_buy}
