@@ -19,7 +19,6 @@ type: string;
 selectedDate: string | undefined | null;
 to_buy: boolean;
 setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-modalOpen: boolean | undefined;
 };
 
 const InStockItem = ({
@@ -31,7 +30,6 @@ const InStockItem = ({
   selectedDate,
   to_buy,
   setStocks,
-  modalOpen
 }: Props) => {
 
   const { showSnackbar } = useSnackbarContext();
@@ -128,10 +126,6 @@ const InStockItem = ({
         showSnackbar("success", `『${name}』の在庫を1つ増やしました。`);
       }
 
-      // モーダルからの操作の場合、1秒遅らせて
-      if (modalOpen) {
-        await new Promise(resolve => setTimeout(resolve,1000))
-      }
         // 買い物リストから外す処理
         await supabase
         .from("stocks")
@@ -271,7 +265,6 @@ const InStockItem = ({
             <IconButton
               aria-label="use-item"
               color="success"
-              disabled={ modalOpen ? true : false }
               onClick={() => handleUse(id, user.id)}
             >
               <CheckCircleTwoTone />
@@ -292,7 +285,6 @@ const InStockItem = ({
             <IconButton
               aria-label="delete"
               color="error"
-              disabled={ modalOpen ? true : false }
               onClick={() => handleMinus(id, user.id)}
             >
               <RemoveCircleTwoToneIcon />
