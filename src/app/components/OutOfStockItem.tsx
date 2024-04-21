@@ -128,12 +128,12 @@ const OutOfStockItem = ({
           .from("stocks")
           .select("*")
           .eq("user_id", userId);
-          if(price === 0) {
-            await supabase
-          .from("stocks")
-          .delete()
-          .eq("id", propsID);
-          }
+          // if(price === 0) {
+          //   await supabase
+          // .from("stocks")
+          // .delete()
+          // .eq("id", propsID);
+          // }
         onUpdate(updatedStocks);
         if (showSnackbar) {
           showSnackbar(
