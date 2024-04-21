@@ -63,7 +63,7 @@ const ItemToBuy = ({ id, name, price,reference_price, count, type, category,sele
               type={type}
               category={category}
               selectedDate={selectedDate}
-              to_buy={to_buy}
+              // to_buy={to_buy}
               setStocks={setStocks}
             />
             {/* <Typography>{name}</Typography> */}

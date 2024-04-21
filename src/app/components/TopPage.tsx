@@ -15,7 +15,6 @@ import StockFilter from "@/app/components/StockFilter";
 import useStore from "@/store/index";
 import ToBuyList from "@/app/components/ToBuyList";
 
-
 export default function TopPage() {
   let [stocks, setStocks] = useState<Stock[]>([]);
   const { showSnackbar } = useSnackbarContext();
@@ -42,19 +41,19 @@ export default function TopPage() {
     (async () => await getStocks(user.id))();
   }, [user.id]);
 
+  stocks = stocks.sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    if (a.reference_price! < b.reference_price!) return -1;
+    if (a.reference_price! > b.reference_price!) return 1;
+    return a.id - b.id;
+  });
+
+  //nameとprice,reference_priceが同じものをグループにまとめて、countに個数を登録したい
   const groupedData: { [key: string]: any } = {};
-
-  //nameとpriceが同じものをグループにまとめて、countに個数を登録したい
-
-  stocks = stocks.sort((a,b) => {
-    if (a.name === b.name) {
-      return a.reference_price! - b.reference_price!
-    }
-    return a.id - b.id
-  })
   stocks.forEach((stock) => {
     if (!stock.use_date) {
-      const key = `${stock.name}-${stock.price}`;
+      const key = `${stock.name}-${stock.price}-${stock.reference_price}`;
       if (!groupedData[key]) {
         groupedData[key] = {
           id: stock.id,
@@ -74,7 +73,6 @@ export default function TopPage() {
     }
   });
   const groupedDataArr = Object.values(groupedData);
-console.log(stocks);
 
   let [date, setDate] = useState<Dayjs | null>(dayjs());
   const selectedDate: string | undefined = date

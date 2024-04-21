@@ -62,6 +62,7 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
+
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
@@ -202,7 +203,7 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
         在庫 / 商品登録
       </Typography>
       <Box sx={{ paddingInline: "0px" }}>
-        <form className="" onSubmit={handleForm}>
+        <form onSubmit={handleForm}>
           <RegistrationDateSelector
           date={date}
           setDate={setDate}
