@@ -150,6 +150,7 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
           type: type,
           name: itemName,
           price: 0,
+          reference_price: 0,
           registration_date: selectedDate,
           category: categoryItem,
           user_id: user.id,

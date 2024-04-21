@@ -110,6 +110,7 @@ const InStockItem = ({
         name: restocks![0].name,
         user_id: restocks![0].user_id,
         price: restocks![0].price,
+        reference_price: restocks![0].price,
         registration_date: null,
         use_date: null,
       };
