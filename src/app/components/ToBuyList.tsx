@@ -9,9 +9,7 @@ type Props = {
   selectedDate: string | undefined | null;
 };
 
-
 const ToBuyList = ({ groupedDataArr, setStocks, selectedDate }: Props) => {
-
   return (
     <Box sx={{ marginBottom: "80px" }}>
       <Box>
@@ -20,31 +18,42 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate }: Props) => {
         </Typography>
 
         {ShopList.map((shop) => (
-          <Box key={shop.id} sx={{marginBlock : 2}}>
-            <Typography variant="h6">{shop.shopName!}</Typography>
+          <Box
+            key={shop.id}
+            sx={{
+              // height: "300px",
+              // overflowY: "scroll",
+              boxShadow: 2,
+              padding: "16px",
+              borderRadius: 2,
+              marginBlock: "10px",
+            }}
+          >
+            <Typography variant="body1">
+              {shop.shopName ? shop.shopName : "未分類"}
+            </Typography>
             <ul>
               {groupedDataArr.map(
                 (groupedData) =>
                   groupedData.to_buy === true &&
-                  groupedData.shop_name === shop.shopName &&
-                  (
+                  groupedData.shop_name === shop.shopName && (
                     <ItemToBuy
-                    key={groupedData.id}
-                    id={groupedData.id}
-                    name={groupedData.name}
-                    type={groupedData.type}
-                    category={groupedData.category!}
-                    price={groupedData.price}
-                    reference_price={groupedData.reference_price}
-                    count={groupedData.count}
-                    to_buy={groupedData.to_buy}
-                    checked={groupedData.checked}
-                    selectedDate={selectedDate}
-                    shop_name={groupedData.shop_name}
-                    setStocks={setStocks}
+                      key={groupedData.id}
+                      id={groupedData.id}
+                      name={groupedData.name}
+                      type={groupedData.type}
+                      category={groupedData.category!}
+                      price={groupedData.price}
+                      reference_price={groupedData.reference_price}
+                      count={groupedData.count}
+                      to_buy={groupedData.to_buy}
+                      checked={groupedData.checked}
+                      selectedDate={selectedDate}
+                      shop_name={groupedData.shop_name}
+                      setStocks={setStocks}
                     />
                   )
-                )}
+              )}
             </ul>
           </Box>
         ))}

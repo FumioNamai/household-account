@@ -66,15 +66,14 @@ const ItemToBuy = ({
     }
   };
 
-
   // const [shopName, setShopName] = useState("");
   // const handleShopSelect = (event: SelectChangeEvent) => {
   //   setShopName(event.target.value);
   // };
   // console.log(shopName);
 
-  const handleShopSelect = async (event:SelectChangeEvent) => {
-    const shopName = event.target.value
+  const handleShopSelect = async (event: SelectChangeEvent) => {
+    const shopName = event.target.value;
 
     try {
       // 店舗選択したら、shop_nameに記録
@@ -88,7 +87,7 @@ const ItemToBuy = ({
         .eq("user_id", user.id);
       onUpdate(updatedStocks);
       if (showSnackbar) {
-        showSnackbar("success", "できました。");
+        showSnackbar("success", `${name}を${shopName}に移動しました。`);
       }
     } catch (error: any) {
       if (showSnackbar) {
@@ -100,12 +99,12 @@ const ItemToBuy = ({
   return (
     <>
       <List key={id}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Stack direction="row" alignItems="center">
+        <Stack direction="column">
+          <Stack
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center"
+          >
             <CheckBox
               id={id}
               name={name}
@@ -124,20 +123,25 @@ const ItemToBuy = ({
               setStocks={setStocks}
             />
           </Stack>
-          <Stack direction="row" alignItems="center">
-            <Typography
-              variant="body1"
-              sx={{ minWidth: "80px", textAlign: "end", color: "grey" }}
+          <Stack direction="row" justifyContent="flex-end" alignItems="center">
+            <Stack
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="baseline"
             >
-              {calcPrice()}円
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ marginLeft: "4px", color: "grey", fontSize: "10px" }}
-            >
-              {tax === true ? "(込)" : "(抜)"}
-            </Typography>
-
+              <Typography
+                variant="body2"
+                sx={{ minWidth: "80px", textAlign: "end", color: "grey" }}
+              >
+                {calcPrice()}円
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ marginLeft: "4px", color: "grey", fontSize: "10px" }}
+              >
+                {tax === true ? "(込)" : "(抜)"}
+              </Typography>
+            </Stack>
             <ToBuyButton
               id={id}
               name={name}
@@ -146,12 +150,15 @@ const ItemToBuy = ({
             />
             <Select
               variant="standard"
+              size="small"
               value={shop_name}
               onChange={handleShopSelect}
-              sx={{ maxWidth: "80px", minWidth: "80px", padding: "0" }}
+              sx={{ maxWidth: "130px", minWidth: "130px", padding: "0" }}
             >
               {ShopList.map((shop) => (
-                <MenuItem key={shop.id} value={shop.shopName}>{shop.shopName}</MenuItem>
+                <MenuItem key={shop.id} value={shop.shopName}>
+                  {shop.shopName}
+                </MenuItem>
               ))}
             </Select>
           </Stack>
