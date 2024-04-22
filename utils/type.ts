@@ -10,6 +10,7 @@ export type Stock = {
   use_date:  string | null;
   count: number;
   to_buy: boolean;
+  shop_name: string;
   checked: boolean;
 }
 
@@ -24,5 +25,6 @@ export type GroupedData  = {
   use_date:  string | null;
   count: number;
   to_buy: boolean;
+  shop_name: string;
   checked: boolean;
 }

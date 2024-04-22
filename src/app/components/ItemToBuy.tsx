@@ -1,9 +1,23 @@
-import { Box, Divider, List, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  List,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { Stock } from "../../../utils/type";
 import CheckBox from "@/app/components/CheckBox";
 import ModalToBuyList from "@/app/components/ModalToBuyList";
 import ToBuyButton from "@/app/components/ToBuyButton";
-import { useTaxStore } from "@/store";
+import useStore, { useTaxStore } from "@/store";
+import { useState } from "react";
+import { useSnackbarContext } from "@/providers/context-provider";
+import { supabase } from "../../../utils/supabase";
+import { log } from "console";
+import { ShopList } from "./ShopList";
 
 type Props = {
   id: number;
@@ -15,29 +29,82 @@ type Props = {
   category: string;
   selectedDate: string | undefined | null;
   to_buy: boolean;
-  checked:boolean;
+  checked: boolean;
+  shop_name: string;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const ItemToBuy = ({ id, name, price,reference_price, count, type, category,selectedDate, to_buy, checked, setStocks }: Props) => {
+const ItemToBuy = ({
+  id,
+  name,
+  price,
+  reference_price,
+  count,
+  type,
+  category,
+  selectedDate,
+  to_buy,
+  checked,
+  shop_name,
+  setStocks,
+}: Props) => {
+  const { showSnackbar } = useSnackbarContext();
+  const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
-    // 税抜き⇔税込みで表示金額を切り替える処理
-    const calcPrice = () => {
-      if (type === "食品" && tax === false) {
-        let taxExcluded = Math.ceil(reference_price! / 1.08);
-        return taxExcluded;
-      } else if (type !== "食品" && tax === false) {
-        let taxExcluded = Math.ceil(reference_price! / 1.1);
-        return taxExcluded;
-      } else {
-        return reference_price;
+  const user = useStore((state) => state.user);
+
+  // 税抜き⇔税込みで表示金額を切り替える処理
+  const calcPrice = () => {
+    if (type === "食品" && tax === false) {
+      let taxExcluded = Math.ceil(reference_price! / 1.08);
+      return taxExcluded;
+    } else if (type !== "食品" && tax === false) {
+      let taxExcluded = Math.ceil(reference_price! / 1.1);
+      return taxExcluded;
+    } else {
+      return reference_price;
+    }
+  };
+
+
+  // const [shopName, setShopName] = useState("");
+  // const handleShopSelect = (event: SelectChangeEvent) => {
+  //   setShopName(event.target.value);
+  // };
+  // console.log(shopName);
+
+  const handleShopSelect = async (event:SelectChangeEvent) => {
+    const shopName = event.target.value
+
+    try {
+      // 店舗選択したら、shop_nameに記録
+      await supabase
+        .from("stocks")
+        .update({ shop_name: shopName })
+        .eq("id", id);
+      const { data: updatedStocks } = await supabase
+        .from("stocks")
+        .select("*")
+        .eq("user_id", user.id);
+      onUpdate(updatedStocks);
+      if (showSnackbar) {
+        showSnackbar("success", "できました。");
       }
-    };
+    } catch (error: any) {
+      if (showSnackbar) {
+        showSnackbar("error", "店舗登録ができませんでした。" + error.message);
+      }
+    }
+  };
 
   return (
     <>
       <List key={id}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" >
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Stack direction="row" alignItems="center">
             <CheckBox
               id={id}
@@ -58,9 +125,9 @@ const ItemToBuy = ({ id, name, price,reference_price, count, type, category,sele
             />
           </Stack>
           <Stack direction="row" alignItems="center">
-          <Typography
+            <Typography
               variant="body1"
-              sx={{ minWidth: "80px", textAlign: "end" }}
+              sx={{ minWidth: "80px", textAlign: "end", color: "grey" }}
             >
               {calcPrice()}円
             </Typography>
@@ -77,7 +144,17 @@ const ItemToBuy = ({ id, name, price,reference_price, count, type, category,sele
               to_buy={to_buy}
               setStocks={setStocks}
             />
-            </Stack>
+            <Select
+              variant="standard"
+              value={shop_name}
+              onChange={handleShopSelect}
+              sx={{ maxWidth: "80px", minWidth: "80px", padding: "0" }}
+            >
+              {ShopList.map((shop) => (
+                <MenuItem key={shop.id} value={shop.shopName}>{shop.shopName}</MenuItem>
+              ))}
+            </Select>
+          </Stack>
         </Stack>
       </List>
       <Divider />

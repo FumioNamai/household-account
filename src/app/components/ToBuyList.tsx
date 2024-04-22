@@ -1,6 +1,7 @@
 import { GroupedData, Stock } from "../../../utils/type";
 import { Box, Grid, Typography } from "@mui/material";
 import ItemToBuy from "@/app/components/ItemToBuy";
+import { ShopList } from "./ShopList";
 
 type Props = {
   groupedDataArr: GroupedData[];
@@ -8,7 +9,9 @@ type Props = {
   selectedDate: string | undefined | null;
 };
 
-const ToBuyList = ({ groupedDataArr, setStocks, selectedDate}: Props) => {
+
+const ToBuyList = ({ groupedDataArr, setStocks, selectedDate }: Props) => {
+
   return (
     <Box sx={{ marginBottom: "80px" }}>
       <Box>
@@ -16,13 +19,16 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate}: Props) => {
           買い物リスト
         </Typography>
 
-        <ul>
-          {groupedDataArr
-            .sort((a, b) => a.name.localeCompare(b.name, "ja"))
-            .map(
-              (groupedData) =>
-                groupedData.to_buy === true && (
-                  <ItemToBuy
+        {ShopList.map((shop) => (
+          <Box key={shop.id} sx={{marginBlock : 2}}>
+            <Typography variant="h6">{shop.shopName!}</Typography>
+            <ul>
+              {groupedDataArr.map(
+                (groupedData) =>
+                  groupedData.to_buy === true &&
+                  groupedData.shop_name === shop.shopName &&
+                  (
+                    <ItemToBuy
                     key={groupedData.id}
                     id={groupedData.id}
                     name={groupedData.name}
@@ -34,11 +40,14 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate}: Props) => {
                     to_buy={groupedData.to_buy}
                     checked={groupedData.checked}
                     selectedDate={selectedDate}
+                    shop_name={groupedData.shop_name}
                     setStocks={setStocks}
-                  />
-                )
-            )}
-        </ul>
+                    />
+                  )
+                )}
+            </ul>
+          </Box>
+        ))}
       </Box>
     </Box>
   );

@@ -66,6 +66,7 @@ export default function TopPage() {
           use_date: stock.use_date,
           category: stock.category,
           to_buy: stock.to_buy,
+          shop_name: stock.shop_name,
           checked: stock.checked,
         };
       }
