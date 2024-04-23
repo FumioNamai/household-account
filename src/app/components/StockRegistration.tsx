@@ -27,16 +27,21 @@ import ja from "dayjs/locale/ja";
 import { useStore, useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import RegistrationDateSelector from "./RegistrationDateSelector";
+import { Types } from "./types";
 
 type Props = {
-  groupedDataArr : GroupedData[];
+  groupedDataArr: GroupedData[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 };
 
-const StockRegistration = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
-
+const StockRegistration = ({
+  groupedDataArr,
+  setStocks,
+  date,
+  setDate,
+}: Props) => {
   const user = useStore((state) => state.user);
   const tax = useTaxStore((state) => state.tax);
 
@@ -68,6 +73,22 @@ const StockRegistration = ({ groupedDataArr, setStocks, date, setDate }: Props) 
 
   const onUpdate = (data: any | undefined) => setStocks(data);
 
+  const handleSelectCategory = (event: SelectChangeEvent) => {
+    setCategoryItem(event.target.value as string);
+  };
+
+  const handleItemNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setItemName(event.target.value);
+  };
+
+  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPrice(event.target.value);
+  };
+
+  const handleAmountChange = (event: SelectChangeEvent) => {
+    setAmount(event.target.value);
+  };
+
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -92,46 +113,53 @@ const StockRegistration = ({ groupedDataArr, setStocks, date, setDate }: Props) 
       return;
     }
 
-
-    // const val = `${itemName} - ${newPrice ? newPrice : "0"} `
-    // const val = itemName
-    // function checkStock(groupedDataArr,val) {
-    //   return Object.values(groupedDataArr).includes(val)
-    // }
-
-    // console.log(checkStock(groupedDataArr,val))
-    const isStocked = groupedDataArr.some((data:any) => data.name === itemName && data.price === parseInt(newPrice ? newPrice : "0"))
-
-    if(isStocked) {
+    // 入力された商品名と価格を検索して、登録済みの場合は処理を中断させる
+    const isStocked = groupedDataArr.some(
+      (data: any) => data.name === itemName
+      // && data.price === parseInt(newPrice ? newPrice : "0")
+    );
+    if (isStocked) {
       if (showSnackbar) {
-        showSnackbar("error", "在庫リストに登録済みです。在庫リストから買い物リストへ登録してください。");
+        showSnackbar("error", "同じ名前の商品が在庫一覧に登録されています。");
       }
       return;
     }
 
-
     if (parseInt(amount) > 0) {
-      if (parseFloat(newPrice) <= 0) {
-        if (showSnackbar) {
-          showSnackbar("error", "価格を1円以上で入力してください。");
-        }
-        return;
-      }
-      if (Number.isInteger(parseFloat(newPrice)) === false) {
+      if (!Number.isInteger(parseInt(newPrice)) || Number(newPrice) < 0) {
         if (showSnackbar) {
           showSnackbar("error", "価格を半角数字(整数)で入力してください。");
         }
         return;
       }
+    }
 
-      if (type === "食品" && tax === false) {
-        newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
-      }
-      if (type !== "食品" && tax === false) {
-        newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
-      }
+    if (type === "食品" && tax === false) {
+      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
+    }
+    if (type !== "食品" && tax === false) {
+      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
+    }
 
-      try {
+    try {
+      if (amount === "0") {
+        // 0個の在庫を登録する処理
+        const { error } = await supabase.from("stocks").insert({
+          type: type,
+          name: itemName,
+          price: 0,
+          reference_price: 0,
+          registration_date: selectedDate,
+          category: categoryItem,
+          user_id: user.id,
+        });
+        if (error) throw error;
+        const { data } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", user.id);
+        onUpdate(data);
+      } else {
         // １個以上の在庫を登録する処理
         for (let i = 0; i < parseInt(amount); i++) {
           const { error } = await supabase.from("stocks").insert({
@@ -150,94 +178,33 @@ const StockRegistration = ({ groupedDataArr, setStocks, date, setDate }: Props) 
             .eq("user_id", user.id);
 
           onUpdate(data);
-          setItemName("");
-          setNewPrice("");
-          setCategoryItem("");
-        }
-        if (showSnackbar) {
-          showSnackbar(
-            "success",
-            `『${itemName}』を${amount}個、在庫として登録しました。`
-          );
-        }
-      } catch (error) {
-        if (showSnackbar) {
-          showSnackbar("error", "データの新規登録ができません。");
         }
       }
-    } else {
-      try {
-        // 買い物リストに登録する処理 (amount === 0)
-        const { error } = await supabase.from("stocks").insert({
-          type: type,
-          name: itemName,
-          price: 0,
-          reference_price: 0,
-          registration_date: selectedDate,
-          category: categoryItem,
-          user_id: user.id,
-          to_buy: true,
-        });
-        if (error) throw error;
-        const { data } = await supabase
-          .from("stocks")
-          .select("*")
-          .eq("user_id", user.id);
 
-        onUpdate(data);
-        setItemName("");
-        setNewPrice("");
-        setCategoryItem("");
-        if (showSnackbar) {
-          showSnackbar(
-            "success",
-            `『${itemName}』を買い物リストに追加しました。`
-          );
-        }
-      } catch (error) {
-        if (showSnackbar) {
-          showSnackbar("error", "買い物リストに追加できませんでした。");
-        }
+      setItemName("");
+      setNewPrice("");
+      setCategoryItem("");
+      if (showSnackbar) {
+        showSnackbar(
+          "success",
+          `『${itemName}』を${amount}個、在庫一覧へ登録しました。`
+        );
+      }
+    } catch (error) {
+      if (showSnackbar) {
+        showSnackbar("error", "データの新規登録ができません。");
       }
     }
   };
 
-  const handleSelectCategory = (event: SelectChangeEvent) => {
-    setCategoryItem(event.target.value as string);
-  };
-
-  const handleItemNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setItemName(event.target.value);
-  };
-
-  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewPrice(event.target.value);
-  };
-
-  const handleAmountChange = (event: SelectChangeEvent) => {
-    setAmount(event.target.value);
-  };
-
   return (
     <Box sx={{ marginBottom: "20px" }}>
-      <Typography variant="h4" sx={{ marginBottom: "20px" }}>
+      <Typography variant="h5" sx={{ marginBottom: "20px" }}>
         在庫 / 商品登録
       </Typography>
       <Box sx={{ paddingInline: "0px" }}>
         <form onSubmit={handleForm}>
-          <RegistrationDateSelector
-          date={date}
-          setDate={setDate}
-          />
-          {/* <InputLabel>購入日</InputLabel>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              sx={{ maxWidth: "238px", marginBottom: "12px" }}
-              value={date}
-              format="YYYY/MM/DD"
-              onChange={setDate}
-            />
-          </LocalizationProvider> */}
+          <RegistrationDateSelector date={date} setDate={setDate} />
 
           <InputLabel id="type">種別</InputLabel>
 
@@ -249,15 +216,11 @@ const StockRegistration = ({ groupedDataArr, setStocks, date, setDate }: Props) 
             onChange={(event, newType) => setType(newType)}
             sx={{ marginBottom: "12px" }}
           >
-            <ToggleButton value="食品" sx={{ width: "80px" }}>
-              食品
-            </ToggleButton>
-            <ToggleButton value="雑貨" sx={{ width: "80px" }}>
-              雑貨
-            </ToggleButton>
-            <ToggleButton value="その他" sx={{ width: "80px" }}>
-              その他
-            </ToggleButton>
+            {Types.map((type) => (
+              <ToggleButton key={type} value={type} sx={{ width: "80px" }}>
+                {type}
+              </ToggleButton>
+            ))}
           </ToggleButtonGroup>
 
           <FormControl
@@ -296,7 +259,12 @@ const StockRegistration = ({ groupedDataArr, setStocks, date, setDate }: Props) 
             />
           </FormControl>
 
-          <Stack direction="row" alignItems="center" spacing={2}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={1}
+            sx={{ marginBottom: "24px" }}
+          >
             <TaxSwitch />
             <TextField
               type="string"
@@ -335,14 +303,10 @@ const StockRegistration = ({ groupedDataArr, setStocks, date, setDate }: Props) 
               </Select>
             </FormControl>
           </Stack>
-            <Typography variant="body2" sx={{marginBottom:"24px", color:"gray"}}>未登録の商品は数量を0にすると買い物リストに追加できます</Typography>
-
           <Stack direction="column">
             <Box>
               <Button variant="outlined" type="submit">
-                {parseInt(amount) === 0
-                  ? "買い物リストに追加する"
-                  : "在庫に追加する"}
+                在庫一覧に追加する
               </Button>
             </Box>
           </Stack>

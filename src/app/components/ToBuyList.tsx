@@ -1,7 +1,8 @@
 import { GroupedData, Stock } from "../../../utils/type";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import ItemToBuy from "@/app/components/ItemToBuy";
 import { ShopList } from "./ShopList";
+import ModalToBuyRegistration from "./ModalToBuyRegistration";
 
 type Props = {
   groupedDataArr: GroupedData[];
@@ -13,10 +14,22 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate }: Props) => {
   return (
     <Box sx={{ marginBottom: "80px" }}>
       <Box>
-        <Typography variant="h2" sx={{ fontSize: "24px" }}>
-          買い物リスト
-        </Typography>
-
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{
+            marginBottom: "24px",
+          }}
+        >
+          <Typography variant="h2" sx={{ fontSize: "24px" }}>
+            買い物リスト
+          </Typography>
+          <ModalToBuyRegistration
+            groupedDataArr={groupedDataArr}
+            setStocks={setStocks}
+          />
+        </Stack>
         {ShopList.map((shop) => (
           <Box
             key={shop.id}

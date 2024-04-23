@@ -60,18 +60,20 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
         }}
       >
         <Typography variant="h2" sx={{ fontSize: "24px" }}>
-          在庫リスト
+          在庫一覧/検索
         </Typography>
 
         {/* 在庫登録 */}
         <ModalStockRegistration
-        groupedDataArr={groupedDataArr}
+          groupedDataArr={groupedDataArr}
           setStocks={setStocks}
           date={date}
           setDate={setDate}
         />
       </Stack>
-      <Stack direction="row" justifyContent="space-between"
+      <Stack
+        direction="row"
+        justifyContent="space-between"
         sx={{
           marginBottom: "20px",
         }}
@@ -108,8 +110,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
       >
         {/* 種別検索 */}
         <InputLabel>種別で検索</InputLabel>
-        <Stack direction="row" alignItems="center" spacing={1}
-        >
+        <Stack direction="row" alignItems="center" spacing={1}>
           <ToggleButtonGroup
             color="primary"
             value={selectedType}
@@ -137,7 +138,11 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
         {Types.map((type) =>
           selectedType === type ? (
             <Box key={type}>
-              <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
                 {
                   //  分類検索
                   <FormControl
@@ -273,7 +278,9 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
       </FormControl>
 
       {/* 税表示切替 */}
-      <Stack direction="row" justifyContent="end"
+      <Stack
+        direction="row"
+        justifyContent="end"
         sx={{
           marginRight: "8px",
         }}
