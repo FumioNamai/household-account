@@ -20,7 +20,7 @@ import { Categories } from "./Categories";
 import { useSnackbarContext } from "@/providers/context-provider";
 import React, { useState } from "react";
 import { supabase } from "../../../utils/supabase";
-import { Stock } from "../../../utils/type";
+import { GroupedData, Stock } from "../../../utils/type";
 import { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
 
@@ -29,12 +29,14 @@ import TaxSwitch from "@/app/components/TaxSwitch";
 import RegistrationDateSelector from "./RegistrationDateSelector";
 
 type Props = {
+  groupedDataArr : GroupedData[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 };
 
-const StockRegistration = ({ setStocks, date, setDate }: Props) => {
+const StockRegistration = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
+
   const user = useStore((state) => state.user);
   const tax = useTaxStore((state) => state.tax);
 
@@ -89,6 +91,24 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
       }
       return;
     }
+
+
+    // const val = `${itemName} - ${newPrice ? newPrice : "0"} `
+    // const val = itemName
+    // function checkStock(groupedDataArr,val) {
+    //   return Object.values(groupedDataArr).includes(val)
+    // }
+
+    // console.log(checkStock(groupedDataArr,val))
+    const isStocked = groupedDataArr.some((data:any) => data.name === itemName && data.price === parseInt(newPrice ? newPrice : "0"))
+
+    if(isStocked) {
+      if (showSnackbar) {
+        showSnackbar("error", "在庫リストに登録済みです。在庫リストから買い物リストへ登録してください。");
+      }
+      return;
+    }
+
 
     if (parseInt(amount) > 0) {
       if (parseFloat(newPrice) <= 0) {
@@ -315,7 +335,7 @@ const StockRegistration = ({ setStocks, date, setDate }: Props) => {
               </Select>
             </FormControl>
           </Stack>
-            <Typography variant="body2" sx={{marginBottom:"24px", color:"gray"}}>数量を0にすると買い物リストに追加できます</Typography>
+            <Typography variant="body2" sx={{marginBottom:"24px", color:"gray"}}>未登録の商品は数量を0にすると買い物リストに追加できます</Typography>
 
           <Stack direction="column">
             <Box>

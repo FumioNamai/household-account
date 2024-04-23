@@ -1,16 +1,18 @@
 import { Box, Button, Modal } from "@mui/material";
 import { useState } from "react";
 import StockRegistration from "@/app/components/StockRegistration";
-import { Stock } from "../../../utils/type";
+import { GroupedData, Stock } from "../../../utils/type";
 import { Dayjs } from "dayjs";
 
 type Props = {
+  groupedDataArr : GroupedData[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   date: Dayjs | null;
   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 };
 
 export default function ModalStockRegistration({
+  groupedDataArr,
   setStocks,
   date,
   setDate,
@@ -48,6 +50,7 @@ export default function ModalStockRegistration({
           }}
         >
           <StockRegistration
+            groupedDataArr={groupedDataArr}
             setStocks={setStocks}
             date={date}
             setDate={setDate}

@@ -60,11 +60,12 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
         }}
       >
         <Typography variant="h2" sx={{ fontSize: "24px" }}>
-          在庫検索
+          在庫リスト
         </Typography>
 
         {/* 在庫登録 */}
         <ModalStockRegistration
+        groupedDataArr={groupedDataArr}
           setStocks={setStocks}
           date={date}
           setDate={setDate}
