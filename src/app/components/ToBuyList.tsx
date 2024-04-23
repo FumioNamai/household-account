@@ -35,12 +35,53 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate }: Props) => {
         <Stack direction="row" justifyContent="end" sx={{ marginRight: "8px" }}>
           <TaxSwitch />
         </Stack>
-        {ShopList.map((shop) => (
+
+        {ShopList.map((shop) =>
+          groupedDataArr.some(
+            (groupedData) =>
+              groupedData.shop_name === shop.shopName && groupedData.to_buy
+          ) ? (
+            <Box
+              key={shop.id}
+              sx={{
+                boxShadow: 2,
+                padding: "16px",
+                borderRadius: 2,
+                marginBlock: "10px",
+              }}
+            >
+              <Typography variant="body1">
+                {shop.shopName ? shop.shopName : "未分類"}
+              </Typography>
+              <ul>
+                {groupedDataArr.map(
+                  (groupedData) =>
+                    groupedData.to_buy === true &&
+                    groupedData.shop_name === shop.shopName && (
+                      <ItemToBuy
+                        key={groupedData.id}
+                        id={groupedData.id}
+                        name={groupedData.name}
+                        type={groupedData.type}
+                        category={groupedData.category!}
+                        price={groupedData.price}
+                        reference_price={groupedData.reference_price}
+                        count={groupedData.count}
+                        to_buy={groupedData.to_buy}
+                        checked={groupedData.checked}
+                        selectedDate={selectedDate}
+                        shop_name={groupedData.shop_name}
+                        setStocks={setStocks}
+                      />
+                    )
+                )}
+              </ul>
+            </Box>
+          ) : null
+        )}
+        {groupedDataArr.some((groupedData) => groupedData.to_buy) ? null : (
           <Box
-            key={shop.id}
             sx={{
-              // height: "300px",
-              // overflowY: "scroll",
               boxShadow: 2,
               padding: "16px",
               borderRadius: 2,
@@ -48,33 +89,10 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate }: Props) => {
             }}
           >
             <Typography variant="body1">
-              {shop.shopName ? shop.shopName : "未分類"}
+              買い物リストは空です
             </Typography>
-            <ul>
-              {groupedDataArr.map(
-                (groupedData) =>
-                  groupedData.to_buy === true &&
-                  groupedData.shop_name === shop.shopName && (
-                    <ItemToBuy
-                      key={groupedData.id}
-                      id={groupedData.id}
-                      name={groupedData.name}
-                      type={groupedData.type}
-                      category={groupedData.category!}
-                      price={groupedData.price}
-                      reference_price={groupedData.reference_price}
-                      count={groupedData.count}
-                      to_buy={groupedData.to_buy}
-                      checked={groupedData.checked}
-                      selectedDate={selectedDate}
-                      shop_name={groupedData.shop_name}
-                      setStocks={setStocks}
-                    />
-                  )
-              )}
-            </ul>
           </Box>
-        ))}
+        )}
       </Box>
     </Box>
   );
