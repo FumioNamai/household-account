@@ -51,7 +51,7 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate }: Props) => {
               }}
             >
               <Typography variant="body1">
-                {shop.shopName ? shop.shopName : "未分類"}
+                {shop.shopName ? shop.shopName : "購入店舗未定"}
               </Typography>
               <ul>
                 {groupedDataArr.map(

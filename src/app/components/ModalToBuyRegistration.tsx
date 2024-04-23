@@ -225,23 +225,23 @@ export default function ModalToBuyRegistration({
                     id="name"
                     value={itemName}
                     onChange={handleItemNameChange}
-                    sx={{ width:"238px", padding: "0" }}
+                    sx={{ width: "238px", padding: "0" }}
                   />
                 </FormControl>
 
-                <FormControl sx={{display: "flex", marginBottom: "12px" }}>
-                <InputLabel>購入予定店</InputLabel>
+                <FormControl sx={{ display: "flex", marginBottom: "12px" }}>
+                  <InputLabel>購入予定店</InputLabel>
                   <Select
                     label="購入予定店"
                     variant="outlined"
                     size="medium"
                     value={shopName}
                     onChange={handleShopSelect}
-                    sx={{ width:"238px", padding: "0" }}
+                    sx={{ width: "238px", padding: "0" }}
                   >
                     {ShopList.map((shop) => (
                       <MenuItem key={shop.id} value={shop.shopName}>
-                        {shop.shopName}
+                        {shop.shopName === "" ? "分類無し" : shop.shopName}
                       </MenuItem>
                     ))}
                   </Select>

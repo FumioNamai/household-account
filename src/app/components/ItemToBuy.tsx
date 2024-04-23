@@ -128,7 +128,7 @@ const ItemToBuy = ({
             >
               {ShopList.map((shop) => (
                 <MenuItem key={shop.id} value={shop.shopName}>
-                  {shop.shopName}
+                  {shop.shopName === "" ? "分類無し" : shop.shopName}
                 </MenuItem>
               ))}
             </Select>
