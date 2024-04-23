@@ -1,5 +1,4 @@
 import {
-  Box,
   Divider,
   List,
   MenuItem,
@@ -13,10 +12,8 @@ import CheckBox from "@/app/components/CheckBox";
 import ModalToBuyList from "@/app/components/ModalToBuyList";
 import ToBuyButton from "@/app/components/ToBuyButton";
 import useStore, { useTaxStore } from "@/store";
-import { useState } from "react";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
-import { log } from "console";
 import { ShopList } from "./ShopList";
 
 type Props = {
@@ -66,12 +63,6 @@ const ItemToBuy = ({
     }
   };
 
-  // const [shopName, setShopName] = useState("");
-  // const handleShopSelect = (event: SelectChangeEvent) => {
-  //   setShopName(event.target.value);
-  // };
-  // console.log(shopName);
-
   const handleShopSelect = async (event: SelectChangeEvent) => {
     const shopName = event.target.value;
 
@@ -102,26 +93,45 @@ const ItemToBuy = ({
         <Stack direction="column">
           <Stack
             direction="row"
-            justifyContent="flex-start"
+            justifyContent="space-between"
             alignItems="center"
           >
-            <CheckBox
-              id={id}
-              name={name}
-              checked={checked}
-              setStocks={setStocks}
-            />
-            <ModalToBuyList
-              id={id}
-              name={name}
-              price={price}
-              reference_price={reference_price}
-              count={count}
-              type={type}
-              category={category}
-              selectedDate={selectedDate}
-              setStocks={setStocks}
-            />
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+            >
+              <CheckBox
+                id={id}
+                name={name}
+                checked={checked}
+                setStocks={setStocks}
+              />
+              <ModalToBuyList
+                id={id}
+                name={name}
+                price={price}
+                reference_price={reference_price}
+                count={count}
+                type={type}
+                category={category}
+                selectedDate={selectedDate}
+                setStocks={setStocks}
+              />
+            </Stack>
+            <Select
+              variant="standard"
+              size="small"
+              value={shop_name}
+              onChange={handleShopSelect}
+              sx={{ maxWidth: "50px", minWidth: "50px", padding: "0" }}
+            >
+              {ShopList.map((shop) => (
+                <MenuItem key={shop.id} value={shop.shopName}>
+                  {shop.shopName}
+                </MenuItem>
+              ))}
+            </Select>
           </Stack>
           <Stack direction="row" justifyContent="flex-end" alignItems="center">
             <Stack
@@ -148,19 +158,6 @@ const ItemToBuy = ({
               to_buy={to_buy}
               setStocks={setStocks}
             />
-            <Select
-              variant="standard"
-              size="small"
-              value={shop_name}
-              onChange={handleShopSelect}
-              sx={{ maxWidth: "130px", minWidth: "130px", padding: "0" }}
-            >
-              {ShopList.map((shop) => (
-                <MenuItem key={shop.id} value={shop.shopName}>
-                  {shop.shopName}
-                </MenuItem>
-              ))}
-            </Select>
           </Stack>
         </Stack>
       </List>
