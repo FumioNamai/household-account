@@ -20,13 +20,17 @@ import { useSnackbarContext } from "@/providers/context-provider";
 import { Categories } from "./Categories";
 import { supabase } from "../../../utils/supabase";
 import { GroupedData, Stock } from "../../../utils/type";
+import { ShopList } from "./ShopList";
 
 type Props = {
-  groupedDataArr : GroupedData[];
+  groupedDataArr: GroupedData[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-export default function ModalToBuyRegistration({groupedDataArr,setStocks}: Props) {
+export default function ModalToBuyRegistration({
+  groupedDataArr,
+  setStocks,
+}: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -39,6 +43,7 @@ export default function ModalToBuyRegistration({groupedDataArr,setStocks}: Props
   const [type, setType] = useState<string>("食品");
 
   const [itemName, setItemName] = useState<string>("");
+  const [shopName, setShopName] = useState<string>("");
 
   let [newPrice, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
@@ -52,6 +57,10 @@ export default function ModalToBuyRegistration({groupedDataArr,setStocks}: Props
 
   const handleItemNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setItemName(event.target.value);
+  };
+
+  const handleShopSelect = (event: SelectChangeEvent) => {
+    setShopName(event.target.value);
   };
 
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
@@ -78,12 +87,16 @@ export default function ModalToBuyRegistration({groupedDataArr,setStocks}: Props
     }
 
     // 入力された商品名と価格を検索して、登録済みの場合は処理を中断させる
-    const isStocked = groupedDataArr.some((data:any) => data.name === itemName
-    // && data.price === parseInt(newPrice ? newPrice : "0")
-  )
-    if(isStocked) {
+    const isStocked = groupedDataArr.some(
+      (data: any) => data.name === itemName
+      // && data.price === parseInt(newPrice ? newPrice : "0")
+    );
+    if (isStocked) {
       if (showSnackbar) {
-        showSnackbar("error", "同じ名前の商品が在庫一覧に登録されています。在庫一覧から買い物リストへ登録してください。");
+        showSnackbar(
+          "error",
+          "同じ名前の商品が在庫一覧に登録されています。在庫一覧から買い物リストへ登録してください。"
+        );
       }
       return;
     }
@@ -98,6 +111,7 @@ export default function ModalToBuyRegistration({groupedDataArr,setStocks}: Props
         category: categoryItem,
         user_id: user.id,
         to_buy: true,
+        shop_name: shopName,
       });
       if (error) throw error;
       const { data } = await supabase
@@ -211,7 +225,26 @@ export default function ModalToBuyRegistration({groupedDataArr,setStocks}: Props
                     id="name"
                     value={itemName}
                     onChange={handleItemNameChange}
+                    sx={{ width:"238px", padding: "0" }}
                   />
+                </FormControl>
+
+                <FormControl sx={{display: "flex", marginBottom: "12px" }}>
+                <InputLabel>購入予定店</InputLabel>
+                  <Select
+                    label="購入予定店"
+                    variant="outlined"
+                    size="medium"
+                    value={shopName}
+                    onChange={handleShopSelect}
+                    sx={{ width:"238px", padding: "0" }}
+                  >
+                    {ShopList.map((shop) => (
+                      <MenuItem key={shop.id} value={shop.shopName}>
+                        {shop.shopName}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </FormControl>
 
                 <Stack direction="column">

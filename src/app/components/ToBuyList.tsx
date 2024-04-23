@@ -3,6 +3,7 @@ import { Box, Grid, Stack, Typography } from "@mui/material";
 import ItemToBuy from "@/app/components/ItemToBuy";
 import { ShopList } from "./ShopList";
 import ModalToBuyRegistration from "./ModalToBuyRegistration";
+import TaxSwitch from "./TaxSwitch";
 
 type Props = {
   groupedDataArr: GroupedData[];
@@ -29,6 +30,10 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate }: Props) => {
             groupedDataArr={groupedDataArr}
             setStocks={setStocks}
           />
+        </Stack>
+        {/* 税表示切替 */}
+        <Stack direction="row" justifyContent="end" sx={{ marginRight: "8px" }}>
+          <TaxSwitch />
         </Stack>
         {ShopList.map((shop) => (
           <Box
