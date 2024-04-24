@@ -14,7 +14,12 @@ import Daily from "@/app/components/Daily";
 import StockFilter from "@/app/components/StockFilter";
 import useStore from "@/store/index";
 import ToBuyList from "@/app/components/ToBuyList";
-import { Stack, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import {
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 
 export default function TopPage() {
   let [stocks, setStocks] = useState<Stock[]>([]);
@@ -81,6 +86,23 @@ export default function TopPage() {
     ?.locale(ja)
     .format("YYYY-MM-DD");
 
+  const showMessage = () => {
+    {
+      stocks.length === 0 ? (
+        <>
+          <Typography textAlign="center" color="error.main" fontWeight="bold">
+            登録されている商品がありません！
+          </Typography>
+          <Typography textAlign="center" color="warning.dark" variant="body2">
+            在庫一覧/検索ページから商品登録をするか
+          </Typography>
+          <Typography textAlign="center" color="warning.dark" variant="body2">
+            買い物リストページから登録しましょう！
+          </Typography>
+        </>
+      ) : null;
+    }
+  };
   const [page, setPage] = useState<string | null>("Monthly");
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -124,13 +146,7 @@ export default function TopPage() {
   return (
     <>
       <main>
-        { ( stocks.length === 0 ) ?
-        <>
-        <Typography textAlign="center" color="error.main" fontWeight="bold">登録されている商品がありません！</Typography>
-        <Typography textAlign="center" color="warning.dark" variant="body2">在庫一覧/検索ページから商品登録をするか</Typography>
-        <Typography textAlign="center" color="warning.dark" variant="body2">買い物リストページから登録しましょう！</Typography>
-        </>
-        : null}
+        {showMessage()}
         <Stack direction="row" justifyContent="center" sx={{ marginBottom: 4 }}>
           <ToggleButtonGroup
             exclusive

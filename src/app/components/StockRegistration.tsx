@@ -183,7 +183,7 @@ const StockRegistration = ({
 
       setItemName("");
       setNewPrice("");
-      setCategoryItem("");
+      // setCategoryItem("");
       if (showSnackbar) {
         showSnackbar(
           "success",
