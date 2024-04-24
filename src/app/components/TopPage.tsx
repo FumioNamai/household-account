@@ -87,8 +87,8 @@ export default function TopPage() {
     .format("YYYY-MM-DD");
 
   const showMessage = () => {
-    {
-      stocks.length === 0 ? (
+    if (stocks.length === 0) {
+      return (
         <>
           <Typography textAlign="center" color="error.main" fontWeight="bold">
             登録されている商品がありません！
@@ -100,9 +100,13 @@ export default function TopPage() {
             買い物リストページから登録しましょう！
           </Typography>
         </>
-      ) : null;
+      );
+    } else {
+      return;
     }
   };
+
+
   const [page, setPage] = useState<string | null>("Monthly");
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
