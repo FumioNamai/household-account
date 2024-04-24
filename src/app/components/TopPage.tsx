@@ -112,7 +112,7 @@ export default function TopPage() {
     event: React.MouseEvent<HTMLElement>,
     newPage: string | null
   ) => {
-    setPage(newPage);
+    if (newPage !== null) setPage(newPage);
   };
   // ToggleButtonで画面を出しわける
   const SwitchPages = () => {
