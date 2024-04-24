@@ -78,7 +78,7 @@ const ItemToBuy = ({
         .eq("user_id", user.id);
       onUpdate(updatedStocks);
       if (showSnackbar) {
-        showSnackbar("success", `${name}を${shopName}に移動しました。`);
+        showSnackbar("success", `${name}を${ shopName ? shopName : "購入店舗未定" }に移動しました。`);
       }
     } catch (error: any) {
       if (showSnackbar) {

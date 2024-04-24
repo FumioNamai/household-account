@@ -14,6 +14,7 @@ import Daily from "@/app/components/Daily";
 import StockFilter from "@/app/components/StockFilter";
 import useStore from "@/store/index";
 import ToBuyList from "@/app/components/ToBuyList";
+import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 export default function TopPage() {
   let [stocks, setStocks] = useState<Stock[]>([]);
@@ -80,34 +81,65 @@ export default function TopPage() {
     ?.locale(ja)
     .format("YYYY-MM-DD");
 
+  const [page, setPage] = useState<string | null>("Monthly");
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newPage: string | null
+  ) => {
+    setPage(newPage);
+  };
+  // ToggleButtonで画面を出しわける
+  const SwitchPages = () => {
+    switch (page) {
+      case "Monthly": // 月別集計
+        return <Monthly stocks={stocks} setStocks={setStocks} />;
+      case "Daily": // 日別集計
+        return (
+          <Daily
+            stocks={stocks}
+            setStocks={setStocks}
+            date={date}
+            setDate={setDate}
+          />
+        );
+      case "StockFilter": // 在庫検索
+        return (
+          <StockFilter
+            groupedDataArr={groupedDataArr}
+            setStocks={setStocks}
+            date={date}
+            setDate={setDate}
+          />
+        );
+      case "ToBuyList": // 買い物リスト
+        return (
+          <ToBuyList
+            groupedDataArr={groupedDataArr}
+            setStocks={setStocks}
+            selectedDate={selectedDate}
+          />
+        );
+    }
+  };
   return (
     <>
       <main>
-        {/* 月別集計 */}
-        <Monthly stocks={stocks} setStocks={setStocks} />
+        <Stack direction="row" justifyContent="center" sx={{ marginBlock: 5 }}>
+          <ToggleButtonGroup
+            exclusive
+            color="primary"
+            value={page}
+            onChange={handleChange}
+            size="small"
+          >
+            <ToggleButton value="Monthly">月別集計</ToggleButton>
+            <ToggleButton value="Daily">日別集計</ToggleButton>
+            <ToggleButton value="StockFilter">在庫一覧/検索</ToggleButton>
+            <ToggleButton value="ToBuyList">買い物リスト</ToggleButton>
+          </ToggleButtonGroup>
+        </Stack>
 
-        {/* 日別集計 */}
-        <Daily
-          stocks={stocks}
-          setStocks={setStocks}
-          date={date}
-          setDate={setDate}
-        />
-
-        {/* 在庫検索 */}
-        <StockFilter
-          groupedDataArr={groupedDataArr}
-          setStocks={setStocks}
-          date={date}
-          setDate={setDate}
-        />
-
-        {/* 買い物リスト */}
-        <ToBuyList
-          groupedDataArr={groupedDataArr}
-          setStocks={setStocks}
-          selectedDate={selectedDate}
-        />
+        {SwitchPages()}
       </main>
     </>
   );

@@ -4,8 +4,6 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { ThemedComp } from "@/app/components/ThemedComp";
 
-
-
 export const Providers: FC<PropsWithChildren> = ({ children }) => {
 
   const [mounted, setMounted] = useState(false);

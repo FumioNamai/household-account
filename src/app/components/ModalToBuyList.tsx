@@ -204,7 +204,7 @@ const ModalToBuyList = ({
                   variant="standard"
                   type="string"
                   size="small"
-                  placeholder={price ? `${calcPrice(reference_price)}` : `(仮)${calcPrice(reference_price)}`}
+                  placeholder = {`${calcPrice(reference_price)}`}
                   inputProps={{
                     sx: { textAlign: "right", marginRight: "8px" },
                   }}
