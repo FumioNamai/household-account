@@ -110,7 +110,7 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
       >
         {/* 種別検索 */}
         <InputLabel>種別で検索</InputLabel>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" alignItems="center" spacing={1} sx={{marginBottom:1}}>
           <ToggleButtonGroup
             color="primary"
             value={selectedType}

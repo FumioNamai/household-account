@@ -9,7 +9,7 @@ export async function middleware(req: NextRequest) {
     req,
     res,
   });
-  //セッション情報を取得する⇒認証状態をチェックできるようになる
-  await supabase.auth.getSession();
+  //ユーザー情報を取得する⇒認証状態をチェックできるようになる
+  await supabase.auth.getUser();
   return res;
 }

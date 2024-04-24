@@ -1,6 +1,6 @@
 "use client";
 
-import { Session } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 import { Database } from "@/lib/database.types";
 import { useEffect } from "react";
 import useStore from "@/store/index";
@@ -9,28 +9,28 @@ import SettingsIcon from "@mui/icons-material/Settings";
 
 type ProfileType = Database["public"]["Tables"]["profiles"]["Row"];
 const Navigation = ({
-  session,
+  user,
   profile,
 }: {
-  session: Session | null;
+  user: User | null;
   profile: ProfileType | null;
 }) => {
   const setUser = useStore((state) => state.setUser);
   // 状態管理にユーザー情報を保存
-  // セッションが無い場合は状態管理も空になる
+  // ユーザーが無い場合は状態管理も空になる
   useEffect(() => {
     setUser({
-      email: session ? session.user.email : "",
-      id: session ? session.user.id : "",
-      introduce: session && profile ? profile.introduce : "",
-      name: session && profile ? profile.name : "",
+      email: user ? user.email : "",
+      id: user ? user.id : "",
+      introduce: user && profile ? profile.introduce : "",
+      name: user && profile ? profile.name : "",
       // avatar_url: session && profile ? profile.avatar_url : "",
     });
-  }, [session, setUser, profile]);
+  }, [user, setUser, profile]);
 
   return (
     <>
-      {session ? (
+      {user ? (
         <Stack direction="row" alignItems="center" spacing={1}>
           {profile && (
             <>

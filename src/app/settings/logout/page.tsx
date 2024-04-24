@@ -11,10 +11,10 @@ const LogoutPage = async() => {
   })
 
   // セッションの取得
-  const { data:{ session}} = await supabase.auth.getSession()
+  const { data:{ user}} = await supabase.auth.getUser()
 
   // 未認証の場合、リダイレクト
-  if (!session) {
+  if (!user) {
     redirect('/auth/login')
   }
   return <Logout />

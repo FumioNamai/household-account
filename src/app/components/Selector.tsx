@@ -12,9 +12,9 @@ export default async function Selector() {
   });
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
   return (
-    <Container maxWidth="sm">{session ? <TopPage /> : <Login />}</Container>
+    <Container maxWidth="sm">{user ? <TopPage /> : <Login />}</Container>
   );
 }

@@ -9,28 +9,28 @@ import Navigation from "@/app/components/Navigation"
 const SupabaseListener = async () => {
   const supabase = createServerComponentClient<Database>({ cookies })
 
-  // セッション情報を取得してナビゲーションに渡す
-  const { data: { session },} = await supabase.auth.getSession()
+  // ユーザー情報を取得してナビゲーションに渡す
+  const { data: { user },} = await supabase.auth.getUser()
 
   // プロフィール情報を取得する
   let profile = null
 
-  if (session) {
-    const { data: currentProfile } = await supabase.from('profiles').select('*').eq('id',session.user.id).single()
+  if (user) {
+    const { data: currentProfile } = await supabase.from('profiles').select('*').eq('id',user.id).single()
 
     profile = currentProfile
 
     // メールアドレスを変更した場合は、プロフィール情報を更新する
-    if ( currentProfile && currentProfile.email !== session?.user.email ) {
-      const { data:updatedProfiles } = await supabase.from('profiles').update({email:session.user.email}).match( {
-        id:session.user.id
+    if ( currentProfile && currentProfile.email !== user.email ) {
+      const { data:updatedProfiles } = await supabase.from('profiles').update({email:user.email}).match( {
+        id:user.id
       }).select('*').single()
 
       profile = updatedProfiles
     }
   }
   return(
-    <Navigation session={session} profile={profile}/>
+    <Navigation user={user} profile={profile}/>
   )
 }
 
