@@ -100,11 +100,11 @@ export default function TopPage() {
       const timer = setTimeout(() => setWaiting(false), msec);
       // クリーンアップ
       return () => clearTimeout(timer);
-    }, []);
+    }, [msec]);
     return waiting;
   };
 
-  const showMessage = () => {
+  const ShowMessage = () => {
     // 500ミリ秒遅らせて、stocksが0の時にメッセージを表示
     const waiting = useDelay(500);
     if (stocks.length === 0) {
@@ -125,7 +125,6 @@ export default function TopPage() {
       return;
     }
   };
-  // setTimeout(showMessage,100);
 
   const [page, setPage] = useState<string | null>("Monthly");
   const handleChange = (
@@ -171,7 +170,7 @@ export default function TopPage() {
     <>
       {
         <main>
-          {showMessage()}
+          {ShowMessage()}
           {isLoading ? (
             <Loading />
           ) : (
