@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
 import { Stock } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
@@ -20,14 +20,16 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+import Loading from "./Loading";
 
 export default function TopPage() {
   let [stocks, setStocks] = useState<Stock[]>([]);
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
-
+  const [isLoading, setIsLoading] = useState(true);
   const getStocks = async (userId: string) => {
     try {
+      setIsLoading(true);
       const { data, error } = await supabase
         .from("stocks")
         .select("*")
@@ -40,11 +42,15 @@ export default function TopPage() {
         showSnackbar("error", "在庫データを取得できません。" + error.message);
       }
       setStocks([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    (async () => await getStocks(user.id))();
+    if (user.id) {
+      (async () => await getStocks(user.id))();
+    }
   }, [user.id]);
 
   stocks = stocks.sort((a, b) => {
@@ -86,9 +92,23 @@ export default function TopPage() {
     ?.locale(ja)
     .format("YYYY-MM-DD");
 
+  // 指定した時間で処理を遅らせるカスタムフック
+  const useDelay = (msec: number) => {
+    const [waiting, setWaiting] = useState(true);
+    // 指定した時間になったら、待機中(true)から待機終了(false)に変える
+    useEffect(() => {
+      const timer = setTimeout(() => setWaiting(false), msec);
+      // クリーンアップ
+      return () => clearTimeout(timer);
+    }, []);
+    return waiting;
+  };
+
   const showMessage = () => {
+    // 500ミリ秒遅らせて、stocksが0の時にメッセージを表示
+    const waiting = useDelay(500);
     if (stocks.length === 0) {
-      return (
+      return !waiting ? (
         <>
           <Typography textAlign="center" color="error.main" fontWeight="bold">
             登録されている商品がありません！
@@ -100,12 +120,12 @@ export default function TopPage() {
             買い物リストページから登録しましょう！
           </Typography>
         </>
-      );
+      ) : null;
     } else {
       return;
     }
   };
-
+  // setTimeout(showMessage,100);
 
   const [page, setPage] = useState<string | null>("Monthly");
   const handleChange = (
@@ -149,25 +169,36 @@ export default function TopPage() {
   };
   return (
     <>
-      <main>
-        {showMessage()}
-        <Stack direction="row" justifyContent="center" sx={{ marginBottom: 4 }}>
-          <ToggleButtonGroup
-            exclusive
-            color="primary"
-            value={page}
-            onChange={handleChange}
-            size="small"
-          >
-            <ToggleButton value="Monthly">月別集計</ToggleButton>
-            <ToggleButton value="Daily">日別集計</ToggleButton>
-            <ToggleButton value="StockFilter">在庫一覧/検索</ToggleButton>
-            <ToggleButton value="ToBuyList">買い物リスト</ToggleButton>
-          </ToggleButtonGroup>
-        </Stack>
-
-        {SwitchPages()}
-      </main>
+      {
+        <main>
+          {showMessage()}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <Stack
+                direction="row"
+                justifyContent="center"
+                sx={{ marginBottom: 4 }}
+              >
+                <ToggleButtonGroup
+                  exclusive
+                  color="primary"
+                  value={page}
+                  onChange={handleChange}
+                  size="small"
+                >
+                  <ToggleButton value="Monthly">月別集計</ToggleButton>
+                  <ToggleButton value="Daily">日別集計</ToggleButton>
+                  <ToggleButton value="StockFilter">在庫一覧/検索</ToggleButton>
+                  <ToggleButton value="ToBuyList">買い物リスト</ToggleButton>
+                </ToggleButtonGroup>
+              </Stack>
+              {SwitchPages()}
+            </>
+          )}
+        </main>
+      }
     </>
   );
 }

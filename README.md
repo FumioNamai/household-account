@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# N式家計簿
 
-## Getting Started
 
-First, run the development server:
+## アプリの概要
+食品・日用品などの在庫管理、家計計算、買い物リスト作成を簡単にするアプリ
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 目指した課題解決
+それまでメモアプリに手作業で購入商品の記録、税込/税抜入力、使用金額集計、在庫数管理、日別集計、月別集計を行っていた家計計算作業を効率化
+買い物のリストアップから家計計算までを一貫して1つのアプリで対応
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## URL
+https://household-account-kappa.vercel.app/
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 利用方法
+1. ユーザー登録をする
+1. 在庫/商品登録をする
 
-## Learn More
+## 実装した機能
+- ユーザー登録/認証
 
-To learn more about Next.js, take a look at the following resources:
+- ダークモード
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- データベースに変更を加える操作を行うとsnackbarで操作に対しての成否をメッセージで表示
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- アイコンボタンを長押し、またはホバーで注釈を表示
 
-## Deploy on Vercel
+- 在庫/商品登録
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 買い物リスト登録
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 在庫検索機能
+  - 選択した種別・分類でリストを表示
+  - 商品名での検索が可能
+
+- 商品リストに在庫操作用アイコンボタンを設置
+  - 在庫あり
+    - 「✓」指定した使用日で在庫を1つ使用済みにする
+    - 「＋」在庫数を1つ増やす
+    - 「－」在庫数を1つ減らす
+    - 「🛒」買い物リストに追加/削除する
+    買い物リストに入っている場合、アイコンをオレンジで表示
+  - 在庫なし
+    - 「🖊」入力した価格で登録する
+    - 「🗑️」一覧から削除する
+    - 「🛒」買い物リストに追加/削除する
+    買い物リストに入っている場合、アイコンをオレンジで表示
+
+- 月別集計
+  - 選択した対象年月の合計・内訳・消費品目を表示
+  - 消費品目は種別「その他」に限定し、個別の金額を表示
+  - 「⬅️」在庫に戻す（登録した使用日を消去）
+
+- 日別集計
+  - 選択した対象年月日の合計・内訳・消費品目を表示
+  - 消費品目は個別の金額を表示
+  - 「⬅️」在庫に戻す（登録した使用日を消去）
+
+- 買い物リスト
+  - 商品名をクリックすると個別リストをモーダルで表示し、在庫の操作ができる
+  - 「☐」買い物中にカゴに入れたときに目印の✓を入れておける。（リロードしてもチェックは消えない）
+  - 「▼」から購入予定店を選択し、リストを店舗別に表示できる。
+
+## 実装予定の機能
+- MUIのPopoverを使って説明文を表示させる機能
+- 買い物リストタイトルの下に購入予定店のボタンを配置し、クリックするとリストに移動できる機能
+- 種別や分類、購入予定店をカスタマイズできる機能
+- 月別集計と日別集計をグラフで表示する機能
+- データベースの構造を見直し
+
+## 使用技術
+フレームワーク Next.js TypeScript
+データベース Supabase
+インフラ Vercel
+ライブラリ MaterialUI, next-themes(ダークモード), day.js(日付・時刻), zod(バリデーション), zustand(状態管理)
+
+## 工夫した箇所など
+- ユーザー認証機能をSupabaseAuthで実装
+- ダークモードの実装
+- トップページの「月別集計」「日別集計」「在庫一覧/検索」「買い物リスト」をトグルボタンで切り替えて表示
+- 初回サインインで登録データが存在しない場合に、商品登録を促すメッセージを表示
+- 登録データが存在するときに上記メッセージが表示されないように、カスタムフックでレンダリングを遅らせる処理を追加
+- スクロール動作を減らすため、各所に税込・税抜表示切替ができるボタンを配置した
+- 税込・税抜切り替えボタンで、表示金額を切り替えられるようにした
+- 在庫一覧の表示内容を在庫ありとなしで出しわける
+- 在庫一覧を種別・分類でソートできる機能
+- 在庫一覧を商品名で検索できる機能
+- 在庫一覧を操作したときに、画面がスクロールされないよう、月別集計・日別集計の消費品目欄はアコーディオンで表示させた
+- データを変更するイベント後にsnackbarで処理の成否を表示
+- データベースに変更を加える操作を行うとsnackbarで操作に対しての成否をメッセージで表示
+- アイコンボタンを長押し、またはホバーで注釈を表示
+- データベースから取得した個別の商品データを「同じ名前、同じ価格」をグループ化し数量を取得し、groupedDataArrにまとめた。
+- 買い物リストから商品名をクリックすると在庫登録用のモーダルを表示し、在庫登録ができるようにした
+- 買い物リストを購入予定店舗別に表示
+
+## 制作期間
+- 2024.01.06~
