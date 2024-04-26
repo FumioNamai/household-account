@@ -51,7 +51,7 @@ export default function TopPage() {
     if (user.id) {
       (async () => await getStocks(user.id))();
     }
-  }, [user.id]);
+  }, []);
 
   stocks = stocks.sort((a, b) => {
     if (a.name < b.name) return -1;
