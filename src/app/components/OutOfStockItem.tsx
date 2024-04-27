@@ -20,6 +20,8 @@ import ToBuyButton from "./ToBuyButton";
 import useStore, { useTaxStore } from "@/store";
 import { Stock } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
+import { CalcPrice } from "./CalcPrice";
+
 
 type Props = {
   id: number;
@@ -143,7 +145,7 @@ const OutOfStockItem = ({ id, name, type, to_buy, reference_price, setStocks }: 
               size="small"
               inputProps={{ sx: { textAlign: "right", marginRight: "8px" } }}
               sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
-              placeholder = {reference_price ? `${reference_price}` : "0"}
+              placeholder = {reference_price ? `${CalcPrice(reference_price,type)}` : "0"}
               value={newPrice}
               onChange={handleNewPrice}
             />

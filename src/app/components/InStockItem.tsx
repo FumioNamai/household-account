@@ -9,6 +9,8 @@ import { Box, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 
 import ToBuyButton from "@/app/components/ToBuyButton";
 import { Stock } from "../../../utils/type";
+import { CalcPrice } from "./CalcPrice";
+
 
 type Props = {
 id: number;
@@ -196,19 +198,6 @@ const InStockItem = ({
     }
   };
 
-  // 税抜き⇔税込みで表示金額を切り替える処理
-  const calcPrice = () => {
-    if (type === "食品" && tax === false) {
-      let taxExcluded = Math.ceil(price / 1.08)
-      return taxExcluded;
-    } else if (type !== "食品" && tax === false) {
-      let taxExcluded = Math.ceil(price / 1.1)
-      return taxExcluded;
-    } else {
-      return price;
-    }
-  };
-
   return (
     <>
       <Stack direction="column" sx={{ width: "100%" }}>
@@ -223,7 +212,8 @@ const InStockItem = ({
               variant="body1"
               sx={{ minWidth: "80px", textAlign: "end" }}
             >
-              {calcPrice()}円
+              { price ? CalcPrice(price,type): "0"}円
+
             </Typography>
             <Typography
               variant="body2"

@@ -16,6 +16,7 @@ import { useStore, useTaxStore } from "@/store";
 import TaxSwitch from "./TaxSwitch";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
+import { CalcPrice } from "./CalcPrice";
 
 type Props = {
   id: number;
@@ -60,18 +61,7 @@ const ModalToBuyList = ({
     setAmount(event.target.value);
   };
 
-  // 税抜き⇔税込みで表示金額を切り替える処理
-  const calcPrice = (price:number | null) => {
-    if (type === "食品" && tax === false) {
-      let taxExcluded = Math.ceil(price! / 1.08);
-      return taxExcluded;
-    } else if (type !== "食品" && tax === false) {
-      let taxExcluded = Math.ceil(price! / 1.1);
-      return taxExcluded;
-    } else {
-      return price;
-    }
-  };
+
 
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -178,7 +168,7 @@ const ModalToBuyList = ({
                 variant="body2"
                 sx={{ width: "80px", textAlign: "end" }}
               >
-                {calcPrice(price)}円
+                { CalcPrice(price,type)}円
                 <span className="text-gray-500 text-[10px] ml-0.5">
                   {tax === true ? "(込)" : "(抜)"}
                 </span>
@@ -187,7 +177,7 @@ const ModalToBuyList = ({
                 variant="body2"
                 sx={{ width: "32px", textAlign: "end" }}
               >
-                x{calcPrice(price) ? count : 0}
+                x{ CalcPrice(price,type) ? count : 0}
               </Typography>
             </Stack>
           </Stack>
@@ -204,7 +194,7 @@ const ModalToBuyList = ({
                   variant="standard"
                   type="string"
                   size="small"
-                  placeholder = {`${calcPrice(reference_price)}`}
+                  placeholder = {reference_price ? `${CalcPrice(reference_price,type)  } ` : "0" }
                   inputProps={{
                     sx: { textAlign: "right", marginRight: "8px" },
                   }}

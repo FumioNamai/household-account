@@ -15,6 +15,7 @@ import useStore, { useTaxStore } from "@/store";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
 import { ShopList } from "./ShopList";
+import { CalcPrice } from "./CalcPrice";
 
 type Props = {
   id: number;
@@ -51,17 +52,17 @@ const ItemToBuy = ({
   const user = useStore((state) => state.user);
 
   // 税抜き⇔税込みで表示金額を切り替える処理
-  const calcPrice = () => {
-    if (type === "食品" && tax === false) {
-      let taxExcluded = Math.ceil(reference_price! / 1.08);
-      return taxExcluded;
-    } else if (type !== "食品" && tax === false) {
-      let taxExcluded = Math.ceil(reference_price! / 1.1);
-      return taxExcluded;
-    } else {
-      return reference_price;
-    }
-  };
+  // const calcPrice = () => {
+  //   if (type === "食品" && tax === false) {
+  //     let taxExcluded = Math.ceil(reference_price! / 1.08);
+  //     return taxExcluded;
+  //   } else if (type !== "食品" && tax === false) {
+  //     let taxExcluded = Math.ceil(reference_price! / 1.1);
+  //     return taxExcluded;
+  //   } else {
+  //     return reference_price;
+  //   }
+  // };
 
   const handleShopSelect = async (event: SelectChangeEvent) => {
     const shopName = event.target.value;
@@ -143,7 +144,7 @@ const ItemToBuy = ({
                 variant="body2"
                 sx={{ minWidth: "80px", textAlign: "end", color: "grey" }}
               >
-                {calcPrice()}円
+                {reference_price ? CalcPrice(reference_price, type) : "0"}円
               </Typography>
               <Typography
                 variant="body2"
