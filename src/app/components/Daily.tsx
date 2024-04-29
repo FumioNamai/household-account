@@ -171,7 +171,6 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
                     price={
                       tax ? todayFood.price : Math.ceil(todayFood.price / 1.08)
                     }
-                    stocks={stocks}
                     setStocks={setStocks}
                   />
                 )}
@@ -191,7 +190,6 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
                     price={
                       tax ? todayItem.price : Math.ceil(todayItem.price / 1.1)
                     }
-                    stocks={stocks}
                     setStocks={setStocks}
                   />
                 )}
@@ -211,7 +209,6 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
                     price={
                       tax ? todayOther.price : Math.ceil(todayOther.price / 1.1)
                     }
-                    stocks={stocks}
                     setStocks={setStocks}
                   />
                 )}

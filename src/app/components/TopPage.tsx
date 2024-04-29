@@ -136,9 +136,11 @@ export default function TopPage() {
   // ToggleButtonで画面を出しわける
   const SwitchPages = () => {
     switch (page) {
-      case "Monthly": // 月別集計
+      // 月別集計
+      case "Monthly":
         return <Monthly stocks={stocks} setStocks={setStocks} />;
-      case "Daily": // 日別集計
+      // 日別集計
+      case "Daily":
         return (
           <Daily
             stocks={stocks}
@@ -147,7 +149,8 @@ export default function TopPage() {
             setDate={setDate}
           />
         );
-      case "StockFilter": // 在庫検索
+      // 在庫検索
+      case "StockFilter":
         return (
           <StockFilter
             groupedDataArr={groupedDataArr}
@@ -156,7 +159,8 @@ export default function TopPage() {
             setDate={setDate}
           />
         );
-      case "ToBuyList": // 買い物リスト
+      // 買い物リスト
+      case "ToBuyList":
         return (
           <ToBuyList
             groupedDataArr={groupedDataArr}

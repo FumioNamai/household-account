@@ -9,7 +9,7 @@ import {
   FormControl,
   Grid,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -20,19 +20,28 @@ import useStore, { useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const Monthly: React.FC<{
+type Props = {
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-}> = ({ stocks, setStocks }) => {
+};
+
+const Monthly = ({ stocks, setStocks }: Props) => {
   const [month, setMonth] = useState<Dayjs | null>(dayjs());
-  const user = useStore((state) => (state.user));
-  const tax = useTaxStore((state) => (state.tax));
+  const user = useStore((state) => state.user);
+  const tax = useTaxStore((state) => state.tax);
 
   const selectedMonth: string | null = month!.format("YYYY-MM");
 
   // 指定した月の1日ごとの種別使用金額を取得
   let date = "0";
-  let dailyTotals = [];
+
+  type DailyTotal = {
+    date: string;
+    todayFoodsTotal: number;
+    todayItemsTotal: number;
+    todayOthersTotal: number;
+  };
+  let dailyTotals: DailyTotal[] = [];
   for (let i = 1; i < 32; i++) {
     date = ("0" + `${i}`).slice(-2);
     const todayUsed: Stock[] = stocks!.filter(
@@ -41,23 +50,18 @@ const Monthly: React.FC<{
         stock.use_date === `${selectedMonth}-${date}`
     );
 
-    const todayFoodsTotal: number = todayUsed
-      .filter((todayUsed: Stock) => todayUsed.type === "食品")
-      .reduce((sum: number, el: Stock) => {
-        return sum + el.price;
-      }, 0);
+    const calcTodayTypeTotal = (type: string) => {
+      const result = todayUsed
+        .filter((todayUsed: Stock) => todayUsed.type === type)
+        .reduce((sum: number, el: Stock) => {
+          return sum + el.price;
+        }, 0);
+      return result;
+    };
 
-    const todayItemsTotal: number = todayUsed
-      .filter((todayUsed: Stock) => todayUsed.type === "雑貨")
-      .reduce((sum, el) => {
-        return sum + el.price;
-      }, 0);
-
-    const todayOthersTotal: number = todayUsed
-      .filter((todayUsed: Stock) => todayUsed.type === "その他")
-      .reduce((sum, el) => {
-        return sum + el.price;
-      }, 0);
+    const todayFoodsTotal = calcTodayTypeTotal("食品");
+    const todayItemsTotal = calcTodayTypeTotal("雑貨");
+    const todayOthersTotal = calcTodayTypeTotal("その他");
 
     dailyTotals.push({
       date,
@@ -74,29 +78,29 @@ const Monthly: React.FC<{
       stock.type === "その他" &&
       stock.use_date?.startsWith(selectedMonth)
   );
-
+  // 指定した月に使用した合計金額を算出する関数
+  const calcMonthlyTypeTotal = (type: keyof DailyTotal): number => {
+    let monthlyTypeTotal: number = dailyTotals.reduce((sum, el) => {
+      return sum + (el[type] as number);
+    }, 0);
+    return monthlyTypeTotal;
+  }
   // 指定した月に使用した食品の合計金額を算出
-  let monthlyFoodsTotal: number = dailyTotals.reduce((sum, el) => {
-    return sum + el.todayFoodsTotal;
-  }, 0);
+  let monthlyFoodsTotal = calcMonthlyTypeTotal("todayFoodsTotal");
   // 税込・税抜金額の切り替え
   monthlyFoodsTotal = tax
     ? monthlyFoodsTotal
     : Math.ceil(monthlyFoodsTotal / 1.08);
 
   // 指定した月に使用した雑貨の合計金額を算出
-  let monthlyItemsTotal: number = dailyTotals.reduce((sum, el) => {
-    return sum + el.todayItemsTotal;
-  }, 0);
+  let monthlyItemsTotal = calcMonthlyTypeTotal("todayItemsTotal");
   // 税込・税抜金額の切り替え
   monthlyItemsTotal = tax
     ? monthlyItemsTotal
     : Math.ceil(monthlyItemsTotal / 1.1);
 
   // 指定した月に使用したその他の合計金額を算出
-  let monthlyOthersTotal: number = dailyTotals.reduce((sum, el) => {
-    return sum + el.todayOthersTotal;
-  }, 0);
+  let monthlyOthersTotal = calcMonthlyTypeTotal("todayOthersTotal");
   // 税込・税抜金額の切り替え
   monthlyOthersTotal = tax
     ? monthlyOthersTotal
@@ -108,7 +112,10 @@ const Monthly: React.FC<{
 
   return (
     <Box sx={{ marginBottom: "80px" }}>
-      <Stack direction="row" alignItems="center" spacing={4}
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={4}
         sx={{
           marginBottom: "16px",
         }}
@@ -118,8 +125,8 @@ const Monthly: React.FC<{
         </Typography>
         <FormControl sx={{ maxWidth: "200px" }}>
           <LocalizationProvider
-          dateAdapter={AdapterDayjs}
-          dateFormats={{ monthAndYear: "YYYY年 MM月" }}
+            dateAdapter={AdapterDayjs}
+            dateFormats={{ monthAndYear: "YYYY年 MM月" }}
           >
             <DatePicker
               defaultValue={dayjs()}
@@ -173,7 +180,9 @@ const Monthly: React.FC<{
             </Typography>
           </Stack>
 
-          <Stack direction="row" justifyContent="space-between"
+          <Stack
+            direction="row"
+            justifyContent="space-between"
             sx={{
               marginBottom: "24px",
             }}
@@ -187,9 +196,12 @@ const Monthly: React.FC<{
             </Typography>
           </Stack>
         </Box>
-        </Box>
-        <Accordion square={true}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ fontWeight:"400" }}>
+      </Box>
+      <Accordion square={true}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          sx={{ fontWeight: "400" }}
+        >
           消費品目（その他）
         </AccordionSummary>
         <AccordionDetails>
@@ -199,16 +211,14 @@ const Monthly: React.FC<{
                 <UsedItem
                   id={stock.id}
                   name={stock.name}
-                  stocks={stocks}
-                  setStocks={setStocks}
                   price={tax ? stock.price : Math.ceil(stock.price / 1.1)}
+                  setStocks={setStocks}
                 />
               </Box>
             ))}
           </ul>
-          </AccordionDetails>
+        </AccordionDetails>
       </Accordion>
-
     </Box>
   );
 };

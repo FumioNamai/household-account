@@ -1,7 +1,6 @@
 import { useTaxStore } from "@/store";
 
   // 税抜き⇔税込みで表示金額を切り替える処理
-
   export const CalcPrice = (price:number, type:string) => {
     const tax = useTaxStore((state) => state.tax);
 

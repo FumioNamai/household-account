@@ -11,7 +11,7 @@ type Props = {
   id: number;
   name: string;
   price: number;
-  stocks: Stock[] | null;
+  // stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
