@@ -116,11 +116,11 @@ const StockRegistration = ({
     // 入力された商品名と価格を検索して、登録済みの場合は処理を中断させる
     const isStocked = groupedDataArr.some(
       (data: any) => data.name === itemName
-      // && data.price === parseInt(newPrice ? newPrice : "0")
+      && data.price === parseInt(newPrice ? newPrice : "0")
     );
     if (isStocked) {
       if (showSnackbar) {
-        showSnackbar("error", "同じ名前の商品が在庫一覧に登録されています。");
+        showSnackbar("error", "同名で同価格の商品が在庫一覧に登録されています。");
       }
       return;
     }
