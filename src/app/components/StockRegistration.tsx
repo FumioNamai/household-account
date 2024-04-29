@@ -113,14 +113,16 @@ const StockRegistration = ({
       return;
     }
 
-    // 入力された商品名と価格を検索して、登録済みの場合は処理を中断させる
+    // ０円での重複登録を防止するため、入力された商品名と価格を検索して、登録済みの場合は処理を中断させる
     const isStocked = groupedDataArr.some(
       (data: any) => data.name === itemName
-      && data.price === parseInt(newPrice ? newPrice : "0")
+      // && data.price === parseInt(newPrice ? newPrice : "0")
+      && data.price === 0
     );
     if (isStocked) {
       if (showSnackbar) {
-        showSnackbar("error", "同名で同価格の商品が在庫一覧に登録されています。");
+        // showSnackbar("error", "同名で同価格の商品が在庫一覧に登録されています。");
+        showSnackbar("error", "すでに同名で0円の商品が在庫一覧に登録されています。");
       }
       return;
     }
