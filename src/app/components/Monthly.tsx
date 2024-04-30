@@ -19,6 +19,7 @@ import { Stock } from "../../../utils/type";
 import useStore, { useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { CalcPrice } from "./CalcPrice";
 
 type Props = {
   stocks: Stock[];
@@ -78,7 +79,8 @@ const Monthly = ({ stocks, setStocks }: Props) => {
       stock.type === "その他" &&
       stock.use_date?.startsWith(selectedMonth)
   );
-  // 指定した月に使用した合計金額を算出する関数
+
+  // 指定した月に使用した商品の合計金額を算出する関数
   const calcMonthlyTypeTotal = (type: keyof DailyTotal): number => {
     let monthlyTypeTotal: number = dailyTotals.reduce((sum, el) => {
       return sum + (el[type] as number);
@@ -86,29 +88,17 @@ const Monthly = ({ stocks, setStocks }: Props) => {
     return monthlyTypeTotal;
   }
   // 指定した月に使用した食品の合計金額を算出
-  let monthlyFoodsTotal = calcMonthlyTypeTotal("todayFoodsTotal");
-  // 税込・税抜金額の切り替え
-  monthlyFoodsTotal = tax
-    ? monthlyFoodsTotal
-    : Math.ceil(monthlyFoodsTotal / 1.08);
+  const monthlyFoodsTotal = calcMonthlyTypeTotal("todayFoodsTotal");
 
   // 指定した月に使用した雑貨の合計金額を算出
-  let monthlyItemsTotal = calcMonthlyTypeTotal("todayItemsTotal");
-  // 税込・税抜金額の切り替え
-  monthlyItemsTotal = tax
-    ? monthlyItemsTotal
-    : Math.ceil(monthlyItemsTotal / 1.1);
+  const monthlyItemsTotal = calcMonthlyTypeTotal("todayItemsTotal");
 
   // 指定した月に使用したその他の合計金額を算出
-  let monthlyOthersTotal = calcMonthlyTypeTotal("todayOthersTotal");
-  // 税込・税抜金額の切り替え
-  monthlyOthersTotal = tax
-    ? monthlyOthersTotal
-    : Math.ceil(monthlyOthersTotal / 1.1);
+  const monthlyOthersTotal = calcMonthlyTypeTotal("todayOthersTotal");
 
   // 指定した月の合計使用金額を算出
   const monthlyTotal: number =
-    monthlyFoodsTotal + monthlyItemsTotal + monthlyOthersTotal;
+    CalcPrice(monthlyFoodsTotal,"食品") + CalcPrice(monthlyItemsTotal,"雑貨") + CalcPrice(monthlyOthersTotal,"その他");
 
   return (
     <Box sx={{ marginBottom: "80px" }}>
@@ -166,7 +156,7 @@ const Monthly = ({ stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {monthlyFoodsTotal}円
+              {CalcPrice(monthlyFoodsTotal,"食品")}円
             </Typography>
           </Stack>
 
@@ -176,7 +166,7 @@ const Monthly = ({ stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {monthlyItemsTotal}円
+              {CalcPrice(monthlyItemsTotal,"雑貨")}円
             </Typography>
           </Stack>
 
@@ -192,7 +182,7 @@ const Monthly = ({ stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {monthlyOthersTotal}円
+              {CalcPrice(monthlyOthersTotal,"その他")}円
             </Typography>
           </Stack>
         </Box>
@@ -211,7 +201,8 @@ const Monthly = ({ stocks, setStocks }: Props) => {
                 <UsedItem
                   id={stock.id}
                   name={stock.name}
-                  price={tax ? stock.price : Math.ceil(stock.price / 1.1)}
+                  price={stock.price}
+                  type={stock.type}
                   setStocks={setStocks}
                 />
               </Box>

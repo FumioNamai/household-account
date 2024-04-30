@@ -1,4 +1,3 @@
-
 import {
   Accordion,
   AccordionDetails,
@@ -18,6 +17,7 @@ import { Dayjs } from "dayjs";
 import useStore, { useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { CalcPrice } from "./CalcPrice";
 
 type Props = {
   stocks: Stock[];
@@ -27,9 +27,7 @@ type Props = {
 };
 
 const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
-  const user = useStore((state) => (state.user));
-  const tax = useTaxStore((state) => (state.tax));
-
+  const user = useStore((state) => state.user);
   const selectedDate: string | undefined = date
     ?.locale(ja)
     .format("YYYY-MM-DD");
@@ -39,47 +37,49 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
     (stock: Stock) =>
       stock.user_id === user.id && stock.use_date === `${selectedDate}`
   );
+  const todayFoods: Stock[] = []
+  const todayItems: Stock[] = []
+  const todayOthers: Stock[] = []
+  // typeごとに振り分け
+  todayUsed.forEach((stock:Stock) => {
+    switch (stock.type) {
+      case "食品":
+      todayFoods.push(stock)
+      break;
+      case "雑貨":
+      todayItems.push(stock)
+      break
+      case "その他":
+      todayOthers.push(stock);
+      break
+    }
+  })
 
+  // 指定した日に使用した商品の合計金額を算出する関数
+  const calcDailyTypeTotal = (type: Stock[]): number => {
+    let dailyTypeTotal = type.reduce((sum: number, el) => {
+      return sum + el.price;
+    }, 0);
+    return dailyTypeTotal;
+  };
   // 指定した日に使用した食品の合計金額を算出
-  const todayFoods: Stock[] = todayUsed.filter(
-    (todayUsed: Stock) => todayUsed.type === "食品"
-  );
-  let todaysFoodsTotal: number = todayFoods.reduce((sum: number, el) => {
-    return sum + el.price;
-  }, 0);
-  // 税込・税抜金額の切り替え
-  todaysFoodsTotal = tax
-    ? todaysFoodsTotal
-    : Math.ceil(todaysFoodsTotal / 1.08);
+  const dailyFoodsTotal = calcDailyTypeTotal(todayFoods);
 
   // 指定した日に使用した雑貨の合計金額を算出
-  const todayItems: Stock[] = todayUsed.filter(
-    (todayUsed: Stock) => todayUsed.type === "雑貨"
-  );
-  let todaysItemsTotal: number = todayItems.reduce((sum: number, el) => {
-    return sum + el.price;
-  }, 0);
-  // 税込・税抜金額の切り替え
-  todaysItemsTotal = tax ? todaysItemsTotal : Math.ceil(todaysItemsTotal / 1.1);
+  const dailyItemsTotal = calcDailyTypeTotal(todayOthers);
 
   // 指定した日に使用した雑貨の合計金額を算出
-  const todayOthers: Stock[] = todayUsed.filter(
-    (todayUsed: Stock) => todayUsed.type === "その他"
-  );
-  let todaysOthersTotal: number = todayOthers.reduce((sum: number, el) => {
-    return sum + el.price;
-  }, 0);
-  // 税込・税抜金額の切り替え
-  todaysOthersTotal = tax
-    ? todaysOthersTotal
-    : Math.ceil(todaysOthersTotal / 1.1);
+  const dailyOthersTotal = calcDailyTypeTotal(todayItems);
 
   // 指定した日の合計金額を算出
-  const total: number = todaysFoodsTotal + todaysItemsTotal + todaysOthersTotal;
+  const total: number = CalcPrice(dailyFoodsTotal,"食品") + CalcPrice(dailyItemsTotal,"雑貨") + CalcPrice(dailyOthersTotal,"その他");
 
   return (
     <Box sx={{ marginBottom: "80px" }}>
-      <Stack direction="row" alignItems="center" spacing={4}
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={4}
         sx={{
           marginBottom: "16px",
         }}
@@ -121,7 +121,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {todaysFoodsTotal}円
+              {CalcPrice(dailyFoodsTotal,"食品")}円
             </Typography>
           </Box>
 
@@ -131,10 +131,12 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {todaysItemsTotal}円
+              {CalcPrice(dailyItemsTotal,"雑貨")}円
             </Typography>
           </Stack>
-          <Stack direction="row" justifyContent="space-between"
+          <Stack
+            direction="row"
+            justifyContent="space-between"
             sx={{
               marginBottom: "12px",
             }}
@@ -144,7 +146,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {todaysOthersTotal}円
+              {CalcPrice(dailyOthersTotal,"その他")}円
             </Typography>
           </Stack>
         </Box>
@@ -152,28 +154,26 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
 
       <Accordion square={true}>
         <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        sx={{ fontWeight:"400" }}>
+          expandIcon={<ExpandMoreIcon />}
+          sx={{ fontWeight: "400" }}
+        >
           消費品目
         </AccordionSummary>
         <AccordionDetails>
-          <Typography variant="subtitle1">
-            食品
-          </Typography>
+          <Typography variant="subtitle1">食品</Typography>
           <ul>
             {todayFoods.map((todayFood: Stock) => (
               <div key={todayFood.id}>
                 {todayFood.type === "食品" &&
-                todayFood.use_date === `${selectedDate}` && (
-                  <UsedItem
-                    id={todayFood.id}
-                    name={todayFood.name}
-                    price={
-                      tax ? todayFood.price : Math.ceil(todayFood.price / 1.08)
-                    }
-                    setStocks={setStocks}
-                  />
-                )}
+                  todayFood.use_date === `${selectedDate}` && (
+                    <UsedItem
+                      id={todayFood.id}
+                      name={todayFood.name}
+                      price={todayFood.price}
+                      type={todayFood.type}
+                      setStocks={setStocks}
+                    />
+                  )}
               </div>
             ))}
           </ul>
@@ -183,16 +183,15 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
             {todayItems.map((todayItem: Stock) => (
               <div key={todayItem.id}>
                 {todayItem.type === "雑貨" &&
-                todayItem.use_date === `${selectedDate}` && (
-                  <UsedItem
-                    id={todayItem.id}
-                    name={todayItem.name}
-                    price={
-                      tax ? todayItem.price : Math.ceil(todayItem.price / 1.1)
-                    }
-                    setStocks={setStocks}
-                  />
-                )}
+                  todayItem.use_date === `${selectedDate}` && (
+                    <UsedItem
+                      id={todayItem.id}
+                      name={todayItem.name}
+                      price={todayItem.price}
+                      type={todayItem.type}
+                      setStocks={setStocks}
+                    />
+                  )}
               </div>
             ))}
           </ul>
@@ -202,16 +201,15 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
             {todayOthers.map((todayOther: Stock) => (
               <div key={todayOther.id}>
                 {todayOther.type === "その他" &&
-                todayOther.use_date === `${selectedDate}` && (
-                  <UsedItem
-                    id={todayOther.id}
-                    name={todayOther.name}
-                    price={
-                      tax ? todayOther.price : Math.ceil(todayOther.price / 1.1)
-                    }
-                    setStocks={setStocks}
-                  />
-                )}
+                  todayOther.use_date === `${selectedDate}` && (
+                    <UsedItem
+                      id={todayOther.id}
+                      name={todayOther.name}
+                      price={todayOther.price}
+                      type={todayOther.type}
+                      setStocks={setStocks}
+                    />
+                  )}
               </div>
             ))}
           </ul>

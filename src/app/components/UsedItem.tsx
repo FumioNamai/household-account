@@ -6,16 +6,18 @@ import { Stock } from "../../../utils/type";
 import React from "react";
 import { useSnackbarContext } from "@/providers/context-provider";
 import useStore, { useTaxStore } from "@/store";
+import { CalcPrice } from "./CalcPrice";
 
 type Props = {
   id: number;
   name: string;
-  price: number;
+  type: string;
+  price:number;
   // stocks: Stock[] | null;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const UsedItem = ({ id, name, price, setStocks }: Props) => {
+const UsedItem = ({ id, name, price, type, setStocks }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
   const onUpdate = (data: any | undefined) => setStocks(data);
@@ -50,7 +52,7 @@ const UsedItem = ({ id, name, price, setStocks }: Props) => {
     <li key={id} className="flex flex-row items-center justify-between pl-4">
       <Typography variant="body2">{name}</Typography>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography variant="body1">{price}円</Typography>
+        <Typography variant="body1">{CalcPrice(price,type)}円</Typography>
         <Typography
           variant="body2"
           sx={{ marginLeft: "4px", color: "grey", fontSize: "10px" }}
