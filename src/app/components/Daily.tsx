@@ -4,21 +4,20 @@ import {
   AccordionSummary,
   Box,
   FormControl,
-  Grid,
   Stack,
   Typography,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import UsedItem from "@/app/components/UsedItem";
 import { Stock } from "../../../utils/type";
 import ja from "dayjs/locale/ja";
 import { Dayjs } from "dayjs";
-import useStore, { useTaxStore } from "@/store";
+import useStore from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { CalcPrice } from "./CalcPrice";
 import { ListUsedItemByType } from "./ListUsedItemByType";
+import { Breakdown } from "./Breakdown";
 
 type Props = {
   stocks: Stock[];
@@ -125,40 +124,9 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
 
         <Typography variant="subtitle1">内訳</Typography>
         <Box sx={{ pl: 2 }}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body1">食品</Typography>
-            <Typography
-              variant="body1"
-              sx={{ width: "6rem", textAlign: "right" }}
-            >
-              {CalcPrice(dailyFoodsTotal, "食品")}円
-            </Typography>
-          </Stack>
-
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body1">雑貨</Typography>
-            <Typography
-              variant="body1"
-              sx={{ width: "6rem", textAlign: "right" }}
-            >
-              {CalcPrice(dailyItemsTotal, "雑貨")}円
-            </Typography>
-          </Stack>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            sx={{
-              marginBottom: "24px",
-            }}
-          >
-            <Typography variant="body1">その他</Typography>
-            <Typography
-              variant="body1"
-              sx={{ width: "6rem", textAlign: "right" }}
-            >
-              {CalcPrice(dailyOthersTotal, "その他")}円
-            </Typography>
-          </Stack>
+          <Breakdown typeName="食品" totalPrice={dailyFoodsTotal} />
+          <Breakdown typeName="雑貨" totalPrice={dailyItemsTotal} />
+          <Breakdown typeName="その他" totalPrice={dailyOthersTotal} />
         </Box>
       </Box>
 

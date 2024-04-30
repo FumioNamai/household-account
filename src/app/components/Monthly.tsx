@@ -20,6 +20,7 @@ import useStore, { useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { CalcPrice } from "./CalcPrice";
+import { Breakdown } from "./Breakdown";
 
 type Props = {
   stocks: Stock[];
@@ -152,41 +153,9 @@ const Monthly = ({ stocks, setStocks }: Props) => {
 
         <Typography variant="subtitle1">内訳</Typography>
         <Box sx={{ paddingLeft: 2 }}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body1">食品</Typography>
-            <Typography
-              variant="body1"
-              sx={{ width: "6rem", textAlign: "right" }}
-            >
-              {CalcPrice(monthlyFoodsTotal, "食品")}円
-            </Typography>
-          </Stack>
-
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body1">雑貨</Typography>
-            <Typography
-              variant="body1"
-              sx={{ width: "6rem", textAlign: "right" }}
-            >
-              {CalcPrice(monthlyItemsTotal, "雑貨")}円
-            </Typography>
-          </Stack>
-
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            sx={{
-              marginBottom: "24px",
-            }}
-          >
-            <Typography variant="body1">その他</Typography>
-            <Typography
-              variant="body1"
-              sx={{ width: "6rem", textAlign: "right" }}
-            >
-              {CalcPrice(monthlyOthersTotal, "その他")}円
-            </Typography>
-          </Stack>
+          <Breakdown typeName="食品" totalPrice={monthlyFoodsTotal} />
+          <Breakdown typeName="雑貨" totalPrice={monthlyItemsTotal} />
+          <Breakdown typeName="その他" totalPrice={monthlyOthersTotal} />
         </Box>
       </Box>
       <Accordion square={true}>
