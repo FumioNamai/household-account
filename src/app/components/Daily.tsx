@@ -18,6 +18,7 @@ import useStore, { useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { CalcPrice } from "./CalcPrice";
+import { ListUsedItemByType } from "./ListUsedItemByType";
 
 type Props = {
   stocks: Stock[];
@@ -169,59 +170,24 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
           消費品目
         </AccordionSummary>
         <AccordionDetails>
-          <Typography variant="subtitle1">食品</Typography>
-          <ul>
-            {todayFoods.map((todayFood: Stock) => (
-              <div key={todayFood.id}>
-                {todayFood.type === "食品" &&
-                  todayFood.use_date === `${selectedDate}` && (
-                    <UsedItem
-                      id={todayFood.id}
-                      name={todayFood.name}
-                      price={todayFood.price}
-                      type={todayFood.type}
-                      setStocks={setStocks}
-                    />
-                  )}
-              </div>
-            ))}
-          </ul>
-
-          <Typography variant="subtitle1">雑貨</Typography>
-          <ul>
-            {todayItems.map((todayItem: Stock) => (
-              <div key={todayItem.id}>
-                {todayItem.type === "雑貨" &&
-                  todayItem.use_date === `${selectedDate}` && (
-                    <UsedItem
-                      id={todayItem.id}
-                      name={todayItem.name}
-                      price={todayItem.price}
-                      type={todayItem.type}
-                      setStocks={setStocks}
-                    />
-                  )}
-              </div>
-            ))}
-          </ul>
-
-          <Typography variant="subtitle1">その他</Typography>
-          <ul>
-            {todayOthers.map((todayOther: Stock) => (
-              <div key={todayOther.id}>
-                {todayOther.type === "その他" &&
-                  todayOther.use_date === `${selectedDate}` && (
-                    <UsedItem
-                      id={todayOther.id}
-                      name={todayOther.name}
-                      price={todayOther.price}
-                      type={todayOther.type}
-                      setStocks={setStocks}
-                    />
-                  )}
-              </div>
-            ))}
-          </ul>
+          <ListUsedItemByType
+            typeName="食品"
+            todayUsedItems={todayFoods}
+            selectedDate={selectedDate}
+            setStocks={setStocks}
+          />
+          <ListUsedItemByType
+            typeName="雑貨"
+            todayUsedItems={todayItems}
+            selectedDate={selectedDate}
+            setStocks={setStocks}
+          />
+          <ListUsedItemByType
+            typeName="その他"
+            todayUsedItems={todayOthers}
+            selectedDate={selectedDate}
+            setStocks={setStocks}
+          />
         </AccordionDetails>
       </Accordion>
     </Box>
