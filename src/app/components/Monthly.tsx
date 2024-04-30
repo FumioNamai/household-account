@@ -86,7 +86,7 @@ const Monthly = ({ stocks, setStocks }: Props) => {
       return sum + (el[type] as number);
     }, 0);
     return monthlyTypeTotal;
-  }
+  };
   // 指定した月に使用した食品の合計金額を算出
   const monthlyFoodsTotal = calcMonthlyTypeTotal("todayFoodsTotal");
 
@@ -98,7 +98,9 @@ const Monthly = ({ stocks, setStocks }: Props) => {
 
   // 指定した月の合計使用金額を算出
   const monthlyTotal: number =
-    CalcPrice(monthlyFoodsTotal,"食品") + CalcPrice(monthlyItemsTotal,"雑貨") + CalcPrice(monthlyOthersTotal,"その他");
+    CalcPrice(monthlyFoodsTotal, "食品") +
+    CalcPrice(monthlyItemsTotal, "雑貨") +
+    CalcPrice(monthlyOthersTotal, "その他");
 
   return (
     <Box sx={{ marginBottom: "80px" }}>
@@ -135,10 +137,10 @@ const Monthly = ({ stocks, setStocks }: Props) => {
       </Stack>
 
       <Box sx={{ paddingInline: "16px" }}>
-        <Box
+        <Stack
+          direction="row"
+          justifyContent="space-between"
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
             marginBottom: "16px",
           }}
         >
@@ -146,7 +148,7 @@ const Monthly = ({ stocks, setStocks }: Props) => {
           <Typography variant="h6" sx={{ textAlign: "right" }}>
             {monthlyTotal}円
           </Typography>
-        </Box>
+        </Stack>
 
         <Typography variant="subtitle1">内訳</Typography>
         <Box sx={{ paddingLeft: 2 }}>
@@ -156,7 +158,7 @@ const Monthly = ({ stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {CalcPrice(monthlyFoodsTotal,"食品")}円
+              {CalcPrice(monthlyFoodsTotal, "食品")}円
             </Typography>
           </Stack>
 
@@ -166,7 +168,7 @@ const Monthly = ({ stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {CalcPrice(monthlyItemsTotal,"雑貨")}円
+              {CalcPrice(monthlyItemsTotal, "雑貨")}円
             </Typography>
           </Stack>
 
@@ -182,7 +184,7 @@ const Monthly = ({ stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {CalcPrice(monthlyOthersTotal,"その他")}円
+              {CalcPrice(monthlyOthersTotal, "その他")}円
             </Typography>
           </Stack>
         </Box>

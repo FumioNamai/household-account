@@ -37,23 +37,23 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
     (stock: Stock) =>
       stock.user_id === user.id && stock.use_date === `${selectedDate}`
   );
-  const todayFoods: Stock[] = []
-  const todayItems: Stock[] = []
-  const todayOthers: Stock[] = []
+  const todayFoods: Stock[] = [];
+  const todayItems: Stock[] = [];
+  const todayOthers: Stock[] = [];
   // typeごとに振り分け
-  todayUsed.forEach((stock:Stock) => {
+  todayUsed.forEach((stock: Stock) => {
     switch (stock.type) {
       case "食品":
-      todayFoods.push(stock)
-      break;
+        todayFoods.push(stock);
+        break;
       case "雑貨":
-      todayItems.push(stock)
-      break
+        todayItems.push(stock);
+        break;
       case "その他":
-      todayOthers.push(stock);
-      break
+        todayOthers.push(stock);
+        break;
     }
-  })
+  });
 
   // 指定した日に使用した商品の合計金額を算出する関数
   const calcDailyTypeTotal = (type: Stock[]): number => {
@@ -72,7 +72,10 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
   const dailyOthersTotal = calcDailyTypeTotal(todayItems);
 
   // 指定した日の合計金額を算出
-  const total: number = CalcPrice(dailyFoodsTotal,"食品") + CalcPrice(dailyItemsTotal,"雑貨") + CalcPrice(dailyOthersTotal,"その他");
+  const total: number =
+    CalcPrice(dailyFoodsTotal, "食品") +
+    CalcPrice(dailyItemsTotal, "雑貨") +
+    CalcPrice(dailyOthersTotal, "その他");
 
   return (
     <Box sx={{ marginBottom: "80px" }}>
@@ -106,7 +109,13 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
       </Stack>
 
       <Box sx={{ paddingInline: "16px" }}>
-        <Stack direction="row" justifyContent="space-between">
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          sx={{
+            marginBottom: "16px",
+          }}
+        >
           <Typography variant="h6">合計</Typography>
           <Typography variant="h6" sx={{ width: "6rem", textAlign: "right" }}>
             {total}円
@@ -115,15 +124,15 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
 
         <Typography variant="subtitle1">内訳</Typography>
         <Box sx={{ pl: 2 }}>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Stack direction="row" justifyContent="space-between">
             <Typography variant="body1">食品</Typography>
             <Typography
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {CalcPrice(dailyFoodsTotal,"食品")}円
+              {CalcPrice(dailyFoodsTotal, "食品")}円
             </Typography>
-          </Box>
+          </Stack>
 
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="body1">雑貨</Typography>
@@ -131,14 +140,14 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {CalcPrice(dailyItemsTotal,"雑貨")}円
+              {CalcPrice(dailyItemsTotal, "雑貨")}円
             </Typography>
           </Stack>
           <Stack
             direction="row"
             justifyContent="space-between"
             sx={{
-              marginBottom: "12px",
+              marginBottom: "24px",
             }}
           >
             <Typography variant="body1">その他</Typography>
@@ -146,7 +155,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
               variant="body1"
               sx={{ width: "6rem", textAlign: "right" }}
             >
-              {CalcPrice(dailyOthersTotal,"その他")}円
+              {CalcPrice(dailyOthersTotal, "その他")}円
             </Typography>
           </Stack>
         </Box>
