@@ -22,7 +22,6 @@ import { Stock } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { CalcPrice } from "./CalcPrice";
 
-
 type Props = {
   id: number;
   name: string;
@@ -32,7 +31,14 @@ type Props = {
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const OutOfStockItem = ({ id, name, type, to_buy, reference_price, setStocks }: Props) => {
+const OutOfStockItem = ({
+  id,
+  name,
+  type,
+  to_buy,
+  reference_price,
+  setStocks,
+}: Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
   const tax = useTaxStore((state) => state.tax);
@@ -94,13 +100,8 @@ const OutOfStockItem = ({ id, name, type, to_buy, reference_price, setStocks }: 
       return;
     }
 
-    // 税込・税抜金額切り替え
-    if (type === "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
-    }
-    if (type !== "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
-    }
+    // 税込・税別計算
+    newPrice = CalcPrice(parseFloat(newPrice), type).toString();
 
     try {
       await supabase
@@ -135,8 +136,16 @@ const OutOfStockItem = ({ id, name, type, to_buy, reference_price, setStocks }: 
   return (
     <>
       {/* 在庫なし */}
-      <Stack direction="column" justifyContent="space-between" sx={{ width: "100%" }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack
+        direction="column"
+        justifyContent="space-between"
+        sx={{ width: "100%" }}
+      >
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Typography variant="body2">{name}</Typography>
           <Stack direction="row" alignItems="center">
             <TextField
@@ -145,7 +154,9 @@ const OutOfStockItem = ({ id, name, type, to_buy, reference_price, setStocks }: 
               size="small"
               inputProps={{ sx: { textAlign: "right", marginRight: "8px" } }}
               sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
-              placeholder = {reference_price ? `${CalcPrice(reference_price,type)}` : "0"}
+              placeholder={
+                reference_price ? `${CalcPrice(reference_price, type)}` : "0"
+              }
               value={newPrice}
               onChange={handleNewPrice}
             />

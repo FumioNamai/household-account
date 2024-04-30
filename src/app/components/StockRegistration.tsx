@@ -28,6 +28,7 @@ import { useStore, useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import RegistrationDateSelector from "./RegistrationDateSelector";
 import { Types } from "./types";
+import { CalcPrice } from "./CalcPrice";
 
 type Props = {
   groupedDataArr: GroupedData[];
@@ -115,14 +116,18 @@ const StockRegistration = ({
 
     // ０円での重複登録を防止するため、入力された商品名と価格を検索して、登録済みの場合は処理を中断させる
     const isStocked = groupedDataArr.some(
-      (data: any) => data.name === itemName
-      // && data.price === parseInt(newPrice ? newPrice : "0")
-      && data.price === 0
+      (data: any) =>
+        data.name === itemName &&
+        // && data.price === parseInt(newPrice ? newPrice : "0")
+        data.price === 0
     );
     if (isStocked) {
       if (showSnackbar) {
         // showSnackbar("error", "同名で同価格の商品が在庫一覧に登録されています。");
-        showSnackbar("error", "すでに同名で0円の商品が在庫一覧に登録されています。");
+        showSnackbar(
+          "error",
+          "すでに同名で0円の商品が在庫一覧に登録されています。"
+        );
       }
       return;
     }
@@ -136,12 +141,8 @@ const StockRegistration = ({
       }
     }
 
-    if (type === "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
-    }
-    if (type !== "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
-    }
+    // 税込・税別計算
+    newPrice = CalcPrice(parseFloat(newPrice), type).toString();
 
     try {
       if (amount === "0") {
