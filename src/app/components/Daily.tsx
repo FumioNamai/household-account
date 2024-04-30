@@ -108,7 +108,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
         <TaxSwitch />
       </Stack>
 
-      <Box sx={{ paddingInline: "16px" }}>
+      <Box sx={{ marginBottom:"24px", paddingInline: "16px" }}>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -123,7 +123,7 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
         </Stack>
 
         <Typography variant="subtitle1">内訳</Typography>
-        <Box sx={{ pl: 2 }}>
+        <Box sx={{ paddingLeft: 2 }}>
           <Breakdown typeName="食品" totalPrice={dailyFoodsTotal} />
           <Breakdown typeName="雑貨" totalPrice={dailyItemsTotal} />
           <Breakdown typeName="その他" totalPrice={dailyOthersTotal} />

@@ -137,7 +137,7 @@ const Monthly = ({ stocks, setStocks }: Props) => {
         <TaxSwitch />
       </Stack>
 
-      <Box sx={{ paddingInline: "16px" }}>
+      <Box sx={{ marginBottom:"24px", paddingInline: "16px" }}>
         <Stack
           direction="row"
           justifyContent="space-between"

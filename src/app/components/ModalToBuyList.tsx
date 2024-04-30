@@ -61,8 +61,6 @@ const ModalToBuyList = ({
     setAmount(event.target.value);
   };
 
-
-
   const handleForm = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -78,13 +76,8 @@ const ModalToBuyList = ({
       }
       return;
     }
-
-    if (type === "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.08).toString();
-    }
-    if (type !== "食品" && tax === false) {
-      newPrice = Math.floor(parseInt(newPrice) * 1.1).toString();
-    }
+    // 税込・税別計算
+    newPrice = CalcPrice(parseFloat(newPrice),type).toString();
 
     try {
       for (let i = 0; i < parseInt(amount); i++) {
@@ -194,7 +187,11 @@ const ModalToBuyList = ({
                   variant="standard"
                   type="string"
                   size="small"
-                  placeholder = {reference_price ? `${CalcPrice(reference_price,type)  } ` : "0" }
+                  placeholder = {
+                    reference_price ?
+                    `${CalcPrice(reference_price,type)  } ` :
+                    "0"
+                  }
                   inputProps={{
                     sx: { textAlign: "right", marginRight: "8px" },
                   }}
