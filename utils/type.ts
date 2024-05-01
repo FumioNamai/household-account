@@ -1,4 +1,4 @@
-export type Stock = {
+export interface Stock {
   id: number;
   type: string;
   name: string;
@@ -8,23 +8,11 @@ export type Stock = {
   category: string | null;
   registration_date: string | null;
   use_date:  string | null;
-  count: number;
   to_buy: boolean;
   shop_name: string;
   checked: boolean;
 }
 
-export type GroupedData  = {
-  id: number;
-  type: string;
-  name: string;
-  price: number;
-  reference_price: number | null;
-  category: string | null;
-  registration_date: string | null;
-  use_date:  string | null;
+export interface GroupedData extends Stock {
   count: number;
-  to_buy: boolean;
-  shop_name: string;
-  checked: boolean;
 }
