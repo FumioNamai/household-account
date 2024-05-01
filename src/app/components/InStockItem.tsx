@@ -9,25 +9,9 @@ import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
 
 import ToBuyButton from "@/app/components/ToBuyButton";
 import { CalcPrice } from "./CalcPrice";
+import { GroupedData } from "../../../utils/type";
 
-
-type Props = {
-id: number;
-name: string;
-price: number;
-count: number;
-type: string;
-to_buy: boolean;
-};
-
-const InStockItem = ({
-  id,
-  name,
-  price,
-  count,
-  type,
-  to_buy,
-}: Props) => {
+const InStockItem = ({ ...groupedData }: GroupedData ) => {
 
   const { showSnackbar } = useSnackbarContext();
   let {setStocks} = useStockStore()
@@ -48,7 +32,7 @@ const InStockItem = ({
           .eq("id", propsID);
 
         // 残数が1の在庫の使うボタンを押した場合、
-        if (count === 1) {
+        if (groupedData.count === 1) {
           const { data: restocks } = await supabase
             .from("stocks")
             .select("*")
@@ -123,7 +107,7 @@ const InStockItem = ({
         .eq("user_id", userId);
       onUpdate(data);
       if (showSnackbar) {
-        showSnackbar("success", `『${name}』の在庫を1つ増やしました。`);
+        showSnackbar("success", `『${groupedData.name}』の在庫を1つ増やしました。`);
       }
 
         // 買い物リストから外す処理
@@ -142,7 +126,7 @@ const InStockItem = ({
       if (showSnackbar) {
         showSnackbar(
           "error",
-          `『${name}』を在庫に追加できません。` + error.message
+          `『${groupedData.name}』を在庫に追加できません。` + error.message
         );
       }
     }
@@ -150,7 +134,7 @@ const InStockItem = ({
 
   const handleMinus = async (propsID: number, userId: string) => {
     try {
-      if (count === 1) {
+      if (groupedData.count === 1) {
         const { data: restocks } = await supabase
           .from("stocks")
           .select()
@@ -187,7 +171,7 @@ const InStockItem = ({
         .eq("user_id", userId);
       onUpdate(updatedStocks);
       if (showSnackbar) {
-        showSnackbar("success", `『${name}』の在庫を1つ減らしました。`);
+        showSnackbar("success", `『${groupedData.name}』の在庫を1つ減らしました。`);
       }
     } catch (error: any) {
       if (showSnackbar) {
@@ -204,13 +188,13 @@ const InStockItem = ({
             paddingBlock: "8px",
           }}
         >
-          <Typography variant="body2">{name}</Typography>
+          <Typography variant="body2">{groupedData.name}</Typography>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography
               variant="body1"
               sx={{ minWidth: "80px", textAlign: "end" }}
             >
-              { price ? CalcPrice(price,type): "0"}円
+              { groupedData.price ? CalcPrice(groupedData.price,groupedData.type): "0"}円
 
             </Typography>
             <Typography
@@ -227,7 +211,7 @@ const InStockItem = ({
                 paddingRight: "8px",
               }}
             >
-              x {count}
+              x {groupedData.count}
             </Typography>
           </Stack>
         </Stack>
@@ -237,7 +221,7 @@ const InStockItem = ({
             <IconButton
               aria-label="use-item"
               color="success"
-              onClick={() => handleUse(id, user.id)}
+              onClick={() => handleUse(groupedData.id, user.id)}
             >
               <CheckCircleTwoTone />
             </IconButton>
@@ -247,7 +231,7 @@ const InStockItem = ({
             <IconButton
               aria-label="plus1"
               color="primary"
-              onClick={() => handlePlus(id, user.id)}
+              onClick={() => handlePlus(groupedData.id, user.id)}
             >
               <ControlPointTwoToneIcon />
             </IconButton>
@@ -257,16 +241,12 @@ const InStockItem = ({
             <IconButton
               aria-label="delete"
               color="error"
-              onClick={() => handleMinus(id, user.id)}
+              onClick={() => handleMinus(groupedData.id, user.id)}
             >
               <RemoveCircleTwoToneIcon />
             </IconButton>
           </Tooltip>
-          <ToBuyButton
-            id={id}
-            name={name}
-            to_buy={to_buy}
-          />
+          <ToBuyButton {...groupedData} />
         </Stack>
       </Stack>
     </>

@@ -25,12 +25,10 @@ import { Types } from "@/app/components/types";
 import { GroupedData } from "../../../utils/type";
 import { useDateStore } from "@/store";
 
-type Props = {
-  groupedDataArr: GroupedData[];
-};
+type Props = { groupedDataArr: GroupedData[] };
 
-const StockFilter = ({ groupedDataArr}: Props) => {
-  const {date,setDate} = useDateStore()
+const StockFilter = ({ groupedDataArr }: Props) => {
+  const { date, setDate } = useDateStore();
 
   const [selectedType, setSelectedType] = useState<string>("食品");
   const [categoryItem, setCategoryItem] = useState("");
@@ -59,9 +57,7 @@ const StockFilter = ({ groupedDataArr}: Props) => {
         </Typography>
 
         {/* 在庫登録 */}
-        <ModalStockRegistration
-          groupedDataArr={groupedDataArr}
-        />
+        <ModalStockRegistration groupedDataArr={groupedDataArr} />
       </Stack>
       <Stack
         direction="row"
@@ -102,7 +98,12 @@ const StockFilter = ({ groupedDataArr}: Props) => {
       >
         {/* 種別検索 */}
         <InputLabel>種別で検索</InputLabel>
-        <Stack direction="row" alignItems="center" spacing={1} sx={{marginBottom:1}}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={1}
+          sx={{ marginBottom: 1 }}
+        >
           <ToggleButtonGroup
             color="primary"
             value={selectedType}
@@ -177,31 +178,11 @@ const StockFilter = ({ groupedDataArr}: Props) => {
                                   ? groupedData.type === type &&
                                     groupedData.category === category &&
                                     groupedData.use_date === null && (
-                                      <Item
-                                        id={groupedData.id}
-                                        name={groupedData.name}
-                                        price={groupedData.price}
-                                        reference_price={
-                                          groupedData.reference_price
-                                        }
-                                        count={groupedData.count}
-                                        type={groupedData.type}
-                                        to_buy={groupedData.to_buy}
-                                      />
+                                      <Item {...groupedData} />
                                     )
                                   : groupedData.type === type &&
                                     groupedData.use_date === null && (
-                                      <Item
-                                        id={groupedData.id}
-                                        name={groupedData.name}
-                                        price={groupedData.price}
-                                        reference_price={
-                                          groupedData.reference_price
-                                        }
-                                        count={groupedData.count}
-                                        type={groupedData.type}
-                                        to_buy={groupedData.to_buy}
-                                      />
+                                      <Item {...groupedData} />
                                     )}
                               </li>
                             ))}
@@ -217,16 +198,7 @@ const StockFilter = ({ groupedDataArr}: Props) => {
                       <li key={groupedData.id}>
                         {groupedData.type === type &&
                           groupedData.use_date === null && (
-                            <Item
-                              id={groupedData.id}
-                              name={groupedData.name}
-                              price={groupedData.price}
-                              reference_price={groupedData.reference_price}
-                              count={groupedData.count}
-                              type={groupedData.type}
-                              // setStocks={setStocks}
-                              to_buy={groupedData.to_buy}
-                            />
+                            <Item {...groupedData} />
                           )}
                       </li>
                     ))}
@@ -296,18 +268,7 @@ const StockFilter = ({ groupedDataArr}: Props) => {
               .sort((a, b) => a.name.localeCompare(b.name, "ja"))
               .map((groupedData) => (
                 <li key={groupedData.id}>
-                  {groupedData.use_date === null && (
-                    <Item
-                      id={groupedData.id}
-                      name={groupedData.name}
-                      price={groupedData.price}
-                      reference_price={groupedData.reference_price}
-                      count={groupedData.count}
-                      type={groupedData.type}
-                      // setStocks={setStocks}
-                      to_buy={groupedData.to_buy}
-                    />
-                  )}
+                  {groupedData.use_date === null && <Item {...groupedData} />}
                 </li>
               ))}
           </ul>

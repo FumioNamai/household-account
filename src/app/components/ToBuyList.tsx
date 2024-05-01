@@ -5,13 +5,9 @@ import { ShopList } from "./ShopList";
 import ModalToBuyRegistration from "./ModalToBuyRegistration";
 import TaxSwitch from "./TaxSwitch";
 
-type Props = {
-  groupedDataArr: GroupedData[];
-};
+type Props = { groupedDataArr: GroupedData[] };
 
-const ToBuyList = ({ groupedDataArr
-  // , setStocks
-}: Props) => {
+const ToBuyList = ({ groupedDataArr}: Props) => {
   return (
     <Box sx={{ marginBottom: "80px" }}>
       <Box>
@@ -57,19 +53,7 @@ const ToBuyList = ({ groupedDataArr
                   (groupedData) =>
                     groupedData.to_buy === true &&
                     groupedData.shop_name === shop.shopName && (
-                      <ItemToBuy
-                        key={groupedData.id}
-                        id={groupedData.id}
-                        name={groupedData.name}
-                        type={groupedData.type}
-                        category={groupedData.category!}
-                        price={groupedData.price}
-                        reference_price={groupedData.reference_price}
-                        count={groupedData.count}
-                        to_buy={groupedData.to_buy}
-                        checked={groupedData.checked}
-                        shop_name={groupedData.shop_name}
-                      />
+                      <ItemToBuy {...groupedData} />
                     )
                 )}
               </ul>

@@ -8,8 +8,6 @@ import ja from "dayjs/locale/ja";
 import { Database } from "@/lib/database.types";
 import { Stock } from "../../utils/type";
 import { supabase } from "../../utils/supabase";
-// import { useSnackbarContext } from "@/providers/context-provider";
-// const { showSnackbar } = useSnackbarContext();
 
 // プロフィール情報を状態管理に格納する⇒どこでもプロフィール情報を取得できるようになる
 type ProfileType = Database['public']['Tables']['profiles']['Row']

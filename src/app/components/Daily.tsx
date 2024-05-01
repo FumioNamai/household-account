@@ -22,7 +22,6 @@ const Daily = () => {
   const {date,setDate,selectedDate} = useDateStore()
   let {stocks} = useStockStore()
 
-
   // 指定した日に使用した商品を取得
   const todayUsed: Stock[] = stocks!.filter(
     (stock: Stock) =>

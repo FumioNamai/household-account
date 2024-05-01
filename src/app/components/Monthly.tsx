@@ -21,8 +21,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { CalcPrice } from "./CalcPrice";
 import { Breakdown } from "./Breakdown";
 
-
-
 const Monthly = () => {
   const [month, setMonth] = useState<Dayjs | null>(dayjs());
   const user = useStore((state) => state.user);

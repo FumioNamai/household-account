@@ -15,32 +15,9 @@ import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
 import { ShopList } from "./ShopList";
 import { CalcPrice } from "./CalcPrice";
+import { GroupedData } from "../../../utils/type";
 
-type Props = {
-  id: number;
-  name: string;
-  price: number;
-  reference_price: number | null;
-  count: number;
-  type: string;
-  category: string;
-  to_buy: boolean;
-  checked: boolean;
-  shop_name: string;
-};
-
-const ItemToBuy = ({
-  id,
-  name,
-  price,
-  reference_price,
-  count,
-  type,
-  category,
-  to_buy,
-  checked,
-  shop_name,
-}: Props) => {
+const ItemToBuy = ({...groupedData}: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
   let { setStocks } = useStockStore();
   const onUpdate = (data: any | undefined) => setStocks(data);
@@ -55,7 +32,7 @@ const ItemToBuy = ({
       await supabase
         .from("stocks")
         .update({ shop_name: shopName })
-        .eq("id", id);
+        .eq("id", groupedData.id);
       const { data: updatedStocks } = await supabase
         .from("stocks")
         .select("*")
@@ -64,7 +41,7 @@ const ItemToBuy = ({
       if (showSnackbar) {
         showSnackbar(
           "success",
-          `${name}を${shopName ? shopName : "購入店舗未定"}に移動しました。`
+          `${groupedData.name}を${shopName ? shopName : "購入店舗未定"}に移動しました。`
         );
       }
     } catch (error: any) {
@@ -76,7 +53,7 @@ const ItemToBuy = ({
 
   return (
     <>
-      <List key={id}>
+      <List key={groupedData.id}>
         <Stack direction="column">
           <Stack
             direction="row"
@@ -88,21 +65,13 @@ const ItemToBuy = ({
               justifyContent="flex-start"
               alignItems="center"
             >
-              <CheckBox id={id} checked={checked} />
-              <ModalToBuyList
-                id={id}
-                name={name}
-                price={price}
-                reference_price={reference_price}
-                count={count}
-                type={type}
-                category={category}
-              />
+              <CheckBox id={groupedData.id} checked={groupedData.checked} />
+              <ModalToBuyList {...groupedData} />
             </Stack>
             <Select
               variant="standard"
               size="small"
-              value={shop_name}
+              value={groupedData.shop_name}
               onChange={handleShopSelect}
               sx={{ maxWidth: "50px", minWidth: "50px", padding: "0" }}
             >
@@ -123,7 +92,10 @@ const ItemToBuy = ({
                 variant="body2"
                 sx={{ minWidth: "80px", textAlign: "end", color: "grey" }}
               >
-                {reference_price ? CalcPrice(reference_price, type) : "0"}円
+                {groupedData.reference_price
+                  ? CalcPrice(groupedData.reference_price, groupedData.type)
+                  : "0"}
+                円
               </Typography>
               <Typography
                 variant="body2"
@@ -132,7 +104,11 @@ const ItemToBuy = ({
                 {tax === true ? "(込)" : "(抜)"}
               </Typography>
             </Stack>
-            <ToBuyButton id={id} name={name} to_buy={to_buy} />
+            <ToBuyButton
+              id={groupedData.id}
+              name={groupedData.name}
+              to_buy={groupedData.to_buy}
+            />
           </Stack>
         </Stack>
       </List>

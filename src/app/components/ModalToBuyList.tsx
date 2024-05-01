@@ -16,26 +16,9 @@ import TaxSwitch from "./TaxSwitch";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
 import { CalcPrice } from "./CalcPrice";
+import { GroupedData } from "../../../utils/type";
 
-type Props = {
-  id: number;
-  name: string;
-  price: number;
-  reference_price: number | null;
-  count: number;
-  type: string;
-  category: string;
-};
-
-const ModalToBuyList = ({
-  id,
-  name,
-  price,
-  reference_price,
-  count,
-  type,
-  category,
-}: Props) => {
+const ModalToBuyList = ({...groupedData}: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
   const tax = useTaxStore((state) => state.tax);
@@ -75,23 +58,23 @@ const ModalToBuyList = ({
       return;
     }
     // 税込・税別計算
-    newPrice = CalcPrice(parseFloat(newPrice),type).toString();
+    newPrice = CalcPrice(parseFloat(newPrice),groupedData.type).toString();
 
 
     try {
       for (let i = 0; i < parseInt(amount); i++) {
         const { error } = await supabase.from("stocks").insert({
-          type: type,
+          type: groupedData.type,
           name: name,
           price: newPrice,
           reference_price: newPrice,
           registration_date: selectedDate(),
-          category: category,
+          category: groupedData.category,
           user_id: user.id,
         });
         if (error) throw error;
       }
-      await supabase.from("stocks").update({ to_buy: false }).eq("id", id);
+      await supabase.from("stocks").update({ to_buy: false }).eq("id", groupedData.id);
       const { data } = await supabase
         .from("stocks")
         .select("*")
@@ -114,7 +97,7 @@ const ModalToBuyList = ({
   return (
     <>
       <Box>
-        <Button onClick={handleModalOpen} sx={{ textTransform: "none", minWidth:"0"}}>{name}</Button>
+        <Button onClick={handleModalOpen} sx={{ textTransform: "none", minWidth:"0"}}>{groupedData.name}</Button>
       </Box>
       <Modal
         open={modalOpen}
@@ -148,8 +131,8 @@ const ModalToBuyList = ({
           </Stack>
           <Typography variant="body2">現在の在庫</Typography>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography variant="body2">種別:{type}</Typography>
-            <Typography variant="body2">分類:{category}</Typography>
+            <Typography variant="body2">種別:{groupedData.type}</Typography>
+            <Typography variant="body2">分類:{groupedData.category}</Typography>
             <Stack direction="row" alignItems="center"
               sx={{
                 paddingBlock: "8px",
@@ -160,7 +143,7 @@ const ModalToBuyList = ({
                 variant="body2"
                 sx={{ width: "80px", textAlign: "end" }}
               >
-                { CalcPrice(price,type)}円
+                { CalcPrice(groupedData.price,groupedData.type)}円
                 <span className="text-gray-500 text-[10px] ml-0.5">
                   {tax === true ? "(込)" : "(抜)"}
                 </span>
@@ -169,7 +152,7 @@ const ModalToBuyList = ({
                 variant="body2"
                 sx={{ width: "32px", textAlign: "end" }}
               >
-                x{ CalcPrice(price,type) ? count : 0}
+                x{ CalcPrice(groupedData.price,groupedData.type) ? groupedData.count : 0}
               </Typography>
             </Stack>
           </Stack>
@@ -179,7 +162,7 @@ const ModalToBuyList = ({
                 paddingBlock: "8px",
               }}
             >
-              <Typography variant="body1">{name}</Typography>
+              <Typography variant="body1">{groupedData.name}</Typography>
 
               <Stack direction="row" alignItems="center">
                 <TextField
@@ -187,8 +170,8 @@ const ModalToBuyList = ({
                   type="string"
                   size="small"
                   placeholder = {
-                    reference_price ?
-                    `${CalcPrice(reference_price,type)  } ` :
+                    groupedData.reference_price ?
+                    `${CalcPrice(groupedData.reference_price,groupedData.type)  } ` :
                     "0"
                   }
                   inputProps={{

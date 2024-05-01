@@ -3,21 +3,16 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { supabase } from "../../../utils/supabase";
 import { useSnackbarContext } from "@/providers/context-provider";
 import useStore, { useStockStore } from "@/store";
+import { GroupedData } from "../../../utils/type";
 
-type Props = {
-  id: number;
-  name: string;
-  to_buy: boolean;
-};
-
-const ToBuyButton = ({ id, name, to_buy}: Props) => {
+const ToBuyButton = ({ ...groupedData }: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
   let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   const handleToBuyListed = async (propsID: number, userId: string) => {
-    if (to_buy === false) {
+    if (groupedData.to_buy === false) {
       try {
         await supabase
           .from("stocks")
@@ -69,12 +64,12 @@ const ToBuyButton = ({ id, name, to_buy}: Props) => {
 
   return (
     <Tooltip
-      title={to_buy === true ? "買い物リストから削除" : "買い物リストに追加"}
+      title={groupedData.to_buy === true ? "買い物リストから削除" : "買い物リストに追加"}
       placement="top"
     >
       <IconButton
-        color={to_buy === true ? "warning" : "default"}
-        onClick={() => handleToBuyListed(id, user.id)}
+        color={groupedData.to_buy === true ? "warning" : "default"}
+        onClick={() => handleToBuyListed(groupedData.id, user.id)}
       >
         <ShoppingCartOutlinedIcon />
       </IconButton>

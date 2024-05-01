@@ -22,9 +22,7 @@ import { supabase } from "../../../utils/supabase";
 import { GroupedData } from "../../../utils/type";
 import { ShopList } from "./ShopList";
 
-type Props = {
-  groupedDataArr: GroupedData[];
-};
+type Props = { groupedDataArr: GroupedData[] };
 
 export default function ModalToBuyRegistration({
   groupedDataArr,
