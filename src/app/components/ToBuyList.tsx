@@ -1,5 +1,5 @@
 import { GroupedData, Stock } from "../../../utils/type";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import ItemToBuy from "@/app/components/ItemToBuy";
 import { ShopList } from "./ShopList";
 import ModalToBuyRegistration from "./ModalToBuyRegistration";
@@ -8,10 +8,9 @@ import TaxSwitch from "./TaxSwitch";
 type Props = {
   groupedDataArr: GroupedData[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  selectedDate: string | undefined | null;
 };
 
-const ToBuyList = ({ groupedDataArr, setStocks, selectedDate }: Props) => {
+const ToBuyList = ({ groupedDataArr, setStocks }: Props) => {
   return (
     <Box sx={{ marginBottom: "80px" }}>
       <Box>
@@ -69,7 +68,6 @@ const ToBuyList = ({ groupedDataArr, setStocks, selectedDate }: Props) => {
                         count={groupedData.count}
                         to_buy={groupedData.to_buy}
                         checked={groupedData.checked}
-                        selectedDate={selectedDate}
                         shop_name={groupedData.shop_name}
                         setStocks={setStocks}
                       />

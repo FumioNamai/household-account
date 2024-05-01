@@ -1,14 +1,15 @@
+import { useDateStore } from "@/store";
 import { InputLabel } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Dayjs } from "dayjs";
 
-type Props = {
-  date: Dayjs | null;
-  setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
-};
+// type Props = {
+//   date: Dayjs | null;
+//   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+// };
 
-const RegistrationDateSelector = ({date, setDate}:Props) => {
+const RegistrationDateSelector = () => {
+  const {date,setDate} = useDateStore()
   return (
     <>
       <InputLabel>購入日</InputLabel>

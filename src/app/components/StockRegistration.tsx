@@ -24,7 +24,7 @@ import { GroupedData, Stock } from "../../../utils/type";
 import { Dayjs } from "dayjs";
 import ja from "dayjs/locale/ja";
 
-import { useStore, useTaxStore } from "@/store";
+import { useDateStore, useStore, useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import RegistrationDateSelector from "./RegistrationDateSelector";
 import { Types } from "./types";
@@ -33,19 +33,14 @@ import { CalcPrice } from "./CalcPrice";
 type Props = {
   groupedDataArr: GroupedData[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  date: Dayjs | null;
-  setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 };
 
 const StockRegistration = ({
   groupedDataArr,
   setStocks,
-  date,
-  setDate,
 }: Props) => {
   const user = useStore((state) => state.user);
-  const tax = useTaxStore((state) => state.tax);
-
+  const {selectedDate} = useDateStore()
   const { showSnackbar } = useSnackbarContext();
 
   const [type, setType] = useState<string>("食品");
@@ -67,10 +62,6 @@ const StockRegistration = ({
   let [newPrice, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
   const [, setIsFocus] = useState(false);
-
-  const selectedDate: string | undefined = date
-    ?.locale(ja)
-    .format("YYYY-MM-DD");
 
   const onUpdate = (data: any | undefined) => setStocks(data);
 
@@ -207,7 +198,7 @@ const StockRegistration = ({
       </Typography>
       <Box sx={{ paddingInline: "0px" }}>
         <form onSubmit={handleForm}>
-          <RegistrationDateSelector date={date} setDate={setDate} />
+          <RegistrationDateSelector />
 
           <InputLabel id="type">種別</InputLabel>
 

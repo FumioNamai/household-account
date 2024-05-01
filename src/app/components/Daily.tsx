@@ -10,9 +10,7 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Stock } from "../../../utils/type";
-import ja from "dayjs/locale/ja";
-import { Dayjs } from "dayjs";
-import useStore from "@/store";
+import useStore, { useDateStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { CalcPrice } from "./CalcPrice";
@@ -22,15 +20,11 @@ import { Breakdown } from "./Breakdown";
 type Props = {
   stocks: Stock[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  date: Dayjs | null;
-  setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 };
 
-const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
+const Daily = ({ stocks, setStocks }: Props) => {
   const user = useStore((state) => state.user);
-  const selectedDate: string | undefined = date
-    ?.locale(ja)
-    .format("YYYY-MM-DD");
+  const {date,setDate,selectedDate} = useDateStore()
 
   // 指定した日に使用した商品を取得
   const todayUsed: Stock[] = stocks!.filter(
@@ -141,19 +135,16 @@ const Daily = ({ date, setDate, stocks, setStocks }: Props) => {
           <ListUsedItemByType
             typeName="食品"
             todayUsedItems={todayFoods}
-            selectedDate={selectedDate}
             setStocks={setStocks}
           />
           <ListUsedItemByType
             typeName="雑貨"
             todayUsedItems={todayItems}
-            selectedDate={selectedDate}
             setStocks={setStocks}
           />
           <ListUsedItemByType
             typeName="その他"
             todayUsedItems={todayOthers}
-            selectedDate={selectedDate}
             setStocks={setStocks}
           />
         </AccordionDetails>

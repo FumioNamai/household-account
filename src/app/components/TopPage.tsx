@@ -1,13 +1,9 @@
 "use client";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Stock } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
-
-import { Dayjs } from "dayjs";
-import dayjs from "dayjs";
-import ja from "dayjs/locale/ja";
 
 import Monthly from "@/app/components/Monthly";
 import Daily from "@/app/components/Daily";
@@ -53,6 +49,8 @@ export default function TopPage() {
     }
   }, [user.id]);
 
+
+  // name昇順、reference_price昇順、id昇順で並べ替え
   stocks = stocks.sort((a, b) => {
     if (a.name < b.name) return -1;
     if (a.name > b.name) return 1;
@@ -86,11 +84,6 @@ export default function TopPage() {
     }
   });
   const groupedDataArr = Object.values(groupedData);
-
-  let [date, setDate] = useState<Dayjs | null>(dayjs());
-  const selectedDate: string | undefined = date
-    ?.locale(ja)
-    .format("YYYY-MM-DD");
 
   // 指定した時間で処理を遅らせるカスタムフック
   const useDelay = (msec: number) => {
@@ -145,8 +138,6 @@ export default function TopPage() {
           <Daily
             stocks={stocks}
             setStocks={setStocks}
-            date={date}
-            setDate={setDate}
           />
         );
       // 在庫検索
@@ -155,8 +146,6 @@ export default function TopPage() {
           <StockFilter
             groupedDataArr={groupedDataArr}
             setStocks={setStocks}
-            date={date}
-            setDate={setDate}
           />
         );
       // 買い物リスト
@@ -165,7 +154,6 @@ export default function TopPage() {
           <ToBuyList
             groupedDataArr={groupedDataArr}
             setStocks={setStocks}
-            selectedDate={selectedDate}
           />
         );
     }

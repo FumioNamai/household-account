@@ -1,6 +1,6 @@
 import { supabase } from "../../../utils/supabase";
 import { useSnackbarContext } from "@/providers/context-provider";
-import useStore, { useTaxStore } from "@/store";
+import useStore, { useDateStore, useTaxStore } from "@/store";
 
 import { CheckCircleTwoTone } from "@mui/icons-material";
 import ControlPointTwoToneIcon from "@mui/icons-material/ControlPointTwoTone";
@@ -18,7 +18,6 @@ name: string;
 price: number;
 count: number;
 type: string;
-selectedDate: string | undefined | null;
 to_buy: boolean;
 setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
@@ -29,7 +28,6 @@ const InStockItem = ({
   price,
   count,
   type,
-  selectedDate,
   to_buy,
   setStocks,
 }: Props) => {
@@ -38,6 +36,7 @@ const InStockItem = ({
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
+  const {selectedDate} = useDateStore()
 
   // UPDATE 使った日をuse_dateに記録する
   const handleUse = async (propsID: number, userId: string) => {

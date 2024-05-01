@@ -1,20 +1,20 @@
 import { Typography } from "@mui/material";
 import UsedItem from "./UsedItem";
 import { Stock } from "../../../utils/type";
+import { useDateStore } from "@/store";
 
 type Props = {
   typeName : string;
   todayUsedItems : Stock[];
-  selectedDate : string | undefined;
   setStocks : React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
 export const ListUsedItemByType = ({
   typeName,
   todayUsedItems,
-  selectedDate,
   setStocks
 }: Props) => {
+  const {selectedDate} = useDateStore()
   return (
     <>
       <Typography variant="subtitle1">{typeName}</Typography>

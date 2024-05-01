@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Stock } from "../../../utils/type";
 import { useState } from "react";
-import { useStore, useTaxStore } from "@/store";
+import { useDateStore, useStore, useTaxStore } from "@/store";
 import TaxSwitch from "./TaxSwitch";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
@@ -27,7 +27,6 @@ type Props = {
   type: string;
   category: string;
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  selectedDate: string | undefined | null;
 };
 
 const ModalToBuyList = ({
@@ -38,12 +37,12 @@ const ModalToBuyList = ({
   count,
   type,
   category,
-  selectedDate,
   setStocks,
 }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
   const tax = useTaxStore((state) => state.tax);
+  const {selectedDate} = useDateStore()
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => setModalOpen(true);

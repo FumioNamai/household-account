@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import ja from "dayjs/locale/ja";
-import { Dayjs } from "dayjs";
 import {
   Box,
   Button,
@@ -25,18 +23,16 @@ import TaxSwitch from "@/app/components/TaxSwitch";
 
 import { Types } from "@/app/components/types";
 import { GroupedData, Stock } from "../../../utils/type";
+import { useDateStore } from "@/store";
 
 type Props = {
   groupedDataArr: GroupedData[];
   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-  date: Dayjs | null;
-  setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 };
 
-const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
-  const selectedDate: string | undefined = date
-    ?.locale(ja)
-    .format("YYYY-MM-DD");
+const StockFilter = ({ groupedDataArr, setStocks }: Props) => {
+  const {date,setDate,selectedDate} = useDateStore()
+
   const [selectedType, setSelectedType] = useState<string>("食品");
   const [categoryItem, setCategoryItem] = useState("");
   const [searchName, setSearchName] = useState<string>("");
@@ -67,8 +63,6 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
         <ModalStockRegistration
           groupedDataArr={groupedDataArr}
           setStocks={setStocks}
-          date={date}
-          setDate={setDate}
         />
       </Stack>
       <Stack
@@ -195,7 +189,6 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                                         count={groupedData.count}
                                         type={groupedData.type}
                                         setStocks={setStocks}
-                                        selectedDate={selectedDate}
                                         to_buy={groupedData.to_buy}
                                       />
                                     )
@@ -211,7 +204,6 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                                         count={groupedData.count}
                                         type={groupedData.type}
                                         setStocks={setStocks}
-                                        selectedDate={selectedDate}
                                         to_buy={groupedData.to_buy}
                                       />
                                     )}
@@ -237,7 +229,6 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                               count={groupedData.count}
                               type={groupedData.type}
                               setStocks={setStocks}
-                              selectedDate={selectedDate}
                               to_buy={groupedData.to_buy}
                             />
                           )}
@@ -318,7 +309,6 @@ const StockFilter = ({ groupedDataArr, setStocks, date, setDate }: Props) => {
                       count={groupedData.count}
                       type={groupedData.type}
                       setStocks={setStocks}
-                      selectedDate={selectedDate}
                       to_buy={groupedData.to_buy}
                     />
                   )}

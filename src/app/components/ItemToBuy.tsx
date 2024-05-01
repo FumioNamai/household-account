@@ -25,7 +25,6 @@ type Props = {
   count: number;
   type: string;
   category: string;
-  selectedDate: string | undefined | null;
   to_buy: boolean;
   checked: boolean;
   shop_name: string;
@@ -40,7 +39,6 @@ const ItemToBuy = ({
   count,
   type,
   category,
-  selectedDate,
   to_buy,
   checked,
   shop_name,
@@ -50,19 +48,6 @@ const ItemToBuy = ({
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
-
-  // 税抜き⇔税込みで表示金額を切り替える処理
-  // const calcPrice = () => {
-  //   if (type === "食品" && tax === false) {
-  //     let taxExcluded = Math.ceil(reference_price! / 1.08);
-  //     return taxExcluded;
-  //   } else if (type !== "食品" && tax === false) {
-  //     let taxExcluded = Math.ceil(reference_price! / 1.1);
-  //     return taxExcluded;
-  //   } else {
-  //     return reference_price;
-  //   }
-  // };
 
   const handleShopSelect = async (event: SelectChangeEvent) => {
     const shopName = event.target.value;
@@ -116,7 +101,6 @@ const ItemToBuy = ({
                 count={count}
                 type={type}
                 category={category}
-                selectedDate={selectedDate}
                 setStocks={setStocks}
               />
             </Stack>
