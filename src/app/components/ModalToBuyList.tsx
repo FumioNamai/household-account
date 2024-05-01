@@ -46,6 +46,7 @@ const ModalToBuyList = ({
   const handleModalClose = () => setModalOpen(false);
 
   let {setStocks} = useStockStore()
+
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   let [newPrice, setNewPrice] = useState<string>("");
@@ -76,6 +77,7 @@ const ModalToBuyList = ({
     // 税込・税別計算
     newPrice = CalcPrice(parseFloat(newPrice),type).toString();
 
+
     try {
       for (let i = 0; i < parseInt(amount); i++) {
         const { error } = await supabase.from("stocks").insert({
@@ -83,7 +85,7 @@ const ModalToBuyList = ({
           name: name,
           price: newPrice,
           reference_price: newPrice,
-          registration_date: selectedDate,
+          registration_date: selectedDate(),
           category: category,
           user_id: user.id,
         });

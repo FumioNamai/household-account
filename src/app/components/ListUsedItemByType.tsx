@@ -20,7 +20,7 @@ export const ListUsedItemByType = ({
         {todayUsedItems.map((todayUsedItem: Stock) => (
           <div key={todayUsedItem.id}>
             {todayUsedItem.type === `${typeName}` &&
-              todayUsedItem.use_date === `${selectedDate}` && (
+              todayUsedItem.use_date === `${selectedDate()}` && (
                 <UsedItem
                   id={todayUsedItem.id}
                   name={todayUsedItem.name}

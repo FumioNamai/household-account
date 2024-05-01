@@ -19,11 +19,10 @@ import React, { useState } from "react";
 import { supabase } from "../../../utils/supabase";
 import { GroupedData } from "../../../utils/type";
 
-import { useDateStore, useStockStore, useStore } from "@/store";
+import { useDateStore, useStockStore, useStore, useTaxStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import RegistrationDateSelector from "./RegistrationDateSelector";
 import { Types } from "./types";
-import { CalcPrice } from "./CalcPrice";
 
 type Props = {
   groupedDataArr: GroupedData[];
@@ -53,6 +52,7 @@ const StockRegistration = ({
     "9",
     "10",
   ];
+  const tax = useTaxStore((state) => state.tax);
   let [newPrice, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
   const [, setIsFocus] = useState(false);
@@ -126,7 +126,10 @@ const StockRegistration = ({
     }
 
     // 税込・税別計算
-    newPrice = CalcPrice(parseFloat(newPrice), type).toString();
+    if(!tax){
+      const taxRate = type === "食品" ? 1.08 : 1.1
+      newPrice = Math.floor(parseInt(newPrice) * taxRate).toString()
+    }
 
     try {
       if (amount === "0") {

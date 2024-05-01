@@ -43,6 +43,7 @@ const OutOfStockItem = ({
   let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
   const [dialogOpen, setDialogOpen] = useState(false);
+
   const handleClickOpen = () => {
     setDialogOpen(true);
   };
@@ -99,7 +100,10 @@ const OutOfStockItem = ({
     }
 
     // 税込・税別計算
-    newPrice = CalcPrice(parseFloat(newPrice), type).toString();
+    if(!tax){
+      const taxRate = type === "食品" ? 1.08 : 1.1
+      newPrice = Math.floor(parseInt(newPrice) * taxRate).toString()
+    }
 
     try {
       await supabase

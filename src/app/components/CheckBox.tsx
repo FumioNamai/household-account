@@ -30,7 +30,7 @@ const CheckBox = ({ id, checked
         onUpdate(updatedStocks);
       } catch (error: any) {
         if (showSnackbar) {
-          showSnackbar("error", "できませんでした。" + error.message);
+          showSnackbar("error", "チェックを記録することができませんでした。" + error.message);
         }
       }
     } else {
@@ -46,7 +46,7 @@ const CheckBox = ({ id, checked
         onUpdate(updatedStocks);
       } catch (error: any) {
         if (showSnackbar) {
-          showSnackbar("error", "できませんでした。" + error.message);
+          showSnackbar("error", "チェックの記録を変更できませんでした。" + error.message);
         }
       }
     }

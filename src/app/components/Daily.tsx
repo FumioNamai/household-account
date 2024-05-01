@@ -26,7 +26,7 @@ const Daily = () => {
   // 指定した日に使用した商品を取得
   const todayUsed: Stock[] = stocks!.filter(
     (stock: Stock) =>
-      stock.user_id === user.id && stock.use_date === `${selectedDate}`
+      stock.user_id === user.id && stock.use_date === `${selectedDate()}`
   );
   const todayFoods: Stock[] = [];
   const todayItems: Stock[] = [];

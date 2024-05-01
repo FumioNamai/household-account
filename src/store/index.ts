@@ -74,7 +74,7 @@ export const useStockStore = create<StockState>((set,get) => ({
         .eq("user_id", userId);
       if (error) throw error;
       get().setStocks(data);
-      return;
+      // return;
     } catch (error: any) {
       set({error:"error"})
       get().setStocks([]);

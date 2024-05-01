@@ -38,12 +38,13 @@ const InStockItem = ({
 
   // UPDATE 使った日をuse_dateに記録する
   const handleUse = async (propsID: number, userId: string) => {
-    if (selectedDate !== undefined) {
+
+    if (selectedDate() !== undefined) {
       try {
         // 使うボタン押下でuse_dateに記録してdailyに移動
         await supabase
           .from("stocks")
-          .update({ use_date: selectedDate , to_buy: false})
+          .update({ use_date: selectedDate() , to_buy: false})
           .eq("id", propsID);
 
         // 残数が1の在庫の使うボタンを押した場合、
@@ -76,7 +77,7 @@ const InStockItem = ({
           .eq("user_id", userId);
         onUpdate(updatedStocks);
         if (showSnackbar) {
-          showSnackbar("success", `『${name}』を${selectedDate}付けで計上しました。`);
+          showSnackbar("success", `『${name}』を${selectedDate()}付けで計上しました。`);
         }
       } catch (error: any) {
         if (showSnackbar) {
