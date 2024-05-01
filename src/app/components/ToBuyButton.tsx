@@ -24,7 +24,7 @@ const ToBuyButton = ({ ...groupedData }: GroupedData) => {
           .eq("user_id", userId);
         onUpdate(updatedStocks);
         if (showSnackbar) {
-          showSnackbar("success", `『${name}』を買い物リストに追加しました。`);
+          showSnackbar("success", `『${groupedData.name}』を買い物リストに追加しました。`);
         }
       } catch (error: any) {
         if (showSnackbar) {
@@ -48,7 +48,7 @@ const ToBuyButton = ({ ...groupedData }: GroupedData) => {
         if (showSnackbar) {
           showSnackbar(
             "success",
-            `『${name}』を買い物リストから削除しました。`
+            `『${groupedData.name}』を買い物リストから削除しました。`
           );
         }
       } catch (error: any) {

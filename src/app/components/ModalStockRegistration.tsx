@@ -3,13 +3,9 @@ import { useState } from "react";
 import StockRegistration from "@/app/components/StockRegistration";
 import { GroupedData } from "../../../utils/type";
 
-type Props = {
-  groupedDataArr : GroupedData[];
-};
+type Props = { groupedDataArr : GroupedData[] };
 
-export default function ModalStockRegistration({
-  groupedDataArr,
-}: Props) {
+export default function ModalStockRegistration({ groupedDataArr }: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -42,9 +38,7 @@ export default function ModalStockRegistration({
             padding: "16px",
           }}
         >
-          <StockRegistration
-            groupedDataArr={groupedDataArr}
-          />
+          <StockRegistration groupedDataArr={groupedDataArr} />
           <Button
             onClick={handleClose}
             size="small"

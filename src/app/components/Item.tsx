@@ -18,7 +18,7 @@ const Item = ({ ...groupedData }: GroupedData) => {
           flexDirection: "row",
         }}
       >
-        {groupedData.price !== 0 ? (
+        {groupedData.price ? (
           <InStockItem {...groupedData} />
         ) : (
           <OutOfStockItem {...groupedData} />

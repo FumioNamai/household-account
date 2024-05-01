@@ -24,13 +24,9 @@ import TaxSwitch from "@/app/components/TaxSwitch";
 import RegistrationDateSelector from "./RegistrationDateSelector";
 import { Types } from "./types";
 
-type Props = {
-  groupedDataArr: GroupedData[];
-};
+type Props = { groupedDataArr: GroupedData[] };
 
-const StockRegistration = ({
-  groupedDataArr,
-}: Props) => {
+const StockRegistration = ({ groupedDataArr }: Props) => {
   const user = useStore((state) => state.user);
   const {selectedDate} = useDateStore()
   const { showSnackbar } = useSnackbarContext();

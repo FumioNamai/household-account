@@ -61,7 +61,7 @@ const InStockItem = ({ ...groupedData }: GroupedData ) => {
           .eq("user_id", userId);
         onUpdate(updatedStocks);
         if (showSnackbar) {
-          showSnackbar("success", `『${name}』を${selectedDate()}付けで計上しました。`);
+          showSnackbar("success", `『${groupedData.name}』を${selectedDate()}付けで計上しました。`);
         }
       } catch (error: any) {
         if (showSnackbar) {

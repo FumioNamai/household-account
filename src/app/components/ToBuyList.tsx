@@ -53,7 +53,10 @@ const ToBuyList = ({ groupedDataArr}: Props) => {
                   (groupedData) =>
                     groupedData.to_buy === true &&
                     groupedData.shop_name === shop.shopName && (
-                      <ItemToBuy {...groupedData} />
+                      <ItemToBuy
+                      key={groupedData.id}
+                      {...groupedData}
+                      />
                     )
                 )}
               </ul>

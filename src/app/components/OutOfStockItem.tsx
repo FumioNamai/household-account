@@ -20,22 +20,9 @@ import ToBuyButton from "./ToBuyButton";
 import useStore, { useStockStore, useTaxStore } from "@/store";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { CalcPrice } from "./CalcPrice";
+import { GroupedData } from "../../../utils/type";
 
-type Props = {
-  id: number;
-  name: string;
-  type: string;
-  reference_price: number | null;
-  to_buy: boolean;
-};
-
-const OutOfStockItem = ({
-  id,
-  name,
-  type,
-  to_buy,
-  reference_price,
-}: Props) => {
+const OutOfStockItem = ({...groupedData}: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
   const tax = useTaxStore((state) => state.tax);
@@ -101,7 +88,7 @@ const OutOfStockItem = ({
 
     // 税込・税別計算
     if(!tax){
-      const taxRate = type === "食品" ? 1.08 : 1.1
+      const taxRate = groupedData.type === "食品" ? 1.08 : 1.1
       newPrice = Math.floor(parseInt(newPrice) * taxRate).toString()
     }
 
@@ -148,7 +135,7 @@ const OutOfStockItem = ({
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="body2">{name}</Typography>
+          <Typography variant="body2">{groupedData.name}</Typography>
           <Stack direction="row" alignItems="center">
             <TextField
               variant="standard"
@@ -157,7 +144,7 @@ const OutOfStockItem = ({
               inputProps={{ sx: { textAlign: "right", marginRight: "8px" } }}
               sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
               placeholder={
-                reference_price ? `${CalcPrice(reference_price, type)}` : "0"
+                groupedData.reference_price ? `${CalcPrice(groupedData.reference_price, groupedData.type)}` : "0"
               }
               value={newPrice}
               onChange={handleNewPrice}
@@ -174,7 +161,7 @@ const OutOfStockItem = ({
               <IconButton
                 aria-label="update"
                 color="success"
-                onClick={() => handleUpdate(id, user.id)}
+                onClick={() => handleUpdate(groupedData.id, user.id)}
               >
                 <ModeTwoTone />
               </IconButton>
@@ -204,16 +191,12 @@ const OutOfStockItem = ({
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>削除しない</Button>
-              <Button onClick={() => handleDelete(id, user.id)} color="error">
+              <Button onClick={() => handleDelete(groupedData.id, user.id)} color="error">
                 削除する
               </Button>
             </DialogActions>
           </Dialog>
-          <ToBuyButton
-            id={id}
-            name={name}
-            to_buy={to_buy}
-          />
+          <ToBuyButton {...groupedData} />
         </Stack>
       </Stack>
     </>

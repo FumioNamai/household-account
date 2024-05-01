@@ -3,11 +3,6 @@ import { InputLabel } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-// type Props = {
-//   date: Dayjs | null;
-//   setDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
-// };
-
 const RegistrationDateSelector = () => {
   const {date,setDate} = useDateStore()
   return (

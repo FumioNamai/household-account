@@ -120,18 +120,10 @@ export default function TopPage() {
         return  <Daily />;
       // 在庫検索
       case "StockFilter":
-        return (
-          <StockFilter
-            groupedDataArr={groupedDataArr}
-          />
-        );
+        return <StockFilter groupedDataArr={groupedDataArr} /> ;
       // 買い物リスト
       case "ToBuyList":
-        return (
-          <ToBuyList
-            groupedDataArr={groupedDataArr}
-          />
-        );
+        return <ToBuyList groupedDataArr={groupedDataArr} /> ;
     }
   };
   return (

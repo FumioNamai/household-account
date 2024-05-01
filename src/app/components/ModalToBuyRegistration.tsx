@@ -24,9 +24,7 @@ import { ShopList } from "./ShopList";
 
 type Props = { groupedDataArr: GroupedData[] };
 
-export default function ModalToBuyRegistration({
-  groupedDataArr,
-}: Props) {
+export default function ModalToBuyRegistration({ groupedDataArr }: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

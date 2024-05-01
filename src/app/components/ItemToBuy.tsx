@@ -104,11 +104,7 @@ const ItemToBuy = ({...groupedData}: GroupedData) => {
                 {tax === true ? "(込)" : "(抜)"}
               </Typography>
             </Stack>
-            <ToBuyButton
-              id={groupedData.id}
-              name={groupedData.name}
-              to_buy={groupedData.to_buy}
-            />
+            <ToBuyButton {...groupedData}/>
           </Stack>
         </Stack>
       </List>

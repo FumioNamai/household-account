@@ -57,15 +57,18 @@ const ModalToBuyList = ({...groupedData}: GroupedData) => {
       }
       return;
     }
-    // 税込・税別計算
-    newPrice = CalcPrice(parseFloat(newPrice),groupedData.type).toString();
 
+    // 税込・税別計算
+    if(!tax){
+      const taxRate = groupedData.type === "食品" ? 1.08 : 1.1
+      newPrice = Math.floor(parseInt(newPrice) * taxRate).toString()
+    }
 
     try {
       for (let i = 0; i < parseInt(amount); i++) {
         const { error } = await supabase.from("stocks").insert({
           type: groupedData.type,
-          name: name,
+          name: groupedData.name,
           price: newPrice,
           reference_price: newPrice,
           registration_date: selectedDate(),
@@ -84,7 +87,7 @@ const ModalToBuyList = ({...groupedData}: GroupedData) => {
       if (showSnackbar) {
         showSnackbar(
           "success",
-          `『${name}』を${amount}個、在庫として登録しました。`
+          `『${groupedData.name}』を${amount}個、在庫として登録しました。`
         );
       }
     } catch (error) {
