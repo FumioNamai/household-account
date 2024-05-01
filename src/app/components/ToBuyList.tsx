@@ -7,10 +7,11 @@ import TaxSwitch from "./TaxSwitch";
 
 type Props = {
   groupedDataArr: GroupedData[];
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const ToBuyList = ({ groupedDataArr, setStocks }: Props) => {
+const ToBuyList = ({ groupedDataArr
+  // , setStocks
+}: Props) => {
   return (
     <Box sx={{ marginBottom: "80px" }}>
       <Box>
@@ -27,7 +28,6 @@ const ToBuyList = ({ groupedDataArr, setStocks }: Props) => {
           </Typography>
           <ModalToBuyRegistration
             groupedDataArr={groupedDataArr}
-            setStocks={setStocks}
           />
         </Stack>
         {/* 税表示切替 */}
@@ -69,7 +69,6 @@ const ToBuyList = ({ groupedDataArr, setStocks }: Props) => {
                         to_buy={groupedData.to_buy}
                         checked={groupedData.checked}
                         shop_name={groupedData.shop_name}
-                        setStocks={setStocks}
                       />
                     )
                 )}

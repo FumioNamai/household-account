@@ -7,7 +7,6 @@ import {
   AccordionSummary,
   Box,
   FormControl,
-  Grid,
   Stack,
   Typography,
 } from "@mui/material";
@@ -16,21 +15,18 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import UsedItem from "@/app/components/UsedItem";
 import { Stock } from "../../../utils/type";
-import useStore, { useTaxStore } from "@/store";
+import useStore, { useStockStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { CalcPrice } from "./CalcPrice";
 import { Breakdown } from "./Breakdown";
 
-type Props = {
-  stocks: Stock[];
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-};
 
-const Monthly = ({ stocks, setStocks }: Props) => {
+
+const Monthly = () => {
   const [month, setMonth] = useState<Dayjs | null>(dayjs());
   const user = useStore((state) => state.user);
-  const tax = useTaxStore((state) => state.tax);
+  let {stocks} = useStockStore()
 
   const selectedMonth: string | null = month!.format("YYYY-MM");
 
@@ -174,7 +170,6 @@ const Monthly = ({ stocks, setStocks }: Props) => {
                   name={stock.name}
                   price={stock.price}
                   type={stock.type}
-                  setStocks={setStocks}
                 />
               </Box>
             ))}

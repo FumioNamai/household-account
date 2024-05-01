@@ -7,11 +7,10 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Stock } from "../../../utils/type";
 import CheckBox from "@/app/components/CheckBox";
 import ModalToBuyList from "@/app/components/ModalToBuyList";
 import ToBuyButton from "@/app/components/ToBuyButton";
-import useStore, { useTaxStore } from "@/store";
+import useStore, { useStockStore, useTaxStore } from "@/store";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
 import { ShopList } from "./ShopList";
@@ -28,7 +27,6 @@ type Props = {
   to_buy: boolean;
   checked: boolean;
   shop_name: string;
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
 const ItemToBuy = ({
@@ -42,9 +40,9 @@ const ItemToBuy = ({
   to_buy,
   checked,
   shop_name,
-  setStocks,
 }: Props) => {
   const { showSnackbar } = useSnackbarContext();
+  let { setStocks } = useStockStore();
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
@@ -64,7 +62,10 @@ const ItemToBuy = ({
         .eq("user_id", user.id);
       onUpdate(updatedStocks);
       if (showSnackbar) {
-        showSnackbar("success", `${name}を${ shopName ? shopName : "購入店舗未定" }に移動しました。`);
+        showSnackbar(
+          "success",
+          `${name}を${shopName ? shopName : "購入店舗未定"}に移動しました。`
+        );
       }
     } catch (error: any) {
       if (showSnackbar) {
@@ -87,12 +88,7 @@ const ItemToBuy = ({
               justifyContent="flex-start"
               alignItems="center"
             >
-              <CheckBox
-                id={id}
-                name={name}
-                checked={checked}
-                setStocks={setStocks}
-              />
+              <CheckBox id={id} checked={checked} />
               <ModalToBuyList
                 id={id}
                 name={name}
@@ -101,7 +97,6 @@ const ItemToBuy = ({
                 count={count}
                 type={type}
                 category={category}
-                setStocks={setStocks}
               />
             </Stack>
             <Select
@@ -137,12 +132,7 @@ const ItemToBuy = ({
                 {tax === true ? "(込)" : "(抜)"}
               </Typography>
             </Stack>
-            <ToBuyButton
-              id={id}
-              name={name}
-              to_buy={to_buy}
-              setStocks={setStocks}
-            />
+            <ToBuyButton id={id} name={name} to_buy={to_buy} />
           </Stack>
         </Stack>
       </List>

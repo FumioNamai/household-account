@@ -1,6 +1,5 @@
 
 import React from "react";
-import { Stock } from "../../../utils/type";
 import {
   Divider,
   List,
@@ -15,7 +14,6 @@ type Props = {
   count: number;
   type: string;
   reference_price: number | null;
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
   to_buy: boolean;
 };
 
@@ -27,7 +25,6 @@ const Item = ({
   count,
   type,
   to_buy,
-  setStocks
 }: Props) => {
   return (
     <>
@@ -46,7 +43,6 @@ const Item = ({
             count={count}
             type={type}
             to_buy={to_buy}
-            setStocks={setStocks}
           />
         ) : (
           <OutOfStockItem
@@ -55,7 +51,6 @@ const Item = ({
             type={type}
             to_buy={to_buy}
             reference_price={reference_price}
-            setStocks={setStocks}
           />
         )}
       </List>

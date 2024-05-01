@@ -2,18 +2,18 @@ import { Checkbox, Tooltip } from "@mui/material";
 import { supabase } from "../../../utils/supabase";
 import { Stock } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
-import useStore from "@/store";
+import useStore, { useStockStore } from "@/store";
 
 type Props = {
   id: number;
-  name: string;
   checked: boolean;
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const CheckBox = ({ id, checked, setStocks }: Props) => {
+const CheckBox = ({ id, checked
+}: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
+  let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   const handleCheck = async (propsID: number, userId: string) => {

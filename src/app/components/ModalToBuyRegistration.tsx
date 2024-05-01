@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Types } from "./types";
-import useStore, { useTaxStore } from "@/store";
+import useStore, { useStockStore, useTaxStore } from "@/store";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { Categories } from "./Categories";
 import { supabase } from "../../../utils/supabase";
@@ -24,19 +24,21 @@ import { ShopList } from "./ShopList";
 
 type Props = {
   groupedDataArr: GroupedData[];
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
+  // setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
 export default function ModalToBuyRegistration({
   groupedDataArr,
-  setStocks,
+  // setStocks,
 }: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const user = useStore((state) => state.user);
-  const tax = useTaxStore((state) => state.tax);
+  let {stocks,setStocks,isLoading,setIsLoading,getStocks} = useStockStore()
+  const onUpdate = (data: any | undefined) => setStocks(data);
+  // const tax = useTaxStore((state) => state.tax);
 
   const { showSnackbar } = useSnackbarContext();
 
@@ -49,7 +51,6 @@ export default function ModalToBuyRegistration({
   const [categoryItem, setCategoryItem] = useState("");
   const [, setIsFocus] = useState(false);
 
-  const onUpdate = (data: any | undefined) => setStocks(data);
 
   const handleSelectCategory = (event: SelectChangeEvent) => {
     setCategoryItem(event.target.value as string);

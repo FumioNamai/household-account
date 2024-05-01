@@ -6,13 +6,11 @@ import { useDateStore } from "@/store";
 type Props = {
   typeName : string;
   todayUsedItems : Stock[];
-  setStocks : React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
 export const ListUsedItemByType = ({
   typeName,
-  todayUsedItems,
-  setStocks
+  todayUsedItems
 }: Props) => {
   const {selectedDate} = useDateStore()
   return (
@@ -28,7 +26,6 @@ export const ListUsedItemByType = ({
                   name={todayUsedItem.name}
                   price={todayUsedItem.price}
                   type={todayUsedItem.type}
-                  setStocks={setStocks}
                 />
               )}
           </div>

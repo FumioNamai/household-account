@@ -10,21 +10,18 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Stock } from "../../../utils/type";
-import useStore, { useDateStore } from "@/store";
+import useStore, { useDateStore, useStockStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { CalcPrice } from "./CalcPrice";
 import { ListUsedItemByType } from "./ListUsedItemByType";
 import { Breakdown } from "./Breakdown";
 
-type Props = {
-  stocks: Stock[];
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-};
-
-const Daily = ({ stocks, setStocks }: Props) => {
+const Daily = () => {
   const user = useStore((state) => state.user);
   const {date,setDate,selectedDate} = useDateStore()
+  let {stocks} = useStockStore()
+
 
   // 指定した日に使用した商品を取得
   const todayUsed: Stock[] = stocks!.filter(
@@ -135,17 +132,15 @@ const Daily = ({ stocks, setStocks }: Props) => {
           <ListUsedItemByType
             typeName="食品"
             todayUsedItems={todayFoods}
-            setStocks={setStocks}
           />
           <ListUsedItemByType
             typeName="雑貨"
             todayUsedItems={todayItems}
-            setStocks={setStocks}
+
           />
           <ListUsedItemByType
             typeName="その他"
             todayUsedItems={todayOthers}
-            setStocks={setStocks}
           />
         </AccordionDetails>
       </Accordion>

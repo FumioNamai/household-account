@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   FormControl,
-  Grid,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -14,17 +13,13 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-// import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { Categories } from "./Categories";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useSnackbarContext } from "@/providers/context-provider";
 import React, { useState } from "react";
 import { supabase } from "../../../utils/supabase";
-import { GroupedData, Stock } from "../../../utils/type";
-import { Dayjs } from "dayjs";
-import ja from "dayjs/locale/ja";
+import { GroupedData } from "../../../utils/type";
 
-import { useDateStore, useStore, useTaxStore } from "@/store";
+import { useDateStore, useStockStore, useStore } from "@/store";
 import TaxSwitch from "@/app/components/TaxSwitch";
 import RegistrationDateSelector from "./RegistrationDateSelector";
 import { Types } from "./types";
@@ -32,16 +27,15 @@ import { CalcPrice } from "./CalcPrice";
 
 type Props = {
   groupedDataArr: GroupedData[];
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
 const StockRegistration = ({
   groupedDataArr,
-  setStocks,
 }: Props) => {
   const user = useStore((state) => state.user);
   const {selectedDate} = useDateStore()
   const { showSnackbar } = useSnackbarContext();
+  let {setStocks} = useStockStore()
 
   const [type, setType] = useState<string>("食品");
   const [itemName, setItemName] = useState<string>("");
@@ -114,7 +108,6 @@ const StockRegistration = ({
     );
     if (isStocked) {
       if (showSnackbar) {
-        // showSnackbar("error", "同名で同価格の商品が在庫一覧に登録されています。");
         showSnackbar(
           "error",
           "すでに同名で0円の商品が在庫一覧に登録されています。"

@@ -1,14 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-import { Stock } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
-import { supabase } from "../../../utils/supabase";
 
 import Monthly from "@/app/components/Monthly";
 import Daily from "@/app/components/Daily";
 import StockFilter from "@/app/components/StockFilter";
-import useStore from "@/store/index";
+import useStore, { useStockStore } from "@/store/index";
 import ToBuyList from "@/app/components/ToBuyList";
 import {
   Stack,
@@ -19,29 +17,8 @@ import {
 import Loading from "./Loading";
 
 export default function TopPage() {
-  let [stocks, setStocks] = useState<Stock[]>([]);
-  const { showSnackbar } = useSnackbarContext();
+  let {stocks,isLoading,getStocks,error} = useStockStore()
   const user = useStore((state) => state.user);
-  const [isLoading, setIsLoading] = useState(true);
-  const getStocks = async (userId: string) => {
-    try {
-      setIsLoading(true);
-      const { data, error } = await supabase
-        .from("stocks")
-        .select("*")
-        .eq("user_id", userId);
-      if (error) throw error;
-      setStocks(data);
-      return;
-    } catch (error: any) {
-      if (showSnackbar) {
-        showSnackbar("error", "在庫データを取得できません。" + error.message);
-      }
-      setStocks([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
     if (user.id) {
@@ -49,6 +26,12 @@ export default function TopPage() {
     }
   }, [user.id]);
 
+  const { showSnackbar } = useSnackbarContext();
+  useEffect(() => {
+    if (error && showSnackbar) {
+        showSnackbar("error", "在庫データを取得できません。");
+      }
+  },[error])
 
   // name昇順、reference_price昇順、id昇順で並べ替え
   stocks = stocks.sort((a, b) => {
@@ -131,21 +114,15 @@ export default function TopPage() {
     switch (page) {
       // 月別集計
       case "Monthly":
-        return <Monthly stocks={stocks} setStocks={setStocks} />;
+        return <Monthly />;
       // 日別集計
       case "Daily":
-        return (
-          <Daily
-            stocks={stocks}
-            setStocks={setStocks}
-          />
-        );
+        return  <Daily />;
       // 在庫検索
       case "StockFilter":
         return (
           <StockFilter
             groupedDataArr={groupedDataArr}
-            setStocks={setStocks}
           />
         );
       // 買い物リスト
@@ -153,7 +130,6 @@ export default function TopPage() {
         return (
           <ToBuyList
             groupedDataArr={groupedDataArr}
-            setStocks={setStocks}
           />
         );
     }

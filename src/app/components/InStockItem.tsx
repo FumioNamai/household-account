@@ -1,14 +1,13 @@
 import { supabase } from "../../../utils/supabase";
 import { useSnackbarContext } from "@/providers/context-provider";
-import useStore, { useDateStore, useTaxStore } from "@/store";
+import useStore, { useDateStore, useStockStore, useTaxStore } from "@/store";
 
 import { CheckCircleTwoTone } from "@mui/icons-material";
 import ControlPointTwoToneIcon from "@mui/icons-material/ControlPointTwoTone";
 import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
-import { Box, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
 
 import ToBuyButton from "@/app/components/ToBuyButton";
-import { Stock } from "../../../utils/type";
 import { CalcPrice } from "./CalcPrice";
 
 
@@ -19,7 +18,6 @@ price: number;
 count: number;
 type: string;
 to_buy: boolean;
-setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
 const InStockItem = ({
@@ -29,10 +27,10 @@ const InStockItem = ({
   count,
   type,
   to_buy,
-  setStocks,
 }: Props) => {
 
   const { showSnackbar } = useSnackbarContext();
+  let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
@@ -267,7 +265,6 @@ const InStockItem = ({
             id={id}
             name={name}
             to_buy={to_buy}
-            setStocks={setStocks}
           />
         </Stack>
       </Stack>

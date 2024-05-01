@@ -10,9 +10,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Stock } from "../../../utils/type";
 import { useState } from "react";
-import { useDateStore, useStore, useTaxStore } from "@/store";
+import { useDateStore, useStockStore, useStore, useTaxStore } from "@/store";
 import TaxSwitch from "./TaxSwitch";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
@@ -26,7 +25,6 @@ type Props = {
   count: number;
   type: string;
   category: string;
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
 const ModalToBuyList = ({
@@ -37,7 +35,6 @@ const ModalToBuyList = ({
   count,
   type,
   category,
-  setStocks,
 }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
@@ -48,6 +45,7 @@ const ModalToBuyList = ({
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
 
+  let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   let [newPrice, setNewPrice] = useState<string>("");

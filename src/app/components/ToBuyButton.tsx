@@ -2,20 +2,18 @@ import { IconButton, Tooltip } from "@mui/material";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { supabase } from "../../../utils/supabase";
 import { useSnackbarContext } from "@/providers/context-provider";
-import useStore from "@/store";
-import { Stock } from "../../../utils/type";
+import useStore, { useStockStore } from "@/store";
 
 type Props = {
   id: number;
   name: string;
   to_buy: boolean;
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const ToBuyButton = ({ id, name, to_buy, setStocks }: Props) => {
+const ToBuyButton = ({ id, name, to_buy}: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
-
+  let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   const handleToBuyListed = async (propsID: number, userId: string) => {

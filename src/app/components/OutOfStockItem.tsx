@@ -17,8 +17,7 @@ import {
 
 import ToBuyButton from "./ToBuyButton";
 
-import useStore, { useTaxStore } from "@/store";
-import { Stock } from "../../../utils/type";
+import useStore, { useStockStore, useTaxStore } from "@/store";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { CalcPrice } from "./CalcPrice";
 
@@ -28,7 +27,6 @@ type Props = {
   type: string;
   reference_price: number | null;
   to_buy: boolean;
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
 const OutOfStockItem = ({
@@ -37,12 +35,12 @@ const OutOfStockItem = ({
   type,
   to_buy,
   reference_price,
-  setStocks,
 }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
+  let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
   const [dialogOpen, setDialogOpen] = useState(false);
   const handleClickOpen = () => {
@@ -211,7 +209,6 @@ const OutOfStockItem = ({
             id={id}
             name={name}
             to_buy={to_buy}
-            setStocks={setStocks}
           />
         </Stack>
       </Stack>

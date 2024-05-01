@@ -2,10 +2,9 @@
 import { supabase } from "../../../utils/supabase";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import UndoRoundedIcon from "@mui/icons-material/UndoRounded";
-import { Stock } from "../../../utils/type";
 import React from "react";
 import { useSnackbarContext } from "@/providers/context-provider";
-import useStore, { useTaxStore } from "@/store";
+import useStore, { useStockStore, useTaxStore } from "@/store";
 import { CalcPrice } from "./CalcPrice";
 
 type Props = {
@@ -13,13 +12,12 @@ type Props = {
   name: string;
   type: string;
   price:number;
-  // stocks: Stock[] | null;
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
 };
 
-const UsedItem = ({ id, name, price, type, setStocks }: Props) => {
+const UsedItem = ({ id, name, price, type }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
+  let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
 
