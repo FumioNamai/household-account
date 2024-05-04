@@ -14,13 +14,12 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-
-import ToBuyButton from "./ToBuyButton";
+import { useSnackbarContext } from "@/providers/context-provider";
 
 import useStore, { useStockStore, useTaxStore } from "@/store";
-import { useSnackbarContext } from "@/providers/context-provider";
 import { CalcPrice } from "./CalcPrice";
 import { GroupedData } from "../../../utils/type";
+import ToBuyButton from "./ToBuyButton";
 
 const OutOfStockItem = ({...groupedData}: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
@@ -186,7 +185,7 @@ const OutOfStockItem = ({...groupedData}: GroupedData) => {
           >
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                {`『${name}』を在庫一覧から削除しますか？`}
+                {`『${groupedData.name}』を在庫一覧から削除しますか？`}
               </DialogContentText>
             </DialogContent>
             <DialogActions>

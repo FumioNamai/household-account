@@ -10,13 +10,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { supabase } from "../../../utils/supabase";
 import { useState } from "react";
+
 import { useDateStore, useStockStore, useStore, useTaxStore } from "@/store";
 import TaxSwitch from "./TaxSwitch";
-import { useSnackbarContext } from "@/providers/context-provider";
-import { supabase } from "../../../utils/supabase";
 import { CalcPrice } from "./CalcPrice";
 import { GroupedData } from "../../../utils/type";
+import { useSnackbarContext } from "@/providers/context-provider";
 
 const ModalToBuyList = ({...groupedData}: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
@@ -29,7 +30,6 @@ const ModalToBuyList = ({...groupedData}: GroupedData) => {
   const handleModalClose = () => setModalOpen(false);
 
   let {setStocks} = useStockStore()
-
   const onUpdate = (data: any | undefined) => setStocks(data);
 
   let [newPrice, setNewPrice] = useState<string>("");

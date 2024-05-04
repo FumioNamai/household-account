@@ -14,12 +14,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { Types } from "./types";
-import useStore, { useStockStore } from "@/store";
-import { useSnackbarContext } from "@/providers/context-provider";
-import { Categories } from "./Categories";
 import { supabase } from "../../../utils/supabase";
+
+import useStore, { useStockStore } from "@/store";
 import { GroupedData } from "../../../utils/type";
+import { useSnackbarContext } from "@/providers/context-provider";
+import { Types } from "./types";
+import { Categories } from "./Categories";
 import { ShopList } from "./ShopList";
 
 type Props = { groupedDataArr: GroupedData[] };
@@ -40,7 +41,7 @@ export default function ModalToBuyRegistration({ groupedDataArr }: Props) {
   const [itemName, setItemName] = useState<string>("");
   const [shopName, setShopName] = useState<string>("");
 
-  let [newPrice, setNewPrice] = useState<string>("");
+  let [, setNewPrice] = useState<string>("");
   const [categoryItem, setCategoryItem] = useState("");
   const [, setIsFocus] = useState(false);
 

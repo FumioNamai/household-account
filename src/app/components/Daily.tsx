@@ -128,19 +128,9 @@ const Daily = () => {
           消費品目
         </AccordionSummary>
         <AccordionDetails>
-          <ListUsedItemByType
-            typeName="食品"
-            todayUsedItems={todayFoods}
-          />
-          <ListUsedItemByType
-            typeName="雑貨"
-            todayUsedItems={todayItems}
-
-          />
-          <ListUsedItemByType
-            typeName="その他"
-            todayUsedItems={todayOthers}
-          />
+          <ListUsedItemByType typeName="食品" todayUsedItems={todayFoods} />
+          <ListUsedItemByType typeName="雑貨" todayUsedItems={todayItems} />
+          <ListUsedItemByType typeName="その他" todayUsedItems={todayOthers} />
         </AccordionDetails>
       </Accordion>
     </Box>
