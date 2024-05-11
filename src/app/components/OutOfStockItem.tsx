@@ -102,7 +102,7 @@ const OutOfStockItem = ({...groupedData}: GroupedData) => {
         .eq("user_id", userId);
       onUpdate(updatedStocks);
       if (showSnackbar) {
-        showSnackbar("success", `『${name}』の価格を更新しました。`);
+        showSnackbar("success", `『${groupedData.name}』の価格を更新しました。`);
       }
       setNewPrice("");
 
