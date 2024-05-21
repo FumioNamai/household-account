@@ -58,7 +58,7 @@ const OutOfStockItem = ({...groupedData}: GroupedData) => {
       // 親コンポーネントにstocksを渡して在庫情報を更新
 
       if (showSnackbar) {
-        showSnackbar("success", `『${name}』を在庫一覧から削除しました。`);
+        showSnackbar("success", `『${groupedData.name}』を在庫一覧から削除しました。`);
       }
     } catch (error: any) {
       if (showSnackbar) {
