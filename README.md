@@ -22,14 +22,14 @@ https://household-account-kappa.vercel.app/<br>
 1. 在庫/商品登録をする
 
 ## 基本機能の使い方
-
 <table>
   <tr>
     <th colspan="2">ログイン</th>
   </tr>
   <tr>
-    <td>GIF</td>
-　　<td>メールアドレスに testuser@mail.com を入力<br>
+    <td width="100"><img src="https://github.com/FumioNamai/household-account/assets/115169127/cf346b2b-c06a-4b8d-a9fa-e2b4c6e4118f" />
+</td>
+　　<td style="vertical-align:top">メールアドレスに testuser@mail.com を入力<br>
         パスワードに 240424 を入力<br>
         ログインボタンをクリック
     </td>
@@ -38,8 +38,10 @@ https://household-account-kappa.vercel.app/<br>
   <th colspan="2">在庫/商品登録</th>
   </tr>
   <tr>
-    <td>GIF</td>
-　　<td>在庫一覧/検索ページへ移動<br>
+    <td>
+<img src="https://github.com/FumioNamai/household-account/assets/115169127/62035b4e-653e-4c08-b7cb-90e7f8e15779" />
+</td>
+　　<td style="vertical-align:top">在庫一覧/検索ページへ移動<br>
         在庫/商品登録ボタンをクリック<br>
         購入日・種別・分類を選択し商品名を入力<br>
         数量を選択<br>
@@ -50,7 +52,8 @@ https://household-account-kappa.vercel.app/<br>
     <th colspan="2">在庫/買い物リスト登録</th>
   </tr>
   <tr>
-    <td>GIF</td>
+    <td><img src="https://github.com/FumioNamai/household-account/assets/115169127/2c807961-e0c6-465b-bb08-75326c4054e3" />
+</td>
     <td>買い物リストページへ移動<br>
         登録ボタンをクリック<br>
         種別・分類を選択し商品名を入力<br>
@@ -62,7 +65,9 @@ https://household-account-kappa.vercel.app/<br>
     <th colspan="2">使用済み操作</th>
   </tr>
   <tr>
-    <td>GIF</td>
+    <td>
+<img src="https://github.com/FumioNamai/household-account/assets/115169127/fbaa5b7e-160d-4852-b661-c73ae1d5bbbe" />
+</td>
     <td>在庫一覧/検索ページへ移動<br>
         種別・分類を選択<br>
         在庫リストから該当商品の✔ボタンをクリック
