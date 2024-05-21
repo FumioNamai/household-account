@@ -27,7 +27,7 @@ https://household-account-kappa.vercel.app/<br>
     <th colspan="2">ログイン</th>
   </tr>
   <tr>
-    <td width="100"><img src="https://github.com/FumioNamai/household-account/assets/115169127/cf346b2b-c06a-4b8d-a9fa-e2b4c6e4118f" />
+    <td width="200"><img src="https://github.com/FumioNamai/household-account/assets/115169127/cf346b2b-c06a-4b8d-a9fa-e2b4c6e4118f" />
 </td>
 　　<td style="vertical-align:top">メールアドレスに testuser@mail.com を入力<br>
         パスワードに 240424 を入力<br>
