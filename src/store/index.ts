@@ -32,6 +32,16 @@ export const useTaxStore = create<TaxState>((set) => ({
   setTax: () => set(state => ({ tax : !state.tax })),
 }))
 
+interface SortableState {
+  isSortable : boolean
+  setIsSortable: () => void
+}
+export const useSortableStore = create<SortableState>((set) => ({
+  isSortable: false,
+  setIsSortable: () => set(state => ({ isSortable : !state.isSortable })),
+}))
+
+
 
 interface DateState {
   date : Dayjs | null
@@ -59,20 +69,17 @@ export const useStockStore = create<StockState>((set,get) => ({
   stocks:[],
   setStocks: (stocks) => set({stocks}),
   error: null,
-  // setError: (error) =>set({error}) ,
   isLoading: false,
   setIsLoading : (isLoading) => set({isLoading}),
   getStocks: async (userId: string) => {
     set({isLoading:true, error:null})
     try {
-      // get().setIsLoading(true);
       const { data, error } = await supabase
         .from("stocks")
         .select("*")
         .eq("user_id", userId);
       if (error) throw error;
       get().setStocks(data);
-      // return;
     } catch (error: any) {
       set({error:"error"})
       get().setStocks([]);

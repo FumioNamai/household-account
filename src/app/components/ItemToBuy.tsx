@@ -10,19 +10,24 @@ import {
 import CheckBox from "@/app/components/CheckBox";
 import ModalToBuyList from "@/app/components/ModalToBuyList";
 import ToBuyButton from "@/app/components/ToBuyButton";
-import useStore, { useStockStore, useTaxStore } from "@/store";
+import useStore, {
+  useSortableStore,
+  useStockStore,
+  useTaxStore,
+} from "@/store";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { supabase } from "../../../utils/supabase";
 import { ShopList } from "./ShopList";
 import { CalcPrice } from "./CalcPrice";
 import { GroupedData } from "../../../utils/type";
 
-const ItemToBuy = ({...groupedData}: GroupedData) => {
+const ItemToBuy = ({ ...groupedData }: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
   let { setStocks } = useStockStore();
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
+  const { isSortable } = useSortableStore();
 
   const handleShopSelect = async (event: SelectChangeEvent) => {
     const shopName = event.target.value;
@@ -41,7 +46,9 @@ const ItemToBuy = ({...groupedData}: GroupedData) => {
       if (showSnackbar) {
         showSnackbar(
           "success",
-          `${groupedData.name}を${shopName ? shopName : "購入店舗未定"}に移動しました。`
+          `${groupedData.name}を${
+            shopName ? shopName : "購入店舗未定"
+          }に移動しました。`
         );
       }
     } catch (error: any) {
@@ -53,61 +60,60 @@ const ItemToBuy = ({...groupedData}: GroupedData) => {
 
   return (
     <>
-      <List key={groupedData.id}>
-        <Stack direction="column">
+      <Stack direction="column">
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Stack
             direction="row"
-            justifyContent="space-between"
+            justifyContent="flex-start"
             alignItems="center"
           >
-            <Stack
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center"
-            >
-              <CheckBox id={groupedData.id} checked={groupedData.checked} />
-              <ModalToBuyList {...groupedData} />
-            </Stack>
-            <Select
-              variant="standard"
-              size="small"
-              value={groupedData.shop_name}
-              onChange={handleShopSelect}
-              sx={{ maxWidth: "50px", minWidth: "50px", padding: "0" }}
-            >
-              {ShopList.map((shop) => (
-                <MenuItem key={shop.id} value={shop.shopName}>
-                  {shop.shopName === "" ? "分類無し" : shop.shopName}
-                </MenuItem>
-              ))}
-            </Select>
+            <CheckBox id={groupedData.id} checked={groupedData.checked} />
+            <ModalToBuyList {...groupedData} />
           </Stack>
-          <Stack direction="row" justifyContent="flex-end" alignItems="center">
-            <Stack
-              direction="row"
-              justifyContent="flex-end"
-              alignItems="baseline"
-            >
-              <Typography
-                variant="body2"
-                sx={{ minWidth: "80px", textAlign: "end", color: "grey" }}
-              >
-                {groupedData.reference_price
-                  ? CalcPrice(groupedData.reference_price, groupedData.type)
-                  : "0"}
-                円
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ marginLeft: "4px", color: "grey", fontSize: "10px" }}
-              >
-                {tax === true ? "(込)" : "(抜)"}
-              </Typography>
-            </Stack>
-            <ToBuyButton {...groupedData}/>
-          </Stack>
+          <Select
+            disabled={isSortable}
+            variant="standard"
+            size="small"
+            value={groupedData.shop_name}
+            onChange={handleShopSelect}
+            sx={{ maxWidth: "50px", minWidth: "50px", padding: "0" }}
+          >
+            {ShopList.map((shop) => (
+              <MenuItem key={shop.id} value={shop.shopName}>
+                {shop.shopName === "" ? "分類無し" : shop.shopName}
+              </MenuItem>
+            ))}
+          </Select>
         </Stack>
-      </List>
+        <Stack direction="row" justifyContent="flex-end" alignItems="center">
+          <Stack
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="baseline"
+          >
+            <Typography
+              variant="body2"
+              sx={{ minWidth: "80px", textAlign: "end", color: "grey" }}
+            >
+              {groupedData.reference_price
+                ? CalcPrice(groupedData.reference_price, groupedData.type)
+                : "0"}
+              円
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ marginLeft: "4px", color: "grey", fontSize: "10px" }}
+            >
+              {tax === true ? "(込)" : "(抜)"}
+            </Typography>
+          </Stack>
+          <ToBuyButton {...groupedData} />
+        </Stack>
+      </Stack>
       <Divider />
     </>
   );

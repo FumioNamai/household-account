@@ -116,11 +116,11 @@ const InStockItem = ({ ...groupedData }: GroupedData ) => {
         .update({to_buy: false})
         .eq("id", propsID)
         // 在庫データを更新して、画面を更新
-        const { data: data2 } = await supabase
+        const { data: updatedStocks } = await supabase
         .from("stocks")
         .select("*")
         .eq("user_id", userId);
-        onUpdate(data2);
+        onUpdate(updatedStocks);
 
     } catch (error: any) {
       if (showSnackbar) {

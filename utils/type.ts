@@ -11,6 +11,7 @@ export interface Stock {
   to_buy: boolean;
   shop_name: string;
   checked: boolean;
+  sort_id: number;
 }
 
 export interface GroupedData extends Stock {

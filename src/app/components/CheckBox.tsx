@@ -1,7 +1,7 @@
 import { Checkbox, Tooltip } from "@mui/material";
 import { supabase } from "../../../utils/supabase";
 import { useSnackbarContext } from "@/providers/context-provider";
-import useStore, { useStockStore } from "@/store";
+import useStore, { useSortableStore, useStockStore } from "@/store";
 
 type Props = {
   id: number;
@@ -11,6 +11,7 @@ type Props = {
 const CheckBox = ({ id, checked }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
+  const {isSortable, } = useSortableStore();
   let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
 
@@ -53,6 +54,7 @@ const CheckBox = ({ id, checked }: Props) => {
   return (
     <Tooltip title={checked ? "チェックを外す" : "チェックを入れる"} placement="top">
       <Checkbox
+        disabled={isSortable}
         checked={checked ? true : false}
         onChange={() => handleCheck(id, user.id)}
       />

@@ -13,7 +13,7 @@ import {
 import { supabase } from "../../../utils/supabase";
 import { useState } from "react";
 
-import { useDateStore, useStockStore, useStore, useTaxStore } from "@/store";
+import { useDateStore, useSortableStore, useStockStore, useStore, useTaxStore } from "@/store";
 import TaxSwitch from "./TaxSwitch";
 import { CalcPrice } from "./CalcPrice";
 import { GroupedData } from "../../../utils/type";
@@ -23,6 +23,7 @@ const ModalToBuyList = ({...groupedData}: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
   const tax = useTaxStore((state) => state.tax);
+  const {isSortable, } = useSortableStore();
   const {selectedDate} = useDateStore()
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -100,7 +101,7 @@ const ModalToBuyList = ({...groupedData}: GroupedData) => {
   return (
     <>
       <Box>
-        <Button onClick={handleModalOpen} sx={{ textTransform: "none", minWidth:"0"}}>{groupedData.name}</Button>
+        <Button onClick={handleModalOpen} sx={{ textTransform: "none", minWidth:"0"}} disabled={isSortable}>{groupedData.name}</Button>
       </Box>
       <Modal
         open={modalOpen}

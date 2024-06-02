@@ -6,7 +6,7 @@ import { useSnackbarContext } from "@/providers/context-provider";
 import Monthly from "@/app/components/Monthly";
 import Daily from "@/app/components/Daily";
 import StockFilter from "@/app/components/StockFilter";
-import useStore, { useStockStore } from "@/store/index";
+import useStore, { useSortableStore, useStockStore } from "@/store/index";
 import ToBuyList from "@/app/components/ToBuyList";
 import {
   Stack,
@@ -18,13 +18,15 @@ import Loading from "./Loading";
 
 export default function TopPage() {
   let {stocks,isLoading,getStocks,error} = useStockStore()
+
+  const {isSortable, } = useSortableStore();
   const user = useStore((state) => state.user);
 
   useEffect(() => {
     if (user.id) {
       (async () => await getStocks(user.id))();
     }
-  }, [user.id]);
+  }, [user.id,getStocks,isSortable]);
 
   const { showSnackbar } = useSnackbarContext();
   useEffect(() => {
@@ -35,6 +37,8 @@ export default function TopPage() {
 
   // name昇順、reference_price昇順、id昇順で並べ替え
   stocks = stocks.sort((a, b) => {
+    if (a.sort_id < b.sort_id) return -1;
+    if (a.sort_id > b.sort_id) return 1;
     if (a.name < b.name) return -1;
     if (a.name > b.name) return 1;
     if (a.reference_price! < b.reference_price!) return -1;
@@ -61,6 +65,7 @@ export default function TopPage() {
           to_buy: stock.to_buy,
           shop_name: stock.shop_name,
           checked: stock.checked,
+          sort_id: stock.sort_id,
         };
       }
       groupedData[key].count++;

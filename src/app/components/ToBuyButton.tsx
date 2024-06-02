@@ -2,22 +2,23 @@ import { IconButton, Tooltip } from "@mui/material";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { supabase } from "../../../utils/supabase";
 import { useSnackbarContext } from "@/providers/context-provider";
-import useStore, { useStockStore } from "@/store";
+import useStore, { useSortableStore, useStockStore } from "@/store";
 import { GroupedData } from "../../../utils/type";
 
 const ToBuyButton = ({ ...groupedData }: GroupedData) => {
+  const {isSortable, } = useSortableStore();
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
   let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
 
-  const handleToBuyListed = async (propsID: number, userId: string) => {
+  const handleToBuyListed = async (propsId: number, userId: string) => {
     if (groupedData.to_buy === false) {
       try {
         await supabase
           .from("stocks")
-          .update({ to_buy: true })
-          .eq("id", propsID);
+          .update({ to_buy: true , sort_id: null })
+          .eq("id", propsId);
         const { data: updatedStocks } = await supabase
           .from("stocks")
           .select("*")
@@ -38,9 +39,9 @@ const ToBuyButton = ({ ...groupedData }: GroupedData) => {
       try {
         await supabase
           .from("stocks")
-          .update({ to_buy: false, checked: false })
-          .eq("id", propsID);
-        const { data: updatedStocks } = await supabase
+          .update({ to_buy: false, checked: false, sort_id: null })
+          .eq("id", propsId);
+          const { data: updatedStocks } = await supabase
           .from("stocks")
           .select("*")
           .eq("user_id", userId);
@@ -68,6 +69,8 @@ const ToBuyButton = ({ ...groupedData }: GroupedData) => {
       placement="top"
     >
       <IconButton
+        disabled=
+        {isSortable}
         color={groupedData.to_buy === true ? "warning" : "default"}
         onClick={() => handleToBuyListed(groupedData.id, user.id)}
       >
