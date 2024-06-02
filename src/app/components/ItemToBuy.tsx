@@ -5,6 +5,7 @@ import {
   Select,
   SelectChangeEvent,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import CheckBox from "@/app/components/CheckBox";
@@ -20,6 +21,7 @@ import { supabase } from "../../../utils/supabase";
 import { ShopList } from "./ShopList";
 import { CalcPrice } from "./CalcPrice";
 import { GroupedData } from "../../../utils/type";
+import FormatLineSpacingOutlinedIcon from "@mui/icons-material/FormatLineSpacingOutlined";
 
 const ItemToBuy = ({ ...groupedData }: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
@@ -89,11 +91,18 @@ const ItemToBuy = ({ ...groupedData }: GroupedData) => {
             ))}
           </Select>
         </Stack>
-        <Stack direction="row" justifyContent="flex-end" alignItems="center">
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack marginLeft={1}>
+          {isSortable ? (
+            <Tooltip title="ドラッグ＆ドロップで並べ替えできます" placement="top">
+            <FormatLineSpacingOutlinedIcon color="primary" />
+            </Tooltip>
+          ) : null}
+          </Stack>
           <Stack
             direction="row"
             justifyContent="flex-end"
-            alignItems="baseline"
+            alignItems="center"
           >
             <Typography
               variant="body2"
@@ -110,8 +119,8 @@ const ItemToBuy = ({ ...groupedData }: GroupedData) => {
             >
               {tax === true ? "(込)" : "(抜)"}
             </Typography>
-          </Stack>
           <ToBuyButton {...groupedData} />
+          </Stack>
         </Stack>
       </Stack>
       <Divider />

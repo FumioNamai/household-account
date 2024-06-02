@@ -9,12 +9,17 @@ import {
   Stack,
   Switch,
   ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import ItemToBuy from "@/app/components/ItemToBuy";
 import { ShopList } from "./ShopList";
 import ModalToBuyRegistration from "./ModalToBuyRegistration";
 import TaxSwitch from "./TaxSwitch";
+
+import SwapVertOutlinedIcon from "@mui/icons-material/SwapVertOutlined";
+import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 
 import {
   DndContext,
@@ -34,7 +39,6 @@ import {
 } from "@dnd-kit/sortable";
 import Droppable from "./Droppable";
 import SortableItem from "./SortableItem";
-import { log } from "console";
 import { supabase } from "../../../utils/supabase";
 import useStore, { useSortableStore, useStockStore } from "@/store";
 
@@ -127,7 +131,41 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
           <ModalToBuyRegistration groupedDataArr={groupedDataArr} />
         </Stack>
         {/* 税表示切替 */}
-        <Stack direction="row" justifyContent="end" sx={{ marginRight: "8px" }}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          sx={{ marginRight: "8px" }}
+        >
+          <ToggleButtonGroup
+            size="small"
+            color="primary"
+            exclusive
+            value={isSortable}
+            onChange={handleChange}
+          >
+            <ToggleButton value={false}>
+              <Tooltip title="編集モード" placement="top">
+                <EditNoteOutlinedIcon />
+              </Tooltip>
+            </ToggleButton>
+            <ToggleButton value={true}>
+              <Tooltip title="並べ替えモード" placement="top">
+                <SwapVertOutlinedIcon />
+              </Tooltip>
+            </ToggleButton>
+          </ToggleButtonGroup>
+
+          {/* <FormControl>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch checked={isSortable} onChange={handleChange} />
+                }
+                label={isSortable ? "並べ替えモード" : "編集モード"}
+                sx={{ marginRight: "0" }}
+              />
+            </FormGroup>
+          </FormControl> */}
           <TaxSwitch />
         </Stack>
 
@@ -148,17 +186,7 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
               <Typography variant="body1">
                 {shop.shopName ? shop.shopName : "購入店舗未定"}
               </Typography>
-              <FormControl>
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Switch checked={isSortable} onChange={handleChange} />
-                    }
-                    label={isSortable ? "並べ替えモード" : "編集モード"}
-                    sx={{ marginRight: "0" }}
-                  />
-                </FormGroup>
-              </FormControl>
+
               <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
