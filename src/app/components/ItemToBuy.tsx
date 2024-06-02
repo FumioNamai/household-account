@@ -94,7 +94,7 @@ const ItemToBuy = ({ ...groupedData }: GroupedData) => {
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Stack marginLeft={1}>
           {isSortable ? (
-            <Tooltip title="ドラッグ＆ドロップで並べ替えできます" placement="top">
+            <Tooltip title="お店の中で並べ替えできます" placement="right">
             <FormatLineSpacingOutlinedIcon color="primary" />
             </Tooltip>
           ) : null}

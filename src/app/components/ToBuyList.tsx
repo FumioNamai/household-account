@@ -136,6 +136,10 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
           justifyContent="space-between"
           sx={{ marginRight: "8px" }}
         >
+          <Stack
+          direction="row"
+          alignItems="center"
+          >
           <ToggleButtonGroup
             size="small"
             color="primary"
@@ -154,18 +158,10 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
               </Tooltip>
             </ToggleButton>
           </ToggleButtonGroup>
-
-          {/* <FormControl>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch checked={isSortable} onChange={handleChange} />
-                }
-                label={isSortable ? "並べ替えモード" : "編集モード"}
-                sx={{ marginRight: "0" }}
-              />
-            </FormGroup>
-          </FormControl> */}
+          <Typography marginLeft={2} color="primary" variant="h6">
+            { isSortable ? "並べ替えモード" : "編集モード"}
+          </Typography>
+          </Stack>
           <TaxSwitch />
         </Stack>
 
