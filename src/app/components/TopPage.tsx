@@ -35,7 +35,7 @@ export default function TopPage() {
       }
   },[error])
 
-  // name昇順、reference_price昇順、id昇順で並べ替え
+  // sort_id昇順、name昇順、reference_price昇順、id昇順で並べ替え
   stocks = stocks.sort((a, b) => {
     if (a.sort_id < b.sort_id) return -1;
     if (a.sort_id > b.sort_id) return 1;
@@ -151,6 +151,7 @@ export default function TopPage() {
                   value={page}
                   onChange={handleChange}
                   size="small"
+                  disabled={isSortable ? true : false }
                 >
                   <ToggleButton value="Monthly">月別集計</ToggleButton>
                   <ToggleButton value="Daily">日別集計</ToggleButton>

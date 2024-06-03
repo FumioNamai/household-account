@@ -3,7 +3,7 @@
 import { User } from "@supabase/supabase-js";
 import { Database } from "@/lib/database.types";
 import { useEffect } from "react";
-import useStore from "@/store/index";
+import useStore, { useSortableStore } from "@/store/index";
 import { Box, Stack, Link, Typography } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 
@@ -15,6 +15,7 @@ const Navigation = ({
   user: User | null;
   profile: ProfileType | null;
 }) => {
+  const {isSortable, } = useSortableStore();
   const setUser = useStore((state) => state.setUser);
   // 状態管理にユーザー情報を保存
   // ユーザーが無い場合は状態管理も空になる
@@ -37,9 +38,15 @@ const Navigation = ({
               <Typography variant="body1" sx={{ fontSize: 16 }}>
                 {profile.name}さん
               </Typography>
+              {
+                isSortable ?
+                <Link underline="hover">
+                <SettingsIcon sx={{ width: "30px", height: "30px", color:"gray" }} />
+              </Link> :
               <Link underline="hover" href="/settings/profile">
                 <SettingsIcon sx={{ width: "30px", height: "30px" }} />
               </Link>
+              }
             </>
           )}
         </Stack>

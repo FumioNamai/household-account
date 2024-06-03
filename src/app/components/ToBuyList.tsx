@@ -2,12 +2,7 @@ import { useState } from "react";
 import { GroupedData } from "../../../utils/type";
 import {
   Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
   Stack,
-  Switch,
   ToggleButton,
   ToggleButtonGroup,
   Tooltip,
@@ -25,12 +20,12 @@ import {
   DndContext,
   DragEndEvent,
   DragStartEvent,
-  MouseSensor,
-  TouchSensor,
+  // MouseSensor,
+  // TouchSensor,
   UniqueIdentifier,
   closestCenter,
-  useSensor,
-  useSensors,
+  // useSensor,
+  // useSensors,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -41,6 +36,7 @@ import Droppable from "./Droppable";
 import SortableItem from "./SortableItem";
 import { supabase } from "../../../utils/supabase";
 import useStore, { useSortableStore, useStockStore } from "@/store";
+import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
 type Props = { groupedDataArr: GroupedData[] };
 
@@ -56,10 +52,10 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
   const [activeId, setActiveId] = useState<UniqueIdentifier>();
 
   // ドラッグの開始、移動、終了などの入力方法
-  const sensors = useSensors(
-    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(TouchSensor, { activationConstraint: { distance: 5 } })
-  );
+  // const sensors = useSensors(
+  //   useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
+  //   useSensor(TouchSensor, { activationConstraint: { distance: 5 } })
+  // );
 
   // ドラッグ開始時に発火するイベント
   function handleDragStart(event: DragStartEvent) {
@@ -184,7 +180,8 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
               </Typography>
 
               <DndContext
-                sensors={sensors}
+                // sensors={sensors}
+                modifiers={[restrictToVerticalAxis,restrictToParentElement]}
                 collisionDetection={closestCenter}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}

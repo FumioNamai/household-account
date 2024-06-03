@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { supabase } from "../../../utils/supabase";
 
-import useStore, { useStockStore } from "@/store";
+import useStore, { useSortableStore, useStockStore } from "@/store";
 import { GroupedData } from "../../../utils/type";
 import { useSnackbarContext } from "@/providers/context-provider";
 import { Types } from "./types";
@@ -29,7 +29,7 @@ export default function ModalToBuyRegistration({ groupedDataArr }: Props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const {isSortable, } = useSortableStore();
   const user = useStore((state) => state.user);
   let {setStocks} = useStockStore()
   const onUpdate = (data: any | undefined) => setStocks(data);
@@ -134,7 +134,12 @@ export default function ModalToBuyRegistration({ groupedDataArr }: Props) {
   return (
     <>
       <Box>
-        <Button variant="outlined" size="large" onClick={handleOpen}>
+        <Button
+        variant="outlined"
+        size="large"
+        onClick={handleOpen}
+        disabled={isSortable ? true : false}
+        >
           登録
         </Button>
       </Box>
