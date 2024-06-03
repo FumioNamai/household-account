@@ -185,6 +185,7 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
                 collisionDetection={closestCenter}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
+                autoScroll
               >
                 <Droppable key={shop.id} id={shop.id}>
                   <SortableContext
