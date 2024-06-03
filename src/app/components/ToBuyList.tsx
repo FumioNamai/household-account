@@ -20,12 +20,13 @@ import {
   DndContext,
   DragEndEvent,
   DragStartEvent,
-  // MouseSensor,
-  // TouchSensor,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
   UniqueIdentifier,
   closestCenter,
-  // useSensor,
-  // useSensors,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -52,10 +53,11 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
   const [activeId, setActiveId] = useState<UniqueIdentifier>();
 
   // ドラッグの開始、移動、終了などの入力方法
-  // const sensors = useSensors(
-  //   useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
-  //   useSensor(TouchSensor, { activationConstraint: { distance: 5 } })
-  // );
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay:500, tolerance: 5 } }),
+    useSensor(KeyboardSensor)
+  );
 
   // ドラッグ開始時に発火するイベント
   function handleDragStart(event: DragStartEvent) {
@@ -180,7 +182,7 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
               </Typography>
 
               <DndContext
-                // sensors={sensors}
+                sensors={sensors}
                 modifiers={[restrictToVerticalAxis,restrictToParentElement]}
                 collisionDetection={closestCenter}
                 onDragStart={handleDragStart}
