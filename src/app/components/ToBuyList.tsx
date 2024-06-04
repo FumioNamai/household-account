@@ -72,14 +72,14 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
       const oldSortId = items.findIndex((item) => item.id === active.id);
       const newSortId = items.findIndex((item) => item.id === over?.id);
 
-      const sortedArray = arrayMove(items, oldSortId, newSortId).filter(
-        (el) => el.shop_name
-      );
-      const selectedItem = sortedArray.filter((item) => item.id === active.id);
+      const sortedArray = arrayMove(items, oldSortId, newSortId)
+      // .filter(
+      //   (el) => el.shop_name
+      // );
 
-      const shopItem = sortedArray.filter(
-        (item) => item.shop_name === selectedItem[0].shop_name
-      );
+      const selectedItem = sortedArray.find((item) => item.id == active.id);
+
+      const shopItem = sortedArray.filter((item) => item.shop_name === selectedItem!.shop_name );
 
       try {
         setItems(() => {
@@ -178,7 +178,7 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
               }}
             >
               <Typography variant="body1">
-                {shop.shopName ? shop.shopName : "購入店舗未定"}
+                {shop.shopName === "" ? "購入店舗未定" : shop.shopName}
               </Typography>
 
               <DndContext
