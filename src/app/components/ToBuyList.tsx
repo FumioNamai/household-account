@@ -55,7 +55,7 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
   // ドラッグの開始、移動、終了などの入力方法
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay:500, tolerance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay:200, tolerance: 5 } }),
     useSensor(KeyboardSensor)
   );
 

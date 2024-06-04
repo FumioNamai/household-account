@@ -101,7 +101,7 @@ const ModalToBuyList = ({...groupedData}: GroupedData) => {
   return (
     <>
       <Box>
-        <Button onClick={handleModalOpen} sx={{ textTransform: "none", minWidth:"0"}} disabled={isSortable}>{groupedData.name}</Button>
+        <Button onClick={handleModalOpen} sx={{ textTransform: "none", minWidth:"0"}} disabled={isSortable} >{groupedData.name}</Button>
       </Box>
       <Modal
         open={modalOpen}
