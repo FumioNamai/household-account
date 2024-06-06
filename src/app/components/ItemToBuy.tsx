@@ -53,7 +53,7 @@ const ItemToBuy:React.FC<ItemToBuyProps> = ({ isListedCount,...groupedData}) => 
         showSnackbar(
           "success",
           `${groupedData.name}を${
-            shopName ? shopName : "購入店舗未定"
+            shopName ? shopName : "未定"
           }に移動しました。`
         );
       }
@@ -90,7 +90,7 @@ const ItemToBuy:React.FC<ItemToBuyProps> = ({ isListedCount,...groupedData}) => 
           >
             {ShopList.map((shop) => (
               <MenuItem key={shop.id} value={shop.shopName}>
-                {shop.shopName}
+                {shop.shopName === "" ? "未定" : shop.shopName}
               </MenuItem>
             ))}
           </Select>
@@ -99,7 +99,7 @@ const ItemToBuy:React.FC<ItemToBuyProps> = ({ isListedCount,...groupedData}) => 
           <Stack marginLeft={1}>
           {isSortable ? (
             <Tooltip title="お店の中で並べ替えできます" placement="right">
-            <FormatLineSpacingOutlinedIcon color={isListedCount < 2 ? "disabled" : "primary"}/>
+            <FormatLineSpacingOutlinedIcon color={isListedCount > 1 ? "primary" : "disabled"}/>
             </Tooltip>
           ) : null}
           </Stack>

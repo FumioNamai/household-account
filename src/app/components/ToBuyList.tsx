@@ -58,13 +58,14 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
     items.filter((item) => {
       return item.shop_name === shopName && item.to_buy === true;
     })
+
   // 購入予定の商品数をカウントする関数
   const isListedCount = (shopName: string) =>
     filterItemsByShopAndToBuy(shopName).length;
 
   // 購入予定の商品があるかどうか確認する関数
   const isListed = (shopName: string) =>
-    filterItemsByShopAndToBuy(shopName).length === 0;
+    filterItemsByShopAndToBuy(shopName).length > 0;
 
   // リストのリソースID
   const [activeId, setActiveId] = useState<UniqueIdentifier>();
@@ -158,13 +159,13 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
             <Chip
               key={shop.id}
               component="a"
-              label={shop.shopName}
+              label={shop.shopName === "" ? "未定" : shop.shopName}
               href={`#${shop.shopName}`}
               variant="outlined"
               size="small"
               color="primary"
               clickable
-              disabled={isListed(shop.shopName) ? true : false}
+              disabled={isListed(shop.shopName) ? false : true }
             />
           ))}
         </Stack>
@@ -216,7 +217,7 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
               }}
             >
               <Typography variant="body1">
-                {shop.shopName === "" ? "購入店舗未定" : shop.shopName}
+                {shop.shopName === "" ? "未定" : shop.shopName}
               </Typography>
 
               <DndContext

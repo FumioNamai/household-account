@@ -2,7 +2,7 @@ export const ShopList: {
   id: number;
   shopName: string;
 }[] = [
-  { id : 0 , shopName: "購入店舗未定" },
+  { id : 0 , shopName: "" },
   { id : 1 , shopName: "カネスエ"},
   { id : 2 , shopName: "イオン"},
   { id : 3 , shopName: "ロピア"},
