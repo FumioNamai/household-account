@@ -33,7 +33,7 @@ const ItemToBuy:React.FC<ItemToBuyProps> = ({ isListedCount,...groupedData}) => 
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
-  const { isSortable } = useSortableStore();
+  const { isSortable,setIsSortable } = useSortableStore();
 
   const handleShopSelect = async (event: SelectChangeEvent) => {
     const shopName = event.target.value;
@@ -48,6 +48,7 @@ const ItemToBuy:React.FC<ItemToBuyProps> = ({ isListedCount,...groupedData}) => 
         .from("stocks")
         .select("*")
         .eq("user_id", user.id);
+        setIsSortable();
       onUpdate(updatedStocks);
       if (showSnackbar) {
         showSnackbar(
