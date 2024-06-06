@@ -237,7 +237,7 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
                           (item) =>
                             item.to_buy === true &&
                             item.shop_name === shop.shopName && (
-                              <SortableItem id={item.id} key={item.id}>
+                              <SortableItem id={item.id} key={item.id} isListedCount={isListedCount(item.shop_name)}>
                                 <ItemToBuy
                                   {...item}
                                   isListedCount={isListedCount(item.shop_name)}
