@@ -23,7 +23,11 @@ import { CalcPrice } from "./CalcPrice";
 import { GroupedData } from "../../../utils/type";
 import FormatLineSpacingOutlinedIcon from "@mui/icons-material/FormatLineSpacingOutlined";
 
-const ItemToBuy = ({ ...groupedData }: GroupedData) => {
+interface ItemToBuyProps extends GroupedData {
+  isListedCount:number;
+}
+
+const ItemToBuy:React.FC<ItemToBuyProps> = ({ isListedCount,...groupedData}) => {
   const { showSnackbar } = useSnackbarContext();
   let { setStocks } = useStockStore();
   const onUpdate = (data: any | undefined) => setStocks(data);
@@ -86,7 +90,7 @@ const ItemToBuy = ({ ...groupedData }: GroupedData) => {
           >
             {ShopList.map((shop) => (
               <MenuItem key={shop.id} value={shop.shopName}>
-                {shop.shopName === "" ? "分類無し" : shop.shopName}
+                {shop.shopName}
               </MenuItem>
             ))}
           </Select>
@@ -95,7 +99,7 @@ const ItemToBuy = ({ ...groupedData }: GroupedData) => {
           <Stack marginLeft={1}>
           {isSortable ? (
             <Tooltip title="お店の中で並べ替えできます" placement="right">
-            <FormatLineSpacingOutlinedIcon color="primary" />
+            <FormatLineSpacingOutlinedIcon color={isListedCount < 2 ? "disabled" : "primary"}/>
             </Tooltip>
           ) : null}
           </Stack>
