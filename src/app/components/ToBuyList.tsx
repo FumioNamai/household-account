@@ -254,9 +254,7 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
                               groupedData.shop_name === shop.shopName && (
                                 <ItemToBuy
                                   key={groupedData.id}
-                                  isListedCount={isListedCount(
-                                    groupedData.shop_name
-                                  )}
+                                  isListedCount={isListedCount(groupedData.shop_name)}
                                   {...groupedData}
                                 />
                               )
