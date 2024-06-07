@@ -41,6 +41,14 @@ export const useSortableStore = create<SortableState>((set) => ({
   setIsSortable: () => set(state => ({ isSortable : !state.isSortable })),
 }))
 
+interface ReloadState {
+  reload : number
+  setReload: () => void
+}
+export const useReloadStore = create<ReloadState>((set) => ({
+  reload: 0,
+  setReload: () => set(state => ({ reload : state.reload + 1 })),
+}))
 
 
 interface DateState {

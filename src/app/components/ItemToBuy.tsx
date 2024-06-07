@@ -12,8 +12,8 @@ import CheckBox from "@/app/components/CheckBox";
 import ModalToBuyList from "@/app/components/ModalToBuyList";
 import ToBuyButton from "@/app/components/ToBuyButton";
 import useStore, {
+  useReloadStore,
   useSortableStore,
-  useStockStore,
   useTaxStore,
 } from "@/store";
 import { useSnackbarContext } from "@/providers/context-provider";
@@ -29,11 +29,10 @@ interface ItemToBuyProps extends GroupedData {
 
 const ItemToBuy:React.FC<ItemToBuyProps> = ({ isListedCount,...groupedData}) => {
   const { showSnackbar } = useSnackbarContext();
-  let { setStocks } = useStockStore();
-  const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
   const { isSortable,setIsSortable } = useSortableStore();
+  const { reload, setReload} = useReloadStore()
 
   const handleShopSelect = async (event: SelectChangeEvent) => {
     const shopName = event.target.value;
@@ -44,12 +43,6 @@ const ItemToBuy:React.FC<ItemToBuyProps> = ({ isListedCount,...groupedData}) => 
         .from("stocks")
         .update({ shop_name: shopName })
         .eq("id", groupedData.id);
-      const { data: updatedStocks } = await supabase
-        .from("stocks")
-        .select("*")
-        .eq("user_id", user.id);
-        // setIsSortable();
-      onUpdate(updatedStocks);
       if (showSnackbar) {
         showSnackbar(
           "success",
@@ -63,6 +56,7 @@ const ItemToBuy:React.FC<ItemToBuyProps> = ({ isListedCount,...groupedData}) => 
         showSnackbar("error", "店舗登録ができませんでした。" + error.message);
       }
     }
+    setReload()
   };
 
   return (

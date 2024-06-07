@@ -6,7 +6,7 @@ import { useSnackbarContext } from "@/providers/context-provider";
 import Monthly from "@/app/components/Monthly";
 import Daily from "@/app/components/Daily";
 import StockFilter from "@/app/components/StockFilter";
-import useStore, { useSortableStore, useStockStore } from "@/store/index";
+import useStore, { useReloadStore, useSortableStore, useStockStore } from "@/store/index";
 import ToBuyList from "@/app/components/ToBuyList";
 import {
   Stack,
@@ -20,13 +20,14 @@ export default function TopPage() {
   let {stocks,isLoading,getStocks,error} = useStockStore()
 
   const {isSortable, } = useSortableStore();
+  const {reload, setReload} = useReloadStore()
   const user = useStore((state) => state.user);
 
   useEffect(() => {
     if (user.id) {
       (async () => await getStocks(user.id))();
     }
-  }, [user.id,getStocks,isSortable]);
+  }, [user.id,getStocks,isSortable,reload]);
 
   const { showSnackbar } = useSnackbarContext();
   useEffect(() => {
