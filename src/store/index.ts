@@ -23,6 +23,7 @@ export const useStore = create<StateType>((set) => ({
 }))
 export default useStore
 
+// 税込・税抜き計算
 interface TaxState {
   tax : boolean
   setTax: () => void
@@ -32,6 +33,7 @@ export const useTaxStore = create<TaxState>((set) => ({
   setTax: () => set(state => ({ tax : !state.tax })),
 }))
 
+// 買い物リスト編集・並べ替えモード切り替え
 interface SortableState {
   isSortable : boolean
   setIsSortable: () => void
@@ -41,6 +43,7 @@ export const useSortableStore = create<SortableState>((set) => ({
   setIsSortable: () => set(state => ({ isSortable : !state.isSortable })),
 }))
 
+// 買い物リスト内で購入予定店の変更したときに店選択Chipの表示に反映させる
 interface ReloadState {
   reload : number
   setReload: () => void
@@ -50,7 +53,7 @@ export const useReloadStore = create<ReloadState>((set) => ({
   setReload: () => set(state => ({ reload : state.reload + 1 })),
 }))
 
-
+// 登録日・使用日の変更
 interface DateState {
   date : Dayjs | null
   setDate : (newDate: Dayjs | null ) => void
@@ -65,6 +68,7 @@ export const useDateStore = create<DateState>((set) => ({
   }
 }))
 
+// データベースから在庫データを取り出す
 interface StockState {
   stocks: Stock[]
   setStocks: (stocks:Stock[]) => void

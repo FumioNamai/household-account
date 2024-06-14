@@ -67,7 +67,7 @@ const ToBuyButton = ({ ...groupedData }: GroupedData) => {
     <Tooltip
       title={groupedData.to_buy === true ? "買い物リストから削除" : "買い物リストに追加"}
       placement="top"
-    >
+    ><span>
       <IconButton
         disabled=
         {isSortable}
@@ -76,6 +76,7 @@ const ToBuyButton = ({ ...groupedData }: GroupedData) => {
       >
         <ShoppingCartOutlinedIcon />
       </IconButton>
+      </span>
     </Tooltip>
   );
 };
