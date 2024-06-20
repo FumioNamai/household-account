@@ -114,13 +114,23 @@ const Monthly = () => {
         <FormControl sx={{ maxWidth: "200px" }}>
           <LocalizationProvider
             dateAdapter={AdapterDayjs}
+            adapterLocale="ja"
             dateFormats={{ monthAndYear: "YYYY年 MM月" }}
+            localeText={{
+              cancelButtonLabel: "キャンセル",
+              okButtonLabel: "選択",
+            }}
           >
             <DatePicker
               defaultValue={dayjs()}
               label={"対象年月"}
+              maxDate={dayjs().add(1,"M")}
+              minDate={dayjs("2023-01-01")}
               views={["month", "year"]}
               format="YYYY年MM月"
+              slotProps={{
+                toolbar:{hidden:true}
+              }}
               onChange={(month) => setMonth(month)}
             />
           </LocalizationProvider>

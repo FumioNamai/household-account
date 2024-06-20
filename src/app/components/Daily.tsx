@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider, PickersDay, PickersDayProps } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Stock } from "../../../utils/type";
 import useStore, { useDateStore, useStockStore } from "@/store";
@@ -16,11 +16,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { CalcPrice } from "./CalcPrice";
 import { ListUsedItemByType } from "./ListUsedItemByType";
 import { Breakdown } from "./Breakdown";
+import dayjs from "dayjs";
 
 const Daily = () => {
   const user = useStore((state) => state.user);
-  const {date,setDate,selectedDate} = useDateStore()
-  let {stocks} = useStockStore()
+  const { date, setDate, selectedDate } = useDateStore();
+  let { stocks } = useStockStore();
 
   // 指定した日に使用した商品を取得
   const todayUsed: Stock[] = stocks!.filter(
@@ -81,12 +82,27 @@ const Daily = () => {
           日別集計
         </Typography>
         <FormControl sx={{ maxWidth: "200px" }}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <LocalizationProvider
+            dateAdapter={AdapterDayjs}
+            adapterLocale="ja"
+            dateFormats={{ monthAndYear: "YYYY年 MM月" , year:"YYYY年" }}
+            localeText={{
+              previousMonth: "前月を表示",
+              nextMonth: "次月を表示",
+              cancelButtonLabel: "キャンセル",
+              okButtonLabel: "選択",
+            }}
+          >
             <DatePicker
               sx={{ maxWidth: "200px" }}
               value={date}
+              maxDate={dayjs().add(1,"M")}
+              minDate={dayjs("2023-01-01")}
               label={"対象年月日"}
               format="YYYY年MM月DD日"
+              slotProps={{
+                toolbar:{hidden:true}
+              }}
               onChange={(date) => setDate(date)}
             />
           </LocalizationProvider>
@@ -98,7 +114,7 @@ const Daily = () => {
         <TaxSwitch />
       </Stack>
 
-      <Box sx={{ marginBottom:"24px", paddingInline: "16px" }}>
+      <Box sx={{ marginBottom: "24px", paddingInline: "16px" }}>
         <Stack
           direction="row"
           justifyContent="space-between"

@@ -24,6 +24,7 @@ import TaxSwitch from "@/app/components/TaxSwitch";
 import { Types } from "@/app/components/types";
 import { GroupedData } from "../../../utils/type";
 import { useDateStore } from "@/store";
+import dayjs from "dayjs";
 
 type Props = { groupedDataArr: GroupedData[] };
 
@@ -68,12 +69,27 @@ const StockFilter = ({ groupedDataArr }: Props) => {
       >
         {/* 使用日指定 */}
         <Box sx={{ width: "200px" }}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <LocalizationProvider
+            dateAdapter={AdapterDayjs}
+            adapterLocale="ja"
+            dateFormats={{ monthAndYear: "YYYY年 MM月" , year:"YYYY年" }}
+            localeText={{
+              previousMonth: "前月を表示",
+              nextMonth: "次月を表示",
+              cancelButtonLabel: "キャンセル",
+              okButtonLabel: "選択",
+            }}
+            >
             <DatePicker
               label={"使用日"}
               sx={{ maxWidth: "200px" }}
               value={date}
               format="YYYY年MM月DD日"
+              maxDate={dayjs().add(1,"M")}
+              minDate={dayjs("2023-01-01")}
+              slotProps={{
+                toolbar:{hidden:true}
+              }}
               onChange={setDate}
             />
           </LocalizationProvider>
