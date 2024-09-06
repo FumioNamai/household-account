@@ -76,6 +76,7 @@ https://household-account-kappa.vercel.app/<br>
 - ユーザー登録/認証
 - ダークモード
 - データベースに変更を加える操作を行うと snackbar で操作に対しての成否をメッセージで表示
+- ↑ボタン押下でページトップへスクロールする
 - アイコンボタンを長押し、またはホバーで注釈を表示
 - 在庫/商品登録
 - 買い物リスト登録
@@ -122,7 +123,7 @@ https://household-account-kappa.vercel.app/<br>
 - フレームワーク : Next.js TypeScript<br>
 - データベース : Supabase<br>
 - インフラ : Vercel<br>
-- ライブラリ : MaterialUI(UI コンポーネント), next-themes(ダークモード), day.js(日付・時刻), zod(バリデーション), zustand(状態管理),dnd-kit(ドラッグ&ドロップ)
+- ライブラリ : MaterialUI(UI コンポーネント), next-themes(ダークモード), day.js(日付・時刻), zod(バリデーション), zustand(状態管理),dnd-kit(ドラッグ&ドロップ), react-scroll(スクロール)
 
 ## 工夫した箇所など
 - ユーザー認証機能を SupabaseAuth で実装

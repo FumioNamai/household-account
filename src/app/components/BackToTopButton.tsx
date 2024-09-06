@@ -2,6 +2,7 @@ import { animateScroll as scroll } from "react-scroll";
 import ArrowCircleUpTwoToneIcon from "@mui/icons-material/ArrowCircleUpTwoTone";
 import { IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Translate } from "@mui/icons-material";
 
 export const BackToTopButton = () => {
   const scrollToTop = () => {
@@ -48,6 +49,7 @@ export const BackToTopButton = () => {
             zIndex: 100,
             position: "fixed",
             left: "50%",
+            transform: "translateX(-50%)",
             bottom: "5%",
           }}
         />
