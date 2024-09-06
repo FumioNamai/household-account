@@ -25,6 +25,7 @@ import { Types } from "@/app/components/types";
 import { GroupedData } from "../../../utils/type";
 import { useDateStore } from "@/store";
 import dayjs from "dayjs";
+import { BackToTopButton } from "./BackToTopButton";
 
 type Props = { groupedDataArr: GroupedData[] };
 

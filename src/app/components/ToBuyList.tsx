@@ -169,7 +169,7 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
             />
           ))}
         </Stack>
-        {/* 税表示切替 */}
+
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -198,6 +198,7 @@ const ToBuyList = ({ groupedDataArr }: Props) => {
               {isSortable ? "並べ替えモード" : "編集モード"}
             </Typography>
           </Stack>
+          {/* 税表示切替 */}
           <TaxSwitch />
         </Stack>
 

@@ -6,7 +6,11 @@ import { useSnackbarContext } from "@/providers/context-provider";
 import Monthly from "@/app/components/Monthly";
 import Daily from "@/app/components/Daily";
 import StockFilter from "@/app/components/StockFilter";
-import useStore, { useReloadStore, useSortableStore, useStockStore } from "@/store/index";
+import useStore, {
+  useReloadStore,
+  useSortableStore,
+  useStockStore,
+} from "@/store/index";
 import ToBuyList from "@/app/components/ToBuyList";
 import {
   Stack,
@@ -15,26 +19,27 @@ import {
   Typography,
 } from "@mui/material";
 import Loading from "./Loading";
+import { BackToTopButton } from "./BackToTopButton";
 
 export default function TopPage() {
-  let {stocks,isLoading,getStocks,error} = useStockStore()
+  let { stocks, isLoading, getStocks, error } = useStockStore();
 
-  const {isSortable, } = useSortableStore();
-  const {reload, setReload} = useReloadStore()
+  const { isSortable } = useSortableStore();
+  const { reload, setReload } = useReloadStore();
   const user = useStore((state) => state.user);
 
   useEffect(() => {
     if (user.id) {
       (async () => await getStocks(user.id))();
     }
-  }, [user.id,getStocks,isSortable,reload]);
+  }, [user.id, getStocks, isSortable, reload]);
 
   const { showSnackbar } = useSnackbarContext();
   useEffect(() => {
     if (error && showSnackbar) {
-        showSnackbar("error", "在庫データを取得できません。");
-      }
-  },[error])
+      showSnackbar("error", "在庫データを取得できません。");
+    }
+  }, [error]);
 
   // sort_id昇順、name昇順、reference_price昇順、id昇順で並べ替え
   stocks = stocks.sort((a, b) => {
@@ -123,13 +128,13 @@ export default function TopPage() {
         return <Monthly />;
       // 日別集計
       case "Daily":
-        return  <Daily />;
+        return <Daily />;
       // 在庫検索
       case "StockFilter":
-        return <StockFilter groupedDataArr={groupedDataArr} /> ;
+        return <StockFilter groupedDataArr={groupedDataArr} />;
       // 買い物リスト
       case "ToBuyList":
-        return <ToBuyList groupedDataArr={groupedDataArr} /> ;
+        return <ToBuyList groupedDataArr={groupedDataArr} />;
     }
   };
   return (
@@ -152,7 +157,7 @@ export default function TopPage() {
                   value={page}
                   onChange={handleChange}
                   size="small"
-                  disabled={isSortable ? true : false }
+                  disabled={isSortable ? true : false}
                 >
                   <ToggleButton value="Monthly">月別集計</ToggleButton>
                   <ToggleButton value="Daily">日別集計</ToggleButton>
@@ -163,6 +168,7 @@ export default function TopPage() {
               {SwitchPages()}
             </>
           )}
+          <BackToTopButton />
         </main>
       }
     </>
