@@ -162,7 +162,6 @@ const StockRegistration = ({ groupedDataArr }: Props) => {
             .from("stocks")
             .select("*")
             .eq("user_id", user.id);
-
           onUpdate(data);
         }
       }

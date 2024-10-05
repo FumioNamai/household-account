@@ -1,4 +1,3 @@
-import { log } from "console"
 import { supabase } from "./supabase"
 
 export const getAllStocks = async () => {

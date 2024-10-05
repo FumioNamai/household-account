@@ -83,19 +83,38 @@ export const useStockStore = create<StockState>((set,get) => ({
   error: null,
   isLoading: false,
   setIsLoading : (isLoading) => set({isLoading}),
+
   getStocks: async (userId: string) => {
     set({isLoading:true, error:null})
     try {
-      const { data, error } = await supabase
-        .from("stocks")
-        .select("*")
-        .eq("user_id", userId);
-      if (error) throw error;
-      if (!data) throw new Error("No data returned")
-      get().setStocks(data);
+      let allData:any[] = [];
+      const pageSize = 1000; //1回に取得するレコード数（1000が既定の上限なので1000以下で設定）
+      let start = 0;
+      let end = pageSize -1;
+
+      while(true){
+        const { data, error } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId)
+          .range(start, end); //ページネーションの範囲を指定
+
+        if (error) throw error;
+
+        if (data.length === 0) {
+          break; // データが無ければループを終了
+        }
+
+        allData = [...allData, ...data]; // データを全体リストに追加
+
+        // 次のページに異動
+        start += pageSize;
+        end += pageSize;
+      }
+      get().setStocks(allData); // 全てのデータを設定
     } catch (error: any) {
-      set({error:error.message})
-      get().setStocks([]);
+      set({error: error.message})
+      get().setStocks([]); // エラー時には空配列をセット
     } finally {
       get().setIsLoading(false);
     }
