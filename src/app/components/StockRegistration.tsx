@@ -140,11 +140,28 @@ const StockRegistration = ({ groupedDataArr }: Props) => {
           user_id: user.id,
         });
         if (error) throw error;
-        const { data } = await supabase
-          .from("stocks")
-          .select("*")
-          .eq("user_id", user.id);
-        onUpdate(data);
+
+        let allData:any[] = [];
+        const pageSize = 1000;
+        let start = 0;
+        let end = pageSize -1;
+        while(true){
+          const { data, error } = await supabase
+            .from("stocks")
+            .select("*")
+            .eq("user_id", user.id)
+            .range(start, end);
+          if (error) throw error;
+          if (data.length === 0) {
+            break;
+          }
+          allData= [...allData, ...data];
+
+          start += pageSize;
+          end += pageSize;
+
+          onUpdate(allData);
+        }
       } else {
         // １個以上の在庫を登録する処理
         for (let i = 0; i < parseInt(amount); i++) {
