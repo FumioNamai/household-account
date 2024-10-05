@@ -26,42 +26,75 @@ const InStockItem = ({ ...groupedData }: GroupedData ) => {
     if (selectedDate() !== undefined) {
       try {
         // 使うボタン押下でuse_dateに記録してdailyに移動
-        await supabase
-          .from("stocks")
-          .update({ use_date: selectedDate() , to_buy: false})
-          .eq("id", propsID);
 
-        // 残数が1の在庫の使うボタンを押した場合、
-        if (groupedData.count === 1) {
-          const { data: restocks } = await supabase
+        let allData:any[] = [];
+        const pageSize = 1000;
+        let start = 0;
+        let end = pageSize -1;
+
+        while(true){
+
+          await supabase
+            .from("stocks")
+            .update({ use_date: selectedDate() , to_buy: false})
+            .eq("id", propsID);
+
+          // 残数が1の在庫の使うボタンを押した場合、
+          if (groupedData.count === 1) {
+            const { data: restocks, error} = await supabase
+              .from("stocks")
+              .select("*")
+              .eq("id", propsID)
+              .range(start, end);
+
+              if (error) throw error;
+
+              if (restocks.length === 0) {
+                break;
+              }
+
+              allData = [...allData, ...restocks];
+
+              start += pageSize;
+              end += pageSize;
+              // newStockへ一部をコピーする
+              const newStock = {
+                id: undefined,
+                type: restocks![0].type,
+                category: restocks![0].category,
+                name: restocks![0].name,
+                user_id: restocks![0].user_id,
+                price: 0,
+                reference_price: restocks![0].reference_price,
+                registration_date: null,
+                use_date: null,
+              };
+
+              // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
+              await supabase.from("stocks").insert({ ...newStock });
+            }
+
+          // 在庫データを更新して、画面を更新
+          const { data: updatedStocks, error } = await supabase
             .from("stocks")
             .select("*")
-            .eq("id", propsID);
-          // newStockへ一部をコピーする
-          const newStock = {
-            id: undefined,
-            type: restocks![0].type,
-            category: restocks![0].category,
-            name: restocks![0].name,
-            user_id: restocks![0].user_id,
-            price: 0,
-            reference_price: restocks![0].reference_price,
-            registration_date: null,
-            use_date: null,
-          };
+            .eq("user_id", userId)
+            .range(start, end);
 
-          // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
-          await supabase.from("stocks").insert({ ...newStock });
-        }
+            if (error) throw error;
 
-        // 在庫データを更新して、画面を更新
-        const { data: updatedStocks } = await supabase
-          .from("stocks")
-          .select("*")
-          .eq("user_id", userId);
-        onUpdate(updatedStocks);
-        if (showSnackbar) {
-          showSnackbar("success", `『${groupedData.name}』を${selectedDate()}付けで計上しました。`);
+            if (updatedStocks.length === 0) {
+              break;
+            }
+
+            allData = [...allData, ...updatedStocks];
+
+            start += pageSize;
+            end += pageSize;
+          onUpdate(allData);
+          if (showSnackbar) {
+            showSnackbar("success", `『${groupedData.name}』を${selectedDate()}付けで計上しました。`);
+          }
         }
       } catch (error: any) {
         if (showSnackbar) {
@@ -81,6 +114,7 @@ const InStockItem = ({ ...groupedData }: GroupedData ) => {
   const handlePlus = async (propsID: number, userId: string) => {
     try {
       // 追加ボタンで選択した項目をnewStockへコピー
+
       const { data: restocks } = await supabase
         .from("stocks")
         .select()

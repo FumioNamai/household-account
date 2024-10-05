@@ -128,6 +128,10 @@ const StockRegistration = ({ groupedDataArr }: Props) => {
     }
 
     try {
+      let allData:any[] = [];
+      const pageSize = 1000;
+      let start = 0;
+      let end = pageSize -1;
       if (amount === "0") {
         // 0個の在庫を登録する処理
         const { error } = await supabase.from("stocks").insert({
@@ -141,10 +145,7 @@ const StockRegistration = ({ groupedDataArr }: Props) => {
         });
         if (error) throw error;
 
-        let allData:any[] = [];
-        const pageSize = 1000;
-        let start = 0;
-        let end = pageSize -1;
+
         while(true){
           const { data, error } = await supabase
             .from("stocks")
@@ -175,11 +176,20 @@ const StockRegistration = ({ groupedDataArr }: Props) => {
             user_id: user.id,
           });
           if (error) throw error;
-          const { data } = await supabase
+          const { data} = await supabase
             .from("stocks")
             .select("*")
-            .eq("user_id", user.id);
-          onUpdate(data);
+            .eq("user_id", user.id).range(start, end);
+            if (error) throw error;
+            if (data!.length === 0) {
+              break;
+            }
+            allData= [...allData, ...data!];
+
+            start += pageSize;
+            end += pageSize;
+
+            onUpdate(allData);
         }
       }
 
