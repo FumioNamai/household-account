@@ -258,7 +258,6 @@ const InStockItem = ({ ...groupedData }: GroupedData) => {
         end += pageSize;
         onUpdate(allData);
 
-      onUpdate(updatedStocks);
       if (showSnackbar) {
         showSnackbar(
           "success",
