@@ -11,68 +11,66 @@ import ToBuyButton from "@/app/components/ToBuyButton";
 import { CalcPrice } from "./CalcPrice";
 import { GroupedData } from "../../../utils/type";
 
-const InStockItem = ({ ...groupedData }: GroupedData ) => {
-
+const InStockItem = ({ ...groupedData }: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
-  let {setStocks} = useStockStore()
+  let { setStocks } = useStockStore();
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
-  const {selectedDate} = useDateStore()
+  const { selectedDate } = useDateStore();
 
   // UPDATE 使った日をuse_dateに記録する
   const handleUse = async (propsID: number, userId: string) => {
-
     if (selectedDate() !== undefined) {
       try {
         // 使うボタン押下でuse_dateに記録してdailyに移動
 
-        let allData:any[] = [];
+        let allData: any[] = [];
         const pageSize = 1000;
         let start = 0;
-        let end = pageSize -1;
+        let end = pageSize - 1;
 
-        while(true){
-
+        while (true) {
           await supabase
             .from("stocks")
-            .update({ use_date: selectedDate() , to_buy: false})
+            .update({ use_date: selectedDate(), to_buy: false })
             .eq("id", propsID);
 
           // 残数が1の在庫の使うボタンを押した場合、
           if (groupedData.count === 1) {
-            const { data: restocks, error} = await supabase
+            const { data: restocks, error } = await supabase
               .from("stocks")
               .select("*")
               .eq("id", propsID)
               .range(start, end);
 
-              if (error) throw error;
+            if (error) throw error;
 
-              if (restocks.length === 0) {
-                break;
-              }
-
-              allData = [...allData, ...restocks];
-
-              start += pageSize;
-              end += pageSize;
-              // newStockへ一部をコピーする
-              const newStock = {
-                id: undefined,
-                type: restocks![0].type,
-                category: restocks![0].category,
-                name: restocks![0].name,
-                user_id: restocks![0].user_id,
-                price: 0,
-                reference_price: restocks![0].reference_price,
-                registration_date: null,
-                use_date: null,
-              };
-
-              // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
-              await supabase.from("stocks").insert({ ...newStock });
+            if (restocks.length === 0) {
+              break;
             }
+
+            allData = [...allData, ...restocks];
+
+            start += pageSize;
+            end += pageSize;
+            onUpdate(allData);
+            // newStockへ一部をコピーする
+            const newStock = {
+              id: undefined,
+              type: restocks![0].type,
+              category: restocks![0].category,
+              name: restocks![0].name,
+              user_id: restocks![0].user_id,
+              price: 0,
+              reference_price: restocks![0].reference_price,
+              registration_date: null,
+              use_date: null,
+            };
+
+            // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
+            await supabase.from("stocks").insert({ ...newStock });
+          }
 
           // 在庫データを更新して、画面を更新
           const { data: updatedStocks, error } = await supabase
@@ -81,19 +79,22 @@ const InStockItem = ({ ...groupedData }: GroupedData ) => {
             .eq("user_id", userId)
             .range(start, end);
 
-            if (error) throw error;
+          if (error) throw error;
 
-            if (updatedStocks.length === 0) {
-              break;
-            }
+          if (updatedStocks.length === 0) {
+            break;
+          }
 
-            allData = [...allData, ...updatedStocks];
+          allData = [...allData, ...updatedStocks];
 
-            start += pageSize;
-            end += pageSize;
+          start += pageSize;
+          end += pageSize;
           onUpdate(allData);
           if (showSnackbar) {
-            showSnackbar("success", `『${groupedData.name}』を${selectedDate()}付けで計上しました。`);
+            showSnackbar(
+              "success",
+              `『${groupedData.name}』を${selectedDate()}付けで計上しました。`
+            );
           }
         }
       } catch (error: any) {
@@ -135,27 +136,60 @@ const InStockItem = ({ ...groupedData }: GroupedData ) => {
       await supabase.from("stocks").insert({ ...newStock });
 
       // 在庫データを更新して、画面を更新
-      const { data } = await supabase
+      let allData: any[] = [];
+      const pageSize = 1000;
+      let start = 0;
+      let end = pageSize - 1;
+
+      while (true) {
+      const { data ,error} = await supabase
         .from("stocks")
         .select("*")
-        .eq("user_id", userId);
-      onUpdate(data);
+        .eq("user_id", userId)
+        .range(start, end);
+
+        if (error) throw error;
+
+        if (data.length === 0) {
+          break;
+        }
+
+        allData = [...allData, ...data];
+
+        start += pageSize;
+        end += pageSize;
+        onUpdate(allData);
+      }
       if (showSnackbar) {
-        showSnackbar("success", `『${groupedData.name}』の在庫を1つ増やしました。`);
+        showSnackbar(
+          "success",
+          `『${groupedData.name}』の在庫を1つ増やしました。`
+        );
       }
 
-        // 買い物リストから外す処理
-        await supabase
-        .from("stocks")
-        .update({to_buy: false})
-        .eq("id", propsID)
-        // 在庫データを更新して、画面を更新
-        const { data: updatedStocks } = await supabase
+      // 買い物リストから外す処理
+      await supabase.from("stocks").update({ to_buy: false }).eq("id", propsID);
+
+      // 在庫データを更新して、画面を更新
+      while (true) {
+      const { data: updatedStocks, error } = await supabase
         .from("stocks")
         .select("*")
-        .eq("user_id", userId);
-        onUpdate(updatedStocks);
+        .eq("user_id", userId)
+        .range(start, end);
 
+            if (error) throw error;
+
+            if (updatedStocks.length === 0) {
+              break;
+            }
+
+            allData = [...allData, ...updatedStocks];
+
+            start += pageSize;
+            end += pageSize;
+            onUpdate(allData);
+      }
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar(
@@ -182,7 +216,7 @@ const InStockItem = ({ ...groupedData }: GroupedData ) => {
           type: restocks![0].type,
           category: restocks![0].category,
           name: restocks![0].name,
-          reference_price : restocks![0].reference_price,
+          reference_price: restocks![0].reference_price,
           user_id: restocks![0].user_id,
           price: 0,
           registration_date: null,
@@ -199,14 +233,39 @@ const InStockItem = ({ ...groupedData }: GroupedData ) => {
           .eq("id", propsID);
         if (error) throw error;
       }
-      const { data: updatedStocks } = await supabase
+
+      let allData: any[] = [];
+      const pageSize = 1000;
+      let start = 0;
+      let end = pageSize - 1;
+
+      while (true) {
+      const { data: updatedStocks, error } = await supabase
         .from("stocks")
         .select("*")
-        .eq("user_id", userId);
+        .eq("user_id", userId)
+        .range(start, end);
+
+        if (error) throw error;
+
+        if (updatedStocks.length === 0) {
+          break;
+        }
+
+        allData = [...allData, ...updatedStocks];
+
+        start += pageSize;
+        end += pageSize;
+        onUpdate(allData);
+
       onUpdate(updatedStocks);
       if (showSnackbar) {
-        showSnackbar("success", `『${groupedData.name}』の在庫を1つ減らしました。`);
+        showSnackbar(
+          "success",
+          `『${groupedData.name}』の在庫を1つ減らしました。`
+        );
       }
+    }
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "削除できませんでした。" + error.message);
@@ -217,19 +276,28 @@ const InStockItem = ({ ...groupedData }: GroupedData ) => {
   return (
     <>
       <Stack direction="column" sx={{ width: "100%" }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center"
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
           sx={{
             paddingBlock: "8px",
           }}
         >
           <Typography variant="body2">{groupedData.name}</Typography>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Typography
               variant="body1"
               sx={{ minWidth: "80px", textAlign: "end" }}
             >
-              { groupedData.price ? CalcPrice(groupedData.price,groupedData.type): "0"}円
-
+              {groupedData.price
+                ? CalcPrice(groupedData.price, groupedData.type)
+                : "0"}
+              円
             </Typography>
             <Typography
               variant="body2"

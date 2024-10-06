@@ -21,12 +21,12 @@ import { CalcPrice } from "./CalcPrice";
 import { GroupedData } from "../../../utils/type";
 import ToBuyButton from "./ToBuyButton";
 
-const OutOfStockItem = ({...groupedData}: GroupedData) => {
+const OutOfStockItem = ({ ...groupedData }: GroupedData) => {
   const { showSnackbar } = useSnackbarContext();
   let [newPrice, setNewPrice] = useState<string>("");
   const tax = useTaxStore((state) => state.tax);
   const user = useStore((state) => state.user);
-  let {setStocks} = useStockStore()
+  let { setStocks } = useStockStore();
   const onUpdate = (data: any | undefined) => setStocks(data);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -48,17 +48,36 @@ const OutOfStockItem = ({...groupedData}: GroupedData) => {
         .delete()
         .eq("id", propsID);
 
-      const { data: updatedStocks } = await supabase
-        .from("stocks")
-        .select("*")
-        .eq("user_id", userId);
-      onUpdate(updatedStocks);
+      let allData: any[] = [];
+      const pageSize = 1000;
+      let start = 0;
+      let end = pageSize - 1;
+      while (true) {
+        const { data: updatedStocks, error } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId)
+          .range(start, end);
 
-      if (error) throw error;
-      // 親コンポーネントにstocksを渡して在庫情報を更新
+        if (error) throw error;
 
-      if (showSnackbar) {
-        showSnackbar("success", `『${groupedData.name}』を在庫一覧から削除しました。`);
+        if (updatedStocks.length === 0) {
+          break;
+        }
+
+        allData = [...allData, ...updatedStocks];
+
+        start += pageSize;
+        end += pageSize;
+        // 親コンポーネントにallDataを渡して在庫情報を更新
+        onUpdate(allData);
+
+        if (showSnackbar) {
+          showSnackbar(
+            "success",
+            `『${groupedData.name}』を在庫一覧から削除しました。`
+          );
+        }
       }
     } catch (error: any) {
       if (showSnackbar) {
@@ -86,9 +105,9 @@ const OutOfStockItem = ({...groupedData}: GroupedData) => {
     }
 
     // 税込・税別計算
-    if(!tax){
-      const taxRate = groupedData.type === "食品" ? 1.08 : 1.1
-      newPrice = Math.floor(parseInt(newPrice) * taxRate).toString()
+    if (!tax) {
+      const taxRate = groupedData.type === "食品" ? 1.08 : 1.1;
+      newPrice = Math.floor(parseInt(newPrice) * taxRate).toString();
     }
 
     try {
@@ -96,24 +115,49 @@ const OutOfStockItem = ({...groupedData}: GroupedData) => {
         .from("stocks")
         .update({ price: newPrice, reference_price: newPrice })
         .eq("id", propsID);
-      const { data: updatedStocks } = await supabase
+
+        await supabase.from("stocks").update({ to_buy: false }).eq("id", propsID);
+
+
+        let allData: any[] = [];
+        const pageSize = 1000;
+        let start = 0;
+        let end = pageSize - 1;
+
+        while (true) {
+      const { data: updatedStocks, error } = await supabase
         .from("stocks")
         .select("*")
-        .eq("user_id", userId);
-      onUpdate(updatedStocks);
+        .eq("user_id", userId)
+        .range(start, end);
+
+        if (error) throw error;
+
+        if (updatedStocks.length === 0) {
+          break;
+        }
+
+        allData = [...allData, ...updatedStocks];
+
+        start += pageSize;
+        end += pageSize;
+        onUpdate(allData);
       if (showSnackbar) {
-        showSnackbar("success", `『${groupedData.name}』の価格を更新しました。`);
+        showSnackbar(
+          "success",
+          `『${groupedData.name}』の価格を更新しました。`
+        );
       }
       setNewPrice("");
-
+    }
       // 買い物リストから外す処理
-      await supabase.from("stocks").update({ to_buy: false }).eq("id", propsID);
+      // await supabase.from("stocks").update({ to_buy: false }).eq("id", propsID);
       // 在庫データを更新して、画面を更新
-      const { data } = await supabase
-        .from("stocks")
-        .select("*")
-        .eq("user_id", userId);
-      onUpdate(data);
+      // const { data } = await supabase
+      //   .from("stocks")
+      //   .select("*")
+      //   .eq("user_id", userId);
+      // onUpdate(data);
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "価格を更新できませんでした。" + error.message);
@@ -143,7 +187,12 @@ const OutOfStockItem = ({...groupedData}: GroupedData) => {
               inputProps={{ sx: { textAlign: "right", marginRight: "8px" } }}
               sx={{ m: 0, paddingBlock: 0, width: "7ch" }}
               placeholder={
-                groupedData.reference_price ? `${CalcPrice(groupedData.reference_price, groupedData.type)}` : "0"
+                groupedData.reference_price
+                  ? `${CalcPrice(
+                      groupedData.reference_price,
+                      groupedData.type
+                    )}`
+                  : "0"
               }
               value={newPrice}
               onChange={handleNewPrice}
@@ -190,7 +239,10 @@ const OutOfStockItem = ({...groupedData}: GroupedData) => {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>削除しない</Button>
-              <Button onClick={() => handleDelete(groupedData.id, user.id)} color="error">
+              <Button
+                onClick={() => handleDelete(groupedData.id, user.id)}
+                color="error"
+              >
                 削除する
               </Button>
             </DialogActions>
