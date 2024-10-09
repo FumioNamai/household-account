@@ -24,20 +24,20 @@ const InStockItem = ({ ...groupedData }: GroupedData) => {
     if (selectedDate() !== undefined) {
       try {
         // 使うボタン押下でuse_dateに記録してdailyに移動
+        await supabase
+          .from("stocks")
+          .update({ use_date: selectedDate(), to_buy: false })
+          .eq("id", propsID);
 
-        let allData: any[] = [];
-        const pageSize = 1000;
-        let start = 0;
-        let end = pageSize - 1;
+          let allData: any[] = [];
+          const pageSize = 1000;
+          let start = 0;
+          let end = pageSize - 1;
 
-        while (true) {
-          await supabase
-            .from("stocks")
-            .update({ use_date: selectedDate(), to_buy: false })
-            .eq("id", propsID);
+        // 残数が1の在庫の使うボタンを押した場合、
+        if (groupedData.count === 1) {
 
-          // 残数が1の在庫の使うボタンを押した場合、
-          if (groupedData.count === 1) {
+          while (true) {
             const { data: restocks, error } = await supabase
               .from("stocks")
               .select("*")
@@ -71,8 +71,13 @@ const InStockItem = ({ ...groupedData }: GroupedData) => {
             // newStockを在庫に登録（使うボタンで選択した項目を複製して在庫リストに残す）
             await supabase.from("stocks").insert({ ...newStock });
           }
+        }
 
-          // 在庫データを更新して、画面を更新
+        // 在庫データを更新して、画面を更新
+        start = 0;
+        end = pageSize - 1;
+        while (true) {
+
           const { data: updatedStocks, error } = await supabase
             .from("stocks")
             .select("*")
@@ -142,11 +147,11 @@ const InStockItem = ({ ...groupedData }: GroupedData) => {
       let end = pageSize - 1;
 
       while (true) {
-      const { data ,error} = await supabase
-        .from("stocks")
-        .select("*")
-        .eq("user_id", userId)
-        .range(start, end);
+        const { data, error } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId)
+          .range(start, end);
 
         if (error) throw error;
 
@@ -172,23 +177,23 @@ const InStockItem = ({ ...groupedData }: GroupedData) => {
 
       // 在庫データを更新して、画面を更新
       while (true) {
-      const { data: updatedStocks, error } = await supabase
-        .from("stocks")
-        .select("*")
-        .eq("user_id", userId)
-        .range(start, end);
+        const { data: updatedStocks, error } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId)
+          .range(start, end);
 
-            if (error) throw error;
+        if (error) throw error;
 
-            if (updatedStocks.length === 0) {
-              break;
-            }
+        if (updatedStocks.length === 0) {
+          break;
+        }
 
-            allData = [...allData, ...updatedStocks];
+        allData = [...allData, ...updatedStocks];
 
-            start += pageSize;
-            end += pageSize;
-            onUpdate(allData);
+        start += pageSize;
+        end += pageSize;
+        onUpdate(allData);
       }
     } catch (error: any) {
       if (showSnackbar) {
@@ -240,11 +245,11 @@ const InStockItem = ({ ...groupedData }: GroupedData) => {
       let end = pageSize - 1;
 
       while (true) {
-      const { data: updatedStocks, error } = await supabase
-        .from("stocks")
-        .select("*")
-        .eq("user_id", userId)
-        .range(start, end);
+        const { data: updatedStocks, error } = await supabase
+          .from("stocks")
+          .select("*")
+          .eq("user_id", userId)
+          .range(start, end);
 
         if (error) throw error;
 
@@ -258,13 +263,13 @@ const InStockItem = ({ ...groupedData }: GroupedData) => {
         end += pageSize;
         onUpdate(allData);
 
-      if (showSnackbar) {
-        showSnackbar(
-          "success",
-          `『${groupedData.name}』の在庫を1つ減らしました。`
-        );
+        if (showSnackbar) {
+          showSnackbar(
+            "success",
+            `『${groupedData.name}』の在庫を1つ減らしました。`
+          );
+        }
       }
-    }
     } catch (error: any) {
       if (showSnackbar) {
         showSnackbar("error", "削除できませんでした。" + error.message);
