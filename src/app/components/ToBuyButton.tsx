@@ -19,11 +19,32 @@ const ToBuyButton = ({ ...groupedData }: GroupedData) => {
           .from("stocks")
           .update({ to_buy: true , sort_id: null })
           .eq("id", propsId);
-        const { data: updatedStocks } = await supabase
+
+          let allData: any[] = [];
+          const pageSize = 1000;
+          let start = 0;
+          let end = pageSize - 1;
+
+          while (true) {
+        const { data: updatedStocks, error } = await supabase
           .from("stocks")
           .select("*")
-          .eq("user_id", userId);
-        onUpdate(updatedStocks);
+          .eq("user_id", userId)
+          .range(start, end);
+
+          if (error) throw error;
+
+          if (updatedStocks.length === 0) {
+            break;
+          }
+
+          allData = [...allData, ...updatedStocks];
+
+          start += pageSize;
+          end += pageSize;
+        }
+          onUpdate(allData);
+
         if (showSnackbar) {
           showSnackbar("success", `『${groupedData.name}』を買い物リストに追加しました。`);
         }
@@ -41,11 +62,30 @@ const ToBuyButton = ({ ...groupedData }: GroupedData) => {
           .from("stocks")
           .update({ to_buy: false, checked: false, sort_id: null })
           .eq("id", propsId);
-          const { data: updatedStocks } = await supabase
+
+          let allData: any[] = [];
+          const pageSize = 1000;
+          let start = 0;
+          let end = pageSize - 1;
+        while (true) {
+          const { data: updatedStocks, error } = await supabase
           .from("stocks")
           .select("*")
-          .eq("user_id", userId);
-        onUpdate(updatedStocks);
+          .eq("user_id", userId)
+          .range(start, end);
+
+          if (error) throw error;
+
+          if (updatedStocks.length === 0) {
+            break;
+          }
+
+          allData = [...allData, ...updatedStocks];
+
+          start += pageSize;
+          end += pageSize;
+        }
+          onUpdate(allData);
         if (showSnackbar) {
           showSnackbar(
             "success",
