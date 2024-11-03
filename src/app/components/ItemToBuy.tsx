@@ -30,7 +30,7 @@ interface ItemToBuyProps extends GroupedData {
 const ItemToBuy:React.FC<ItemToBuyProps> = ({ isListedCount,...groupedData}) => {
   const { showSnackbar } = useSnackbarContext();
   const tax = useTaxStore((state) => state.tax);
-  const user = useStore((state) => state.user);
+  // const user = useStore((state) => state.user);
   const { isSortable,setIsSortable } = useSortableStore();
   const { reload, setReload} = useReloadStore()
 
