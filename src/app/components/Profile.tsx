@@ -21,7 +21,7 @@ const schema = z.object({
 
 const Profile = () => {
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   // const [fileMessage, setFileMessage] = useState("");
@@ -51,10 +51,7 @@ const Profile = () => {
       // プロフィールアップデート
       const { error: updateError } = await supabase
         .from("profiles")
-        .update({
-          name: data.name,
-          // introduce: data.introduce,
-        })
+        .update({ name: data.name })
         .eq("id", user.id);
 
       // エラーチェック
