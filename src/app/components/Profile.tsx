@@ -21,7 +21,7 @@ const schema = z.object({
 
 const Profile = () => {
   const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClientComponentClient();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   // const [fileMessage, setFileMessage] = useState("");
