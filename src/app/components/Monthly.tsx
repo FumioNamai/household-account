@@ -7,6 +7,7 @@ import {
   AccordionSummary,
   Box,
   FormControl,
+  List,
   Stack,
   Typography,
 } from "@mui/material";
@@ -171,7 +172,7 @@ const Monthly = () => {
           消費品目（その他）
         </AccordionSummary>
         <AccordionDetails>
-          <ul>
+          <List>
             {monthOthers?.map((stock) => (
               <Box key={stock.id}>
                 <UsedItem
@@ -182,7 +183,7 @@ const Monthly = () => {
                 />
               </Box>
             ))}
-          </ul>
+          </List>
         </AccordionDetails>
       </Accordion>
     </Box>

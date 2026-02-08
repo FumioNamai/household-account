@@ -72,7 +72,7 @@ const Password = () => {
 
 
   return (
-    <div className="mb-20">
+    <Box sx={{ mb:20 }}>
       <Typography
         variant="h5"
         sx={{ fontWeight: "bold", textAlign: "center", mb: 3 }}
@@ -130,7 +130,7 @@ const Password = () => {
           </Typography>
         )}
       </Stack>
-    </div>
+    </Box>
   );
 };
 

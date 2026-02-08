@@ -1,15 +1,44 @@
+import { Box, Typography } from "@mui/material";
 import SupabaseListener from "./SupabaseListener";
-import Link from "next/link";
-
+import NextLink from "next/link";
+import { Link } from "@mui/material";
 
 const Header = () => {
   return (
-    <header className="flex flex-row justify-between py-2 px-2 mx-auto max-w-screen-sm min-w-[375px]
-      items-center">
-      <Link href="/">
-        <h1 className=" text-md font-medium ">N式家計簿</h1>
-      </Link>
-      <SupabaseListener />
+    <header>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          py: 2,
+          px: 2,
+          mx: "auto",
+          maxWidth: "sm",
+          minWidth: 375,
+        }}
+      >
+        <Link
+          component={NextLink}
+          href="/"
+          sx={{
+            textDecoration: "none",
+            color: "inherit",
+          }}
+        >
+          <Typography
+            component="h1"
+            sx={{
+              fontSize: "1rem",
+              fontWeight: 500,
+            }}
+          >
+            N式家計簿
+          </Typography>
+        </Link>
+        <SupabaseListener />
+      </Box>
     </header>
   );
 };

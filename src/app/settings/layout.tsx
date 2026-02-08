@@ -6,6 +6,7 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 import { usePathname } from "next/navigation";
 import { Box, Container, Link, Stack } from "@mui/material";
+import NextLink from "next/link";
 
 // セッティングス用のナビゲーション
 const subNavigation = [
@@ -38,26 +39,80 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Stack spacing={1}>
-        {subNavigation.map((item, index) => (
-          <Link href={item.href} key={index} underline="none">
-            <div
-              className={`flex flex-row items-center text-xl mx-8 py-3 px-5 ${
-                item.href == pathname &&
-                "bg-sky-100 text-sky-500 hover:bg-sky-100 mx-3 px-5 rounded-full "
-              }`}
+        {subNavigation.map((item, index) => {
+          const isActive = item.href === pathname;
+
+          return (
+            <Link
+              key={index}
+              component={NextLink}
+              href={item.href}
+              underline="none"
             >
-              <item.icon className=" inline-block mr-2 "></item.icon>
-              {item.name}
-            </div>
-          </Link>
-        ))}
-        <Link href="/" underline="hover">
-          <div className="flex justify-end item-center text-md py-3 px-4">
-            トップページへ戻る
-          </div>
-        </Link>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  fontSize: "1.25rem",
+                  mx: 4,
+                  py: 1.5,
+                  px: 2.5,
+                  borderRadius: "9999px",
+                  bgcolor: isActive ? "#e0f2fe" : "transparent",
+                  // sky-100
+                  color: "#1976d2",
+                  // sky-500
+                  "&:hover": {
+                    bgcolor: isActive ? "#e0f2fe" : "action.hover",
+                  },
+                }}
+              >
+                <Box
+                  component={item.icon}
+                  sx={{
+                    display: "inline-block",
+                    mr: 1,
+                  }}
+                />
+                {item.name}
+              </Box>
+            </Link>
+          );
+        })}
+
+        {/* <Link
+          component={NextLink}
+          href="/"
+          underline="hover"
+        > */}
+        <Box
+          sx={{
+            py: 1.5,
+            px: 2,
+          }}
+        >
+          <Box
+            sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+            }}
+          >
+            <Link
+              href="/"
+              sx={{
+                fontSize: "1rem",
+                color: "#1976d2",
+              }}
+            >
+              トップページへ戻る
+            </Link>
+          </Box>
+        </Box>
+        {/* </Link> */}
       </Stack>
-      <Box sx={{ marginTop: 5, marginInline: 2 }}>{children}</Box>
+
+      <Box sx={{ mt: 5, mx: 2 }}>{children}</Box>
     </>
   );
 };

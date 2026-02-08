@@ -1,11 +1,17 @@
 import Password from "@/app/components/Password";
+import { Box } from "@mui/material";
 
 const ResetPasswordConfirmPage = () => {
   return (
     // パスワード変更
-    <div className="mx-3 mt-6">
+    <Box
+      sx={{
+        mx: 1.5,
+        mt: 3,
+      }}
+    >
       <Password />
-    </div>
+    </Box>
   );
 };
 

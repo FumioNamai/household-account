@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/store/mode", "src/app/to-buy-list-page/page"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/store/mode", "src/app/to-buy-list-page/page", "src/app/components/ThemedComp", "src/app/components/ThemeProvider", "src/app/layout"],
   "exclude": ["node_modules"]
 }

@@ -1,5 +1,6 @@
 import SignUp from "@/app/components/SignUp";
 import { Database } from "@/lib/database.types";
+import { Box } from "@mui/material";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -20,9 +21,14 @@ const SignUpPage = async () => {
     redirect("/");
   }
   return (
-    <div className="mx-3 mt-6">
+    <Box
+      sx={{
+        mx: 1.5,
+        mt: 3,
+      }}
+    >
       <SignUp />
-    </div>
+    </Box>
   );
 };
 

@@ -5,7 +5,7 @@ import useStore, { useDateStore, useStockStore, useTaxStore } from "@/store";
 import { CheckCircleTwoTone } from "@mui/icons-material";
 import ControlPointTwoToneIcon from "@mui/icons-material/ControlPointTwoTone";
 import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
-import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Container, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 
 import ToBuyButton from "@/app/components/ToBuyButton";
 import { CalcPrice } from "./CalcPrice";
@@ -279,7 +279,7 @@ const InStockItem = ({ ...groupedData }: GroupedData) => {
 
   return (
     <>
-      <Stack direction="column" sx={{ width: "100%" }}>
+      <Stack direction="column" sx={{ width: "100%"}}>
         <Stack
           direction="row"
           justifyContent="space-between"

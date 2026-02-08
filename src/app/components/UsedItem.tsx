@@ -1,6 +1,12 @@
-
 import { supabase } from "../../../utils/supabase";
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  List,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import UndoRoundedIcon from "@mui/icons-material/UndoRounded";
 import React from "react";
 import { useSnackbarContext } from "@/providers/context-provider";
@@ -11,13 +17,13 @@ type Props = {
   id: number;
   name: string;
   type: string;
-  price:number;
+  price: number;
 };
 
 const UsedItem = ({ id, name, price, type }: Props) => {
   const { showSnackbar } = useSnackbarContext();
   const user = useStore((state) => state.user);
-  let {setStocks} = useStockStore()
+  let { setStocks } = useStockStore();
   const onUpdate = (data: any | undefined) => setStocks(data);
   const tax = useTaxStore((state) => state.tax);
 
@@ -36,7 +42,7 @@ const UsedItem = ({ id, name, price, type }: Props) => {
       if (showSnackbar) {
         showSnackbar(
           "success",
-          `『${name}』の使用を取り消し、在庫一覧に戻しました。`
+          `『${name}』の使用を取り消し、在庫一覧に戻しました。`,
         );
       }
     } catch (error: any) {
@@ -47,10 +53,16 @@ const UsedItem = ({ id, name, price, type }: Props) => {
   };
 
   return (
-    <li key={id} className="flex flex-row items-center justify-between pl-4">
+    <Stack
+      key={id}
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+      sx={{ pl: 2 }}
+    >
       <Typography variant="body2">{name}</Typography>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography variant="body1">{CalcPrice(price,type)}円</Typography>
+        <Typography variant="body1">{CalcPrice(price, type)}円</Typography>
         <Typography
           variant="body2"
           sx={{ marginLeft: "4px", color: "grey", fontSize: "10px" }}
@@ -67,7 +79,7 @@ const UsedItem = ({ id, name, price, type }: Props) => {
           </IconButton>
         </Tooltip>
       </Box>
-    </li>
+    </Stack>
   );
 };
 

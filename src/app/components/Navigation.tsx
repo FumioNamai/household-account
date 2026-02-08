@@ -15,7 +15,7 @@ const Navigation = ({
   user: User | null;
   profile: ProfileType | null;
 }) => {
-  const {isSortable, } = useSortableStore();
+  const { isSortable } = useSortableStore();
   const setUser = useStore((state) => state.setUser);
   // 状態管理にユーザー情報を保存
   // ユーザーが無い場合は状態管理も空になる
@@ -32,21 +32,48 @@ const Navigation = ({
   return (
     <>
       {user ? (
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={1}
+          // sx={{
+          //   display: "flex",
+          //   flexDirection: "row",
+          //   alignItems: "center",
+          //   gap: 1,
+          // }}
+        >
           {profile && (
             <>
               <Typography variant="body1" sx={{ fontSize: 16 }}>
                 {profile.name}さん
               </Typography>
-              {
-                isSortable ?
-                <Link underline="hover">
-                <SettingsIcon sx={{ width: "30px", height: "30px", color:"gray" }} />
-              </Link> :
-              <Link underline="hover" href="/settings/profile">
-                <SettingsIcon sx={{ width: "30px", height: "30px" }} />
-              </Link>
-              }
+              {isSortable ? (
+                <Link
+                  underline="none"
+                  sx={{
+                    lineHeight: 1,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <SettingsIcon
+                    sx={{ width: "30px", height: "30px", color: "gray" }}
+                  />
+                </Link>
+              ) : (
+                <Link
+                  href="/settings/profile"
+                  underline="none"
+                  sx={{
+                    lineHeight: 1,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <SettingsIcon sx={{ width: "30px", height: "30px" }} />
+                </Link>
+              )}
             </>
           )}
         </Stack>

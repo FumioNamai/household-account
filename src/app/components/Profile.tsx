@@ -73,7 +73,7 @@ const Profile = () => {
     }
   };
   return (
-    <div className="mb-20">
+    <Box sx={{ mb:20 }}>
       <Typography
         variant="h5"
         sx={{
@@ -131,7 +131,7 @@ const Profile = () => {
           {message}
         </Typography>
       )}
-    </div>
+    </Box>
   );
 };
 

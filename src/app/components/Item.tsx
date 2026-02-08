@@ -1,6 +1,7 @@
 
 import React from "react";
 import {
+  Box,
   Divider,
   List,
 } from "@mui/material";
@@ -11,7 +12,7 @@ import { GroupedData } from "../../../utils/type";
 const Item = ({ ...groupedData }: GroupedData) => {
   return (
     <>
-      <List
+      <Box
         key={groupedData.id}
         sx={{
           display: "flex",
@@ -23,7 +24,7 @@ const Item = ({ ...groupedData }: GroupedData) => {
         ) : (
           <OutOfStockItem {...groupedData} />
         )}
-      </List>
+      </Box>
       <Divider />
     </>
   );

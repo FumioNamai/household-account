@@ -69,7 +69,7 @@ const Login = () => {
     <div>
       <Typography
         variant="h5"
-        sx={{ fontWeight: "bold", textAlign: "center", mb: 3 }}
+        sx={{ fontWeight: "bold", textAlign: "center", mb: 3, mt:3 }}
       >
         ログイン
       </Typography>

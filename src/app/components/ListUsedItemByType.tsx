@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { List, Typography } from "@mui/material";
 import UsedItem from "./UsedItem";
 import { Stock } from "../../../utils/type";
 import { useDateStore } from "@/store";
@@ -16,7 +16,7 @@ export const ListUsedItemByType = ({
   return (
     <>
       <Typography variant="subtitle1">{typeName}</Typography>
-      <ul>
+      <List>
         {todayUsedItems.map((todayUsedItem: Stock) => (
           <div key={todayUsedItem.id}>
             {todayUsedItem.type === `${typeName}` &&
@@ -30,7 +30,7 @@ export const ListUsedItemByType = ({
               )}
           </div>
         ))}
-      </ul>
+      </List>
     </>
   );
 };

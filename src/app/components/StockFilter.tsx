@@ -4,6 +4,7 @@ import {
   Button,
   FormControl,
   InputLabel,
+  List,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -186,11 +187,11 @@ const StockFilter = ({ groupedDataArr }: Props) => {
                   (category) =>
                     category === categoryItem && (
                       <div key={category}>
-                        <ul>
+                        <List>
                           {groupedDataArr!
                             .sort((a, b) => a.name.localeCompare(b.name, "ja"))
                             .map((groupedData) => (
-                              <li key={groupedData.id}>
+                              <Box key={groupedData.id}>
                                 {category !== "すべて"
                                   ? groupedData.type === type &&
                                     groupedData.category === category &&
@@ -201,25 +202,25 @@ const StockFilter = ({ groupedDataArr }: Props) => {
                                     groupedData.use_date === null && (
                                       <Item {...groupedData} />
                                     )}
-                              </li>
+                              </Box>
                             ))}
-                        </ul>
+                        </List>
                       </div>
                     )
                 )
               ) : (
-                <ul>
+                <List>
                   {groupedDataArr!
                     .sort((a, b) => a.name.localeCompare(b.name, "ja"))
                     .map((groupedData) => (
-                      <li key={groupedData.id}>
+                      <Box key={groupedData.id}>
                         {groupedData.type === type &&
                           groupedData.use_date === null && (
                             <Item {...groupedData} />
                           )}
-                      </li>
+                      </Box>
                     ))}
-                </ul>
+                </List>
               )}
             </Box>
           ) : null
@@ -276,7 +277,7 @@ const StockFilter = ({ groupedDataArr }: Props) => {
         }}
       >
         {searchName !== "" ? (
-          <ul>
+          <List>
             {groupedDataArr!
               .filter(
                 (groupedData) =>
@@ -284,11 +285,11 @@ const StockFilter = ({ groupedDataArr }: Props) => {
               )
               .sort((a, b) => a.name.localeCompare(b.name, "ja"))
               .map((groupedData) => (
-                <li key={groupedData.id}>
+                <List key={groupedData.id}>
                   {groupedData.use_date === null && <Item {...groupedData} />}
-                </li>
+                </List>
               ))}
-          </ul>
+          </List>
         ) : (
           "検索結果が表示されます"
         )}

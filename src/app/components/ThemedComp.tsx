@@ -1,25 +1,24 @@
 "use client";
 
-import { CssBaseline, ThemeProvider, } from "@mui/material";
-import { FC, ReactNode, useEffect,useState } from "react";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "../styles/theme";
 
-type Props = { children?: ReactNode };
+export const ThemedComp: FC<PropsWithChildren> = ({ children }) => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-export const ThemedComp: FC<Props> = ({ children }) => {
-
-  const {resolvedTheme} = useTheme()
-  const [currentTheme, setCurrentTheme] = useState(darkTheme)
+  const theme = resolvedTheme === "light" ? lightTheme : darkTheme;
 
   useEffect(() => {
-    resolvedTheme === "light"
-    ? setCurrentTheme(lightTheme)
-    : setCurrentTheme(darkTheme)
-  },[resolvedTheme])
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
-    <ThemeProvider theme={currentTheme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       {children}
     </ThemeProvider>

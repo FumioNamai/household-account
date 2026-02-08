@@ -70,7 +70,7 @@ const Email = ({ email }: { email: string }) => {
   };
 
   return (
-    <div className="mb-20">
+    <Box sx={{ mb:20 }}>
       <Typography
         variant="h5"
         sx={{ fontWeight: "bold", textAlign: "center", mb:3 }}
@@ -122,7 +122,7 @@ const Email = ({ email }: { email: string }) => {
           </Typography>
         )}
       </Stack>
-    </div>
+    </Box>
   );
 };
 
