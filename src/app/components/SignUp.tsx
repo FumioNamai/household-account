@@ -58,8 +58,7 @@ const SignUp = () => {
       }
 
       // プロフィールの名前を更新
-      const { error: updateError } = await supabase
-        .from("profiles")
+      const { error: updateError } = await (supabase.from("profiles") as any)
         .update({ name: data.name })
         .eq("email", data.email);
 
@@ -72,7 +71,7 @@ const SignUp = () => {
       // 入力フォームクリア
       reset();
       setMessage(
-        "本登録用のURLを記載したメールを送信しました。メールをご確認の上、メール本文中のURLをクリックして、本登録を行ってください。"
+        "本登録用のURLを記載したメールを送信しました。メールをご確認の上、メール本文中のURLをクリックして、本登録を行ってください。",
       );
     } catch (error) {
       setMessage("エラーが発生しました。" + error);
@@ -86,7 +85,7 @@ const SignUp = () => {
     <div>
       <Typography
         variant="h5"
-        sx={{ fontWeight: "bold", textAlign: "center", mb: 3, mt:3 }}
+        sx={{ fontWeight: "bold", textAlign: "center", mb: 3, mt: 3 }}
       >
         ユーザー登録
       </Typography>
@@ -137,7 +136,7 @@ const SignUp = () => {
           {loading ? (
             <Loading />
           ) : (
-            <Button variant="outlined" type="submit" sx={{width:"100%"}}>
+            <Button variant="outlined" type="submit" sx={{ width: "100%" }}>
               登録
             </Button>
           )}
@@ -151,12 +150,15 @@ const SignUp = () => {
             {message}
           </Typography>
         )}
-        </Stack>
-        <Box sx={{mt:5}}>
-        <Typography variant="body1" sx={{ color:"gray", fontWeight:"bold", textAlign:"center"}}>
-        <Link href="/auth/login">ログインはこちら</Link>
+      </Stack>
+      <Box sx={{ mt: 5 }}>
+        <Typography
+          variant="body1"
+          sx={{ color: "gray", fontWeight: "bold", textAlign: "center" }}
+        >
+          <Link href="/auth/login">ログインはこちら</Link>
         </Typography>
-        </Box>
+      </Box>
     </div>
   );
 };
