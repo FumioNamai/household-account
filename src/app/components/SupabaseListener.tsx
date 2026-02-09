@@ -18,8 +18,7 @@ const SupabaseListener = async () => {
   let profile = null;
 
   if (user) {
-    const { data: currentProfile } = await supabase
-      .from("profiles")
+    const { data: currentProfile } = await (supabase.from("profiles") as any)
       .select("*")
       .eq("id", user.id)
       .single();
