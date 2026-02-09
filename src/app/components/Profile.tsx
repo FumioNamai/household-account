@@ -49,8 +49,8 @@ const Profile = () => {
     setMessage("");
     try {
       // プロフィールアップデート
-      const { error: updateError } = await supabase
-        .from("profiles")
+      const { error: updateError } = await (supabase
+        .from("profiles") as any)
         .update({ name: data.name })
         .eq("id", user.id);
 
