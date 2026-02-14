@@ -11,6 +11,8 @@ import Header from "./components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "N式家計簿",
   description: "家計簿",
